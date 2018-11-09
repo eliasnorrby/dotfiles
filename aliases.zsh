@@ -40,7 +40,6 @@ alias dkv="docker volume"
 # They are: lg, lg1, lg2, lg3
 # Source: https://stackoverflow.com/questions/1838873/visualizing-branch-topology-in-git/34467298#34467298
 
-# minimal P9K config: # this is a hack... 
-alias minp9k="export POWERLEVEL9K_DISABLE_RPROMPT=true && export POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir_writable dir vcs) && export DEFAULT_USER='elias.norrby' && prompt_powerlevel9k_teardown && prompt_powerlevel9k_setup" 
-# default P9K config:
-alias maxp9k="source ~/.zshrc"
+alias git="nocorrect git"
+
+alias reloadconfig="source ~/.zshrc"

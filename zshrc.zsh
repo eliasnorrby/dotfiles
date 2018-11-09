@@ -9,17 +9,21 @@ function list_colors() {
 
 function minp9k() {
   export DEFAULT_USER="elias.norrby";
-  source ~/.dotfiles/powerlevel9k_minimal.zsh/ && reloadp9k;
+  source ~/.dotfiles/powerlevel9k_minimal.zsh && reloadp9k;
 }
 
 function maxp9k() {
   export DEFAULT_USER="";
-  source ~/.dotfiles/powerlevel9k_default.zsh/ && reloadp9k;
+  source ~/.dotfiles/powerlevel9k_default.zsh && reloadp9k;
 }
 
 function reloadp9k() {
   prompt_powerlevel9k_teardown && prompt_powerlevel9k_setup;
 }
+
+# function reloadconfig() {
+#   source ~/.zshrc;
+# }
 
 # =============================================================================
 #                                   Variables
@@ -83,9 +87,9 @@ plugins=(
 # Powerlevel9k
 # ----------------------------------------
 # Always load common config, uncomment variation
-source ~/.dotfiles/powerlevel9k_common.zsh/
-source ~/.dotfiles/powerlevel9k_default.zsh/
-#source ~/.dotfiles/powerlevel9k_minimal.zsh/
+source ~/.dotfiles/powerlevel9k_common.zsh
+source ~/.dotfiles/powerlevel9k_default.zsh
+#source ~/.dotfiles/powerlevel9k_minimal.zsh
 
 # =============================================================================
 #                                   Options
