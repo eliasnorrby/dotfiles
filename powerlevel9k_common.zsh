@@ -5,7 +5,6 @@
 # His comments have double dashes (##)
 # Also some from here: https://github.com/tonylambiris/dotfiles/blob/master/dot.zshrc
 
-ZSH_THEME="powerlevel9k/powerlevel9k"
 POWERLEVEL9K_MODE="nerdfont-complete"
 
 # ----------------------------------------
