@@ -1,0 +1,55 @@
+# Enable ls colors by aliasing gnu coreutils ls – not needed when included in PATH
+#alias ls="gls"
+#alias dircolors="gdircolors"
+
+alias ls="ls --color=auto"
+
+# Overrides l= "ls -lah"
+alias l="ls -1"
+
+# Open zshconfig in Sublime Text
+alias zshconfig="open -a \"Sublime Text\" ~/.zshrc"
+# With Sublime Text cli installed:
+#alias zshconfig="subl ~/.zshrc"
+
+# Navigate to root private folder in FFCG Dropbox
+alias cdh="cd ~/Dropbox\ \(FFCG\)/folders" 
+
+alias cdd="cd ~/Dropbox\ \(FFCG\)/folders/dev"
+
+alias cdck="cd ~/Dropbox\ \(FFCG\)/folders/dev/CodeIsKing" 
+
+alias npsht="sh newTypeScriptProject.sh"
+
+alias npshj="sh newJavaProject.sh"
+
+alias ns="sh ~/utilities/newSrcFile.sh"
+
+alias nt="sh ~/utilities/newTestFile.sh"
+
+alias nst="sh ~/utilities/newSrcAndTestFile.sh"
+
+
+# Docker aliases
+alias dk="docker"
+alias ds="docker ps"
+alias dks="docker start"
+alias dkx="docker stop"
+alias dkv="docker volume"
+
+# Git aliases are found in: gitconfig
+# cd /Library/Developer/CommandLineTools/usr/share/git-core/
+# 
+# They are: lg, lg1, lg2, lg3
+# Source: https://stackoverflow.com/questions/1838873/visualizing-branch-topology-in-git/34467298#34467298
+
+# minimal P9K config:
+alias minp9k="export POWERLEVEL9K_DISABLE_RPROMPT=true && export POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir_writable dir vcs) && export DEFAULT_USER='elias.norrby' && prompt_powerlevel9k_teardown && prompt_powerlevel9k_setup" 
+# default P9K config:
+alias maxp9k="source ~/.zshrc"
+
+alias allcolors="list_colors"
+
+function list_colors() {
+	for code ({000..255}) print -P -- "$code: %F{$code}This is how your text would look like%f";
+}
