@@ -24,10 +24,12 @@ alias l="ls -1"
 # alias po='() { popd &> /dev/null; dirs -v; }'
 
 # Open zshconfig in Sublime Text
-#alias zshconfig="open -a \"Sublime Text\" ~/.zshrc"
+# alias zshconfig="open -a \"Sublime Text\" ~/.zshrc"
 # With Sublime Text cli installed:
-alias zshconfig="subl ~/.zshrc"
-alias aconfig="subl ~/.zsh_aliases"
+# alias zshconfig="subl ~/.zshrc"
+alias zshconfig="subl ~/.dotfiles/zshrc.zsh"
+# alias aconfig="subl ~/.zsh_aliases"
+alias aconfig="subl ~/.dotfiles/aliases.zsh"
 
 # Navigate to root private folder in FFCG Dropbox
 alias cdh="cd ~/Dropbox\ \(FFCG\)/folders" 
@@ -44,11 +46,21 @@ alias nt="sh ~/utilities/newTestFile.sh"
 alias nst="sh ~/utilities/newSrcAndTestFile.sh"
 
 # Docker aliases
-alias dk="docker"
-alias ds="docker ps"
-alias dks="docker start"
-alias dkx="docker stop"
-alias dkv="docker volume"
+alias d="docker"
+alias dc="docker container"
+alias dcl="docker container ls"
+alias dcs="docker container start"
+alias dcx="docker container stop"
+alias di="docker image"
+alias dil="docker image ls"
+alias ds="docker service"
+alias dsl="docker service ls"
+alias dsp="docker service ps"
+alias dv="docker volume"
+alias dvl="docker volume ls"
+alias dn="docker node"
+alias dnl="docker node ls"
+
 
 # Git log aliases are found in: gitconfig
 # cd /Library/Developer/CommandLineTools/usr/share/git-core/
