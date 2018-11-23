@@ -6,8 +6,10 @@ inoremap jk <esc>
 
 syntax enable " enable syntax processing
 
-let g:solarized_termcolors=256 " fix gray background using solarized theme
-let g:solarized_termtrans=1 " fix dark background using solarized theme
+" fix gray background using solarized theme
+" set background=dark
+" let g:solarized_termcolors=256 
+" let g:solarized_termtrans=1 
 " colorscheme solarized
 
 colorscheme badwolf
@@ -17,6 +19,7 @@ colorscheme badwolf
 set tabstop=4       " number of visual spaces per TAB
 set softtabstop=4   " number of spaces in tab when editing
 set expandtab       " tabs are spaces
+set autoindent      " enable autoindent
 
 " ==== UI CONFIG ====
 set number          " show line numbers
@@ -29,4 +32,17 @@ set hlsearch        " highlight matches
 
 " turn off search highlight
 nnoremap ,<space> :nohlsearch<CR>
+
+" ==== MOVEMENT ====
+" move vertically by visual line
+nnoremap j gj
+nnoremap k gk
+
+" move to beginning/end of line
+nnoremap B ^
+nnoremap E $
+
+" $ and ^ don't do anything
+nnoremap $ <nop>
+nnoremap ^ <nop>
 

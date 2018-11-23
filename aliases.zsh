@@ -30,6 +30,7 @@ alias l="ls -1"
 alias zshconfig="subl ~/.dotfiles/zshrc.zsh"
 # alias aconfig="subl ~/.zsh_aliases"
 alias aconfig="subl ~/.dotfiles/aliases.zsh"
+alias vimconfig="vim ~/.dotfiles/vimrc.vim"
 
 # Navigate to root private folder in FFCG Dropbox
 alias cdh="cd ~/Dropbox\ \(FFCG\)/folders" 
