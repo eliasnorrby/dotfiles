@@ -1,5 +1,5 @@
 ## Uncomment for performance stats
-#zmodload zsh/zprof
+zmodload zsh/zprof
 
 # Many of these headers might be moved to separate files in the future.
 # =============================================================================
@@ -24,6 +24,21 @@ function reloadp9k() {
   prompt_powerlevel9k_teardown && prompt_powerlevel9k_setup;
 }
 
+function toggleMultilinePrompt() {
+  if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" = true ]] ; then
+    POWERLEVEL9K_PROMPT_ON_NEWLINE=false
+    POWERLEVEL9K_PROMPT_ADD_NEWLINE=false
+  elif [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" = false ]] ; then
+    POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+    POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
+  fi
+}
+
+mkd() {
+  mkdir -p -- "$1" &&
+    cd -P -- "$1"
+}
+
 # =============================================================================
 #                                   Variables
 # =============================================================================
@@ -42,6 +57,22 @@ export LC_ALL="en_US.UTF-8"
 
 # Path to your oh-my-zsh installation.
 #export ZSH="/Users/elias.norrby/.oh-my-zsh"
+
+# =============================================================================
+#                                   Keybinds
+# =============================================================================
+
+bindkey -v
+# Autosuggestion key-bind
+bindkey '^ ' autosuggest-accept
+bindkey 'jk' vi-cmd-mode
+#bindkey '^[[1;9C' forward-word
+#bindkey '^[[1;9D' backward-word
+bindkey '^w' backward-kill-word
+
+# Make Vi mode transitions faster (KEYTIMEOUT is in hundredths of a second)
+export KEYTIMEOUT=8
+
 
 # =============================================================================
 #                                   Plugins
@@ -109,7 +140,7 @@ zplug "plugins/git-flow",          from:oh-my-zsh, if:"(( $+commands[git] ))"
 #zplug "plugins/golang",            from:oh-my-zsh, if:"(( $+commands[go] ))"
 #zplug "plugins/svn",               from:oh-my-zsh, if:"(( $+commands[svn] ))"
 #zplug "plugins/node",              from:oh-my-zsh, if:"(( $+commands[node] ))"
-#zplug "plugins/npm",               from:oh-my-zsh, if:"(( $+commands[npm] ))"
+zplug "plugins/npm",               from:oh-my-zsh, if:"(( $+commands[npm] ))"
 #zplug "plugins/bundler",           from:oh-my-zsh, if:"(( $+commands[bundler] ))"
 #zplug "plugins/gem",               from:oh-my-zsh, if:"(( $+commands[gem] ))"
 #zplug "plugins/rbenv",             from:oh-my-zsh, if:"(( $+commands[rbenv] ))"
@@ -121,6 +152,7 @@ zplug "plugins/git-flow",          from:oh-my-zsh, if:"(( $+commands[git] ))"
 # zplug "plugins/docker",            from:oh-my-zsh, if:"(( $+commands[docker] ))"
 # zplug "plugins/docker-compose",    from:oh-my-zsh, if:"(( $+commands[docker-compose] ))"
 zplug "plugins/mvn",               from:oh-my-zsh, if:"(( $+commands[mvn] ))"
+# zplug "plugins/kubectl",            from:oh-my-zsh, if:"(( $+commands[kubectl] ))"
 
 zplug "djui/alias-tips"
 #zplug "hlissner/zsh-autopair", defer:2
@@ -206,10 +238,8 @@ ENABLE_CORRECTION="true"
 
 # NTS: This is nice, but leads to bugs with cursor jumping about when using tab completion and multiline prompt
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
-# Autosuggestion key-bind
-bindkey '^ ' autosuggest-accept
 
 # source $ZSH/oh-my-zsh.sh
 
@@ -229,6 +259,10 @@ setopt hist_ignore_all_dups     # Remember only one unique copy of the command.
 setopt hist_reduce_blanks       # Remove superfluous blanks.
 setopt hist_save_no_dups        # Omit older commands in favor of newer ones.
 setopt hist_ignore_space        # Ignore commands that start with space.
+
+
+# unsetopt BEEP                 # Turn off all beeps
+unsetopt LIST_BEEP              # Turn off autocomplete beeps 
 
 export FZF_DEFAULT_COMMAND='fd --type f'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -278,6 +312,10 @@ fi
 # =============================================================================
 
 fpath=(~/.zsh/completion $fpath)
+
+if [ $commands[kubectl] ]; then
+  source <(kubectl completion zsh)
+fi
 
 zstyle ':completion:*' rehash true
 zstyle ':completion:*' verbose yes
