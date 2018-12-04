@@ -69,6 +69,7 @@ bindkey 'jk' vi-cmd-mode
 #bindkey '^[[1;9C' forward-word
 #bindkey '^[[1;9D' backward-word
 bindkey '^w' backward-kill-word
+bindkey ',q' push-line
 
 # Make Vi mode transitions faster (KEYTIMEOUT is in hundredths of a second)
 export KEYTIMEOUT=8
@@ -89,15 +90,7 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
 # Miscellaneous
 zplug "k4rthik/git-cal",  as:command
-#zplug "peco/peco",        as:command, from:gh-r
-#zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf, \
-#  use:"*${(L)$(uname -s)}*amd64*"
-#zplug "junegunn/fzf", use:"shell/*.zsh", as:plugin
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-#
-#
-## Enhanced cd
-zplug "b4b4r07/enhancd", use:init.sh
 
 # Enhanced dir list with git features
 zplug "supercrabtree/k"
@@ -127,14 +120,14 @@ zplug "plugins/colored-man-pages", from:oh-my-zsh
 zplug "plugins/z",                 from:oh-my-zsh
 #zplug "plugins/fancy-ctrl-z",      from:oh-my-zsh
 
-if [[ $OSTYPE = (darwin)* ]]; then
-    zplug "lib/clipboard",         from:oh-my-zsh
-    #zplug "plugins/osx",           from:oh-my-zsh
-    zplug "plugins/brew",          from:oh-my-zsh, if:"(( $+commands[brew] ))"
-    #zplug "plugins/macports",      from:oh-my-zsh, if:"(( $+commands[port] ))"
-fi
+# if [[ $OSTYPE = (darwin)* ]]; then
+#     zplug "lib/clipboard",         from:oh-my-zsh
+#     #zplug "plugins/osx",           from:oh-my-zsh
+#     zplug "plugins/brew",          from:oh-my-zsh, if:"(( $+commands[brew] ))"
+#     #zplug "plugins/macports",      from:oh-my-zsh, if:"(( $+commands[port] ))"
+# fi
 
-zplug "bobthecow/git-flow-completion", if:"(( $+commands[git] ))"
+# zplug "bobthecow/git-flow-completion", if:"(( $+commands[git] ))"
 zplug "plugins/git",               from:oh-my-zsh, if:"(( $+commands[git] ))"
 zplug "plugins/git-flow",          from:oh-my-zsh, if:"(( $+commands[git] ))"
 #zplug "plugins/golang",            from:oh-my-zsh, if:"(( $+commands[go] ))"
@@ -152,11 +145,11 @@ zplug "plugins/npm",               from:oh-my-zsh, if:"(( $+commands[npm] ))"
 # zplug "plugins/docker",            from:oh-my-zsh, if:"(( $+commands[docker] ))"
 # zplug "plugins/docker-compose",    from:oh-my-zsh, if:"(( $+commands[docker-compose] ))"
 zplug "plugins/mvn",               from:oh-my-zsh, if:"(( $+commands[mvn] ))"
-# zplug "plugins/kubectl",            from:oh-my-zsh, if:"(( $+commands[kubectl] ))"
+zplug "plugins/kubectl",            from:oh-my-zsh, if:"(( $+commands[kubectl] ))"
 
 zplug "djui/alias-tips"
 #zplug "hlissner/zsh-autopair", defer:2
-zplug "zsh-users/zsh-completions"
+#zplug "zsh-users/zsh-completions"
 zplug "zsh-users/zsh-autosuggestions"
 # zsh-syntax-highlighting must be loaded after executing compinit command
 # and sourcing other plugins
@@ -273,8 +266,8 @@ export FZF_DEFAULT_OPTS='--height 40% --reverse --extended --border --inline-inf
 #   --color info:254,prompt:37,spinner:108,pointer:235,marker:235
 # '
 
-export ENHANCD_FILTER="fzy:fzf:peco:percol"
-export ENHANCD_COMMAND='c'
+# export ENHANCD_FILTER="fzy:fzf:peco:percol"
+# export ENHANCD_COMMAND='c'
 
 # Directory coloring
 #if [[ $OSTYPE = (darwin|freebsd)* ]]; then
@@ -313,12 +306,12 @@ fi
 
 fpath=(~/.zsh/completion $fpath)
 
-if [ $commands[kubectl] ]; then
-  source <(kubectl completion zsh)
-fi
+# if [ $commands[kubectl] ]; then
+#   source <(kubectl completion zsh)
+# fi
 
 zstyle ':completion:*' rehash true
-zstyle ':completion:*' verbose yes
+# zstyle ':completion:*' verbose yes
 #zstyle ':completion:*:descriptions' format '%B%d%b'
 #zstyle ':completion:*:messages' format '%d'
 #zstyle ':completion:*:warnings' format 'No matches for: %d'
@@ -340,7 +333,13 @@ zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX
 # Keep directories and files separated
 zstyle ':completion:*' list-dirs-first true
 
-autoload -Uz compinit && compinit -i
+# autoload -Uz compinit && compinit -i
+autoload -Uz compinit
+for dump in ~/.zcompdump(N.mh+24); do
+  compinit
+done
+compinit -C
+
 # =============================================================================
 #                                   Startup
 # =============================================================================
@@ -354,12 +353,13 @@ autoload -Uz compinit && compinit -i
 #     fi
 # fi
 
-if zplug check "seebi/dircolors-solarized"; then
-  which gdircolors &> /dev/null && alias dircolors='gdircolors'
-  which dircolors &> /dev/null && \
-    eval `dircolors /usr/local/opt/zplug/repos/seebi/dircolors-solarized/dircolors.ansi-dark`
-fi
-# eval `gdircolors /usr/local/opt/zplug/repos/seebi/dircolors-solarized/dircolors.ansi-dark`
+# if zplug check "seebi/dircolors-solarized"; then
+#   which gdircolors &> /dev/null && alias dircolors='gdircolors'
+#   which dircolors &> /dev/null && \
+#     eval `dircolors /usr/local/opt/zplug/repos/seebi/dircolors-solarized/dircolors.ansi-dark`
+# fi
+alias dircolors='gdircolors'
+eval `gdircolors /usr/local/opt/zplug/repos/seebi/dircolors-solarized/dircolors.ansi-dark`
 
 # Personal aliases
 source ~/.zsh_aliases
