@@ -11,7 +11,7 @@ POWERLEVEL9K_MODE="nerdfont-complete"
 # Prompt customization
 # ----------------------------------------
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
+# POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
 
 #POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ )"
 #POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
