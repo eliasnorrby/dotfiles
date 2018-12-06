@@ -7,7 +7,14 @@ alias grep='() { $(whence -p grep) --color=auto $@ }'
 alias egrep='() { $(whence -p egrep) --color=auto $@ }'
 
 # Overrides l= "ls -lah"
-alias l="ls -1"
+# alias l="ls -1"
+alias l="colorls -1 --sd"
+alias lc="colorls"
+alias ll="colorls --sd"
+alias ldf="ls_dirs_files"
+alias tc="colorls --tree"
+
+alias eo="cool_echo"
 
 # Folder managemant
 # alias d='dirs -v'
