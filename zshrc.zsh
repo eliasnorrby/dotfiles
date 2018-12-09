@@ -1,13 +1,15 @@
 ## Uncomment for performance stats
-zmodload zsh/zprof
+#zmodload zsh/zprof
 
 # Many of these headers might be moved to separate files in the future.
 # =============================================================================
 #                                   Functions
 # =============================================================================
 
-function list_colors() {
-  for code ({000..255}) print -P -- "$code: %F{$code}This is how your text would look like%f";
+# === Config ===
+
+function zup() {
+  source ~/.zsh_plugins
 }
 
 function minp9k() {
@@ -34,9 +36,48 @@ function toggleMultilinePrompt() {
   fi
 }
 
-mkd() {
+# === Utilities ===
+
+function mkd() {
   mkdir -p -- "$1" &&
     cd -P -- "$1"
+}
+
+function list_colors() {
+  for code ({000..255}) print -P -- "$code: %F{$code}This is how your text would look like%f";
+}
+
+# chrome - browse chrome history
+function chrome() {
+  local cols sep google_history open
+  cols=$(( COLUMNS / 3 ))
+  sep='{::}'
+
+  if [ "$(uname)" = "Darwin" ]; then
+    google_history="$HOME/Library/Application Support/Google/Chrome/Default/History"
+    open=open
+  else
+    google_history="$HOME/.config/google-chrome/Default/History"
+    open=xdg-open
+  fi
+  cp -f "$google_history" /tmp/h
+  sqlite3 -separator $sep /tmp/h \
+    "select substr(title, 1, $cols), url
+     from urls order by last_visit_time desc" |
+  awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' |
+  fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open > /dev/null 2> /dev/null
+}
+
+function ls_dirs_files() {
+  echo "-> Directories:"
+  colorls --dirs -l -1
+  echo ""
+  echo "-> Files:"
+  colorls --files -l -1
+}
+
+function cool_echo() {
+  artii --font slant "$1" | lolcat
 }
 
 # =============================================================================
@@ -44,6 +85,10 @@ mkd() {
 # =============================================================================
 
 export JAVA_HOME="$(/usr/libexec/java_home -v '1.8*')"
+
+# For Ruby
+export PATH="/usr/local/opt/ruby/bin:$PATH"
+export PATH="/usr/local/lib/ruby/gems/2.5.0/bin:$PATH"
 
 # For using GNU coreutils with default names
 # NTS: I use this for the 'tree' command
@@ -66,10 +111,14 @@ bindkey -v
 # Autosuggestion key-bind
 bindkey '^ ' autosuggest-accept
 bindkey 'jk' vi-cmd-mode
+# Unbind esc key
+bindkey -s '^[7' '|'
 #bindkey '^[[1;9C' forward-word
 #bindkey '^[[1;9D' backward-word
 bindkey '^w' backward-kill-word
 bindkey ',q' push-line
+bindkey -M viins ',.' insert-last-word
+bindkey -M viins '.,' insert-last-word
 
 # Make Vi mode transitions faster (KEYTIMEOUT is in hundredths of a second)
 export KEYTIMEOUT=8
@@ -79,21 +128,19 @@ export KEYTIMEOUT=8
 #                                   Plugins
 # =============================================================================
 
-# [ ! -d ~/.zplug ] && git clone https://github.com/zplug/zplug ~/.zplug
-# source ~/.zplug/init.zsh
-
 export ZPLUG_HOME=/usr/local/opt/zplug
 source $ZPLUG_HOME/init.zsh
 
 # zplug
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
-# Miscellaneous
-zplug "k4rthik/git-cal",  as:command
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# Miscellaneous
+zplug "k4rthik/git-cal",  as:command
+
 # Enhanced dir list with git features
-zplug "supercrabtree/k"
+zplug "supercrabtree/k" 
 
 # Jump back to parent directory
 zplug "tarrasch/zsh-bd"
@@ -101,80 +148,15 @@ zplug "tarrasch/zsh-bd"
 # Directory colors
 zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
 
-## Check these out later
-#zplug "plugins/common-aliases",    from:oh-my-zsh
-zplug "plugins/colored-man-pages", from:oh-my-zsh
-##zplug "plugins/colorize",          from:oh-my-zsh
-#zplug "plugins/command-not-found", from:oh-my-zsh
-#zplug "plugins/copydir",           from:oh-my-zsh
-#zplug "plugins/copyfile",          from:oh-my-zsh
-#zplug "plugins/cp",                from:oh-my-zsh
-#zplug "plugins/dircycle",          from:oh-my-zsh
-#zplug "plugins/encode64",          from:oh-my-zsh
-#zplug "plugins/extract",           from:oh-my-zsh
-#zplug "plugins/history",           from:oh-my-zsh
-#zplug "plugins/tmux",              from:oh-my-zsh
-#zplug "plugins/tmuxinator",        from:oh-my-zsh
-#zplug "plugins/urltools",          from:oh-my-zsh
-#zplug "plugins/web-search",        from:oh-my-zsh
 zplug "plugins/z",                 from:oh-my-zsh
-#zplug "plugins/fancy-ctrl-z",      from:oh-my-zsh
 
-# if [[ $OSTYPE = (darwin)* ]]; then
-#     zplug "lib/clipboard",         from:oh-my-zsh
-#     #zplug "plugins/osx",           from:oh-my-zsh
-#     zplug "plugins/brew",          from:oh-my-zsh, if:"(( $+commands[brew] ))"
-#     #zplug "plugins/macports",      from:oh-my-zsh, if:"(( $+commands[port] ))"
-# fi
+zplug "plugins/git",               from:oh-my-zsh
+zplug "plugins/git-flow",          from:oh-my-zsh
 
-# zplug "bobthecow/git-flow-completion", if:"(( $+commands[git] ))"
-zplug "plugins/git",               from:oh-my-zsh, if:"(( $+commands[git] ))"
-zplug "plugins/git-flow",          from:oh-my-zsh, if:"(( $+commands[git] ))"
-#zplug "plugins/golang",            from:oh-my-zsh, if:"(( $+commands[go] ))"
-#zplug "plugins/svn",               from:oh-my-zsh, if:"(( $+commands[svn] ))"
-#zplug "plugins/node",              from:oh-my-zsh, if:"(( $+commands[node] ))"
-zplug "plugins/npm",               from:oh-my-zsh, if:"(( $+commands[npm] ))"
-#zplug "plugins/bundler",           from:oh-my-zsh, if:"(( $+commands[bundler] ))"
-#zplug "plugins/gem",               from:oh-my-zsh, if:"(( $+commands[gem] ))"
-#zplug "plugins/rbenv",             from:oh-my-zsh, if:"(( $+commands[rbenv] ))"
-#zplug "plugins/rvm",               from:oh-my-zsh, if:"(( $+commands[rvm] ))"
-#zplug "plugins/pip",               from:oh-my-zsh, if:"(( $+commands[pip] ))"
-#zplug "plugins/sudo",              from:oh-my-zsh, if:"(( $+commands[sudo] ))"
-#zplug "plugins/gpg-agent",         from:oh-my-zsh, if:"(( $+commands[gpg-agent] ))"
-#zplug "plugins/systemd",           from:oh-my-zsh, if:"(( $+commands[systemctl] ))"
-# zplug "plugins/docker",            from:oh-my-zsh, if:"(( $+commands[docker] ))"
-# zplug "plugins/docker-compose",    from:oh-my-zsh, if:"(( $+commands[docker-compose] ))"
-zplug "plugins/mvn",               from:oh-my-zsh, if:"(( $+commands[mvn] ))"
-zplug "plugins/kubectl",            from:oh-my-zsh, if:"(( $+commands[kubectl] ))"
-
-zplug "djui/alias-tips"
-#zplug "hlissner/zsh-autopair", defer:2
-#zplug "zsh-users/zsh-completions"
 zplug "zsh-users/zsh-autosuggestions"
 # zsh-syntax-highlighting must be loaded after executing compinit command
 # and sourcing other plugins
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
-#zplug "zsh-users/zsh-history-substring-search", defer:3
-
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-#plugins=(
-  #docker
-  #mvn
-  #git
-  #git-flow
-  #git-flow-completion
-  #zsh-autosuggestions
-  #zsh-dircolors-solarized
-  #alias-tips
-  #osx
-  #zsh-syntax-highlighting
-#)
-
-# zsh-bd
-# . $HOME/.oh-my-zsh/custom/plugins/zsh-bd/bd.zsh
 
 # =============================================================================
 #                                   Themes
@@ -266,26 +248,6 @@ export FZF_DEFAULT_OPTS='--height 40% --reverse --extended --border --inline-inf
 #   --color info:254,prompt:37,spinner:108,pointer:235,marker:235
 # '
 
-# export ENHANCD_FILTER="fzy:fzf:peco:percol"
-# export ENHANCD_COMMAND='c'
-
-# Directory coloring
-#if [[ $OSTYPE = (darwin|freebsd)* ]]; then
-#  export CLICOLOR="YES" # Equivalent to passing -G to ls.
-#  export LSCOLORS="exgxdHdHcxaHaHhBhDeaec"
-#
-#  [ -d "/opt/local/bin" ] && export PATH="/opt/local/bin:$PATH"
-#
-#  # Prefer GNU version, since it respects dircolors.
-#  if (( $+commands[gls] )); then
-#    alias ls='() { $(whence -p gls) -Ctr --file-type --color=auto $@ }'
-#  else
-#    alias ls='() { $(whence -p ls) -CFtr $@ }'
-#  fi
-#else
-#  alias ls='() { $(whence -p ls) -Ctr --file-type --color=auto $@ }'
-#fi
-
 alias ls="ls --color=auto"
 
 # =============================================================================
@@ -305,10 +267,6 @@ fi
 # =============================================================================
 
 fpath=(~/.zsh/completion $fpath)
-
-# if [ $commands[kubectl] ]; then
-#   source <(kubectl completion zsh)
-# fi
 
 zstyle ':completion:*' rehash true
 # zstyle ':completion:*' verbose yes
@@ -334,11 +292,12 @@ zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX
 zstyle ':completion:*' list-dirs-first true
 
 # autoload -Uz compinit && compinit -i
-autoload -Uz compinit
-for dump in ~/.zcompdump(N.mh+24); do
-  compinit
-done
-compinit -C
+autoload -Uz compinit 
+if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+  compinit;
+else
+  compinit -C;
+fi;
 
 # =============================================================================
 #                                   Startup
@@ -353,17 +312,11 @@ compinit -C
 #     fi
 # fi
 
-# if zplug check "seebi/dircolors-solarized"; then
-#   which gdircolors &> /dev/null && alias dircolors='gdircolors'
-#   which dircolors &> /dev/null && \
-#     eval `dircolors /usr/local/opt/zplug/repos/seebi/dircolors-solarized/dircolors.ansi-dark`
-# fi
 alias dircolors='gdircolors'
 eval `gdircolors /usr/local/opt/zplug/repos/seebi/dircolors-solarized/dircolors.ansi-dark`
 
 # Personal aliases
 source ~/.zsh_aliases
-
 
 zplug load
 
@@ -374,23 +327,7 @@ z() {
   cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
 }
 
-# chrome - browse chrome history
-chrome() {
-  local cols sep google_history open
-  cols=$(( COLUMNS / 3 ))
-  sep='{::}'
-
-  if [ "$(uname)" = "Darwin" ]; then
-    google_history="$HOME/Library/Application Support/Google/Chrome/Default/History"
-    open=open
-  else
-    google_history="$HOME/.config/google-chrome/Default/History"
-    open=xdg-open
-  fi
-  cp -f "$google_history" /tmp/h
-  sqlite3 -separator $sep /tmp/h \
-    "select substr(title, 1, $cols), url
-     from urls order by last_visit_time desc" |
-  awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' |
-  fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open > /dev/null 2> /dev/null
-}
+# =============================================================================
+#                                   Done
+# =============================================================================
+artii ">> Up and running <<" --font slant | lolcat
