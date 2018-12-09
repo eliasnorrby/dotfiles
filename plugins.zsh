@@ -23,7 +23,7 @@ zplug "plugins/colored-man-pages", from:oh-my-zsh
 zplug "plugins/mvn",               from:oh-my-zsh, if:"(( $+commands[mvn] ))"
 # zplug "plugins/kubectl",            from:oh-my-zsh, if:"(( $+commands[kubectl] ))"
 
-npm completion &> /dev/null
+npm completion &> /dev/nulld
 
 zplug "hlissner/zsh-autopair"
 

@@ -111,6 +111,8 @@ bindkey -v
 # Autosuggestion key-bind
 bindkey '^ ' autosuggest-accept
 bindkey 'jk' vi-cmd-mode
+# Unbind esc key
+bindkey -s '^[7' '|'
 #bindkey '^[[1;9C' forward-word
 #bindkey '^[[1;9D' backward-word
 bindkey '^w' backward-kill-word

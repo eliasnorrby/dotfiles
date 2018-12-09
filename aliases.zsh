@@ -71,6 +71,9 @@ alias dvl="docker volume ls"
 alias dn="docker node"
 alias dnl="docker node ls"
 
+# VSCode
+alias c="code"
+
 
 # Git log aliases are found in: gitconfig
 # cd /Library/Developer/CommandLineTools/usr/share/git-core/
