@@ -268,7 +268,7 @@ fi
 
 fpath=(~/.zsh/completion $fpath)
 
-zstyle ':completion:*' rehash true
+# zstyle ':completion:*' rehash true
 # zstyle ':completion:*' verbose yes
 #zstyle ':completion:*:descriptions' format '%B%d%b'
 #zstyle ':completion:*:messages' format '%d'
@@ -292,12 +292,12 @@ zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX
 zstyle ':completion:*' list-dirs-first true
 
 # autoload -Uz compinit && compinit -i
-autoload -Uz compinit 
-if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
-  compinit;
-else
-  compinit -C;
-fi;
+autoload -Uz compinit && compinit
+# if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+#   compinit;
+# else
+#   compinit -C;
+# fi;
 
 # =============================================================================
 #                                   Startup
@@ -331,3 +331,7 @@ z() {
 #                                   Done
 # =============================================================================
 artii ">> Up and running <<" --font slant | lolcat
+cd ~/.dotfiles
+repo_string=$(git branch | grep \* | cut -d ' ' -f2)
+cd
+echo ".dotfiles repo: $repo_string" | lolcat

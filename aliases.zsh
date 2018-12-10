@@ -31,6 +31,7 @@ alias eo="cool_echo"
 # alias po='() { popd &> /dev/null; dirs -v; }'
 
 # Open zshconfig in Sublime Text
+alias sub="open -a \"Sublime Text\""
 # alias zshconfig="open -a \"Sublime Text\" ~/.zshrc"
 # With Sublime Text cli installed:
 # alias zshconfig="subl ~/.zshrc"
