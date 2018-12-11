@@ -11,7 +11,6 @@ function enterHyperMode()
   hyper.modifiers = {}
   hyper.mods = {}
   hyper.modCount = 0
-  hyper.context = nil
   hyper:enter()
 end
 
@@ -21,7 +20,6 @@ function exitHyperMode()
   hyper.modifiers = {}
   hyper.mods = {}
   hyper.modCount = 0
-  hyper.context = nil
   hyper:exit()
 end
 
@@ -101,6 +99,24 @@ hyper:bind({}, "return", function()
   local win = hs.window.frontmostWindow()
   win:setFullscreen(not win:isFullscreen())
 end)
+
+-- Movement
+
+-- hyper:bind({}, 'j', function()
+--   keyUpDown({}, "down")
+-- end)
+
+-- hyper:bind({}, 'k', function()
+--   keyUpDown({}, "up")
+-- end)
+
+-- hyper:bind({}, 'h', function()
+--   keyUpDown({}, "left")
+-- end)
+
+-- hyper:bind({}, 'l', function()
+--   keyUpDown({}, "right")
+-- end)
 
 
 -- Super Movement
@@ -197,6 +213,14 @@ local myMoveLeftKey = 'u'
 -- Move right :
 local myMoveRightMods = {'alt', 'shift'}
 local myMoveRightKey = 'i'
+
+-- local fromMap = {
+--   split = {
+--     mods = mySplitMods,
+--     key = mySplitKey
+--   },
+--   selectLeft
+-- }
 
 hyper:bind({}, 'ä', function()
   print('pressed ä')
