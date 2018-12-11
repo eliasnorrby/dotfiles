@@ -28,32 +28,6 @@ end
 -- Bind the Hyper key
 f18 = hs.hotkey.bind({}, 'F18', enterHyperMode, exitHyperMode)
 
-
--- Watch for modifiers
---------------------------------------------------------------------------------
--- Watch for key down/up events that represent modifiers in Hyper Mode
---------------------------------------------------------------------------------
--- hyperModeModifierKeyListener = eventtap.new({ eventTypes.keyDown, eventTypes.keyUp }, function(event)
---   if not hyper.active then
---     return false
---   end
-
---   local charactersToModifers = {}
---   charactersToModifers['d'] = 'alt'
---   charactersToModifers['f'] = 'cmd'
---   charactersToModifers['s'] = 'shift'
---   charactersToModifers[' '] = 'ctrl'
-
---   local modifier = charactersToModifers[event:getCharacters()]
---   if modifier then
---     if (event:getType() == eventTypes.keyDown) then
---       hyper.modifiers[modifier] = true
---     else
---       hyper.modifiers[modifier] = nil
---     end
---     return true
---   end
--- end):start()
 hyperModeModifierKeyListener = eventtap.new({ eventTypes.keyDown, eventTypes.keyUp }, function(event)
   if not hyper.active then
     return false
@@ -87,61 +61,25 @@ hyperModeModifierKeyListener = eventtap.new({ eventTypes.keyDown, eventTypes.key
   end
 end):start()
 
-
-
 -- To get into app mode
 hyper:bind({}, 'p', function()
   hyper:exit()
   enterAppMode()
 end)
 
-
 -- Toggle fullscreen
-hyper:bind({}, "return", function()
+hyper:bind({}, 'return', function()
   local win = hs.window.frontmostWindow()
   win:setFullscreen(not win:isFullscreen())
 end)
 
-
--- Super Movement
---------------------------------------------------------------------------------
--- Watch for h/j/k/l key down events in Super Duper Mode, and trigger the
--- corresponding arrow key events
---------------------------------------------------------------------------------
--- hyperModeNavListener = eventtap.new({ eventTypes.keyDown }, function(event)
---   if not hyper.active then
---     return false
---   end
-
---   local charactersToKeystrokes = {
---     h = 'left',
---     j = 'down',
---     k = 'up',
---     l = 'right',
---   }
-
---   local keystroke = charactersToKeystrokes[event:getCharacters(true):lower()]
---   if keystroke then
---     local modifiers = {}
---     n = 0
---     -- Apply the custom Super Duper Mode modifier keys that are active (if any)
---     for k, v in pairs(hyper.modifiers) do
---       n = n + 1
---       modifiers[n] = k
---     end
---     -- Apply the standard modifier keys that are active (if any)
---     for k, v in pairs(event:getFlags()) do
---       n = n + 1
---       modifiers[n] = k
---     end
-
---     keyUpDown(modifiers, keystroke)
---     return true
---   end
--- end):start()
+local paneLeftKey = 'u'
+local paneRightKey = 'i'
+local paneSplitKey = 'ä'
 
 -- Simpler:
 local charactersToKeystrokes = {
+  --- Movement
   {
     from = 'h',
     to = 'left',
@@ -158,6 +96,27 @@ local charactersToKeystrokes = {
     from = 'l',
     to = 'right',
   },
+  --- Pane management
+  -- {
+  --   from = paneSplitKey,
+  --   to = paneSplitKey,
+  -- },
+  -- {
+  --   from = paneRightKey,
+  --   to = paneRightKey,
+  -- },
+  -- {
+  --   from = paneLeftKey,
+  --   to = paneLeftKey,
+  -- },
+  -- {
+  --   from = 'y',
+  --   to = 'y'
+  -- },
+  -- {
+  --   from = 'o',
+  --   to ='o',
+  -- },
 }
 
 hs.fnutils.each(charactersToKeystrokes, function(m)
@@ -166,198 +125,67 @@ hs.fnutils.each(charactersToKeystrokes, function(m)
     end)
 end)
 
--- Panes
--- Split : -
-local mySplitMods = {'ctrl', 'alt'}
-local mySplitKey = 'ä'
-
--- Select left : u
-local mySelectLeftMods = {'ctrl', 'alt'}
-local mySelectLeftKey = 'u'
-
-
--- Select right : i
-local mySelectRightMods = {'ctrl', 'alt'}
-local mySelectRightKey = 'i'
-
-
--- Resize left : alt + u
-local myResizeLeftMods = {'alt'}
-local myResizeLeftKey = 'u'
-
-
--- Resize right : alt + i
-local myResizeRightMods = {'alt'} 
-local myResizeRightKey = 'i'
-
--- Move left : 
-local myMoveLeftMods = {'alt', 'shift'}
-local myMoveLeftKey = 'u'
-
--- Move right :
-local myMoveRightMods = {'alt', 'shift'}
-local myMoveRightKey = 'i'
-
-hyper:bind({}, 'ä', function()
-  print('pressed ä')
-  keyUpDown(hyper.mods, 'u')
-end)
-
-
-
-local paneHotkeyMappings = {
-	{
-		app = 'Code',
-    mappings = {
-		  -- split = {
-      {
-        name = 'split',
-        from = {mySplitMods, mySplitKey},
-        to = {{'ctrl', 'shift', 'cmd'}, '-'},
-      },
-      -- selectLeft = {
-      {
-        name = 'selectLeft',
-        from = {mySelectLeftMods, mySelectLeftKey},
-        to = {{'ctrl', 'shift', 'cmd'}, 'u'}
-      },
-      -- selectRight = {
-      {
-        name = 'selectRight',
-        from = {mySelectRightMods, mySelectRightKey},
-        to = {{'ctrl', 'shift', 'cmd'}, 'i'}
-      },
-      -- resizeLeft = {
-      -- name = '',
-      -- from = {myResizeLeftMods, myResizeLeftKey}
-      --   to = {}
-      -- },
-      -- resizeRight = {
-      -- name = '',
-      -- from = {myResizeRightMods, myResizeRightKey}
-      --   to = {}
-      -- },
-      -- moveLeft = {
-      {
-        name = 'moveLeft',
-        from = {myMoveLeftMods, myMoveLeftKey},
-        to = {{'ctrl', 'shift', 'cmd', 'alt'}, 'u'}
-      },
-      -- moveRight = {
-      {
-        name = 'moveRight',
-        from = {myMoveRightMods, myMoveRightKey},
-        to = {{'ctrl', 'shift', 'cmd', 'alt'}, 'i'}
-      },
-    },
-	},
+local paneMappings = {
   {
-    app = 'iTerm2',
-    mappings = {
-      -- split = {
-      {
-        from = {mySplitMods, mySplitKey},
-        to = {{'ctrl'}, '-'},
-      },
-      -- selectLeft = {
-      {
-        from = {mySelectLeftMods, mySelectLeftKey},
-        to = {{'ctrl'}, 'u'}
-      },
-      -- selectRight = {
-      {
-        from = {mySelectRightMods, mySelectRightKey},
-        to = {{'ctrl'}, 'i'}
-      },
-      -- resizeLeft = {
-      {
-        from = {myResizeLeftMods, myResizeLeftKey},
-        to = {{'ctrl'}, 'h'}
-      },
-      -- resizeRight = {
-      {
-        from = {myResizeRightMods, myResizeRightKey},
-        to = {{'ctrl'}, 'l'}
-      },
-    },
+    name = 'split',
+    from = {{}, paneSplitKey},
+    to = {{'ctrl', 'shift', 'cmd'}, '-'},
+  }, 
+  {
+    name = 'select left',
+    from = {{}, paneLeftKey},
+    to = {{'ctrl'}, 'y'},
+  },
+  {
+    name = 'select right',
+    from = {{}, paneRightKey},
+    to = {{'ctrl'}, 'o'},
+  },
+  -- {
+  --   name = 'resize left',
+  --   from = {{'alt'}, paneLeftKey},
+  --   to = {{'ctrl'}, 'u'},
+  -- },
+  -- {
+  --   name = 'resize right',
+  --   from = {{'alt'}, paneRightKey},
+  --   to = {{'ctrl'}, 'i'},
+  -- },
+  -- {
+  --   name = 'move left',
+  --   from = {{'alt', 'shift'}, paneLeftKey},
+  --   to = {{'ctrl', 'shift'}, 'y'},
+  -- },
+  -- {
+  --   name = 'move right',
+  --   from = {{'alt', 'shift'}, paneRightKey},
+  --   to = {{'ctrl', 'shift'}, 'o'},
+  -- },
+  {
+    name = 'move left',
+    from = {{}, 'y'},
+    to = {{'ctrl', 'shift'}, 'u'},
+  },
+  {
+    name = 'move right',
+    from = {{}, 'o'},
+    to = {{'ctrl', 'shift'}, 'i'},
   },
 }
 
--- Template:
--- {
---     app = 'Code',
---     mappings = {
---       split = {
---         from = {mySplitMods, mySplitKey},
---         to = {{'ctrl', 'alt', 'cmd', 'shift'}, '7'},
---       },
---       selectLeft = {
---         from = {mySelectLeftMods, mySelectLeftKey},
---         to = {{}}
---       },
---       selectRight = {
---         from = {mySelectRightMods, mySelectRightKey}
---         to = {}
---       },
---       resizeLeft = {
---         from = {myResizeLeftMods, myResizeLeftKey}
---         to = {}
---       },
---       resizeRight = {
---         from = {myResizeRightMods, myResizeRightKey}
---         to = {}
---       },
---     }
---   },
-
--- local lolToMods = paneHotkeyMappings[1]['mappings']['split']['from'][1]
-
--- local lolToMods = paneHotkeyMappings[1]['mappings'][1]['to'][1]
--- local lolToKey = paneHotkeyMappings[1]['mappings'][1]['to'][2]
--- print('mySplitMods')
--- print(mySplitMods)
--- print('mySplitKey')
--- print(mySplitKey)
--- print('lolToMods')
--- print(lolToMods)
--- hs.fnutils.each(lolToMods, function(m)
---   print(m)
---   end)
--- print('lolToKey')
--- print(lolToKey)
--- local testHotkey = hs.hotkey.new(mySplitMods, mySplitKey, function() 
---   keyUpDown(lolToMods, lolToKey)
---   end)
--- local testFilter = hs.window.filter.new(paneHotkeyMappings[1]['app'])
--- enableHotkeyForWindowsMatchingFilter(testFilter, testHotkey)
-
-local paneHotkeys = hs.fnutils.each(paneHotkeyMappings, function(appMap)
- local app = appMap['app']
- print('========== Binding keys for')
- print(app)
- local filter = hs.window.filter.new(app)
- local mappingHotkeys = hs.fnutils.each(appMap['mappings'], function(mapping)
-  print("--- binding new thing: ")
-  print(mapping['name'])
-  local fromMods = mapping['from'][1]
-  print('fromMods: ')
-  hs.fnutils.each(fromMods, function(m)
-    print(m)
-  end)
-  local fromKey = mapping['from'][2]
-  print('fromKey: ')
-  print(fromKey)
-  local toMods = mapping['to'][1]
-  print('toMods: ')
-  hs.fnutils.each(toMods, function(m)
-    print(m)
-  end)
-  local toKey = mapping['to'][2]
-  print('toKey: ')
-  print(toKey)
-  local hotkey = hs.hotkey.new(fromMods, fromKey, function()
+local bindPaneKey = function(from, to)
+  local fromMods = from[1]
+  local fromKey = from[2]
+  local toMods = to[1]
+  local toKey = to[2]
+  hyper:bind(fromMods, fromKey, function()
     keyUpDown(toMods, toKey)
   end)
-  enableHotkeyForWindowsMatchingFilter(filter, hotkey)
- end)
+end
+
+local paneHotkeys = hs.fnutils.each(paneMappings, function(m)
+  local action = m['name']
+  print('========== Binding keys for')
+  print(action)
+  bindPaneKey(m['from'], m['to'])
 end)

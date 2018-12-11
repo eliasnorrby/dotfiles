@@ -119,6 +119,7 @@ bindkey '^w' backward-kill-word
 bindkey ',q' push-line
 bindkey -M viins ',.' insert-last-word
 bindkey -M viins '.,' insert-last-word
+bindkey ',l' clear-screen
 
 # Make Vi mode transitions faster (KEYTIMEOUT is in hundredths of a second)
 export KEYTIMEOUT=8
