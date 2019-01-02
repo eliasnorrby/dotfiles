@@ -14,8 +14,10 @@ end
 
 appMode:bind({}, 'space', exitAppMode)
 
--- Apps
+-- Bind the right cmd key
+f16 = hs.hotkey.bind({}, 'F16', enterAppMode, exitAppMode)
 
+-- Apps
 local status, appModeMappings = pcall(require, 'keyboard.hyper-apps')
 
 for i, mapping in ipairs(appModeMappings) do

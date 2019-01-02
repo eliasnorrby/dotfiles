@@ -73,11 +73,7 @@ hyper:bind({}, 'return', function()
   win:setFullscreen(not win:isFullscreen())
 end)
 
-local paneLeftKey = 'u'
-local paneRightKey = 'i'
-local paneSplitKey = 'ä'
-
--- Simpler:
+-- Simpler vim movement:
 local charactersToKeystrokes = {
   --- Movement
   {
@@ -96,27 +92,6 @@ local charactersToKeystrokes = {
     from = 'l',
     to = 'right',
   },
-  --- Pane management
-  -- {
-  --   from = paneSplitKey,
-  --   to = paneSplitKey,
-  -- },
-  -- {
-  --   from = paneRightKey,
-  --   to = paneRightKey,
-  -- },
-  -- {
-  --   from = paneLeftKey,
-  --   to = paneLeftKey,
-  -- },
-  -- {
-  --   from = 'y',
-  --   to = 'y'
-  -- },
-  -- {
-  --   from = 'o',
-  --   to ='o',
-  -- },
 }
 
 hs.fnutils.each(charactersToKeystrokes, function(m)
@@ -124,6 +99,10 @@ hs.fnutils.each(charactersToKeystrokes, function(m)
       keyUpDown(hyper.mods, m['to'])
     end)
 end)
+
+local paneLeftKey = 'u'
+local paneRightKey = 'i'
+local paneSplitKey = 'ä'
 
 local paneMappings = {
   {

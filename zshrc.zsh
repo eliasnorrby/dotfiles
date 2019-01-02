@@ -68,6 +68,20 @@ function chrome() {
   fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open > /dev/null 2> /dev/null
 }
 
+# search in lynx
+# Opens a lynx browser searching any terms that follow the name of this script
+function test_search() {
+  url="https://www.google.com/search?q="
+
+  for term in "$@"
+  do
+    url=$url"+"$term
+  done
+
+  lynx -accept_all_cookies $url
+}
+
+
 function ls_dirs_files() {
   echo "-> Directories:"
   colorls --dirs -l -1
@@ -331,8 +345,11 @@ z() {
 # =============================================================================
 #                                   Done
 # =============================================================================
-artii ">> Up and running <<" --font slant | lolcat
+# artii ">> Up and running <<" --font slant | lolcat
 cd ~/.dotfiles
-repo_string=$(git branch | grep \* | cut -d ' ' -f2)
+branch_string=$(git branch | grep \* | cut -d ' ' -f2)
+commit_message=$(git log -1 --pretty=%B)
 cd
-echo ".dotfiles repo: $repo_string" | lolcat
+echo ".dotfiles branch: $branch_string" | lolcat
+echo "latest commit: $commit_message" | lolcat
+echo 

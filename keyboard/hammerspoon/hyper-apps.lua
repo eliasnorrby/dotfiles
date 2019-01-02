@@ -5,6 +5,7 @@ return {
   { 'o', 'OmniFocus' }, -- "D" for "Do!" ... or "Done!"
   { 'e', 'Visual Studio Code' },              -- "E" for "Editor"
   { 'f', 'Finder' },            -- "F" for "Finder"
-  { 's', 'Slack' },             -- "S" for "Slack"
+  { 's', 'Sublime Text' },             -- "S" for "Sublime"
   { 't', 'iTerm' },             -- "T" for "Terminal"
+  { 'd', 'Drafts' },             -- "D" for "Drafts"
 }

@@ -56,7 +56,9 @@ set incsearch       " search as characters are entered
 set hlsearch        " highlight matches
 
 " turn off search highlight
-nnoremap ,<space> :nohlsearch<CR>
+let mapleader=" "
+nnoremap <Space> <Nop>
+nnoremap <Leader>, :nohlsearch<CR>
 
 " ==== MOVEMENT ====
 " move vertically by visual line
@@ -70,4 +72,10 @@ nnoremap E $
 " $ and ^ don't do anything
 nnoremap $ <nop>
 nnoremap ^ <nop>
+
+" ==== PLUGINS ====
+set runtimepath^=~/.vim/bundle/vim-easymotion/plugin/EasyMotion.vim
+
+" Test
+noremap <Leader>w <Plug>(easymotion-w)
 

@@ -18,7 +18,6 @@
                         "description": "Remapping caps lock",
                         "manipulators": [
                             {
-                                "type": "basic",
                                 "from": {
                                     "key_code": "caps_lock",
                                     "modifiers": {
@@ -28,16 +27,36 @@
                                         ]
                                     }
                                 },
+                                "to_if_alone": [
+                                    {
+                                        "key_code": "escape"
+                                    }
+                                ],
                                 "to_if_held_down": [
                                     {
                                         "key_code": "f18"
                                     }
                                 ],
-                                "to_if_alone": [
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Remapping right cmd for programs (TEST)",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "right_command"
+                                },
+                                "parameters": {
+                                    "basic.to_if_held_down_threshold_milliseconds": 10
+                                },
+                                "to_if_held_down": [
                                     {
-                                        "key_code": "escape"
+                                        "key_code": "f16"
                                     }
-                                ]
+                                ],
+                                "type": "basic"
                             }
                         ]
                     }
@@ -223,6 +242,7 @@
             ],
             "name": "Default profile",
             "selected": true,
+            "simple_modifications": [],
             "virtual_hid_keyboard": {
                 "caps_lock_delay_milliseconds": 0,
                 "country_code": 0,
