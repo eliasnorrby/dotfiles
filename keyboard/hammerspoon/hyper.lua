@@ -8,20 +8,16 @@ hyperStatusMessage = message.new('Hyper Mode')
 function enterHyperMode()
   hyperStatusMessage:show()
   hyper.active = true
-  hyper.modifiers = {}
   hyper.mods = {}
   hyper.modCount = 0
-  hyper.context = nil
   hyper:enter()
 end
 
 function exitHyperMode()
   hyperStatusMessage:hide()
   hyper.active = false
-  hyper.modifiers = {}
   hyper.mods = {}
   hyper.modCount = 0
-  hyper.context = nil
   hyper:exit()
 end
 
@@ -65,6 +61,17 @@ end):start()
 hyper:bind({}, 'p', function()
   hyper:exit()
   enterAppMode()
+end)
+
+-- To get into window mode
+hyper:bind({}, 'w', function()
+  hyper:exit()
+  enterWindowMode()
+end)
+
+-- To get into tab mode
+hyper:bind({}, 'q', function()
+  enterTabMode()
 end)
 
 -- Toggle fullscreen

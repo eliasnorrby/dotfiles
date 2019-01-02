@@ -21,6 +21,7 @@ statusMessage:notify(1)
 require('keyboard.hyper')
 require('keyboard.app-mode')
 require('keyboard.tab-mode')
+require('keyboard.windows')
 
 -- Vim Spoon
 -- vim = hs.loadSpoon('VimMode')

@@ -3,7 +3,6 @@ tabMode = hs.hotkey.modal.new()
 tabModeStatusMessage = message.new('Tab Mode')
 
 function enterTabMode()
-  exitHyperMode()
   tabModeStatusMessage:show()
   tabMode:enter()
 end
@@ -13,7 +12,6 @@ function exitTabMode()
   tabMode:exit()
 end
 
-hyper:bind({}, 'q', enterTabMode)
 tabMode:bind({}, 'space', exitTabMode)
 
 -- First tab
