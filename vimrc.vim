@@ -47,16 +47,24 @@ set smarttab        " smart tabs (beginning of line behavior)
 
 " ==== UI CONFIG ====
 set number          " show line numbers
+set relativenumber  " show relative line numbers
 set showcmd         " show command in bottom bar
 set showmatch       " highlight matching [{()}]
+set matchtime=3     " reduce time for showing matching parens
 set ruler           " always show 'line,column' in bottom right
 
 " ==== SEARCHING ====
 set incsearch       " search as characters are entered
 set hlsearch        " highlight matches
 
+let mapleader=" "
+nnoremap <Space> <Nop>
+
 " turn off search highlight
-nnoremap ,<space> :nohlsearch<CR>
+nnoremap <Leader>, :nohlsearch<CR>
+" toggle relative line numbering
+nnoremap <Leader>r :set relativenumber<CR>
+nnoremap <Leader>R :set norelativenumber<CR>
 
 " ==== MOVEMENT ====
 " move vertically by visual line
@@ -70,4 +78,7 @@ nnoremap E $
 " $ and ^ don't do anything
 nnoremap $ <nop>
 nnoremap ^ <nop>
+
+" Test
+noremap <Leader>w <Plug>(easymotion-w)
 

@@ -68,6 +68,20 @@ function chrome() {
   fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open > /dev/null 2> /dev/null
 }
 
+# search in lynx
+# Opens a lynx browser searching any terms that follow the name of this script
+function test_search() {
+  url="https://www.google.com/search?q="
+
+  for term in "$@"
+  do
+    url=$url"+"$term
+  done
+
+  lynx -accept_all_cookies $url
+}
+
+
 function ls_dirs_files() {
   echo "-> Directories:"
   colorls --dirs -l -1
@@ -119,6 +133,7 @@ bindkey '^w' backward-kill-word
 bindkey ',q' push-line
 bindkey -M viins ',.' insert-last-word
 bindkey -M viins '.,' insert-last-word
+bindkey ',l' clear-screen
 
 # Make Vi mode transitions faster (KEYTIMEOUT is in hundredths of a second)
 export KEYTIMEOUT=8
@@ -268,7 +283,7 @@ fi
 
 fpath=(~/.zsh/completion $fpath)
 
-zstyle ':completion:*' rehash true
+# zstyle ':completion:*' rehash true
 # zstyle ':completion:*' verbose yes
 #zstyle ':completion:*:descriptions' format '%B%d%b'
 #zstyle ':completion:*:messages' format '%d'
@@ -292,12 +307,12 @@ zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX
 zstyle ':completion:*' list-dirs-first true
 
 # autoload -Uz compinit && compinit -i
-autoload -Uz compinit 
-if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
-  compinit;
-else
-  compinit -C;
-fi;
+autoload -Uz compinit && compinit
+# if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+#   compinit;
+# else
+#   compinit -C;
+# fi;
 
 # =============================================================================
 #                                   Startup
@@ -330,4 +345,11 @@ z() {
 # =============================================================================
 #                                   Done
 # =============================================================================
-artii ">> Up and running <<" --font slant | lolcat
+# artii ">> Up and running <<" --font slant | lolcat
+cd ~/.dotfiles
+branch_string=$(git branch | grep \* | cut -d ' ' -f2)
+commit_message=$(git log -1 --pretty=%B)
+cd
+echo ".dotfiles branch: $branch_string" | lolcat
+echo "latest commit: $commit_message" | lolcat
+echo 
