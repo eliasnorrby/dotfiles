@@ -1,9 +1,9 @@
 local log = hs.logger.new('init.lua', 'debug')
 
 -- Use Control+å to reload Hammerspoon config
-hs.hotkey.bind({'ctrl'}, 'å', nil, function()
-  hs.reload()
-end)
+-- hs.hotkey.bind({'ctrl'}, 'å', nil, function()
+--   hs.reload()
+-- end)
 
 keyUpDown = function(modifiers, key)
   -- Un-comment & reload config to log each keystroke that we're triggering

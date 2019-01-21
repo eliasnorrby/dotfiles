@@ -14,6 +14,10 @@ end
 
 appMode:bind({}, 'space', exitAppMode)
 
+appMode:bind({}, 'l', function()
+    keyUpDown({ 'ctrl', 'cmd', 'shift' }, 'l')
+  end)
+
 -- Bind the right cmd key
 f16 = hs.hotkey.bind({}, 'F16', enterAppMode, exitAppMode)
 

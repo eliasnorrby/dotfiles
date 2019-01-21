@@ -348,7 +348,7 @@ z() {
 # artii ">> Up and running <<" --font slant | lolcat
 cd ~/.dotfiles
 branch_string=$(git branch | grep \* | cut -d ' ' -f2)
-commit_message=$(git log -1 --pretty=%B)
+commit_message=$(git log -1 --no-merges --pretty=%B)
 cd
 echo ".dotfiles branch: $branch_string" | lolcat
 echo "latest commit: $commit_message" | lolcat

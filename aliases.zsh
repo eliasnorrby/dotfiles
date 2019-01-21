@@ -41,6 +41,7 @@ alias aconfig="subl ~/.dotfiles/aliases.zsh"
 alias vimconfig="vim ~/.dotfiles/vimrc.vim"
 alias termconfig="sh ~/scripts/term-config.sh"
 alias allconfig="subl ~/.dotfiles"
+alias keyconfig="subl ~/.dotfiles/keyboard/hammerspoon"
 
 # Navigate to root private folder in FFCG Dropbox
 alias cdh="cd ~/Dropbox\ \(FFCG\)/folders" 

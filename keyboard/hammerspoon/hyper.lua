@@ -109,7 +109,7 @@ end)
 
 local paneLeftKey = 'u'
 local paneRightKey = 'i'
-local paneSplitKey = 'ä'
+local paneSplitKey = '\''
 
 local paneMappings = {
   {
