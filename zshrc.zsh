@@ -74,6 +74,18 @@ function ls_dirs_files() {
 #                                   Variables
 # =============================================================================
 
+if [ "$(uname)" = "Darwin" ]; then
+  export JAVA_HOME="$(/usr/libexec/java_home -v '1.8*')"
+
+  # For Ruby
+  export PATH="/usr/local/opt/ruby/bin:$PATH"
+  export PATH="/usr/local/lib/ruby/gems/2.5.0/bin:$PATH"
+
+  # For using GNU coreutils with default names
+  # NTS: I use this for the 'tree' command
+  export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
+fi
+
 # Remove duplicates from $PATH (produced by running 'zsh' to refresh config)
 typeset -aU path
 
@@ -109,7 +121,12 @@ export KEYTIMEOUT=8
 #                                   Plugins
 # =============================================================================
 
-export ZPLUG_HOME=/usr/local/opt/zplug
+if [ "$(uname)" = "Darwin" ]; then
+  export ZPLUG_HOME=/usr/local/opt/zplug
+fi
+if [ "$(uname)" = "Linux" ]; then
+  export ZPLUG_HOME=~/.zplug
+fi
 source $ZPLUG_HOME/init.zsh
 
 # zplug
@@ -122,6 +139,11 @@ zplug "k4rthik/git-cal",  as:command
 
 # Enhanced dir list with git features
 zplug "supercrabtree/k" 
+
+if [ "$(uname)" = "Darwin" ]; then
+  # Directory colors
+  zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
+fi
 
 # Jump back to parent directory
 zplug "tarrasch/zsh-bd"
@@ -293,9 +315,10 @@ autoload -Uz compinit && compinit
 #     fi
 # fi
 
-# alias dircolors='gdircolors'
-# eval `gdircolors /usr/local/opt/zplug/repos/seebi/dircolors-solarized/dircolors.ansi-dark`
-
+if [ "$(uname)" = "Darwin" ]; then
+  alias dircolors='gdircolors'
+  eval `gdircolors /usr/local/opt/zplug/repos/seebi/dircolors-solarized/dircolors.ansi-dark`
+fi
 # Personal aliases
 source ~/.zsh_aliases
 
