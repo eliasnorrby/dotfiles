@@ -20,7 +20,7 @@ statusMessage:notify(1)
 -- Load submodules
 require('keyboard.hyper')
 require('keyboard.app-mode')
-require('keyboard.tab-mode')
+-- require('keyboard.tab-mode')
 require('keyboard.windows')
 
 -- Vim Spoon

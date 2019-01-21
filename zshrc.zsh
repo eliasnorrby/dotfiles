@@ -38,6 +38,14 @@ function toggleMultilinePrompt() {
 
 # === Utilities ===
 
+function tkey() {
+  grep "$1" ~/tmux-cheatsheet.md
+}
+
+function tkeydocs() {
+  vim ~/tmux-cheatsheet.md
+}
+
 function mkd() {
   mkdir -p -- "$1" &&
     cd -P -- "$1"

@@ -2,8 +2,9 @@
 inoremap jj <esc>
 inoremap jk <esc>
 
-" ==== COLORS ==== 
+nnoremap <F2> :setlocal commentstring=#\ %s<CR>
 
+" ==== COLORS ==== 
 syntax enable " enable syntax processing
 
 " fix gray background using solarized theme
