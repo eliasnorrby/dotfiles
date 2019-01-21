@@ -13,7 +13,7 @@ function zup() {
 }
 
 function minp9k() {
-  export DEFAULT_USER="elias.norrby";
+  export DEFAULT_USER="$USER";
   source ~/.dotfiles/powerlevel9k_minimal.zsh && reloadp9k;
 }
 
@@ -47,27 +47,6 @@ function list_colors() {
   for code ({000..255}) print -P -- "$code: %F{$code}This is how your text would look like%f";
 }
 
-# chrome - browse chrome history
-function chrome() {
-  local cols sep google_history open
-  cols=$(( COLUMNS / 3 ))
-  sep='{::}'
-
-  if [ "$(uname)" = "Darwin" ]; then
-    google_history="$HOME/Library/Application Support/Google/Chrome/Default/History"
-    open=open
-  else
-    google_history="$HOME/.config/google-chrome/Default/History"
-    open=xdg-open
-  fi
-  cp -f "$google_history" /tmp/h
-  sqlite3 -separator $sep /tmp/h \
-    "select substr(title, 1, $cols), url
-     from urls order by last_visit_time desc" |
-  awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' |
-  fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open > /dev/null 2> /dev/null
-}
-
 # search in lynx
 # Opens a lynx browser searching any terms that follow the name of this script
 function test_search() {
@@ -90,23 +69,10 @@ function ls_dirs_files() {
   colorls --files -l -1
 }
 
-function cool_echo() {
-  artii --font slant "$1" | lolcat
-}
 
 # =============================================================================
 #                                   Variables
 # =============================================================================
-
-export JAVA_HOME="$(/usr/libexec/java_home -v '1.8*')"
-
-# For Ruby
-export PATH="/usr/local/opt/ruby/bin:$PATH"
-export PATH="/usr/local/lib/ruby/gems/2.5.0/bin:$PATH"
-
-# For using GNU coreutils with default names
-# NTS: I use this for the 'tree' command
-export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 
 # Remove duplicates from $PATH (produced by running 'zsh' to refresh config)
 typeset -aU path
@@ -125,7 +91,7 @@ bindkey -v
 # Autosuggestion key-bind
 bindkey '^ ' autosuggest-accept
 bindkey 'jk' vi-cmd-mode
-# Unbind esc key
+# Unbind esc key - why do I wan't that..?
 bindkey -s '^[7' '|'
 #bindkey '^[[1;9C' forward-word
 #bindkey '^[[1;9D' backward-word
@@ -161,7 +127,7 @@ zplug "supercrabtree/k"
 zplug "tarrasch/zsh-bd"
 
 # Directory colors
-zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
+# zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
 
 zplug "plugins/z",                 from:oh-my-zsh
 
@@ -210,7 +176,7 @@ source ~/.dotfiles/powerlevel9k_default.zsh
 # =============================================================================
 
 # User configuration
-DEFAULT_USER="elias.norrby"
+# DEFAULT_USER="elias.norrby"
 # DEFAULT_USER=""
 
 # improved less option
@@ -327,8 +293,8 @@ autoload -Uz compinit && compinit
 #     fi
 # fi
 
-alias dircolors='gdircolors'
-eval `gdircolors /usr/local/opt/zplug/repos/seebi/dircolors-solarized/dircolors.ansi-dark`
+# alias dircolors='gdircolors'
+# eval `gdircolors /usr/local/opt/zplug/repos/seebi/dircolors-solarized/dircolors.ansi-dark`
 
 # Personal aliases
 source ~/.zsh_aliases
@@ -350,6 +316,6 @@ cd ~/.dotfiles
 branch_string=$(git branch | grep \* | cut -d ' ' -f2)
 commit_message=$(git log -1 --no-merges --pretty=%B)
 cd
-echo ".dotfiles branch: $branch_string" | lolcat
-echo "latest commit: $commit_message" | lolcat
+echo ".dotfiles branch: $branch_string"
+echo "latest commit: $commit_message"
 echo 
