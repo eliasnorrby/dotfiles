@@ -190,8 +190,13 @@ export TERM="xterm-256color"
 # Load theme using zplug
 zplug "bhilburn/powerlevel9k", use:powerlevel9k.zsh-theme
 source ~/.dotfiles/powerlevel9k_common.zsh
-source ~/.dotfiles/powerlevel9k_default.zsh
-#source ~/.dotfiles/powerlevel9k_minimal.zsh
+if [ "$(uname)" = "Darwin" ]; then
+  source ~/.dotfiles/powerlevel9k_default.zsh
+  #source ~/.dotfiles/powerlevel9k_minimal.zsh
+fi
+if [ "$(uname)" = "Linux" ]; then
+  source ~/.dotfiles/powerlevel9k_server.zsh
+fi
 
 # =============================================================================
 #                                   Options
