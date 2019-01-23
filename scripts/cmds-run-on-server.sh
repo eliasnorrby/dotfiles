@@ -9,6 +9,7 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 # Install zplug
 curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 # Results in different zplug home than on mac...
+zplug install
 
 # VIM - badwolf colors, surround plugins
 ## vim surround

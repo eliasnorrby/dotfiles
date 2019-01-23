@@ -72,14 +72,3 @@ nnoremap <Leader>R :set norelativenumber<CR>
 nnoremap j gj
 nnoremap k gk
 
-" move to beginning/end of line
-nnoremap B ^
-nnoremap E $
-
-" $ and ^ don't do anything
-nnoremap $ <nop>
-nnoremap ^ <nop>
-
-" Test
-noremap <Leader>w <Plug>(easymotion-w)
-
