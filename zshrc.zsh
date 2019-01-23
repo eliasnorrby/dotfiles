@@ -39,11 +39,11 @@ function toggleMultilinePrompt() {
 # === Utilities ===
 
 function tkey() {
-  grep "$1" ~/tmux-cheatsheet.md
+  grep "$1" ~/.dotfiles/tmux-cheatsheet.md
 }
 
 function tkeydocs() {
-  vim ~/tmux-cheatsheet.md
+  vim ~/.dotfiles/tmux-cheatsheet.md
 }
 
 function mkd() {
@@ -343,6 +343,15 @@ z() {
   [ $# -gt 0 ] && _z "$*" && return
   cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
 }
+
+# =============================================================================
+#                              Session specific
+# =============================================================================
+if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+  # remote specifics
+else
+  # local specifics
+fi
 
 # =============================================================================
 #                                   Done
