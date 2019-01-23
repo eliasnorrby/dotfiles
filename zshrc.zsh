@@ -55,20 +55,6 @@ function list_colors() {
   for code ({000..255}) print -P -- "$code: %F{$code}This is how your text would look like%f";
 }
 
-# search in lynx
-# Opens a lynx browser searching any terms that follow the name of this script
-function test_search() {
-  url="https://www.google.com/search?q="
-
-  for term in "$@"
-  do
-    url=$url"+"$term
-  done
-
-  lynx -accept_all_cookies $url
-}
-
-
 function ls_dirs_files() {
   echo "-> Directories:"
   colorls --dirs -l -1
@@ -351,6 +337,43 @@ if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
   # remote specifics
 else
   # local specifics
+  # chrome - browse chrome history
+  function chrome() {
+    local cols sep google_history open
+    cols=$(( COLUMNS / 3 ))
+    sep='{::}'
+
+    if [ "$(uname)" = "Darwin" ]; then
+      google_history="$HOME/Library/Application Support/Google/Chrome/Default/History"
+      open=open
+    else
+      google_history="$HOME/.config/google-chrome/Default/History"
+      open=xdg-open
+    fi
+    cp -f "$google_history" /tmp/h
+    sqlite3 -separator $sep /tmp/h \
+      "select substr(title, 1, $cols), url
+       from urls order by last_visit_time desc" |
+    awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' |
+    fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open > /dev/null 2> /dev/null
+  }
+
+  # search in lynx
+  # Opens a lynx browser searching any terms that follow the name of this script
+  function test_search() {
+    url="https://www.google.com/search?q="
+
+    for term in "$@"
+    do
+      url=$url"+"$term
+    done
+
+    lynx -accept_all_cookies $url
+  }
+
+  function cool_echo() {
+    artii --font slant "$1" | lolcat
+  }
 fi
 
 # =============================================================================
