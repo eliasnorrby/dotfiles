@@ -137,6 +137,8 @@ zplug "supercrabtree/k"
 if [ "$(uname)" = "Darwin" ]; then
   # Directory colors
   zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
+  # Suggestions are pretty laggy on ssh connection, try disabling it on remotes
+  zplug "zsh-users/zsh-autosuggestions"
 fi
 
 # Jump back to parent directory
@@ -150,7 +152,6 @@ zplug "plugins/z",                 from:oh-my-zsh
 zplug "plugins/git",               from:oh-my-zsh
 zplug "plugins/git-flow",          from:oh-my-zsh
 
-zplug "zsh-users/zsh-autosuggestions"
 # zsh-syntax-highlighting must be loaded after executing compinit command
 # and sourcing other plugins
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
