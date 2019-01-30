@@ -67,6 +67,9 @@ nnoremap <Leader>, :nohlsearch<CR>
 nnoremap <Leader>r :set relativenumber<CR>
 nnoremap <Leader>R :set norelativenumber<CR>
 
+" ==== COPYING ====
+set clipboard+=unnamed
+
 " ==== MOVEMENT ====
 " move vertically by visual line
 nnoremap j gj

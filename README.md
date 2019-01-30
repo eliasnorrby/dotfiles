@@ -1,4 +1,12 @@
 # My dotfiles
+## Known problems
+### Broken command tab-completion
+```
+rm ~/.zcompdump*
+rm ~/.zplug/zcompdump* # On linux
+rm /usr/local/opt/zplug/zcompdump # On mac
+exec zsh
+```
 
 ## 2018-11-09
 I haven't decided on a final structure or separation of concerns for these yet, but I thought it best to perform an initial commit sooner rather than later for backup purposes. As it stands now:
