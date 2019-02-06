@@ -58,9 +58,14 @@ hyperModeModifierKeyListener = eventtap.new({ eventTypes.keyDown, eventTypes.key
 end):start()
 
 -- To get into app mode
-hyper:bind({}, 'p', function()
-  hyper:exit()
-  enterAppMode()
+-- hyper:bind({}, 'p', function()
+--  hyper:exit()
+--  enterAppMode()
+-- end)
+
+-- tmux prefix
+hyper:bind({}, 'a', function()
+  keyUpDown({'ctrl'}, 'b')
 end)
 
 -- To get into window mode

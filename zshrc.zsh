@@ -38,6 +38,14 @@ function toggleMultilinePrompt() {
 
 # === Utilities ===
 
+function tkey() {
+  grep "$1" ~/.dotfiles/tmux-cheatsheet.md
+}
+
+function tkeydocs() {
+  vim ~/.dotfiles/tmux-cheatsheet.md
+}
+
 function mkd() {
   mkdir -p -- "$1" &&
     cd -P -- "$1"
@@ -46,20 +54,6 @@ function mkd() {
 function list_colors() {
   for code ({000..255}) print -P -- "$code: %F{$code}This is how your text would look like%f";
 }
-
-# search in lynx
-# Opens a lynx browser searching any terms that follow the name of this script
-function test_search() {
-  url="https://www.google.com/search?q="
-
-  for term in "$@"
-  do
-    url=$url"+"$term
-  done
-
-  lynx -accept_all_cookies $url
-}
-
 
 function ls_dirs_files() {
   echo "-> Directories:"
@@ -143,6 +137,8 @@ zplug "supercrabtree/k"
 if [ "$(uname)" = "Darwin" ]; then
   # Directory colors
   zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
+  # Suggestions are pretty laggy on ssh connection, try disabling it on remotes
+  zplug "zsh-users/zsh-autosuggestions"
 fi
 
 # Jump back to parent directory
@@ -156,7 +152,6 @@ zplug "plugins/z",                 from:oh-my-zsh
 zplug "plugins/git",               from:oh-my-zsh
 zplug "plugins/git-flow",          from:oh-my-zsh
 
-zplug "zsh-users/zsh-autosuggestions"
 # zsh-syntax-highlighting must be loaded after executing compinit command
 # and sourcing other plugins
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
@@ -203,7 +198,7 @@ fi
 # =============================================================================
 
 # User configuration
-# DEFAULT_USER="elias.norrby"
+DEFAULT_USER="elias.norrby"
 # DEFAULT_USER=""
 
 # improved less option
@@ -335,6 +330,52 @@ z() {
   [ $# -gt 0 ] && _z "$*" && return
   cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
 }
+
+# =============================================================================
+#                              Session specific
+# =============================================================================
+if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+  # remote specifics
+else
+  # local specifics
+  # chrome - browse chrome history
+  function chrome() {
+    local cols sep google_history open
+    cols=$(( COLUMNS / 3 ))
+    sep='{::}'
+
+    if [ "$(uname)" = "Darwin" ]; then
+      google_history="$HOME/Library/Application Support/Google/Chrome/Default/History"
+      open=open
+    else
+      google_history="$HOME/.config/google-chrome/Default/History"
+      open=xdg-open
+    fi
+    cp -f "$google_history" /tmp/h
+    sqlite3 -separator $sep /tmp/h \
+      "select substr(title, 1, $cols), url
+       from urls order by last_visit_time desc" |
+    awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' |
+    fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open > /dev/null 2> /dev/null
+  }
+
+  # search in lynx
+  # Opens a lynx browser searching any terms that follow the name of this script
+  function test_search() {
+    url="https://www.google.com/search?q="
+
+    for term in "$@"
+    do
+      url=$url"+"$term
+    done
+
+    lynx -accept_all_cookies $url
+  }
+
+  function cool_echo() {
+    artii --font slant "$1" | lolcat
+  }
+fi
 
 # =============================================================================
 #                                   Done

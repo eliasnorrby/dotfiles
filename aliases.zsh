@@ -7,12 +7,8 @@ alias grep='() { $(whence -p grep) --color=auto $@ }'
 alias egrep='() { $(whence -p egrep) --color=auto $@ }'
 
 # Overrides l= "ls -lah"
-# alias l="ls -1"
-alias l="colorls -1 --sd"
-alias lc="colorls"
-alias ll="colorls --sd"
-alias ldf="ls_dirs_files"
-alias tc="colorls --tree"
+alias l="ls -1"
+alias ll="ls -l"
 
 alias eo="cool_echo"
 
@@ -42,12 +38,11 @@ alias vimconfig="vim ~/.dotfiles/vimrc.vim"
 alias termconfig="sh ~/scripts/term-config.sh"
 alias allconfig="subl ~/.dotfiles"
 alias keyconfig="subl ~/.dotfiles/keyboard/hammerspoon"
+alias cdot="cd ~/.dotfiles"
 
 # Navigate to root private folder in FFCG Dropbox
 alias cdh="cd ~/Dropbox\ \(FFCG\)/folders" 
-
 alias cdd="cd ~/Dropbox\ \(FFCG\)/folders/dev"
-
 alias cdck="cd ~/Dropbox\ \(FFCG\)/folders/dev/CodeIsKing" 
 
 # Aliases for creating new CIK projects
@@ -76,7 +71,6 @@ alias dnl="docker node ls"
 # VSCode
 alias c="code"
 
-
 # Git log aliases are found in: gitconfig
 # cd /Library/Developer/CommandLineTools/usr/share/git-core/
 # 
@@ -86,3 +80,8 @@ alias c="code"
 alias git="nocorrect git"
 
 alias reloadconfig="source ~/.zshrc"
+
+if [ "$(uname)" = "Darwin" ]; then
+  source ~/.local_zshconfig/*.zsh
+fi
+

@@ -2,8 +2,9 @@
 inoremap jj <esc>
 inoremap jk <esc>
 
-" ==== COLORS ==== 
+nnoremap <F2> :setlocal commentstring=#\ %s<CR>
 
+" ==== COLORS ==== 
 syntax enable " enable syntax processing
 
 " fix gray background using solarized theme
@@ -66,19 +67,11 @@ nnoremap <Leader>, :nohlsearch<CR>
 nnoremap <Leader>r :set relativenumber<CR>
 nnoremap <Leader>R :set norelativenumber<CR>
 
+" ==== COPYING ====
+set clipboard+=unnamed
+
 " ==== MOVEMENT ====
 " move vertically by visual line
 nnoremap j gj
 nnoremap k gk
-
-" move to beginning/end of line
-nnoremap B ^
-nnoremap E $
-
-" $ and ^ don't do anything
-nnoremap $ <nop>
-nnoremap ^ <nop>
-
-" Test
-noremap <Leader>w <Plug>(easymotion-w)
 
