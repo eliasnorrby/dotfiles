@@ -198,7 +198,7 @@ fi
 # =============================================================================
 
 # User configuration
-# DEFAULT_USER="elias.norrby"
+DEFAULT_USER="elias.norrby"
 # DEFAULT_USER=""
 
 # improved less option
