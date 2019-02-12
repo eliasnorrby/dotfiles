@@ -68,7 +68,7 @@ nnoremap <Leader>r :set relativenumber<CR>
 nnoremap <Leader>R :set norelativenumber<CR>
 
 " ==== COPYING ====
-set clipboard+=unnamed
+set clipboard=unnamed
 
 " ==== MOVEMENT ====
 " move vertically by visual line

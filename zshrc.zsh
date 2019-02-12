@@ -144,6 +144,10 @@ fi
 # Jump back to parent directory
 zplug "tarrasch/zsh-bd"
 
+# Copy to system clipboard
+zplug "kutsan/zsh-system-clipboard"
+ZSH_SYSTEM_CLIPBOARD_TMUX_SUPPORT=true
+
 # Directory colors
 # zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
 
