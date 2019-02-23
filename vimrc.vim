@@ -13,14 +13,15 @@ syntax enable " enable syntax processing
 " let g:solarized_termtrans=1 
 " colorscheme solarized
 
-colorscheme badwolf
+" colorscheme badwolf
+colorscheme onedark
 
 " ==== BACKUPS ETC ====
 set backup                        " enable backups
 " set noswapfaile                 " disbale swapfiles
-set undodir=~/.vim/tmp/undo//     " undo files
-set backupdir=~/.vim/tmp/backup// " backups
-set directory=~/.vim/tmp/swap//   " swap files
+set undodir=~/.vimtmp/undo//     " undo files
+set backupdir=~/.vimtmp/backup// " backups
+set directory=~/.vimtmp/swap//   " swap files
 " Make those folders automatically if they don't already exist.
 if !isdirectory(expand(&undodir))
     call mkdir(expand(&undodir), "p")
@@ -74,4 +75,5 @@ set clipboard=unnamed
 " move vertically by visual line
 nnoremap j gj
 nnoremap k gk
+nnoremap <CR> G
 

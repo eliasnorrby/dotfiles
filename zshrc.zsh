@@ -1,5 +1,5 @@
 ## Uncomment for performance stats
-#zmodload zsh/zprof
+# zmodload zsh/zprof
 
 # Many of these headers might be moved to separate files in the future.
 # =============================================================================
@@ -9,7 +9,7 @@
 # === Config ===
 
 function zup() {
-  source ~/.zsh_plugins
+  source ~/.dotfiles/extra_plugins.zsh
 }
 
 function minp9k() {
@@ -298,6 +298,7 @@ zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX
 # Keep directories and files separated
 zstyle ':completion:*' list-dirs-first true
 
+# TODO: Find out why there are multiple compinit calls
 # autoload -Uz compinit && compinit -i
 autoload -Uz compinit && compinit
 # if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
@@ -323,8 +324,9 @@ if [ "$(uname)" = "Darwin" ]; then
   alias dircolors='gdircolors'
   eval `gdircolors /usr/local/opt/zplug/repos/seebi/dircolors-solarized/dircolors.ansi-dark`
 fi
+
 # Personal aliases
-source ~/.zsh_aliases
+source ~/.dotfiles/aliases.zsh
 
 zplug load
 
@@ -381,6 +383,12 @@ else
   }
 fi
 
+function load_nvm() {
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+}
+
 # =============================================================================
 #                                   Done
 # =============================================================================
@@ -388,11 +396,8 @@ fi
 cd ~/.dotfiles
 branch_string=$(git branch | grep \* | cut -d ' ' -f2)
 commit_message=$(git log -1 --no-merges --pretty=%B)
-cd
+cd - > /dev/null
 echo ".dotfiles branch: $branch_string"
 echo "latest commit: $commit_message"
-echo 
+# echo 
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

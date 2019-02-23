@@ -10,7 +10,6 @@ alias egrep='() { $(whence -p egrep) --color=auto $@ }'
 alias l="ls -1"
 alias ll="ls -l"
 
-alias eo="cool_echo"
 
 # Folder managemant
 # alias d='dirs -v'
@@ -71,9 +70,9 @@ alias dnl="docker node ls"
 # VSCode
 alias c="code"
 
+# TODO: This is no longer true, but I could follow the link and reenable them.
 # Git log aliases are found in: gitconfig
 # cd /Library/Developer/CommandLineTools/usr/share/git-core/
-# 
 # They are: lg, lg1, lg2, lg3
 # Source: https://stackoverflow.com/questions/1838873/visualizing-branch-topology-in-git/34467298#34467298
 
@@ -81,7 +80,8 @@ alias git="nocorrect git"
 
 alias reloadconfig="source ~/.zshrc"
 
-if [ "$(uname)" = "Darwin" ]; then
-  source ~/.local_zshconfig/*.zsh
-fi
+# There's basically just funky stuff in there...
+# if [ "$(uname)" = "Darwin" ]; then
+#   source ~/.local_zshconfig/*.zsh
+# fi
 

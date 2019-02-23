@@ -2,11 +2,8 @@
 #                                   Plugins
 # =============================================================================
 
-# # Miscellaneous
-# zplug "k4rthik/git-cal",  as:command
-
-# # Enhanced dir list with git features
-# zplug "supercrabtree/k"
+# This should be a file containing less-used plugins or stuff to investigate, 
+# but it is poorly maintained, so I don't know .
 
 zplug "djui/alias-tips"
 
