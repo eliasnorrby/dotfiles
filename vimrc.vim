@@ -13,14 +13,15 @@ syntax enable " enable syntax processing
 " let g:solarized_termtrans=1 
 " colorscheme solarized
 
-colorscheme badwolf
+" colorscheme badwolf
 
 " ==== BACKUPS ETC ====
 set backup                        " enable backups
-" set noswapfaile                 " disbale swapfiles
-set undodir=~/.vim/tmp/undo//     " undo files
-set backupdir=~/.vim/tmp/backup// " backups
-set directory=~/.vim/tmp/swap//   " swap files
+set undofile        " for storing undos
+" set noswapfile                 " disbale swapfiles
+set undodir=~/.vimtmp/undo//     " undo files
+set backupdir=~/.vimtmp/backup// " backups
+set directory=~/.vimtmp/swap//   " swap files
 " Make those folders automatically if they don't already exist.
 if !isdirectory(expand(&undodir))
     call mkdir(expand(&undodir), "p")
@@ -32,11 +33,6 @@ if !isdirectory(expand(&directory))
     call mkdir(expand(&directory), "p")
 endif
 
-set undofile        " for storing undos
-set showmode        " shows mode (INSERT)
-set title           " sets window title based on file name
-set linebreak       " line wrapping
-
 " ==== SPACES & TABS ====
 set tabstop=2       " number of visual spaces per TAB
 set softtabstop=2   " number of spaces in tab when editing
@@ -45,6 +41,7 @@ set autoindent      " enable autoindent
 set smartindent     " enable smart indenting
 set shiftwidth=2    " number of spaces to use when indenting
 set smarttab        " smart tabs (beginning of line behavior)
+set linebreak       " line wrapping
 
 " ==== UI CONFIG ====
 set number          " show line numbers
@@ -52,12 +49,21 @@ set relativenumber  " show relative line numbers
 set showcmd         " show command in bottom bar
 set showmatch       " highlight matching [{()}]
 set matchtime=3     " reduce time for showing matching parens
-set ruler           " always show 'line,column' in bottom right
+" set ruler           " always show 'line,column' in bottom right
+set laststatus=2    " for showing lightline
+" set showmode        " shows mode (INSERT)
+set noshowmode 
+" set title           " sets window title based on file name
+
+" ==== COPYING ====
+set clipboard=unnamed
 
 " ==== SEARCHING ====
 set incsearch       " search as characters are entered
 set hlsearch        " highlight matches
 
+" ==== KEYBINDS ====
+set esckeys
 let mapleader=" "
 nnoremap <Space> <Nop>
 
@@ -67,11 +73,70 @@ nnoremap <Leader>, :nohlsearch<CR>
 nnoremap <Leader>r :set relativenumber<CR>
 nnoremap <Leader>R :set norelativenumber<CR>
 
-" ==== COPYING ====
-set clipboard=unnamed
-
 " ==== MOVEMENT ====
 " move vertically by visual line
 nnoremap j gj
 nnoremap k gk
+nnoremap <CR> G
+
+" ==== PLUGINS ====
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin('~/.vim/plugged')
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
+" Plug 'tpope/vim-fugitive'
+Plug 'itchyny/lightline.vim'
+Plug 'itchyny/vim-gitbranch'
+Plug 'joshdick/onedark.vim'
+Plug 'sheerun/vim-polyglot'
+Plug 'airblade/vim-gitgutter'
+call plug#end()
+
+let g:lightline = {
+  \ 'colorscheme': 'onedark',
+  \ 'active': {
+  \   'left': [ [ 'mode', 'paste' ],
+  \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+  \ },
+  \ 'component': {
+  \   'lineinfo': '%3l:%-2v',
+  \ },
+  \ 'component_function': {
+  \   'readonly': 'LightlineReadonly',
+  \   'gitbranch': 'LightlineGitbranch'
+  \ },
+  \ 'separator': { 'left': '', 'right': '' },
+  \ 'subseparator': { 'left': '', 'right': '' }
+  \ }
+
+function! LightlineReadonly()
+  return &readonly ? '' : ''
+endfunction
+
+function! LightlineGitbranch()
+  if exists('*gitbranch#name')
+    let branch = gitbranch#name()
+    return branch !=# '' ? ''.branch : ''
+  endif
+  return ''
+endfunction
+
+" function! LightlineFugitive()
+"   if exists('*fugitive#head')
+"     let branch = fugitive#head()
+"     return branch !=# '' ? ''.branch : ''
+"   endif
+"   return ''
+" endfunction
+
+colorscheme onedark
+" Uncomment this line to have vim blend with iterm bg when using the 
+" default onedark colorscheme (contrasts with lightline)
+" hi Normal ctermbg=008
 
