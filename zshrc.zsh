@@ -9,17 +9,17 @@
 # === Config ===
 
 function zup() {
-  source ~/.dotfiles/extra_plugins.zsh
+  source ~/.dotfiles/zsh/extra_plugins.zsh
 }
 
 function minp9k() {
   export DEFAULT_USER="$USER";
-  source ~/.dotfiles/powerlevel9k_minimal.zsh && reloadp9k;
+  source ~/.dotfiles/zsh/powerlevel9k_minimal.zsh && reloadp9k;
 }
 
 function maxp9k() {
   export DEFAULT_USER="";
-  source ~/.dotfiles/powerlevel9k_default.zsh && reloadp9k;
+  source ~/.dotfiles/zsh/powerlevel9k_default.zsh && reloadp9k;
 }
 
 function reloadp9k() {
@@ -39,11 +39,11 @@ function toggleMultilinePrompt() {
 # === Utilities ===
 
 function tkey() {
-  grep "$1" ~/.dotfiles/tmux-cheatsheet.md
+  grep "$1" ~/.dotfiles/tmux/tmux-cheatsheet.md
 }
 
 function tkeydocs() {
-  vim ~/.dotfiles/tmux-cheatsheet.md
+  vim ~/.dotfiles/tmux/tmux-cheatsheet.md
 }
 
 function mkd() {
@@ -54,15 +54,6 @@ function mkd() {
 function list_colors() {
   for code ({000..255}) print -P -- "$code: %F{$code}This is how your text would look like%f";
 }
-
-function ls_dirs_files() {
-  echo "-> Directories:"
-  colorls --dirs -l -1
-  echo ""
-  echo "-> Files:"
-  colorls --files -l -1
-}
-
 
 # =============================================================================
 #                                   Variables
@@ -148,9 +139,6 @@ zplug "tarrasch/zsh-bd"
 zplug "kutsan/zsh-system-clipboard"
 ZSH_SYSTEM_CLIPBOARD_TMUX_SUPPORT=true
 
-# Directory colors
-# zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
-
 zplug "plugins/z",                 from:oh-my-zsh
 
 zplug "plugins/git",               from:oh-my-zsh
@@ -188,13 +176,13 @@ export TERM="xterm-256color"
 
 # Load theme using zplug
 zplug "bhilburn/powerlevel9k", use:powerlevel9k.zsh-theme
-source ~/.dotfiles/powerlevel9k_common.zsh
+source ~/.dotfiles/zsh/powerlevel9k_common.zsh
 if [ "$(uname)" = "Darwin" ]; then
-  source ~/.dotfiles/powerlevel9k_default.zsh
+  source ~/.dotfiles/zsh/powerlevel9k_default.zsh
   #source ~/.dotfiles/powerlevel9k_minimal.zsh
 fi
 if [ "$(uname)" = "Linux" ]; then
-  source ~/.dotfiles/powerlevel9k_server.zsh
+  source ~/.dotfiles/zsh/powerlevel9k_server.zsh
 fi
 
 # =============================================================================
@@ -326,7 +314,7 @@ if [ "$(uname)" = "Darwin" ]; then
 fi
 
 # Personal aliases
-source ~/.dotfiles/aliases.zsh
+source ~/.dotfiles/zsh/aliases.zsh
 
 zplug load
 
@@ -392,12 +380,10 @@ function load_nvm() {
 # =============================================================================
 #                                   Done
 # =============================================================================
-# artii ">> Up and running <<" --font slant | lolcat
 cd ~/.dotfiles
 branch_string=$(git branch | grep \* | cut -d ' ' -f2)
 commit_message=$(git log -1 --no-merges --pretty=%B)
 cd - > /dev/null
 echo ".dotfiles branch: $branch_string"
 echo "latest commit: $commit_message"
-# echo 
 

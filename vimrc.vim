@@ -46,12 +46,13 @@ set linebreak       " line wrapping
 " ==== UI CONFIG ====
 set number          " show line numbers
 set relativenumber  " show relative line numbers
-" set showcmd         " show command in bottom bar
+set showcmd         " show command in bottom bar
 set showmatch       " highlight matching [{()}]
 set matchtime=3     " reduce time for showing matching parens
 " set ruler           " always show 'line,column' in bottom right
 set laststatus=2    " for showing lightline
 " set showmode        " shows mode (INSERT)
+set noshowmode 
 " set title           " sets window title based on file name
 
 " ==== COPYING ====
@@ -79,6 +80,11 @@ nnoremap k gk
 nnoremap <CR> G
 
 " ==== PLUGINS ====
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
 call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-surround'
