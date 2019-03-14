@@ -19,6 +19,19 @@ To resolve, run:
 
 [source](https://gist.github.com/irazasyed/7732946#gistcomment-2235469)
 
+### Color inconsistencies with tmux / vim
+This complete .tmux.conf tells tmux to use xterm-256color as the terminal and then enables Tc
+
+```conf
+# Use the xterm-256color terminal
+set -g default-terminal "xterm-256color"
+
+# Apply Tc
+set-option -ga terminal-overrides ",xterm-256color:Tc"
+```
+
+[source](https://github.com/tmux/tmux/issues/696#issuecomment-360629057)
+
 ## 2019-02-09
 Getting ready to perform the first installation on another Mac. Here's an attempt at some installation steps:
 

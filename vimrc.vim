@@ -94,12 +94,13 @@ Plug 'tpope/vim-repeat'
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
 Plug 'joshdick/onedark.vim'
+Plug 'ayu-theme/ayu-vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 let g:lightline = {
-  \ 'colorscheme': 'onedark',
+  \ 'colorscheme': 'ayu',
   \ 'active': {
   \   'left': [ [ 'mode', 'paste' ],
   \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
@@ -135,7 +136,16 @@ endfunction
 "   return ''
 " endfunction
 
-colorscheme onedark
+" set bg=dark
+set termguicolors     " enable true colors support
+" let ayucolor="light"  " for light version of theme
+let ayucolor="mirage" " for mirage version of theme
+" let ayucolor="dark"   " for dark version of theme
+colorscheme ayu 
+
+" set bg=dark
+" hi Normal ctermbg=008
+" colorscheme onedark
 " Uncomment this line to have vim blend with iterm bg when using the 
 " default onedark colorscheme (contrasts with lightline)
 " hi Normal ctermbg=008
