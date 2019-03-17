@@ -51,6 +51,14 @@ function mkd() {
     cd -P -- "$1"
 }
 
+function cl() {
+  print -P -- "$1: %F{$1}This is what your text would look like%f";
+}
+
+function lcol() {
+  for code ({00..15}) print -P -- "$code: %F{$code}This is what your text would look like%f";
+}
+
 function list_colors() {
   for code ({000..255}) print -P -- "$code: %F{$code}This is how your text would look like%f";
 }

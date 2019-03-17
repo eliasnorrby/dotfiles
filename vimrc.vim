@@ -100,7 +100,7 @@ Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 let g:lightline = {
-  \ 'colorscheme': 'ayu',
+  \ 'colorscheme': 'ayucustom',
   \ 'active': {
   \   'left': [ [ 'mode', 'paste' ],
   \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
