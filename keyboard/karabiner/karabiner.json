@@ -19,13 +19,28 @@
                         "manipulators": [
                             {
                                 "from": {
-                                    "key_code": "caps_lock",
-                                    "modifiers": {
-                                        "optional": [
-                                            "left_shift",
-                                            "left_control"
-                                        ]
+                                    "key_code": "caps_lock"
+                                },
+                                "to_if_alone": [
+                                    {
+                                        "key_code": "escape"
                                     }
+                                ],
+                                "to_if_held_down": [
+                                    {
+                                        "key_code": "left_control"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Remapping left control",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "left_control"
                                 },
                                 "to_if_alone": [
                                     {

@@ -70,8 +70,7 @@ nnoremap <Space> <Nop>
 " turn off search highlight
 nnoremap <Leader>, :nohlsearch<CR>
 " toggle relative line numbering
-nnoremap <Leader>r :set relativenumber<CR>
-nnoremap <Leader>R :set norelativenumber<CR>
+nnoremap <Leader>r :set invrelativenumber<CR>
 
 " ==== MOVEMENT ====
 " move vertically by visual line

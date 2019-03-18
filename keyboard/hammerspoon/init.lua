@@ -2,7 +2,7 @@ local log = hs.logger.new('init.lua', 'debug')
 local hotspotSSID = ""
 local hotspotPASSPHRASE = ""
 
--- Use Control+å to reload Hammerspoon config
+-- Use Control+[ to reload Hammerspoon config
 hs.hotkey.bind({'ctrl'}, '[', nil, function()
   hs.reload()
 end)
@@ -20,7 +20,8 @@ statusMessage:notify(1)
 
 
 -- Load submodules
-require('keyboard.hyper')
+-- require('keyboard.hyper')
+require('keyboard.simpler-hyper')
 require('keyboard.app-mode')
 -- require('keyboard.tab-mode')
 require('keyboard.windows')

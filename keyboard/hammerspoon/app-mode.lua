@@ -14,12 +14,52 @@ end
 
 appMode:bind({}, 'space', exitAppMode)
 
-appMode:bind({}, 'l', function()
+appMode:bind({}, 'p', function()
     keyUpDown({ 'ctrl', 'cmd', 'shift' }, 'l')
   end)
 
 -- Bind the right cmd key
 f16 = hs.hotkey.bind({}, 'F16', enterAppMode, exitAppMode)
+
+-- Non-app bindings
+-- Simpler vim movement:
+local charactersToKeystrokes = {
+  --- Movement
+  {
+    from = 'h',
+    to = 'left',
+  },
+  {
+    from = 'j',
+    to = 'down',
+  },
+  {
+    from = 'k',
+    to = 'up',
+  },
+  {
+    from = 'l',
+    to = 'right',
+  },
+}
+
+hs.fnutils.each(charactersToKeystrokes, function(m)
+  appMode:bind({}, m['from'], function()
+      keyUpDown({}, m['to'])
+    end)
+end)
+
+-- To get into window mode
+appMode:bind({}, 'w', function()
+  appMode:exit()
+  enterWindowMode()
+end)
+
+-- Toggle fullscreen
+appMode:bind({}, 'return', function()
+  local win = hs.window.frontmostWindow()
+  win:setFullscreen(not win:isFullscreen())
+end)
 
 -- Apps
 local status, appModeMappings = pcall(require, 'keyboard.hyper-apps')
