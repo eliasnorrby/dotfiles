@@ -98,22 +98,42 @@ Plug 'sheerun/vim-polyglot'
 Plug 'airblade/vim-gitgutter'
 call plug#end()
 
-let g:lightline = {
-  \ 'colorscheme': 'ayucustom',
-  \ 'active': {
-  \   'left': [ [ 'mode', 'paste' ],
-  \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-  \ },
-  \ 'component': {
-  \   'lineinfo': '%3l:%-2v',
-  \ },
-  \ 'component_function': {
-  \   'readonly': 'LightlineReadonly',
-  \   'gitbranch': 'LightlineGitbranch'
-  \ },
-  \ 'separator': { 'left': '', 'right': '' },
-  \ 'subseparator': { 'left': '', 'right': '' }
-  \ }
+
+if has("termguicolors")
+  let g:lightline = {
+    \ 'colorscheme': 'ayucustom',
+    \ 'active': {
+    \   'left': [ [ 'mode', 'paste' ],
+    \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+    \ },
+    \ 'component': {
+    \   'lineinfo': '%3l:%-2v',
+    \ },
+    \ 'component_function': {
+    \   'readonly': 'LightlineReadonly',
+    \   'gitbranch': 'LightlineGitbranch'
+    \ },
+    \ 'separator': { 'left': '', 'right': '' },
+    \ 'subseparator': { 'left': '', 'right': '' }
+    \ }
+else
+  let g:lightline = {
+    \ 'colorscheme': 'onedark',
+    \ 'active': {
+    \   'left': [ [ 'mode', 'paste' ],
+    \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+    \ },
+    \ 'component': {
+    \   'lineinfo': '%3l:%-2v',
+    \ },
+    \ 'component_function': {
+    \   'readonly': 'LightlineReadonly',
+    \   'gitbranch': 'LightlineGitbranch'
+    \ },
+    \ 'separator': { 'left': '', 'right': '' },
+    \ 'subseparator': { 'left': '', 'right': '' }
+    \ }
+endif
 
 function! LightlineReadonly()
   return &readonly ? '' : ''
@@ -135,16 +155,16 @@ endfunction
 "   return ''
 " endfunction
 
-" set bg=dark
-set termguicolors     " enable true colors support
-" let ayucolor="light"  " for light version of theme
-let ayucolor="mirage" " for mirage version of theme
-" let ayucolor="dark"   " for dark version of theme
-colorscheme ayu 
+if has("termguicolors")
+  set termguicolors     " enable true colors support
+  " let ayucolor="light"  " for light version of theme
+  let ayucolor="mirage" " for mirage version of theme
+  " let ayucolor="dark"   " for dark version of theme
+  colorscheme ayu 
+else
+  colorscheme onedark
+endif
 
-" set bg=dark
-" hi Normal ctermbg=008
-" colorscheme onedark
 " Uncomment this line to have vim blend with iterm bg when using the 
 " default onedark colorscheme (contrasts with lightline)
 " hi Normal ctermbg=008
