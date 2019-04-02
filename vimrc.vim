@@ -62,6 +62,34 @@ set clipboard=unnamed
 set incsearch       " search as characters are entered
 set hlsearch        " highlight matches
 
+" ==== SCROLLING ====
+set so=5
+nnoremap <C-E> <C-E><C-E><C-E>
+nnoremap <C-Y> <C-Y><C-Y><C-Y>
+
+" function SmoothScroll(up)
+"     if a:up
+"         let scrollaction=""
+"     else
+"         let scrollaction=""
+"     endif
+"     exec "normal " . scrollaction
+"     redraw
+"     let counter=1
+"     while counter<&scroll
+"         let counter+=1
+"         sleep 5m
+"         redraw
+"         exec "normal " . scrollaction
+"         exec "normal " . scrollaction
+"     endwhile
+" endfunction
+
+" nnoremap <C-U> :call SmoothScroll(1)<Enter>
+" nnoremap <C-D> :call SmoothScroll(0)<Enter>
+" inoremap <C-U> <Esc>:call SmoothScroll(1)<Enter>i
+" inoremap <C-D> <Esc>:call SmoothScroll(0)<Enter>i
+
 " ==== KEYBINDS ====
 set esckeys
 let mapleader=" "

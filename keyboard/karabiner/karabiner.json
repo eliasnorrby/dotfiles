@@ -41,27 +41,6 @@
                         ]
                     },
                     {
-                        "description": "Remapping left control",
-                        "manipulators": [
-                            {
-                                "from": {
-                                    "key_code": "left_control"
-                                },
-                                "to_if_alone": [
-                                    {
-                                        "key_code": "escape"
-                                    }
-                                ],
-                                "to_if_held_down": [
-                                    {
-                                        "key_code": "f18"
-                                    }
-                                ],
-                                "type": "basic"
-                            }
-                        ]
-                    },
-                    {
                         "description": "Remapping right cmd for programs (TEST)",
                         "manipulators": [
                             {

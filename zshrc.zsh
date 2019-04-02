@@ -8,6 +8,14 @@
 
 # === Config ===
 
+function tn() {
+  if [[ $# -eq 0 ]] ; then
+      echo 'Error: must specify a session name'
+      return 1
+  fi
+  tmux new-session -s "$1"
+}
+
 function zup() {
   source ~/.dotfiles/zsh/extra_plugins.zsh
 }
@@ -35,6 +43,44 @@ function toggleMultilinePrompt() {
     POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
   fi
 }
+
+alias n="npmFallback"
+
+function npmFallback() {
+  if hash node 2>/dev/null; then
+    echo "node is in path, do you need this workaround?"
+    unalias n
+    alias n="npm"
+    npm "$@"
+  else
+    echo "node is not in path, loading with nvm..."
+    unalias n
+    load_nvm
+    echo "node loaded, running with args"
+    alias n="npm"
+    npm "$@"
+  fi
+}
+
+alias y="yarnFallback"
+
+function yarnFallback() {
+  if hash node 2>/dev/null; then
+    echo "node is in path, do you need this workaround?"
+    unalias y
+    alias y="yarn"
+    yarn "$@"
+  else
+    echo "node is not in path, loading with nvm..."
+    unalias y
+    load_nvm
+    echo "node loaded, running with args"
+    alias y="yarn"
+    yarn "$@"
+  fi
+}
+
+# alias npm="checkForNode && npm"
 
 # === Utilities ===
 
@@ -193,6 +239,9 @@ if [ "$(uname)" = "Linux" ]; then
   source ~/.dotfiles/zsh/powerlevel9k_server.zsh
 fi
 
+# Minimal zsh theme - much faster prompt
+# zplug "mafredri/zsh-async", from:github
+# zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 # =============================================================================
 #                                   Options
 # =============================================================================
@@ -323,6 +372,10 @@ fi
 
 # Personal aliases
 source ~/.dotfiles/zsh/aliases.zsh
+
+# TODO: migrate more stuff here
+# Additional functions
+source ~/.dotfiles/zsh/functions.zsh
 
 zplug load
 
