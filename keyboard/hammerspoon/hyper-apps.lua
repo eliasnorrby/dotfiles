@@ -11,4 +11,5 @@ return {
   { 't', 'iTerm' },             	-- "T" for "Terminal"
   { 'd', 'Drafts' },            	-- "D" for "Drafts"
   { 'm', 'Spark'},              -- "E" for "Email"
+  { 'q', 'MySQLWorkbench'},
 }
