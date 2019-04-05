@@ -1,23 +1,15 @@
 " Make `jj` and `jk` throw you into normal mode
-inoremap jj <esc>
-inoremap jk <esc>
-
-nnoremap <F2> :setlocal commentstring=#\ %s<CR>
+" inoremap jj <esc>
+" inoremap jk <esc>
 
 " ==== COLORS ==== 
 syntax enable " enable syntax processing
 
-" fix gray background using solarized theme
-" set background=dark
-" let g:solarized_termcolors=256 
-" let g:solarized_termtrans=1 
-" colorscheme solarized
-
 " colorscheme badwolf
 
 " ==== BACKUPS ETC ====
-set backup                        " enable backups
-set undofile        " for storing undos
+set backup                       " enable backups
+set undofile                     " for storing undos
 " set noswapfile                 " disbale swapfiles
 set undodir=~/.vimtmp/undo//     " undo files
 set backupdir=~/.vimtmp/backup// " backups
@@ -191,9 +183,9 @@ if has("termguicolors")
   colorscheme ayu 
 else
   colorscheme onedark
+  " Uncomment this line to have vim blend with iterm bg when using the
+  " default onedark colorscheme (contrasts with lightline)
+  " hi Normal ctermbg=008
+  hi Normal ctermbg=000
 endif
-
-" Uncomment this line to have vim blend with iterm bg when using the 
-" default onedark colorscheme (contrasts with lightline)
-" hi Normal ctermbg=008
 
