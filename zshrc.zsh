@@ -192,39 +192,33 @@ zplug "zsh-users/zsh-syntax-highlighting", defer:2
 # tmux wants colors to be set or something...
 export TERM="xterm-256color"
 
-# ----------------------------------------
-# Agnoster
-# ----------------------------------------
-#ZSH_THEME="agnoster"
-
-# When using the agnoster theme, paths are shrunken using this approach:
-# - Open this directory ~/.oh-my-zsh/themes
-# - Open the agnoster.zsh-theme file with any text editor
-# - Go to the prompt_dir() function
-# - Replace the line in the function with this: prompt_segment blue black '%c'
+# THEME_TO_USE="P9K"
+THEME_TO_USE="PURE"
 
 # ----------------------------------------
 # Powerlevel9k
 # ----------------------------------------
-# Always load common config, uncomment variation
-
-# Load theme using oh-my-zsh
-#ZSH_THEME="powerlevel9k/powerlevel9k"
-
-# Load theme using zplug
-zplug "bhilburn/powerlevel9k", use:powerlevel9k.zsh-theme
-source ~/.dotfiles/zsh/powerlevel9k_common.zsh
-if [ "$(uname)" = "Darwin" ]; then
-  source ~/.dotfiles/zsh/powerlevel9k_default.zsh
-  #source ~/.dotfiles/powerlevel9k_minimal.zsh
-fi
-if [ "$(uname)" = "Linux" ]; then
-  source ~/.dotfiles/zsh/powerlevel9k_server.zsh
+if [ "$THEME_TO_USE" = "P9K" ]; then 
+  zplug "bhilburn/powerlevel9k", use:powerlevel9k.zsh-theme
+  source ~/.dotfiles/zsh/powerlevel9k_common.zsh
+  if [ "$(uname)" = "Darwin" ]; then
+    source ~/.dotfiles/zsh/powerlevel9k_default.zsh
+    #source ~/.dotfiles/powerlevel9k_minimal.zsh
+  fi
+  if [ "$(uname)" = "Linux" ]; then
+    source ~/.dotfiles/zsh/powerlevel9k_server.zsh
+  fi
 fi
 
+# ----------------------------------------
+# Pure
+# ----------------------------------------
 # Minimal zsh theme - much faster prompt
-# zplug "mafredri/zsh-async", from:github
-# zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
+if [ "$THEME_TO_USE" = "PURE" ]; then
+  zplug "mafredri/zsh-async", from:github
+  zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
+fi
+
 # =============================================================================
 #                                   Options
 # =============================================================================
@@ -362,6 +356,19 @@ source ~/.dotfiles/zsh/functions.zsh
 
 zplug load
 
+# =============================================================================
+#                             Post zplug load
+# =============================================================================
+# Change color of pure prompt to yellow instead of magenta (extracted from source)
+# if a virtualenv is activated, display it in grey
+PROMPT='%(12V.%F{242}%12v%f .)'
+# prompt turns red if the previous command didn't exit with 0
+PROMPT+='%(?.%F{yellow}.%F{red})${prompt_pure_state[prompt]}%f '
+
+# Set zsh autosuggestion text to a brighter color
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
+
+# Use fzf for z
 alias j="_z 2>&1"
 unalias z 2> /dev/null
 z() {
@@ -424,4 +431,8 @@ commit_message=$(git log -1 --no-merges --pretty=%B)
 cd - > /dev/null
 echo ".dotfiles branch: $branch_string"
 echo "latest commit: $commit_message"
+
+# =============================================================================
+#                              Experimenting
+# =============================================================================
 
