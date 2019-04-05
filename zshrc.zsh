@@ -72,25 +72,27 @@ function list_colors() {
 }
 
 # === nvm lazy loading ===
-function load_nvm() {
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-}
+export NVM_DIR="$HOME/.nvm"
+if [ -d "$NVM_DIR" ]; then
+  function load_nvm() {
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+  }
 
-# Add every binary that requires nvm, npm or node to run to an array of node globals
-NODE_GLOBALS=(`find ~/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' | xargs -n1 basename | sort | uniq`)
-NODE_GLOBALS+=("node")
-NODE_GLOBALS+=("nvm")
+  # Add every binary that requires nvm, npm or node to run to an array of node globals
+  NODE_GLOBALS=(`find ~/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' | xargs -n1 basename | sort | uniq`)
+  NODE_GLOBALS+=("node")
+  NODE_GLOBALS+=("nvm")
 
-# load_nvm () {
-#     export NVM_DIR=~/.nvm
-#     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-# }
+  # load_nvm () {
+  #     export NVM_DIR=~/.nvm
+  #     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+  # }
 
-for cmd in "${NODE_GLOBALS[@]}"; do
-    eval "${cmd}(){echo 'Loading node...'; unset -f ${NODE_GLOBALS}; load_nvm; ${cmd} \$@ }"
-done
+  for cmd in "${NODE_GLOBALS[@]}"; do
+      eval "${cmd}(){echo 'Loading node...'; unset -f ${NODE_GLOBALS}; load_nvm; ${cmd} \$@ }"
+  done
+fi
 
 # =============================================================================
 #                                   Variables
@@ -425,12 +427,12 @@ fi
 # =============================================================================
 #                                   Done
 # =============================================================================
-cd ~/.dotfiles
-branch_string=$(git branch | grep \* | cut -d ' ' -f2)
-commit_message=$(git log -1 --no-merges --pretty=%B)
-cd - > /dev/null
-echo ".dotfiles branch: $branch_string"
-echo "latest commit: $commit_message"
+# cd ~/.dotfiles
+# branch_string=$(git branch | grep \* | cut -d ' ' -f2)
+# commit_message=$(git log -1 --no-merges --pretty=%B)
+# cd - > /dev/null
+# echo ".dotfiles branch: $branch_string"
+# echo "latest commit: $commit_message"
 
 # =============================================================================
 #                              Experimenting
