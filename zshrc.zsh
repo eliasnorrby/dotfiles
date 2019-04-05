@@ -44,44 +44,6 @@ function toggleMultilinePrompt() {
   fi
 }
 
-alias n="npmFallback"
-
-function npmFallback() {
-  if hash node 2>/dev/null; then
-    echo "node is in path, do you need this workaround?"
-    unalias n
-    alias n="npm"
-    npm "$@"
-  else
-    echo "node is not in path, loading with nvm..."
-    unalias n
-    load_nvm
-    echo "node loaded, running with args"
-    alias n="npm"
-    npm "$@"
-  fi
-}
-
-alias y="yarnFallback"
-
-function yarnFallback() {
-  if hash node 2>/dev/null; then
-    echo "node is in path, do you need this workaround?"
-    unalias y
-    alias y="yarn"
-    yarn "$@"
-  else
-    echo "node is not in path, loading with nvm..."
-    unalias y
-    load_nvm
-    echo "node loaded, running with args"
-    alias y="yarn"
-    yarn "$@"
-  fi
-}
-
-# alias npm="checkForNode && npm"
-
 # === Utilities ===
 
 function tkey() {
@@ -108,6 +70,27 @@ function lcol() {
 function list_colors() {
   for code ({000..255}) print -P -- "$code: %F{$code}This is how your text would look like%f";
 }
+
+# === nvm lazy loading ===
+function load_nvm() {
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+}
+
+# Add every binary that requires nvm, npm or node to run to an array of node globals
+NODE_GLOBALS=(`find ~/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' | xargs -n1 basename | sort | uniq`)
+NODE_GLOBALS+=("node")
+NODE_GLOBALS+=("nvm")
+
+# load_nvm () {
+#     export NVM_DIR=~/.nvm
+#     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+# }
+
+for cmd in "${NODE_GLOBALS[@]}"; do
+    eval "${cmd}(){echo 'Loading node...'; unset -f ${NODE_GLOBALS}; load_nvm; ${cmd} \$@ }"
+done
 
 # =============================================================================
 #                                   Variables
@@ -431,12 +414,6 @@ else
     artii --font slant "$1" | lolcat
   }
 fi
-
-function load_nvm() {
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-}
 
 # =============================================================================
 #                                   Done
