@@ -7,6 +7,7 @@
 # =============================================================================
 
 # === Config ===
+# export SHELL="/usr/local/bin/zsh"
 
 function tn() {
   if [[ $# -eq 0 ]] ; then
@@ -83,6 +84,7 @@ if [ -d "$NVM_DIR" ]; then
   NODE_GLOBALS=(`find ~/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' | xargs -n1 basename | sort | uniq`)
   NODE_GLOBALS+=("node")
   NODE_GLOBALS+=("nvm")
+  NODE_GLOBALS+=("nvim")
 
   # load_nvm () {
   #     export NVM_DIR=~/.nvm
@@ -271,6 +273,7 @@ setopt hist_ignore_space        # Ignore commands that start with space.
 unsetopt LIST_BEEP              # Turn off autocomplete beeps 
 
 export FZF_DEFAULT_COMMAND='fd --type f'
+# export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_OPTS='--height 40% --reverse --extended --border --inline-info --color=dark,bg+:235,hl+:10,pointer:5'
 # export FZF_DEFAULT_OPTS='
