@@ -85,3 +85,4 @@ alias reloadconfig="source ~/.zshrc"
 #   source ~/.local_zshconfig/*.zsh
 # fi
 
+alias nnvim=~/tmp/nvim-osx64/bin/nvim 

@@ -8,6 +8,9 @@
 
 # === Config ===
 # export SHELL="/usr/local/bin/zsh"
+export GOPATH=$HOME/dev/go
+
+source ~/.dotfiles/zsh/fzf-functions.zsh
 
 function tn() {
   if [[ $# -eq 0 ]] ; then
@@ -85,6 +88,8 @@ if [ -d "$NVM_DIR" ]; then
   NODE_GLOBALS+=("node")
   NODE_GLOBALS+=("nvm")
   NODE_GLOBALS+=("nvim")
+  NODE_GLOBALS+=("nnvim")
+  NODE_GLOBALS+=("node_modules/.bin/jasmine")
 
   # load_nvm () {
   #     export NVM_DIR=~/.nvm
@@ -127,8 +132,8 @@ export LC_ALL="en_US.UTF-8"
 
 bindkey -v
 # Autosuggestion key-bind
-bindkey '^ ' autosuggest-accept
-bindkey 'jk' vi-cmd-mode
+# bindkey '^ ' autosuggest-accept
+# bindkey 'jk' vi-cmd-mode
 # Unbind esc key - why do I wan't that..?
 bindkey -s '^[7' '|'
 #bindkey '^[[1;9C' forward-word
@@ -197,7 +202,7 @@ zplug "zsh-users/zsh-syntax-highlighting", defer:2
 export TERM="xterm-256color"
 
 # THEME_TO_USE="P9K"
-THEME_TO_USE="PURE"
+THEME_TO_USE="P9K"
 
 # ----------------------------------------
 # Powerlevel9k
@@ -272,15 +277,19 @@ setopt hist_ignore_space        # Ignore commands that start with space.
 # unsetopt BEEP                 # Turn off all beeps
 unsetopt LIST_BEEP              # Turn off autocomplete beeps 
 
-export FZF_DEFAULT_COMMAND='fd --type f'
-# export FZF_DEFAULT_COMMAND='rg --files'
+# export FZF_DEFAULT_COMMAND='fd --type f'
+export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_DEFAULT_OPTS='--height 40% --reverse --extended --border --inline-info --color=dark,bg+:235,hl+:10,pointer:5'
-# export FZF_DEFAULT_OPTS='
-#   --height 40% --reverse --border --inline-info 
-#   --color dark,hl:33,hl+:37,fg+:235,bg+:136,fg+:254
-#   --color info:254,prompt:37,spinner:108,pointer:235,marker:235
-# '
+# export FZF_DEFAULT_OPTS='--height 40% --reverse --extended --border --inline-info --color=dark,bg+:235,hl+:10,pointer:5'
+
+export FZF_DEFAULT_OPTS='
+  --prompt "λ: "
+  --color fg:7,bg:0,hl:3,fg+:15,bg+:0,hl+:4
+  --color info:7,prompt:4,spinner:6,pointer:4,marker:4,gutter:0
+'
+
+#  --prompt "❯ "
+#  --prompt "λ: "
 
 alias ls="ls --color=auto"
 
