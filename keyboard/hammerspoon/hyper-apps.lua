@@ -10,5 +10,5 @@ return {
   { 'd', 'Drafts' },
   { 'm', 'Spark'},
   { 'q', 'MySQLWorkbench'},
-  { 'n', 'Postman'},
+  { 'h', 'Postman'},
 }

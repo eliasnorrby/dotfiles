@@ -3,7 +3,7 @@ local hotspotSSID = ""
 local hotspotPASSPHRASE = ""
 
 -- Use Control+[ to reload Hammerspoon config
-hs.hotkey.bind({'ctrl'}, '[', nil, function()
+hs.hotkey.bind({'cmd','ctrl','shift','alt'}, '[', nil, function()
   hs.reload()
 end)
 
