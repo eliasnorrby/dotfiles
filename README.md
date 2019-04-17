@@ -1,7 +1,20 @@
 # My dotfiles
+
+## 2019-04-17 : Release 0.1.0
+This is a semi-stable that should work for remote sessions. Future releases will drastically modify the vim configuration.
+
+### Tasks
+- [ ] Installation instructions should be updated to cover the following:
+  - [ ] nvm/npm/node 
+  - [ ] firaCode and Nerd Font links
+  - [ ] VSCode cli
+  - [ ] vim with termguicolor support
+  - [ ] move lightline themes 
+  - [ ] installing: git-flow, rg, nvim, python
+
 ## Known problems (and how to fix them)
 ### Broken command tab-completion
-```
+```sh
 rm ~/.zcompdump*
 rm ~/.zplug/zcompdump* # On linux
 rm /usr/local/opt/zplug/zcompdump # On mac
@@ -20,7 +33,7 @@ To resolve, run:
 [source](https://gist.github.com/irazasyed/7732946#gistcomment-2235469)
 
 ### Color inconsistencies with tmux / vim
-This complete .tmux.conf tells tmux to use xterm-256color as the terminal and then enables Tc
+> This complete .tmux.conf tells tmux to use xterm-256color as the terminal and then enables Tc
 
 ```conf
 # Use the xterm-256color terminal
