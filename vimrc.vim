@@ -7,7 +7,7 @@ nnoremap <Space> <Nop>
 
 " {{{ Plugins
 " ============================================================================ "
-" ===                           PLUGINS                            === "
+" ===                           PLUGINS                                    === "
 " ============================================================================ "
 " Download vimplug if not already installed
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -22,15 +22,14 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
+Plug 'tpope/unimpaired'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'godlygeek/tabular'
 Plug 'wellle/targets.vim'
-" Plug 'jiangmiao/auto-pairs'
 Plug 'raimondi/delimitmate'
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
-" Plug 'bling/vim-bufferline'
 Plug 'mhinz/vim-signify'
 Plug 'sheerun/vim-polyglot'
 Plug 'neoclide/jsonc.vim'
@@ -39,41 +38,42 @@ Plug 'junegunn/fzf.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'joshdick/onedark.vim'
 Plug 'ayu-theme/ayu-vim'
-
-" These border on medium 
-" Plug 'ajh17/VimCompletesMe'
+Plug 'morhetz/gruvbox'
+Plug 'junegunn/seoul256.vim'
 
 Plug 'takac/vim-hardtime'
+Plug 'ap/vim-buftabline'
+Plug 'easymotion/vim-easymotion'
+
+" This is very situational and seems to slow down rendering, enable on demand.
+" Plug 'ap/vim-css-color'
 
 Plug 'kana/vim-textobj-function'
 Plug 'kana/vim-textobj-user'
 Plug 'haya14busa/vim-textobj-function-syntax'
+Plug 'junegunn/goyo.vim'
 
 " post install (yarn install | npm install) then load plugin only for editing supported files
 Plug 'prettier/vim-prettier', {
   \ 'do': 'npm install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
-" source ~/.dotfiles/vim/plugins.vim
-" source ~/.dotfiles/vim/medium-plugins.vim
-" source ~/.dotfiles/vim/overkill-plugins.vim
-
 if has("nvim")
-    " nvim plugins
+  " nvim plugins
   Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
   Plug 'w0rp/ale'
+  " not technically requiring nvim 
   Plug 'janko-m/vim-test'
   Plug 'benmills/vimux'
   Plug 'tpope/vim-dispatch'
-
 endif
-
 
 call plug#end()
 
-" {{{ nvim plugins
+map \ <Plug>(easymotion-prefix)
+
+" {{{ nvim plugin settings
 if has("nvim")
-  " nvim plugin settings
   " {{{ coc.vim
   " === Coc.nvim === "
   " use <tab> for trigger completion and navigate to next complete item
@@ -87,16 +87,18 @@ if has("nvim")
         \ <SID>check_back_space() ? "\<TAB>" :
         \ coc#refresh()
 
+  " use <cr> to accept completion
   " as suggested in https://github.com/Valloric/YouCompleteMe/issues/232
   imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
   " imap <expr> <CR> pumvisible() ? "\<c-y>" : "\<c-r>"
 
-  augroup Completion
+  augroup CocCompletionAutoClose
     "Close preview window when completion is done.
     autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
   augroup END
 
   " Prettier command
+  " Maybe I will switch to running Prettier and eslint in coc
   " command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
 
   " vmap <leader>p  <Plug>(coc-format-selected)
@@ -117,6 +119,11 @@ if has("nvim")
   nmap <silent> gy <Plug>(coc-type-definition)
   nmap <silent> gi <Plug>(coc-implementation)
   nmap <silent> gr <Plug>(coc-references)
+
+  " TODO: Remap these after installing vim-unimpaired
+  " Use `[e` and `]e` to navigate diagnostics
+  " nmap <silent> [e <Plug>(coc-diagnostic-prev)
+  " nmap <silent> ]e <Plug>(coc-diagnostic-next)
 
   " What is the preview window even?
   " Use K for show documentation in preview window
@@ -156,11 +163,15 @@ if has("nvim")
 
   " make test commands execute using vimux.vim
   let test#strategy = "vimux"
+  " let test#strategy = "dispatch"
 
   nnoremap <silent> <Leader>tn :TestNearest<CR>
   nnoremap <silent> <Leader>tf :TestFile<CR>
   nnoremap <silent> <Leader>ts :TestSuite<CR>
   nnoremap <silent> <Leader>tt :TestLast<CR>
+
+  nnoremap <silent> <leader>toe :call EnableTestOnSave()<CR>
+  nnoremap <silent> <leader>tod :call DisableTestOnSave()<CR>
 
   " let test#javascript#jasmine#file_pattern = '\.test\.ts'
   " let test#typescript#jasmine#file_pattern = '\.test\.ts'
@@ -212,11 +223,11 @@ let g:list_of_disabled_keys = ["<BS>"]
 " set backspace=indent
 
 " vim-prettier
-let g:prettier#exec_cmd_path = "/Users/elias.norrby/.nvm/versions/node/v10.15.1/bin/prettier"
+" let g:prettier#exec_cmd_path = "/Users/elias.norrby/.nvm/versions/node/v10.15.1/bin/prettier"
 let g:prettier#autoformat = 0
-augroup Prettier
+augroup PrettierAutoformat
   autocmd! 
-  autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html Prettier
+  autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 augroup END
 
 " Polyglot incorrectly marks js files as jsx :(
@@ -225,6 +236,26 @@ let g:jsx_ext_required = 1
 " Does this conflict with dispatch?
 " To make signify update on Gcommit
 " autocmd User Fugitive SignifyRefresh
+
+" vim-buftabline
+let g:buftabline_show = 1
+let g:buftabline_numbers = 2
+let g:buftabline_indicators = 1
+
+" go to tabs based on their ordinal number
+nmap <leader>1 <Plug>BufTabLine.Go(1)
+nmap <leader>2 <Plug>BufTabLine.Go(2)
+nmap <leader>3 <Plug>BufTabLine.Go(3)
+nmap <leader>4 <Plug>BufTabLine.Go(4)
+nmap <leader>5 <Plug>BufTabLine.Go(5)
+nmap <leader>6 <Plug>BufTabLine.Go(6)
+nmap <leader>7 <Plug>BufTabLine.Go(7)
+nmap <leader>8 <Plug>BufTabLine.Go(8)
+nmap <leader>9 <Plug>BufTabLine.Go(9)
+nmap <leader>0 <Plug>BufTabLine.Go(10)
+
+" vim-css-color
+nmap <leader><leader>c :call css_color#toggle()<cr>
 
 " }}}
 
@@ -328,9 +359,13 @@ set foldlevelstart=20
 " ===                           UI                            === "
 " ============================================================================ "
 
+" let s:theme_to_use="ayu"
+let s:theme_to_use="gruvbox"
+" let s:theme_to_use="seoul256"
+
 syntax enable " enable syntax processing
 
-augroup WindowSize
+augroup WindowSizeEqual
   autocmd!
   autocmd VimResized * wincmd =
 augroup END
@@ -353,12 +388,14 @@ set incsearch      " search as characters are entered
 set nohlsearch     " highlight matches
 
 
-augroup CursorLine
-  autocmd!
-  autocmd InsertEnter * highlight CursorLine guibg=#2D3B4D
-  autocmd InsertLeave * highlight CursorLine guibg=#232834
-  autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-  autocmd WinLeave * setlocal nocursorline
+augroup CursorLineOnInsert
+  if s:theme_to_use == "ayu"
+    autocmd!
+    autocmd InsertEnter * highlight CursorLine ctermbg=237 guibg=#2D3B4D
+    autocmd InsertLeave * highlight CursorLine ctermbg=0 guibg=#232834
+    autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+    autocmd WinLeave * setlocal nocursorline
+  endif
 augroup END
 
 " ==== netwr ====
@@ -379,7 +416,7 @@ let g:netrw_browse_split = 3
 " ==== Lightline ====
 if has("termguicolors")
   let g:lightline = {
-    \ 'colorscheme': 'ayucustom',
+    \ 'colorscheme': 'gruvbox',
     \ 'active': {
     \   'left': [ [ 'mode', 'paste' ],
     \             [ 'gitbranch', 'readonly', 'filename' ],
@@ -409,6 +446,8 @@ if has("termguicolors")
     \ 'separator': { 'left': '', 'right': '' },
     \ 'subseparator': { 'left': '', 'right': '' },
     \ }
+    " \ }
+    " \ }
 else
   let g:lightline = {
     \ 'colorscheme': 'onedark',
@@ -464,24 +503,39 @@ endfunction
 
 " }}}
 
+
 function! MyHighlights() abort
   " Make background transparent for many things
-  highlight!   Normal              ctermbg=NONE    guibg=NONE
-  highlight!   NonText             ctermbg=NONE    guibg=NONE
+  " highlight!   Normal              ctermbg=NONE    guibg=NONE
+  " highlight!   NonText             ctermbg=NONE    guibg=NONE
   highlight!   LineNr              ctermbg=NONE    guibg=NONE
   highlight!   SignColumn          ctermbg=NONE    guibg=NONE
 
   " Highlight git change signs
-  highlight!   SignifySignAdd                      guibg=NONE   guifg=#99c794
-  highlight!   SignifySignDelete                   guibg=NONE   guifg=#ec5f67
-  highlight!   SignifySignChange                   guibg=NONE   guifg=#c594c5
+  highlight!   SignifySignAdd                      guibg=NONE   guifg=#99C794
+  highlight!   SignifySignDelete                   guibg=NONE   guifg=#EC5F67
+  highlight!   SignifySignChange                   guibg=NONE   guifg=#C594C5
 
   " ALE Signs
-  highlight link ALEErrorSign    CocErrorSign
-  highlight link ALEWarningSign  CocWarningSign
+  " for some reason these are cleared on re-sourcing vimrc
+  highlight!   CocErrorSign       ctermfg=9                     guifg=#FF0000
+  highlight!   CocWarningSign     ctermfg=130                   guifg=#FF922B
+  highlight!   link ALEErrorSign    CocErrorSign
+  highlight!   link ALEWarningSign  CocWarningSign
 
   " ayu-vim is missing this highlight
-  hi! DiffDelete guifg=#f27983 guibg=#272D38
+  highlight!   DiffDelete                      guibg=#272D38 guifg=#F27983
+
+
+  if s:theme_to_use == "ayu"
+    " coc has very dark text highlight
+    highlight!   CocHighlightText guibg=#2D3B4D
+
+    highlight! BufTabLineCurrent guifg=#212733 guibg=#FFAE57 
+    highlight! BufTabLineActive  guifg=#212733 guibg=#FFD57F 
+    highlight! BufTabLineHidden  guifg=#D9D7CE guibg=#343F4C
+    highlight! BufTabLineFill    guifg=NONE guibg=NONE
+  endif
 endfunction
 
 augroup MyColors
@@ -489,11 +543,37 @@ augroup MyColors
   autocmd ColorScheme * call MyHighlights()
 augroup END
 
-" TODO: Sourcing MYVIMRC breaks Ale highlighting
+" TODO: Sourcing MYVIMRC breaks coc highlighting
 if has("termguicolors")
-  set termguicolors     " enable true colors support
-  let ayucolor="mirage" " for mirage version of theme
-  colorscheme ayu 
+  if s:theme_to_use == "ayu"
+    set termguicolors     " enable true colors support
+    let ayucolor="mirage" " for mirage version of theme
+    colorscheme ayu 
+  endif
+
+  " {{{ Ayu color reference
+  " palette for reference
+  " let s:palette.bg        = {'dark': #0F1419,  'light': #FAFAFA,  'mirage': #212733}
+  " let s:palette.comment   = {'dark': #5C6773,  'light': #ABB0B6,  'mirage': #5C6773}
+  " let s:palette.markup    = {'dark': #F07178,  'light': #F07178,  'mirage': #F07178}
+  " let s:palette.constant  = {'dark': #FFEE99,  'light': #A37ACC,  'mirage': #D4BFFF}
+  " let s:palette.operator  = {'dark': #E7C547,  'light': #E7C547,  'mirage': #80D4FF}
+  " let s:palette.tag       = {'dark': #36A3D9,  'light': #36A3D9,  'mirage': #5CCFE6}
+  " let s:palette.regexp    = {'dark': #95E6CB,  'light': #4CBF99,  'mirage': #95E6CB}
+  " let s:palette.string    = {'dark': #B8CC52,  'light': #86B300,  'mirage': #BBE67E}
+  " let s:palette.function  = {'dark': #FFB454,  'light': #F29718,  'mirage': #FFD57F}
+  " let s:palette.special   = {'dark': #E6B673,  'light': #E6B673,  'mirage': #FFC44C}
+  " let s:palette.keyword   = {'dark': #FF7733,  'light': #FF7733,  'mirage': #FFAE57}
+
+  " let s:palette.error     = {'dark': #FF3333,  'light': #FF3333,  'mirage': #FF3333}
+  " let s:palette.accent    = {'dark': #F29718,  'light': #FF6A00,  'mirage': #FFCC66}
+  " let s:palette.panel     = {'dark': #14191F,  'light': #FFFFFF,  'mirage': #272D38}
+  " let s:palette.guide     = {'dark': #2D3640,  'light': #D9D8D7,  'mirage': #3D4751}
+  " let s:palette.line      = {'dark': #151A1E,  'light': #F3F3F3,  'mirage': #242B38}
+  " let s:palette.selection = {'dark': #253340,  'light': #F0EEE4,  'mirage': #343F4C}
+  " let s:palette.fg        = {'dark': #E6E1CF,  'light': #5C6773,  'mirage': #D9D7CE}
+  " let s:palette.fg_idle   = {'dark': #3E4B59,  'light': #828C99,  'mirage': #607080}
+
   " My Delete suggestion
   " hi! DiffDelete guibg=#f27983 guifg=#212733
   " hi! DiffDelete guifg=#f27983 guibg=#212733
@@ -502,6 +582,19 @@ if has("termguicolors")
   " My Add suggestion
   " hi! DiffAdd guibg=#a6cc70 guifg=#212733
   " hi! DiffAdd guifg=#a6cc70 guifg=#272D38
+  " }}}
+
+  if s:theme_to_use == "gruvbox"
+    set termguicolors
+    set background=dark
+    let g:gruvbox_contrast_dark = "medium"
+    colorscheme gruvbox
+  endif
+
+  if s:theme_to_use == "seoul256"
+    let g:seoul256_background = 235
+    colorscheme seoul256
+  endif
 else
   colorscheme onedark
   hi Normal ctermbg=000
@@ -515,13 +608,27 @@ endif
 " ===                           KEYBINDS                            === "
 " ============================================================================ "
 
+function! EnableTestOnSave() abort
+  augroup TestOnSave
+    autocmd! * <buffer>
+    autocmd BufWrite <buffer> :TestLast
+  augroup END
+  echom "Run last test on save: enabled"
+endfunction
+
+function! DisableTestOnSave() abort
+  augroup TestOnSave
+    autocmd! * <buffer>
+  augroup END
+  echom "Run last test on save: disabled"
+endfunction
 
 " toggle hardtime
 nnoremap <Leader><Leader>h :HardTimeToggle<CR>
 " open netwr in vertical split
 nnoremap <Leader>n :Vexplore<CR>
 " turn off search highlight
-nnoremap <Leader>, :nohlsearch<CR>
+nnoremap <Leader><Leader>, :nohlsearch<CR>
 " toggle relative line numbering
 nnoremap <silent> <Leader>r :set invrelativenumber<CR>
 
@@ -552,12 +659,15 @@ nnoremap <silent> k gk
 nnoremap <C-P> :Files<CR>
 nnoremap <Leader>o :Files<CR>
 nnoremap <Leader>b :Buffers<CR>
+nnoremap <leader>h :Helptags<CR>
+nnoremap <leader>/ :BLines<CR>
+nnoremap <leader>? :Lines<CR>
+
+nnoremap <leader>,m :Marks<CR>
+nnoremap <leader>,sh :History/<CR>
+nnoremap <leader>,ch :History:<CR>
 
 nnoremap <Leader><Leader>r :source $MYVIMRC<CR>
-nnoremap <Leader>1 1gt
-nnoremap <Leader>2 2gt
-nnoremap <Leader>3 3gt
-nnoremap <Leader>4 4gt
 
 nnoremap <Leader>g `
 
