@@ -18,59 +18,75 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
+" Editing
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-vinegar'
-Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-fugitive'
-" vim-endwise seems to interefere with coc/delimitmate mapping
-" Plug 'tpope/vim-endwise'
-Plug 'junegunn/gv.vim'
 Plug 'godlygeek/tabular'
-Plug 'wellle/targets.vim'
 Plug 'raimondi/delimitmate'
+
+" Ui
+Plug 'tpope/vim-vinegar'
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
 Plug 'mhinz/vim-signify'
+Plug 'ap/vim-buftabline'
+
+" Navigation
+Plug 'tpope/vim-unimpaired'
+Plug 'easymotion/vim-easymotion'
+" Plug 'haya14busa/incsearch.vim'
+
+" Git
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
+
+" Text objects
+Plug 'wellle/targets.vim'
+Plug 'kana/vim-textobj-function'
+Plug 'kana/vim-textobj-user'
+Plug 'haya14busa/vim-textobj-function-syntax'
+
+" Filetypes and syntax
 Plug 'sheerun/vim-polyglot'
 Plug 'neoclide/jsonc.vim'
+
+" Fuzzy finder
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
+
+" Tmux integration
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'benmills/vimux'
+
+" Colorschemes
 Plug 'joshdick/onedark.vim'
 Plug 'ayu-theme/ayu-vim'
 Plug 'morhetz/gruvbox'
 Plug 'junegunn/seoul256.vim'
 
+" Testing
+Plug 'janko-m/vim-test'
+Plug 'tpope/vim-dispatch'
+
+" Miscellaneous
 Plug 'takac/vim-hardtime'
-Plug 'ap/vim-buftabline'
-Plug 'easymotion/vim-easymotion'
-Plug 'edkolev/tmuxline.vim'
-" Plug 'haya14busa/incsearch.vim'
-
-" This is very situational and seems to slow down rendering, enable on demand.
-" Seems like neovim does this by default
-" Plug 'ap/vim-css-color'
-
-Plug 'kana/vim-textobj-function'
-Plug 'kana/vim-textobj-user'
-Plug 'haya14busa/vim-textobj-function-syntax'
 Plug 'junegunn/goyo.vim'
 
+" Formatting
 " post install (yarn install | npm install) then load plugin only for editing supported files
 Plug 'prettier/vim-prettier', {
   \ 'do': 'npm install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
+" This is very situational and seems to slow down rendering, enable on demand.
+" Seems like neovim does this by default
+" Plug 'ap/vim-css-color'
+
 if has("nvim")
   " nvim plugins
   Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
   Plug 'w0rp/ale'
-  " not technically requiring nvim 
-  Plug 'janko-m/vim-test'
-  Plug 'benmills/vimux'
-  Plug 'tpope/vim-dispatch'
 endif
 
 call plug#end()
@@ -79,14 +95,11 @@ call plug#end()
 " map ?  <Plug>(incsearch-backward)
 " map g/ <Plug>(incsearch-stay)
 
-let g:tmuxline_powerline_separators = 0
-
 map \ <Plug>(easymotion-prefix)
 
 " {{{ nvim plugin settings
 if has("nvim")
-  " {{{ coc.vim
-  " === Coc.nvim === "
+  " {{{ coc.vim settings
   " use <tab> for trigger completion and navigate to next complete item
   function! s:check_back_space() abort
     let col = col('.') - 1
@@ -131,10 +144,13 @@ if has("nvim")
   nmap <silent> gi <Plug>(coc-implementation)
   nmap <silent> gr <Plug>(coc-references)
 
+  " Remap for rename current word
+  nmap <leader>rn <Plug>(coc-rename)
+
   " TODO: Remap these after installing vim-unimpaired
-  " Use `[e` and `]e` to navigate diagnostics
-  " nmap <silent> [e <Plug>(coc-diagnostic-prev)
-  " nmap <silent> ]e <Plug>(coc-diagnostic-next)
+  " Use `[d` and `]d` to navigate diagnostics
+  nmap <silent> [d <Plug>(coc-diagnostic-prev)
+  nmap <silent> ]d <Plug>(coc-diagnostic-next)
 
   " What is the preview window even?
   " Use K for show documentation in preview window
@@ -151,11 +167,9 @@ if has("nvim")
   " Highlight symbol under cursor on CursorHold
   autocmd CursorHold * silent call CocActionAsync('highlight')
 
-  " Remap for rename current word
-  nmap <leader>rn <Plug>(coc-rename)
   " }}}
   
-  " {{{ ale
+  " {{{ ale settings
   let g:ale_linters = {
       \  'javascript': ['eslint'],
       \  'typescript': ['eslint']
@@ -170,85 +184,88 @@ if has("nvim")
   " highlight link ALEWarningSign  CocWarningSign
   " }}}
 
-  " {{{ vim-test
-
-  " make test commands execute using vimux.vim
-  let test#strategy = "vimux"
-  " let test#strategy = "dispatch"
-
-  nnoremap <silent> <Leader>tn :TestNearest<CR>
-  nnoremap <silent> <Leader>tf :TestFile<CR>
-  nnoremap <silent> <Leader>ts :TestSuite<CR>
-  nnoremap <silent> <Leader>tt :TestLast<CR>
-
-  nnoremap <silent> <leader>toe :call EnableTestOnSave()<CR>
-  nnoremap <silent> <leader>tod :call DisableTestOnSave()<CR>
-
-  " let test#javascript#jasmine#file_pattern = '\.test\.ts'
-  " let test#typescript#jasmine#file_pattern = '\.test\.ts'
-
-  " --- {{{ TypeScript
-  let g:test#javascript#jasmine#file_pattern = '\v.*\.test\.(ts|tsx)$'
-  function! TypeScriptTransform(cmd) abort
-    return substitute(a:cmd, '\v(.*)jasmine', 'JASMINE_CONFIG_PATH=jasmine.json \1jasmine', '')
-  endfunction
-  let g:test#custom_transformations = {'typescript': function('TypeScriptTransform')}
-  let g:test#transformation = 'typescript'
-  " --- }}}
-
-  " }}}
-  
-  " }}}
 endif
+" }}}
 
+" {{{ vim-test settings
+
+" make test commands execute using vimux.vim
+let test#strategy = "vimux"
+" let test#strategy = "dispatch"
+
+nnoremap <silent> <Leader>tn :TestNearest<CR>
+nnoremap <silent> <Leader>tf :TestFile<CR>
+nnoremap <silent> <Leader>ts :TestSuite<CR>
+nnoremap <silent> <Leader>tt :TestLast<CR>
+
+nnoremap <silent> <leader>toe :call EnableTestOnSave()<CR>
+nnoremap <silent> <leader>tod :call DisableTestOnSave()<CR>
+
+function! EnableTestOnSave() abort
+  augroup TestOnSave
+    autocmd! * <buffer>
+    autocmd BufWrite <buffer> :TestLast
+  augroup END
+  echom "Run last test on save: enabled"
+endfunction
+
+function! DisableTestOnSave() abort
+  augroup TestOnSave
+    autocmd! * <buffer>
+  augroup END
+  echom "Run last test on save: disabled"
+endfunction
+
+" let test#javascript#jasmine#file_pattern = '\.test\.ts'
+" let test#typescript#jasmine#file_pattern = '\.test\.ts'
+
+" --- {{{ TypeScript
+let g:test#javascript#jasmine#file_pattern = '\v.*\.test\.(ts|tsx)$'
+function! TypeScriptTransform(cmd) abort
+  return substitute(a:cmd, '\v(.*)jasmine', 'JASMINE_CONFIG_PATH=jasmine.json \1jasmine', '')
+endfunction
+let g:test#custom_transformations = {'typescript': function('TypeScriptTransform')}
+let g:test#transformation = 'typescript'
+" --- }}}
+
+" }}}
+
+" {{{ tmux-navigator settings
 " Disable tmux navigator when zooming the Vim pane
 let g:tmux_navigator_disable_when_zoomed = 1
+" }}}
 
-" TODO: Remove, I don't use autopairs any more
-" auto-pairs interferes with swedish characters
-let g:AutoPairsShortcutFastWrap=''
-silent! iunmap å
-silent! iunmap ä
-silent! iunmap ö
-
-" auto-pairs remaps backspace and it's incredibly hard to fix
-" let g:AutoPairsMapBS = 1
-" IDEA: Modify hartimes mapping of BS to trigger autopairdelete
-" exec "inoremap <buffer> <silent> <expr> " . i . " TryKey('" . i . "') ? " . s:RetrieveMapping(i, "i") . " : TooSoon('" . ii . "','i')"
-" let g:AutoPairsDelete=''
-" iunmap <buffer> <BS>
-" inoremap <buffer> <BS> <BS>
-" silent! iunmap 
-" inoremap  <NOP>
-" inoremap  <NOP> 
-" inoremap <BS> <NOP>
-" inoremap <buffer> <BS> <BS>
-
-" vim-hardtime
+" {{{ vim-hardtime settings
 let g:hardtime_default_on = 0 
 let g:hardtime_showmsg = 0
 let g:hardtime_maxcount = 1
 let g:hardtime_allow_different_key = 1
 let g:list_of_insert_keys = ["<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
 let g:list_of_disabled_keys = ["<BS>"]
-" set backspace=indent
+" }}}
 
-" vim-prettier
+" {{{ vim-prettier settings 
 " let g:prettier#exec_cmd_path = "/Users/elias.norrby/.nvm/versions/node/v10.15.1/bin/prettier"
 let g:prettier#autoformat = 0
 augroup PrettierAutoformat
   autocmd! 
   autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 augroup END
+" }}}
 
+" {{{ vim-polyglot settings
 " Polyglot incorrectly marks js files as jsx :(
 let g:jsx_ext_required = 1
+" }}}
 
+" {{{ vim-signify settings
 " Does this conflict with dispatch?
 " To make signify update on Gcommit
 " autocmd User Fugitive SignifyRefresh
+let g:signify_sign_change = '~'
+" }}}
 
-" vim-buftabline
+" {{{ vim-buftabline settings
 let g:buftabline_show = 1
 let g:buftabline_numbers = 2
 let g:buftabline_indicators = 1
@@ -264,9 +281,11 @@ nmap <leader>7 <Plug>BufTabLine.Go(7)
 nmap <leader>8 <Plug>BufTabLine.Go(8)
 nmap <leader>9 <Plug>BufTabLine.Go(9)
 nmap <leader>0 <Plug>BufTabLine.Go(10)
+" }}}
 
-" vim-css-color
-nmap <leader><leader>c :call css_color#toggle()<cr>
+" {{{ vim-css-color settings
+" nmap <leader><leader>c :call css_color#toggle()<cr>
+" }}}
 
 " }}}
 
@@ -274,10 +293,6 @@ nmap <leader><leader>c :call css_color#toggle()<cr>
 " ============================================================================ "
 " ===                           EDITING OPTIONS                            === "
 " ============================================================================ "
-
-" set colorcolumn=+2
-" set colorcolumn=120
-" highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
 
 augroup GitSpelling
   autocmd!
@@ -287,15 +302,15 @@ augroup END
 " Open new split panes bottom or right
 set splitbelow
 set splitright
+
 " ==== SCROLLING ====
 set so=5
 nnoremap <C-E> <C-E><C-E><C-E>
 nnoremap <C-Y> <C-Y><C-Y><C-Y>
 
-set laststatus=2    " for showing lightline
-set noshowmode 
 
 set clipboard=unnamed
+
 " ==== BACKUPS ETC ====
 set backup                       " enable backups
 set undofile                     " for storing undos
@@ -314,20 +329,12 @@ if !isdirectory(expand(&directory))
     call mkdir(expand(&directory), "p")
 endif
 
-" :set listchars=eol:¬,tab:>·,trail:·,extends:>,precedes:<,space:␣
-" set listchars=eol:¬,trail:␣
-" set list
-set hidden
-set signcolumn=yes
-
 " ==== SPACES & TABS ====
 set tabstop=8       " number of visual spaces per TAB
 set softtabstop=2   " number of spaces in tab when editing
 set expandtab       " tabs are spaces
 set autoindent      " enable autoindent
-" set smartindent     " enable smart indenting
 set shiftwidth=2    " number of spaces to use when indenting
-" set smarttab        " smart tabs (beginning of line behavior)
 set linebreak       " line wrapping
 " filetype plugin indent on " probably on by default
 
@@ -336,13 +343,9 @@ set autoread
 " is equal to:
 " set backspace=2
 
+" search ignores case unless an uppercase letter is used
 set smartcase
 set ignorecase
-
-" if !has("nvim") 
-"   set noesckeys " Make esc register immediately
-" endif
-" set nocompatible
 
 set ttimeoutlen=10
 " This could be used to reduce the timeout for only the esc key
@@ -355,8 +358,6 @@ set ttimeoutlen=10
 
 set foldmethod=marker
 set foldlevelstart=20
-" set foldcolumn=1
-" set foldmarker={{{,}}}
 
 " this is the default
 " set complete=.,w,b,u,t,i
@@ -367,7 +368,7 @@ set foldlevelstart=20
 
 " {{{ UI
 " ============================================================================ "
-" ===                           UI                            === "
+" ===                                UI                                    === "
 " ============================================================================ "
 
 " let s:theme_to_use="ayu"
@@ -385,18 +386,24 @@ augroup FiletypeCorrections
   autocmd!
   autocmd BufReadPost,BufNewFile *.test.ts set  syntax=jasmine
   autocmd BufReadPost,BufNewFile tsconfig.json set filetype=jsonc 
-
 augroup END
 
 " ==== UI Elements ====
 set number         " show line numbers
 set relativenumber " show relative line numbers
 set showcmd        " show command in bottom bar
-" set showmatch      " highlight matching [{()}]
-" set matchtime=3    " reduce time for showing matching parens
 
 set incsearch      " search as characters are entered
 set nohlsearch     " highlight matches
+
+set laststatus=2    " for showing lightline
+set noshowmode 
+
+" :set listchars=eol:¬,tab:>·,trail:·,extends:>,precedes:<,space:␣
+" set listchars=eol:¬,trail:␣
+" set list
+set hidden
+set signcolumn=yes
 
 
 augroup CursorLineOnInsert
@@ -533,11 +540,10 @@ function! MyHighlights() abort
   highlight!   link ALEErrorSign    CocErrorSign
   highlight!   link ALEWarningSign  CocWarningSign
 
-  " ayu-vim is missing this highlight
-  highlight!   DiffDelete                      guibg=#272D38 guifg=#F27983
-
-
   if s:theme_to_use == "ayu"
+    " ayu-vim is missing this highlight
+    highlight!   DiffDelete                      guibg=#272D38 guifg=#F27983
+
     " coc has very dark text highlight
     highlight!   CocHighlightText guibg=#2D3B4D
 
@@ -618,21 +624,6 @@ endif
 " ===                           KEYBINDS                            === "
 " ============================================================================ "
 
-function! EnableTestOnSave() abort
-  augroup TestOnSave
-    autocmd! * <buffer>
-    autocmd BufWrite <buffer> :TestLast
-  augroup END
-  echom "Run last test on save: enabled"
-endfunction
-
-function! DisableTestOnSave() abort
-  augroup TestOnSave
-    autocmd! * <buffer>
-  augroup END
-  echom "Run last test on save: disabled"
-endfunction
-
 " toggle hardtime
 nnoremap <Leader><Leader>h :HardTimeToggle<CR>
 " open netwr in vertical split
@@ -659,12 +650,6 @@ nnoremap <silent> k gk
 " nnoremap <CR> G
 " nnoremap <CR> o<Esc>
 
-" " split navigation
-" nnoremap <Leader>h <C-W>h
-" nnoremap <Leader>j <C-W>j
-" nnoremap <Leader>k <C-W>k
-" nnoremap <Leader>l <C-W>l
-
 " Map fzf commands
 nnoremap <C-P> :Files<CR>
 nnoremap <Leader>o :Files<CR>
@@ -680,6 +665,5 @@ nnoremap <leader>,ch :History:<CR>
 nnoremap <Leader><Leader>r :source $MYVIMRC<CR>
 
 nnoremap <Leader>g `
-
 
 " }}}
