@@ -22,8 +22,10 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
-Plug 'tpope/unimpaired'
+Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-fugitive'
+" vim-endwise seems to interefere with coc/delimitmate mapping
+" Plug 'tpope/vim-endwise'
 Plug 'junegunn/gv.vim'
 Plug 'godlygeek/tabular'
 Plug 'wellle/targets.vim'
@@ -44,8 +46,11 @@ Plug 'junegunn/seoul256.vim'
 Plug 'takac/vim-hardtime'
 Plug 'ap/vim-buftabline'
 Plug 'easymotion/vim-easymotion'
+Plug 'edkolev/tmuxline.vim'
+" Plug 'haya14busa/incsearch.vim'
 
 " This is very situational and seems to slow down rendering, enable on demand.
+" Seems like neovim does this by default
 " Plug 'ap/vim-css-color'
 
 Plug 'kana/vim-textobj-function'
@@ -69,6 +74,12 @@ if has("nvim")
 endif
 
 call plug#end()
+
+" map /  <Plug>(incsearch-forward)
+" map ?  <Plug>(incsearch-backward)
+" map g/ <Plug>(incsearch-stay)
+
+let g:tmuxline_powerline_separators = 0
 
 map \ <Plug>(easymotion-prefix)
 
@@ -443,10 +454,9 @@ if has("termguicolors")
     \   'cocstatus': 'coc#status',
     \   'currentfunction': 'CocCurrentFunction'
     \ },
-    \ 'separator': { 'left': '', 'right': '' },
-    \ 'subseparator': { 'left': '', 'right': '' },
     \ }
-    " \ }
+    " \ 'separator': { 'left': '', 'right': '' },
+    " \ 'subseparator': { 'left': '', 'right': '' },
     " \ }
 else
   let g:lightline = {
