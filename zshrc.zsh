@@ -7,6 +7,14 @@
 # =============================================================================
 
 # === Config ===
+# export SHELL="/usr/local/bin/zsh"
+# setopt autonamedirs
+# box=~/Dropbox/folders
+# mygit=~/Dropbox/folders/git
+# common=~/Dropbox/d_COMMON
+export GOPATH=~/dev/go
+
+source ~/.dotfiles/zsh/fzf-functions.zsh
 
 function tn() {
   if [[ $# -eq 0 ]] ; then
@@ -59,15 +67,15 @@ function mkd() {
     cd -P -- "$1"
 }
 
-function cl() {
+function color() {
   print -P -- "$1: %F{$1}This is what your text would look like%f";
 }
 
-function lcol() {
+function list_colors_short() {
   for code ({00..15}) print -P -- "$code: %F{$code}This is what your text would look like%f";
 }
 
-function list_colors() {
+function list_colors_long() {
   for code ({000..255}) print -P -- "$code: %F{$code}This is how your text would look like%f";
 }
 
@@ -83,6 +91,9 @@ if [ -d "$NVM_DIR" ]; then
   NODE_GLOBALS=(`find ~/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' | xargs -n1 basename | sort | uniq`)
   NODE_GLOBALS+=("node")
   NODE_GLOBALS+=("nvm")
+  NODE_GLOBALS+=("nvim")
+  NODE_GLOBALS+=("nnvim")
+  NODE_GLOBALS+=("node_modules/.bin/jasmine")
 
   # load_nvm () {
   #     export NVM_DIR=~/.nvm
@@ -125,8 +136,8 @@ export LC_ALL="en_US.UTF-8"
 
 bindkey -v
 # Autosuggestion key-bind
-bindkey '^ ' autosuggest-accept
-bindkey 'jk' vi-cmd-mode
+# bindkey '^ ' autosuggest-accept
+# bindkey 'jk' vi-cmd-mode
 # Unbind esc key - why do I wan't that..?
 bindkey -s '^[7' '|'
 #bindkey '^[[1;9C' forward-word
@@ -168,7 +179,7 @@ if [ "$(uname)" = "Darwin" ]; then
   # Directory colors
   zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
   # Suggestions are pretty laggy on ssh connection, try disabling it on remotes
-  zplug "zsh-users/zsh-autosuggestions"
+  # zplug "zsh-users/zsh-autosuggestions"
 fi
 
 # Jump back to parent directory
@@ -254,7 +265,8 @@ HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=$HISTSIZE
 
-setopt autocd                   # Allow changing directories without `cd`
+# setopt autocd                   # Allow changing directories without `cd`
+# setopt cdablevars               # Dont require ~ expasion of vars
 setopt append_history           # Dont overwrite history
 setopt extended_history         # Also record time and duration of commands.
 setopt share_history            # Share history between multiple shells
@@ -270,14 +282,19 @@ setopt hist_ignore_space        # Ignore commands that start with space.
 # unsetopt BEEP                 # Turn off all beeps
 unsetopt LIST_BEEP              # Turn off autocomplete beeps 
 
-export FZF_DEFAULT_COMMAND='fd --type f'
+# export FZF_DEFAULT_COMMAND='fd --type f'
+export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_DEFAULT_OPTS='--height 40% --reverse --extended --border --inline-info --color=dark,bg+:235,hl+:10,pointer:5'
-# export FZF_DEFAULT_OPTS='
-#   --height 40% --reverse --border --inline-info 
-#   --color dark,hl:33,hl+:37,fg+:235,bg+:136,fg+:254
-#   --color info:254,prompt:37,spinner:108,pointer:235,marker:235
-# '
+# export FZF_DEFAULT_OPTS='--height 40% --reverse --extended --border --inline-info --color=dark,bg+:235,hl+:10,pointer:5'
+
+export FZF_DEFAULT_OPTS='
+  --prompt "λ: "
+  --color fg:7,bg:0,hl:3,fg+:15,bg+:0,hl+:4
+  --color info:7,prompt:4,spinner:6,pointer:4,marker:4,gutter:0
+'
+
+#  --prompt "❯ "
+#  --prompt "λ: "
 
 alias ls="ls --color=auto"
 
@@ -361,11 +378,13 @@ zplug load
 # =============================================================================
 #                             Post zplug load
 # =============================================================================
+
 # Change color of pure prompt to yellow instead of magenta (extracted from source)
-# if a virtualenv is activated, display it in grey
-PROMPT='%(12V.%F{242}%12v%f .)'
+# Apparently, the first line isn't needed
+# from source: if a virtualenv is activated, display it in grey
+# PROMPT='%(12V.%F{242}%12v%f .)'
 # prompt turns red if the previous command didn't exit with 0
-PROMPT+='%(?.%F{yellow}.%F{red})${prompt_pure_state[prompt]}%f '
+PROMPT='%(1j.%j .)%(?.%F{yellow}.%F{red})${prompt_pure_state[prompt]}%f '
 
 # Set zsh autosuggestion text to a brighter color
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'

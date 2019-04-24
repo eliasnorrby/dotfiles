@@ -10,6 +10,7 @@ alias egrep='() { $(whence -p egrep) --color=auto $@ }'
 alias l="ls -1"
 alias ll="ls -l"
 
+alias cl="clear"
 
 # Folder managemant
 # alias d='dirs -v'
@@ -25,24 +26,13 @@ alias ll="ls -l"
 # alias pu='() { pushd $1 &> /dev/null; dirs -v; }'
 # alias po='() { popd &> /dev/null; dirs -v; }'
 
-# Open zshconfig in Sublime Text
-alias sub="open -a \"Sublime Text\""
-# alias zshconfig="open -a \"Sublime Text\" ~/.zshrc"
-# With Sublime Text cli installed:
-# alias zshconfig="subl ~/.zshrc"
-alias zshconfig="subl ~/.dotfiles/zshrc.zsh"
-# alias aconfig="subl ~/.zsh_aliases"
-alias aconfig="subl ~/.dotfiles/aliases.zsh"
-alias vimconfig="vim ~/.dotfiles/vimrc.vim"
-alias termconfig="sh ~/scripts/term-config.sh"
-alias allconfig="subl ~/.dotfiles"
-alias keyconfig="subl ~/.dotfiles/keyboard/hammerspoon"
 alias cdot="cd ~/.dotfiles"
 
-# Navigate to root private folder in FFCG Dropbox
-alias cdh="cd ~/Dropbox\ \(FFCG\)/folders" 
-alias cdd="cd ~/Dropbox\ \(FFCG\)/folders/dev"
-alias cdck="cd ~/Dropbox\ \(FFCG\)/folders/dev/CodeIsKing" 
+alias cdd="cd ~/dev"
+alias cdl="cd ~/learn"
+alias cdb="cd ~/boilerplate"
+alias cds="cd ~/sandbox"
+alias cdck="cd ~/dev/code-is-king" 
 
 # Aliases for creating new CIK projects
 alias npsht="sh newTypeScriptProject.sh"
@@ -84,4 +74,7 @@ alias reloadconfig="source ~/.zshrc"
 # if [ "$(uname)" = "Darwin" ]; then
 #   source ~/.local_zshconfig/*.zsh
 # fi
+
+alias nnvim=~/tmp/nvim-osx64/bin/nvim 
+alias n="node -v > /dev/null"
 
