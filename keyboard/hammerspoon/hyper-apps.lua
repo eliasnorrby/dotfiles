@@ -8,7 +8,8 @@ return {
   { 'e', 'Visual Studio Code' },	-- "E" for "Editor"
   { 'f', 'Fantastical 2' },         -- "F" for "Fantastical"
   { 's', 'Sublime Text' },          -- "S" for "Sublime"
-  { 't', 'iTerm' },             	-- "T" for "Terminal"
+  -- { 't', 'iTerm' },             	-- "T" for "Terminal"
+  { 't', 'Alacritty' },             	-- "T" for "Terminal"
   { 'd', 'Drafts' },            	-- "D" for "Drafts"
   { 'm', 'Spark'},              -- "E" for "Email"
   { 'q', 'MySQLWorkbench'},
