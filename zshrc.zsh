@@ -8,7 +8,11 @@
 
 # === Config ===
 # export SHELL="/usr/local/bin/zsh"
-export GOPATH=$HOME/dev/go
+# setopt autonamedirs
+# box=~/Dropbox/folders
+# mygit=~/Dropbox/folders/git
+# common=~/Dropbox/d_COMMON
+export GOPATH=~/dev/go
 
 source ~/.dotfiles/zsh/fzf-functions.zsh
 
@@ -63,15 +67,15 @@ function mkd() {
     cd -P -- "$1"
 }
 
-function cl() {
+function color() {
   print -P -- "$1: %F{$1}This is what your text would look like%f";
 }
 
-function lcol() {
+function list_colors_short() {
   for code ({00..15}) print -P -- "$code: %F{$code}This is what your text would look like%f";
 }
 
-function list_colors() {
+function list_colors_long() {
   for code ({000..255}) print -P -- "$code: %F{$code}This is how your text would look like%f";
 }
 
@@ -175,7 +179,7 @@ if [ "$(uname)" = "Darwin" ]; then
   # Directory colors
   zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
   # Suggestions are pretty laggy on ssh connection, try disabling it on remotes
-  zplug "zsh-users/zsh-autosuggestions"
+  # zplug "zsh-users/zsh-autosuggestions"
 fi
 
 # Jump back to parent directory
@@ -202,7 +206,7 @@ zplug "zsh-users/zsh-syntax-highlighting", defer:2
 export TERM="xterm-256color"
 
 # THEME_TO_USE="P9K"
-THEME_TO_USE="P9K"
+THEME_TO_USE="PURE"
 
 # ----------------------------------------
 # Powerlevel9k
@@ -261,7 +265,8 @@ HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=$HISTSIZE
 
-setopt autocd                   # Allow changing directories without `cd`
+# setopt autocd                   # Allow changing directories without `cd`
+# setopt cdablevars               # Dont require ~ expasion of vars
 setopt append_history           # Dont overwrite history
 setopt extended_history         # Also record time and duration of commands.
 setopt share_history            # Share history between multiple shells
@@ -373,11 +378,13 @@ zplug load
 # =============================================================================
 #                             Post zplug load
 # =============================================================================
+
 # Change color of pure prompt to yellow instead of magenta (extracted from source)
-# if a virtualenv is activated, display it in grey
-PROMPT='%(12V.%F{242}%12v%f .)'
+# Apparently, the first line isn't needed
+# from source: if a virtualenv is activated, display it in grey
+# PROMPT='%(12V.%F{242}%12v%f .)'
 # prompt turns red if the previous command didn't exit with 0
-PROMPT+='%(?.%F{yellow}.%F{red})${prompt_pure_state[prompt]}%f '
+PROMPT='%(1j.%j .)%(?.%F{yellow}.%F{red})${prompt_pure_state[prompt]}%f '
 
 # Set zsh autosuggestion text to a brighter color
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
