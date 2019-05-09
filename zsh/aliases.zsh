@@ -43,10 +43,10 @@ alias nst="sh ~/utilities/newSrcAndTestFile.sh"
 
 # Docker aliases
 alias d="docker"
-alias dc="docker container"
-alias dcl="docker container ls"
-alias dcs="docker container start"
-alias dcx="docker container stop"
+alias dk="docker container"
+alias dkl="docker container ls"
+alias dks="docker container start"
+alias dkx="docker container stop"
 alias di="docker image"
 alias dil="docker image ls"
 alias ds="docker service"
@@ -56,6 +56,8 @@ alias dv="docker volume"
 alias dvl="docker volume ls"
 alias dn="docker node"
 alias dnl="docker node ls"
+
+alias dc="docker-compose"
 
 # VSCode
 alias c="code"
