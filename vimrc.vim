@@ -219,6 +219,8 @@ nnoremap <silent> <Leader><Leader>g :Goyo<CR>
 
 " {{{ vim-test settings
 
+let test#python#runner = 'pytest'
+
 " make test commands execute using vimux.vim
 let test#strategy = "vimux"
 " let test#strategy = "dispatch"
