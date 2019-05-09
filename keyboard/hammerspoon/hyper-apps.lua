@@ -9,7 +9,7 @@ return {
   -- { 't', 'iTerm' },             	-- "T" for "Terminal"
   { 't', 'Alacritty' },             	-- "T" for "Terminal"
   { 'd', 'Drafts' },            	-- "D" for "Drafts"
-  { 'm', 'Spark'},              -- "E" for "Email"
+  { 'm', 'Gmail'},              -- "E" for "Email"
   { 'q', 'MySQLWorkbench'},
   { 'n', 'Postman'},
 }
