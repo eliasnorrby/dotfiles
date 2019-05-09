@@ -288,6 +288,7 @@ setopt hist_ignore_space        # Ignore commands that start with space.
 unsetopt LIST_BEEP              # Turn off autocomplete beeps 
 
 # export FZF_DEFAULT_COMMAND='fd --type f'
+# export FZF_DEFAULT_COMMAND='rg --files --glob=!node_modules/*'
 export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # export FZF_DEFAULT_OPTS='--height 40% --reverse --extended --border --inline-info --color=dark,bg+:235,hl+:10,pointer:5'
