@@ -77,6 +77,9 @@ alias reloadconfig="source ~/.zshrc"
 #   source ~/.local_zshconfig/*.zsh
 # fi
 
+# Nightly build of neovim
 alias nnvim=~/tmp/nvim-osx64/bin/nvim 
+# Load node and launch neovim
+alias v="n;~/tmp/nvim-osx64/bin/nvim"
 alias n="node -v > /dev/null"
 
