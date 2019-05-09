@@ -72,6 +72,11 @@ alias git="nocorrect git"
 
 alias reloadconfig="source ~/.zshrc"
 
+alias zshc="vim ~/.dotfiles/zshrc.zsh"
+alias vimc="vim ~/.dotfiles/vimrc.vim"
+alias tmuc="vim ~/.dotfiles/tmux.conf"
+alias alac="vim ~/.dotfiles/alacritty.yml"
+
 # There's basically just funky stuff in there...
 # if [ "$(uname)" = "Darwin" ]; then
 #   source ~/.local_zshconfig/*.zsh
