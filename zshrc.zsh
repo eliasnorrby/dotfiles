@@ -184,7 +184,7 @@ if [ "$(uname)" = "Darwin" ]; then
   # Directory colors
   zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
   # Suggestions are pretty laggy on ssh connection, try disabling it on remotes
-  # zplug "zsh-users/zsh-autosuggestions"
+  zplug "zsh-users/zsh-autosuggestions"
 fi
 
 # Jump back to parent directory
