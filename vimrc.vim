@@ -662,6 +662,8 @@ nnoremap <leader>,m :Marks<CR>
 nnoremap <leader>,sh :History/<CR>
 nnoremap <leader>,ch :History:<CR>
 
+nnoremap <leader>sr :SignifyRefresh<CR>
+
 nnoremap <Leader><Leader>r :source $MYVIMRC<CR>
 
 " vim-fugitive mappings
@@ -673,3 +675,5 @@ nnoremap <Leader>gb :Gbrowse<CR>
 vnoremap <Leader>gb :Gbrowse<CR>
 
 " }}}
+
+set diffopt=internal,algorithm:patience
