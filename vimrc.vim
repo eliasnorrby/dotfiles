@@ -664,6 +664,12 @@ nnoremap <leader>,ch :History:<CR>
 
 nnoremap <Leader><Leader>r :source $MYVIMRC<CR>
 
-nnoremap <Leader>g `
+" vim-fugitive mappings
+nnoremap <Leader>gs :Gstatus<CR>
+nnoremap <Leader>gw :Gwrite<CR>
+nnoremap <Leader>gc :Gcommit<CR>
+nnoremap <Leader>gd :Gdiff<CR>
+nnoremap <Leader>gb :Gbrowse<CR>
+vnoremap <Leader>gb :Gbrowse<CR>
 
 " }}}
