@@ -119,6 +119,9 @@ font:
     family: SauceCodePro Nerd Font
     style: Regular
 
+    # family: Iosevka Nerd Font
+    # style: Regular
+
   # Bold font face
   bold:
     family: SauceCodePro Nerd Font
@@ -184,7 +187,7 @@ persistent_logging: false
 # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: false
 
-# Colors (Gruvbox dark)
+# {{{ Colors (Gruvbox dark)
 colors:
   # Default colors
   primary:
@@ -215,6 +218,7 @@ colors:
     magenta: '0xd3869b'
     cyan:    '0x8ec07c'
     white:   '0xebdbb2'
+# }}}
 
 # # {{{ Ayu theme
 # # Colors (Ayu Dark)
