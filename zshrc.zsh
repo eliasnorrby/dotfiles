@@ -13,6 +13,11 @@
 # mygit=~/Dropbox/folders/git
 # common=~/Dropbox/d_COMMON
 export GOPATH=~/dev/go
+PATH=/Users/elias.norrby/Library/Python/3.7/bin:$PATH
+
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+fi
 
 source ~/.dotfiles/zsh/fzf-functions.zsh
 
