@@ -24,6 +24,8 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'godlygeek/tabular'
 Plug 'raimondi/delimitmate'
+Plug 'mattn/emmet-vim'
+" Plug 'plasticboy/vim-markdown'
 
 " Ui
 Plug 'tpope/vim-vinegar'
@@ -39,6 +41,7 @@ Plug 'easymotion/vim-easymotion'
 
 " Git
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 Plug 'junegunn/gv.vim'
 
 " Text objects
@@ -319,6 +322,18 @@ nmap <leader>0 <Plug>BufTabLine.Go(10)
 " nmap <leader><leader>c :call css_color#toggle()<cr>
 " }}}
 
+" {{{ vim-emmit settings
+let g:user_emmet_mode='i'
+let g:user_emmet_leader_key=','
+let g:user_emmet_settings = {
+\ 'html' : {
+\     'block_all_childless' : 1,
+\   }
+\ }
+" }}}
+
+" {{{ delimite settings
+let delimitMate_expand_cr=1
 " }}}
 
 " {{{ Editing options
