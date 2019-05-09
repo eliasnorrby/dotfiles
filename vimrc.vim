@@ -386,7 +386,7 @@ set linebreak       " line wrapping
 " filetype plugin indent on " probably on by default
 
 set autoread
-" set backspace=indent,eol,start
+set backspace=indent,eol,start
 " is equal to:
 " set backspace=2
 
