@@ -12,4 +12,5 @@ return {
   { 'm', 'Gmail'},              -- "E" for "Email"
   { 'q', 'MySQLWorkbench'},
   { 'n', 'Postman'},
+  { 'w', 'MacVim'},
 }

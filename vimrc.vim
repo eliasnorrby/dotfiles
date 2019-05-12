@@ -33,6 +33,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
 Plug 'mhinz/vim-signify'
 " Plug 'ap/vim-buftabline'
+Plug 'mhinz/vim-startify'
 
 " Navigation
 Plug 'tpope/vim-unimpaired'
@@ -88,12 +89,32 @@ Plug 'prettier/vim-prettier', {
 " Plug 'ap/vim-css-color'
 
 if has("nvim")
-  " nvim plugins
+  " nvim specific settings
   Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
   Plug 'w0rp/ale'
 endif
 
+if has("gui_macvim")
+  " MacVim specific settings
+  Plug 'vimwiki/vimwiki'
+
+  " {{{ vimwiki settings
+  let g:vimwiki_list = [{'path': '~/Dropbox/d_COMMON/vimwiki/',
+                        \ 'syntax': 'markdown', 'ext': '.md', 'nested_syntaxes': {'js': 'javascript'}}]
+  " }}}
+endif
+
+if has("gui_vimr")
+  " VimR specific settings
+endif
+
 call plug#end()
+
+" {{{ startify settings
+" let g:startify_bookmarks = ['~/Dropbox/d_COMMON/vimwiki/index.md' ]
+
+" }}}
+
 
 " map /  <Plug>(incsearch-forward)
 " map ?  <Plug>(incsearch-backward)
@@ -224,9 +245,12 @@ nnoremap <silent> <Leader><Leader>g :Goyo<CR>
 
 let test#python#runner = 'pytest'
 
-" make test commands execute using vimux.vim
-let test#strategy = "vimux"
-" let test#strategy = "dispatch"
+if has("gui_vimr")
+  " Here goes some VimR specific settings like
+  " cd ~/notes
+  cd ~/Dropbox/d_COMMON/vimwiki/
+  edit index.md
+endif
 
 nnoremap <silent> <Leader>tn :TestNearest<CR>
 nnoremap <silent> <Leader>tf :TestFile<CR>
@@ -284,7 +308,7 @@ let g:list_of_disabled_keys = ["<BS>"]
 let g:prettier#autoformat = 0
 augroup PrettierAutoformat
   autocmd! 
-  autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+  autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.vue,*.yaml,*.html PrettierAsync
 augroup END
 " }}}
 
@@ -330,6 +354,12 @@ let g:user_emmet_settings = {
 \     'block_all_childless' : 1,
 \   }
 \ }
+
+let g:user_emmet_install_global = 0
+augroup EmmetFileFilter
+  autocmd FileType html,css,jsx EmmetInstall
+augroup END
+
 " }}}
 
 " {{{ delimite settings
@@ -723,4 +753,10 @@ vnoremap <Leader>gb :Gbrowse<CR>
 
 " }}}
 
+" experimentating
+
+set synmaxcol=128
+syntax sync minlines=256
+
 set diffopt=internal,algorithm:patience
+set lazyredraw

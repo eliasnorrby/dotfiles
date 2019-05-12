@@ -69,7 +69,7 @@ hyper:bind({}, 'a', function()
 end)
 
 -- To get into window mode
-hyper:bind({}, 'w', function()
+hyper:bind({}, 'v', function()
   hyper:exit()
   enterWindowMode()
 end)

@@ -3,6 +3,7 @@
 ln -svnf ~/.dotfiles/zshrc.zsh ~/.zshrc
 ln -svnf ~/.dotfiles/tmux.conf ~/.tmux.conf
 ln -svnf ~/.dotfiles/vimrc.vim ~/.vimrc 
+ln -svnf ~/.dotfiles/gvimrc.vim ~/.gvimrc 
 ln -svnf ~/.dotfiles/vim/colors ~/.vim/colors
 ln -svnf ~/.dotfiles/eslintrc.json ~/.eslintrc
 ln -svnf ~/.dotfiles/gitignore_global ~/.gitignore_global
