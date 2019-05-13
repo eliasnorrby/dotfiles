@@ -94,10 +94,10 @@ if [ -d "$NVM_DIR" ]; then
 
   # Add every binary that requires nvm, npm or node to run to an array of node globals
   NODE_GLOBALS=(`find ~/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' | xargs -n1 basename | sort | uniq`)
-  NODE_GLOBALS+=("node")
+  # NODE_GLOBALS+=("node")
   NODE_GLOBALS+=("nvm")
   NODE_GLOBALS+=("nvim")
-  NODE_GLOBALS+=("nnvim")
+  # This makes vim-test work
   NODE_GLOBALS+=("node_modules/.bin/jasmine")
 
   # load_nvm () {
@@ -120,6 +120,9 @@ if [ "$(uname)" = "Darwin" ]; then
   # For Ruby
   export PATH="/usr/local/opt/ruby/bin:$PATH"
   export PATH="/usr/local/lib/ruby/gems/2.5.0/bin:$PATH"
+
+  # For node
+  export PATH="~/.nvm/versions/node/v10.15.1/bin/node:$PATH"
 
   # For using GNU coreutils with default names
   # NTS: I use this for the 'tree' command
