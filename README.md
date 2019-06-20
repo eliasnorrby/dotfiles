@@ -67,6 +67,8 @@ Getting ready to perform the first installation on another Mac. Here's an attemp
 7. Install Nerd fonts (in Dropbox/Common)
 8. Download iTerm color schemes
 
+Installing tmux on ubuntu: [link](https://bogdanvlviv.com/posts/tmux/how-to-install-the-latest-tmux-on-ubuntu-16_04.html)
+Interesting ansible provisioning: [link](https://sudo-science.com/using-ansible-to-set-up-vim/)
 ## 2018-11-09
 I haven't decided on a final structure or separation of concerns for these yet, but I thought it best to perform an initial commit sooner rather than later for backup purposes. As it stands now:
 
