@@ -19,3 +19,27 @@
                             }
                         ]
                     }
+
+
+
+                    {
+                        "description": "Open chrome",
+                        "manipulators": [
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "c",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "right_command"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "shell_command": "open -a 'Google Chrome.app'"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
