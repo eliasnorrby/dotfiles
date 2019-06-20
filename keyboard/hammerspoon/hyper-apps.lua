@@ -5,7 +5,8 @@ return {
   { 'o', 'OmniFocus' }, 			-- "D" for "Do!" ... or "Done!"
   { 'e', 'Visual Studio Code' },	-- "E" for "Editor"
   { 'f', 'Fantastical 2' },         -- "F" for "Fantastical"
-  { 's', 'Sublime Text' },          -- "S" for "Sublime"
+  { 's', 'Emacs' },          -- "S" for "Sublime"
+  { 'g', 'Things' },
   -- { 't', 'iTerm' },             	-- "T" for "Terminal"
   { 't', 'Alacritty' },             	-- "T" for "Terminal"
   { 'd', 'Drafts' },            	-- "D" for "Drafts"
@@ -13,4 +14,5 @@ return {
   { 'q', 'MySQLWorkbench'},
   { 'n', 'Postman'},
   { 'w', 'MacVim'},
+  { 'i', 'IntelliJ IDEA CE'}
 }
