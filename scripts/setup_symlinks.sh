@@ -8,6 +8,7 @@ ln -svnf ~/.dotfiles/vim/colors ~/.vim/colors
 ln -svnf ~/.dotfiles/eslintrc.json ~/.eslintrc
 ln -svnf ~/.dotfiles/gitignore_global ~/.gitignore_global
 ln -svnf ~/.dotfiles/prettierrc.json ~/.prettierrc
+ln -svnf ~/.dotfiles/doom.d ~/.doom.d
 
 if [[ "$(uname)" = "Darwin" ]]; then
   # Remember to also put init.lua in hammerspoon dir (require('keyboard'))
