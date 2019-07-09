@@ -130,13 +130,5 @@ esac
 
 ## 3: Commit and push the changes
 git commit -m "$MSG"
-# git push
-
-
-## 4: Increment lecture counter
-
-
-
-
-
+git push
 
