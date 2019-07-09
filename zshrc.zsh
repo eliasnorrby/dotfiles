@@ -12,8 +12,6 @@
 # box=~/Dropbox/folders
 # mygit=~/Dropbox/folders/git
 # common=~/Dropbox/d_COMMON
-export GOPATH=~/dev/go
-PATH=/Users/elias.norrby/Library/Python/3.7/bin:$PATH
 
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
@@ -127,6 +125,12 @@ if [ "$(uname)" = "Darwin" ]; then
   # For using GNU coreutils with default names
   # NTS: I use this for the 'tree' command
   export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
+
+  export GOPATH=~/dev/go
+  export PATH=/Users/elias.norrby/Library/Python/3.7/bin:$PATH
+
+  export PATH=/Users/elias.norrby/.emacs.d/bin:$PATH
+  export PATH=/Users/elias.norrby/bin:$PATH
 fi
 
 # Remove duplicates from $PATH (produced by running 'zsh' to refresh config)
