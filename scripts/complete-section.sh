@@ -67,7 +67,9 @@ if [ ! -z "$1" ] ; then
 else
   LECTURE_NUMBER=$(read_lecture_counter)
   BASE_MSG="Enter a description"
+  VIM_MSG="type 'v' to edit in vim"
   if [ -z "$LECTURE_NUMBER" ] ; then
+    # This branch shouldn't happen any more
     EXTENDED_MSG="e.g. 'Complete lecture 12'"
     while [ -z "$MSG" ]; do
       read -p "$BASE_MSG ($EXTENDED_MSG): " MSG
@@ -76,9 +78,12 @@ else
     # DEFAULT_MSG="Complete lecture $((LECTURE_NUMBER+1))"
     DEFAULT_MSG="Complete lecture $LECTURE_NUMBER"
     EXTENDED_MSG="default: '$DEFAULT_MSG'"
-    read -p "$BASE_MSG ($EXTENDED_MSG): " MSG
+    read -p "$BASE_MSG ($EXTENDED_MSG) ($VIM_MSG): " MSG
     if [ -z "$MSG" ] ; then
       MSG=$DEFAULT_MSG
+    elif [ "$MSG" == "v" ] ; then
+      OPT_EDIT_MSG=true
+      MSG="<to be edited in vim>"
     fi
   fi
 fi
@@ -129,6 +134,10 @@ case $CHOICE in
 esac
 
 ## 3: Commit and push the changes
-git commit -m "$MSG"
+if [ "$OPT_EDIT_MSG" == true ] ; then
+  git commit
+else
+  git commit -m "$MSG"
+fi
 git push
 
