@@ -11,6 +11,7 @@
 (map! :map 'evilem-map
       "l" #'avy-goto-line
       "c" #'avy-goto-char-timer
+      "i" #'avy-goto-char-in-line
       (:prefix "d"
         "l" #'avy-kill-whole-line
         "r" #'avy-kill-region))
