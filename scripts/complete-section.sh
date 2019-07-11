@@ -4,6 +4,20 @@
 # to a git repository.
 set -e
 
+if [ ! -d .git ] ; then
+  PROJECT_ROOT=$(git rev-parse --show-toplevel)
+
+  PROMPT_MSG="Confirm: Navigate to project root? ($PROJECT_ROOT) "
+  read -p "$PROMPT_MSG" CHOICE
+  
+  if [ -z "$CHOICE" ] ; then
+    cd "$PROJECT_ROOT"
+  else
+    exit 1
+  fi
+fi
+
+
 ## Variables
 LECTURE_COUNTER=$(pwd)/lecture_counter
 
