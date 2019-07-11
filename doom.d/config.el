@@ -22,7 +22,7 @@
 ;; projectile
 ;; Look for projects in these folders
 ;; TODO add .projectile files to all projects in ~/learn
-(setq  projectile-project-search-path '("~/dev" "~/learn" "~/sandbox"))
+(setq projectile-project-search-path '("~/dev" "~/learn" "~/sandbox"))
 
 ;; org
 ;; Disable company suggestions in org-mode
