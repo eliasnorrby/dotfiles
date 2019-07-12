@@ -6,15 +6,7 @@ set -e
 
 if [ ! -d .git ] ; then
   PROJECT_ROOT=$(git rev-parse --show-toplevel)
-
-  PROMPT_MSG="Confirm: Navigate to project root? ($PROJECT_ROOT) "
-  read -p "$PROMPT_MSG" CHOICE
-  
-  if [ -z "$CHOICE" ] ; then
-    cd "$PROJECT_ROOT"
-  else
-    exit 1
-  fi
+  cd "$PROJECT_ROOT"
 fi
 
 
