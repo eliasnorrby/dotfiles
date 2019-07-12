@@ -20,6 +20,7 @@ fi
 
 ## Variables
 LECTURE_COUNTER=$(pwd)/lecture_counter
+DEFAULT_MSG_BASE="L"
 
 ## Functions
 validate_number() {
@@ -90,7 +91,7 @@ else
     done
   else
     # DEFAULT_MSG="Complete lecture $((LECTURE_NUMBER+1))"
-    DEFAULT_MSG="Complete lecture $LECTURE_NUMBER"
+    DEFAULT_MSG="$DEFAULT_MSG_BASE $LECTURE_NUMBER"
     EXTENDED_MSG="default: '$DEFAULT_MSG'"
     read -p "$BASE_MSG ($EXTENDED_MSG) ($VIM_MSG): " MSG
     if [ -z "$MSG" ] ; then
