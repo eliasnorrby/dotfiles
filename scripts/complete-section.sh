@@ -98,6 +98,8 @@ else
     elif [ "$MSG" == "v" ] ; then
       OPT_EDIT_MSG=true
       MSG="<to be edited in vim>"
+    else
+      MSG="${DEFAULT_MSG}: $MSG"
     fi
   fi
 fi
@@ -149,7 +151,7 @@ esac
 
 ## 3: Commit and push the changes
 if [ "$OPT_EDIT_MSG" == true ] ; then
-  git commit
+  git commit -em "${DEFAULT_MSG}: "
 else
   git commit -m "$MSG"
 fi
