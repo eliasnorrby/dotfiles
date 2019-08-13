@@ -1,8 +1,19 @@
 ;;; ~/.doom.d/config.el -*- lexical-binding: t; -*-
 ;; Place your private configuration here
 
+;; :weight
+
+;; VALUE specifies the weight of the font to use.  It must be one of the
+;; symbols ultra-bold, extra-bold, bold, semi-bold, normal,
+;; semi-light, light, extra-light, ultra-light.
+
 ;; Change the font!
-(setq doom-font (font-spec :family "Source Code Pro" :size 12))
+;; (setq doom-font (font-spec :family "Source Code Pro" :size 14))
+;; (setq doom-font (font-spec :family "mononoki Nerd Font" :size 14))
+;; (setq doom-font (font-spec :family "Iosevka Nerd Font" :size 14))
+(setq doom-font (font-spec :family "Iosevka Nerd Font" :weight 'light :size 14))
+;; (setq doom-font (font-spec :family "MesloLGMDZ Nerd Font" :size 14))
+;; (setq doom-font (font-spec :family "Fira Code Retina" :size 14))
 
 ;; keybindings
 ;; use the map! macro to bind things,
