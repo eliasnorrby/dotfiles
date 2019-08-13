@@ -7,5 +7,5 @@
 ;; (package! builtin-package :disable t)
 (package! prettier-js)
 (package! ansible)
-;; (package! web-mode)
+(package! web-mode)
 ;; (package! emmet-mode)

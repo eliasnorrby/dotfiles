@@ -66,3 +66,14 @@
 ;; (add-hook 'js-jsx-mode-hook 'prettier-js-mode)
 (add-hook 'yaml-mode-hook 'prettier-js-mode)
 (add-hook 'mhtml-mode-hook 'prettier-js-mode)
+
+
+(define-derived-mode web-jsx-mode web-mode "WebJsx"
+  "Major mode for editing web jsx templates."
+  (web-mode)
+  (setq web-mode-content-type "jsx"))
+
+(define-derived-mode web-css-mode web-mode "WebCss"
+  "Major mode for editing web css templates."
+  (web-mode)
+  (setq web-mode-content-type "css"))
