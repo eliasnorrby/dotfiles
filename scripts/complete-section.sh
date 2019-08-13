@@ -121,11 +121,13 @@ echo "Commit message: $MSG"
 
 ## 3: Commit and push the changes
 PROMPT_MSG="Commit changes? [y/n] "
-read -p "$PROMPT_MSG" CHOICE -n 1 -r
+read -p "$PROMPT_MSG" -n 1 -r CHOICE
+echo
 YES_NO_REGEXP='([yY]|[yY][eE][sS]|[nN]|[nN][oO])'
 while [[ ! $CHOICE =~ $YES_NO_REGEXP ]]; do
   echo "Please type y or n"
-  read -p "$PROMPT_MSG" CHOICE -n 1 -r
+  read -p "$PROMPT_MSG" -n 1 -r CHOICE
+  echo
 done
 
 case $CHOICE in
@@ -149,11 +151,13 @@ case $CHOICE in
 esac
 
 PROMPT_MSG="Push to remote? [y/n] "
-read -p "$PROMPT_MSG" CHOICE -n 1 -r
+read -p "$PROMPT_MSG" -n 1 -r CHOICE
+echo
 YES_NO_REGEXP='([yY]|[yY][eE][sS]|[nN]|[nN][oO])'
 while [[ ! $CHOICE =~ $YES_NO_REGEXP ]]; do
   echo "Please type y or n"
-  read -p "$PROMPT_MSG" CHOICE -n 1 -r
+  read -p "$PROMPT_MSG" -n 1 -r CHOICE
+  echo
 done
 
 case $CHOICE in
