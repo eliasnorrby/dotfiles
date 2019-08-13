@@ -6,7 +6,7 @@ return {
   { 'e', 'Visual Studio Code' },	-- "E" for "Editor"
   { 'f', 'Fantastical 2' },         -- "F" for "Fantastical"
   { 's', 'Emacs' },          -- "S" for "Sublime"
-  { 'g', 'Things' },
+  { 'g', 'Things3' },
   -- { 't', 'iTerm' },             	-- "T" for "Terminal"
   { 't', 'Alacritty' },             	-- "T" for "Terminal"
   { 'd', 'Drafts' },            	-- "D" for "Drafts"
