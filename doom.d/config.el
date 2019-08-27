@@ -11,9 +11,12 @@
 ;; (setq doom-font (font-spec :family "Source Code Pro" :size 14))
 ;; (setq doom-font (font-spec :family "mononoki Nerd Font" :size 14))
 ;; (setq doom-font (font-spec :family "Iosevka Nerd Font" :size 14))
-(setq doom-font (font-spec :family "Iosevka Nerd Font" :weight 'light :size 14))
+(setq doom-font (font-spec :family "Iosevka Nerd Font" :weight 'normal :size 16))
 ;; (setq doom-font (font-spec :family "MesloLGMDZ Nerd Font" :size 14))
 ;; (setq doom-font (font-spec :family "Fira Code Retina" :size 14))
+
+;; Set the theme
+(setq doom-theme 'doom-palenight)
 
 ;; keybindings
 ;; use the map! macro to bind things,
