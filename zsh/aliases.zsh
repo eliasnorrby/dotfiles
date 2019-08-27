@@ -62,6 +62,9 @@ alias dc="docker-compose"
 # VSCode
 alias c="code"
 
+# Script aliases
+alias cs="complete-section"
+
 # TODO: This is no longer true, but I could follow the link and reenable them.
 # Git log aliases are found in: gitconfig
 # cd /Library/Developer/CommandLineTools/usr/share/git-core/
