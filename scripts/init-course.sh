@@ -10,16 +10,16 @@ if [ ! -d ".git" ] ; then
     git init
 fi
 
-if [ ! -f "$LECTURE_COUNTER" ] ; then
+if [ ! -f "$LECTURE_COUNTER" ] && [ "$1" != "0" ] ; then
   echo "Setting up lecture counter"
-  echo "1" > $LECTURE_COUNTER
-  git add !$
+  echo "0" > $LECTURE_COUNTER
+  git add $LECTURE_COUNTER
 fi
 
 if [ ! -f .gitignore ] || ! grep "$COURSE_MATERIALS" .gitignore ; then
   echo "Appending $COURSE_MATERIALS to .gitignore"
   echo "$COURSE_MATERIALS" >> .gitignore
-  git add !$
+  git add .gitignore
 fi
 
 echo "Committing changes"
