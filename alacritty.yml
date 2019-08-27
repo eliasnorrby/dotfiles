@@ -116,16 +116,16 @@ font:
     # family: RobotoMono Nerd Font
     # style: Thin
 
-    family: SauceCodePro Nerd Font
-    style: Regular
-
-    # family: Iosevka Nerd Font
+    # family: SauceCodePro Nerd Font
     # style: Regular
 
+    family: Iosevka Nerd Font
+    style: Regular
+
   # Bold font face
-  bold:
-    family: SauceCodePro Nerd Font
-    style: Medium
+  # bold:
+  #   family: SauceCodePro Nerd Font
+  #   style: Medium
     # Font family
     #
     # If the bold family is not specified, it will fall back to the
