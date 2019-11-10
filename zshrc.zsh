@@ -118,7 +118,7 @@ if [ "$(uname)" = "Darwin" ]; then
 
   # For Ruby
   export PATH="/usr/local/opt/ruby/bin:$PATH"
-  export PATH="/usr/local/lib/ruby/gems/2.5.0/bin:$PATH"
+  export PATH="/usr/local/lib/ruby/gems/2.6.0/bin:$PATH"
 
   # For node
   export PATH="~/.nvm/versions/node/v10.15.1/bin/node:$PATH"
@@ -471,3 +471,6 @@ fi
 #                              Experimenting
 # =============================================================================
 
+
+# added by travis gem
+[ -f /Users/elias.norrby/.travis/travis.sh ] && source /Users/elias.norrby/.travis/travis.sh
