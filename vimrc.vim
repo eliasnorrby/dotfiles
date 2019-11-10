@@ -702,20 +702,21 @@ endif
 " ============================================================================ "
 
 " toggle hardtime
-nnoremap <Leader><Leader>h :HardTimeToggle<CR>
+" nnoremap <Leader><Leader>h :HardTimeToggle<CR>
 " open netwr in vertical split
 nnoremap <Leader>n :Vexplore<CR>
 " turn off search highlight
-nnoremap <Leader><Leader>, :nohlsearch<CR>
+" nnoremap <Leader><Leader>, :nohlsearch<CR>
 " toggle relative line numbering
-nnoremap <silent> <Leader>r :set invrelativenumber<CR>
+" nnoremap <silent> <Leader>r :set invrelativenumber<CR>
+nnoremap <silent> <Leader>tl :set invrelativenumber<CR>
 
 " Shortcuts for saving and quitting
-nnoremap <Leader>q :q<CR>
+nnoremap <Leader>qq :q<CR>
 nnoremap <Leader>Q :q!<CR>
-nnoremap <Leader>w :w<CR>
-nnoremap <Leader>c :bd<CR>
-nnoremap <Leader>f za<CR>
+nnoremap <Leader>fs :w<CR>
+nnoremap <Leader>bk :bd<CR>
+nnoremap <Leader>z za<CR>
 " nnoremap <Leader>fo zo<CR>
 " nnoremap <Leader>fc za<CR>
 
@@ -729,15 +730,16 @@ nnoremap <silent> k gk
 
 " Map fzf commands
 nnoremap <C-P> :Files<CR>
-nnoremap <Leader>o :Files<CR>
-nnoremap <Leader>b :Buffers<CR>
+nnoremap <Leader><Leader> :Files<CR>
+nnoremap <Leader>bb :Buffers<CR>
+nnoremap <Leader>, :Buffers<CR>
 nnoremap <leader>h :Helptags<CR>
-nnoremap <leader>/ :BLines<CR>
-nnoremap <leader>? :Lines<CR>
+nnoremap <leader>/b :BLines<CR>
+nnoremap <leader>/d :Lines<CR>
 
-nnoremap <leader>,m :Marks<CR>
-nnoremap <leader>,sh :History/<CR>
-nnoremap <leader>,ch :History:<CR>
+" nnoremap <leader>,m :Marks<CR>
+" nnoremap <leader>,sh :History/<CR>
+" nnoremap <leader>,ch :History:<CR>
 
 nnoremap <leader>sr :SignifyRefresh<CR>
 
