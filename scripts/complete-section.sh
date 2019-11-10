@@ -40,11 +40,13 @@ increment_counter() {
     echo "No counter file found. Creating..."
   fi
 
-  if [ ! -z "$ARG_NUMBER" ] && validate_number $ARG_NUMBER ; then
-    echo $ARG_NUMBER > $LECTURE_COUNTER
-    return
-  else
-    echo "That's not a number: $ARG_NUMBER"
+  if [ ! -z "$ARG_NUMBER" ] ; then
+    if validate_number $ARG_NUMBER ; then
+      echo $ARG_NUMBER > $LECTURE_COUNTER
+      return
+    else
+      echo "That's not a number: $ARG_NUMBER"
+    fi
   fi
 
   if [ ! -f $LECTURE_COUNTER ] || [ ! -z "$ARG_NUMBER" ] ; then
