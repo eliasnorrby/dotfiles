@@ -120,7 +120,7 @@ font:
     # style: Regular
 
     family: Iosevka Nerd Font
-    style: Regular
+    style: Light
 
   # Bold font face
   # bold:
@@ -220,7 +220,7 @@ colors:
     white:   '0xebdbb2'
 # }}}
 
-# # {{{ Ayu theme
+# {{{ Ayu theme
 # # Colors (Ayu Dark)
 # colors:
 #   # Default colors
@@ -251,7 +251,39 @@ colors:
 #     magenta: '#F181F9'
 #     cyan: '#BAFAE3'
 #     white: '#FFFFFF'
-#   # }}}
+# }}}
+
+# {{{ Palenight
+# # Colors (Palenight)
+# colors:
+#   # Default colors
+#   primary:
+#     background: '#212430'
+#     # foreground: '#7780b5'
+#     foreground: '#bdbdbd'
+
+#   # Normal colors
+#   normal:
+#     black: '#292d3e'
+#     red: '#f07178'
+#     green: '#c3e88d'
+#     yellow: '#ffcb6b'
+#     blue: '#82aaff'
+#     magenta: '#c792ea'
+#     cyan: '#89ddff'
+#     white: '#c0c0c0'
+
+#   # Bright colors
+#   bright:
+#     black: '#434758'
+#     red: '#ff8b92'
+#     green: '#ddffa7'
+#     yellow: '#ffe585'
+#     blue: '#9cc4ff'
+#     magenta: '#e1acff'
+#     cyan: '#a3f7ff'
+#     white: '#DDDDDD'
+# }}}
 
   # Cursor colors
   #
