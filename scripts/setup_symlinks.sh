@@ -1,4 +1,6 @@
 #!/bin/bash
+# TODO This needs to be replaced or at least moved to a directory dedicated to
+# dotfiles setup
 
 ln -svnf ~/.dotfiles/zshrc.zsh ~/.zshrc
 ln -svnf ~/.dotfiles/tmux.conf ~/.tmux.conf

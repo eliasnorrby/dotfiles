@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# This is a widget for my tmux statusline. It renders colored load averages.
+# TODO This should probably go in a tmux folder instead of the main scripts
+# directory.
+
 if [[ "$#" -ne 5 ]]; then
   echo "use: low med high black white (colors)"
   exit
