@@ -10,6 +10,8 @@
 # Put this in a file in the default location or reference it with the
 # -f flag.
 
+[ -f colors-tput.sh ] && . ./colors-tput.sh
+
 TOKEN_FILE_PATH="$HOME/.travis/slack-token"
 ACCOUNT="eliasnorrby-dev"
 CHANNEL=""
@@ -40,17 +42,17 @@ while getopts f:a:c:dh opt; do
     c) CHANNEL=$OPTARG                     ;;
     d) OPT_DRY_RUN=true                    ;;
     h) echo "$USAGE" && exit 0             ;;
-    *) echo "$ERROR" && exit 1             ;;
+    *) echo-error "$ERROR" && exit 1       ;;
   esac
 done
 
 if [ ! -f travis.yml ] ; then
-  echo "No travis.yml found in the current directory, aborting"
+  echo-fail "No travis.yml found in the current directory, aborting"
   exit 1
 fi
 
 if ! command -v travis >/dev/null 2>&1 ; then
-  echo "Could not find travis cli in path, aborting"
+  echo-fail "Could not find travis cli in path, aborting"
   exit 1
 fi
 
@@ -64,7 +66,7 @@ if [ ! -z "$CHANNEL" ] ; then
 fi
 
 if [ "$OPT_DRY_RUN" == true ] ; then
-  echo "Resulting command: travis encrypt --pro $VALUE --add $FIELD"
+  echo-info "Resulting command: travis encrypt --pro $VALUE --add $FIELD"
 else
   travis login --pro --auto
   travis encrypt --pro "$VALUE" --add "$FIELD"
