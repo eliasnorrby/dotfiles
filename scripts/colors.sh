@@ -1,36 +1,41 @@
 #!/usr/bin/env bash
-# Ref: https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
 
-# Black        0;30     Dark Gray     1;30
-# Red          0;31     Light Red     1;31
-# Green        0;32     Light Green   1;32
-# Brown/Orange 0;33     Yellow        1;33
-# Blue         0;34     Light Blue    1;34
-# Purple       0;35     Light Purple  1;35
-# Cyan         0;36     Light Cyan    1;36
-# Light Gray   0;37     White         1;37
+BLACK=$(tput setaf 0)
+RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+ORANGE=$(tput setaf 3)
+BLUE=$(tput setaf 4)
+PURPLE=$(tput setaf 5)
+CYAN=$(tput setaf 6)
+LIGHT_GRAY=$(tput setaf 7)
 
-# Source this file and use colored output like so:
-# echo -e "This ${RED}text${NC} is red"
-# or:
-# printf "This ${RED}text${NC} is red\n"
+DARK_GRAY=$(tput setaf 8)
+LIGHT_RED=$(tput setaf 9)
+LIGHT_GREEN=$(tput setaf 10)
+YELLOW=$(tput setaf 11)
+LIGHT_BLUE=$(tput setaf 12)
+LIGHT_PURPLE=$(tput setaf 13)
+LIGHT_CYAN=$(tput setaf 14)
+WHITE=$(tput setaf 15)
 
-BLACK='\033[0;30m'
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-ORANGE='\033[0;33m'
-BLUE='\033[0;34m'
-PURPLE='\033[0;35m'
-CYAN='\033[0;36m'
-LIGHT_GRAY='\033[0;37m'
+BG_BLACK=$(tput setab 0)
+BG_RED=$(tput setab 1)
+BG_GREEN=$(tput setab 2)
+BG_ORANGE=$(tput setab 3)
+BG_BLUE=$(tput setab 4)
+BG_PURPLE=$(tput setab 5)
+BG_CYAN=$(tput setab 6)
+BG_LIGHT_GRAY=$(tput setab 7)
 
-DARK_GRAY='\033[1;30m'
-LIGHT_RED='\033[1;31m'
-LIGHT_GREEN='\033[1;32m'
-YELLOW='\033[1;33m'
-LIGHT_BLUE='\033[1;34m'
-LIGHT_PURPLE='\033[1;35m'
-LIGHT_CYAN='\033[1;36m'
-WHITE='\033[1;37m'
+BG_DARK_GRAY=$(tput setab 8)
+BG_LIGHT_RED=$(tput setab 9)
+BG_LIGHT_GREEN=$(tput setab 10)
+BG_YELLOW=$(tput setab 11)
+BG_LIGHT_BLUE=$(tput setab 12)
+BG_LIGHT_PURPLE=$(tput setab 13)
+BG_LIGHT_CYAN=$(tput setab 14)
+BG_WHITE=$(tput setab 15)
 
-NC='\033[0m' # No Color
+BOLD=$(tput bold)
+
+NC=$(tput sgr 0) # No Color
