@@ -44,8 +44,9 @@ done
 whotest[0]='test' || (echo 'Failure: arrays not supported in this version of
 bash.' && exit 2)
 
+DIR=$(dirname $0)
 # Source color script
-. ./colors.sh
+. $DIR/colors.sh
 
 function echo-ok  { printf "${BG_GREEN}${BLACK} %4d ${NC}" "$1"; }
 function echo-warn  { printf "${BG_ORANGE}${BLACK} %4d ${NC}" "$1"; }
