@@ -44,7 +44,11 @@ done
 whotest[0]='test' || (echo 'Failure: arrays not supported in this version of
 bash.' && exit 2)
 
-DIR=$(dirname $0)
+# Basic method
+# DIR=$(dirname $0)
+
+# Allows calling through symlink
+DIR=$(dirname $([ -L "$0" ] && readlink -f "$0" || echo $0))
 # Source color script
 . $DIR/colors.sh
 
