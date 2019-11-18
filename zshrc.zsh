@@ -7,15 +7,10 @@ zmodload zsh/zprof
 #                                   Functions
 # =============================================================================
 
-# === Config ===
-# export SHELL="/usr/local/bin/zsh"
-# setopt autonamedirs
-# box=~/Dropbox/folders
-# mygit=~/Dropbox/folders/git
-# common=~/Dropbox/d_COMMON
-
 if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+  # Uncomment this if brew's location should change for some reason
+  # FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+  FPATH=/usr/local/share/zsh/site-functions:$FPATH
 fi
 
 source ~/.dotfiles/zsh/fzf-functions.zsh
