@@ -48,15 +48,25 @@ DIR=$(dirname $0)
 # Source color script
 . $DIR/colors.sh
 
-function echo-ok  { printf "${BG_GREEN}${BLACK} %4d ${NC}" "$1"; }
-function echo-warn  { printf "${BG_ORANGE}${BLACK} %4d ${NC}" "$1"; }
-function echo-danger  { printf "${BG_RED}${BLACK} %4d ${NC}" "$1"; }
-function echo-skip  { printf "${BG_LIGHT_GRAY}${DARK_GRAY} %4s ${NC}" "?"; }
+BG_OK=${BG_BLUE}
+BG_WARN=${BG_ORANGE}
+BG_DANGER=${BG_RED}
+BG_MISSING=${BG_LIGHT_GRAY}
 
-function echo-remote-ok  { printf "${BG_GREEN}${BLACK} %4s ${NC}" "OK"; }
-function echo-remote-missing  { printf "${BG_RED}${BLACK} %4s ${NC}" "!"; }
-function echo-remote-offline  { printf "${BG_LIGHT_GRAY}${DARK_GRAY} %4s ${NC}" "X"; }
-function echo-upstream-missing  { printf "${BG_RED}${BLACK} %4s ${NC}" "!"; }
+FG_OK=${FG_BLUE}
+FG_WARN=${FG_ORANGE}
+FG_DANGER=${FG_RED}
+FG_MISSING=${FG_LIGHT_GRAY}
+
+function echo-ok  { printf "${BG_OK}${BLACK} %4d ${NC}" "$1"; }
+function echo-warn  { printf "${BG_WARN}${BLACK} %4d ${NC}" "$1"; }
+function echo-danger  { printf "${BG_DANGER}${BLACK} %4d ${NC}" "$1"; }
+function echo-skip  { printf "${BG_MISSING}${DARK_GRAY} %4s ${NC}" "?"; }
+
+function echo-remote-ok  { printf "${BG_OK}${BLACK} %4s ${NC}" "OK"; }
+function echo-remote-missing  { printf "${BG_DANGER}${BLACK} %4s ${NC}" "!"; }
+function echo-remote-offline  { printf "${BG_MISSING}${DARK_GRAY} %4s ${NC}" "X"; }
+function echo-upstream-missing  { printf "${BG_DANGER}${BLACK} %4s ${NC}" "!"; }
 
 function echo-orange  { printf "${ORANGE} %s ${NC}" "$*"; }
 function echo-gray  { printf "${LIGHT_GRAY} %s${NC}" "$*"; }
