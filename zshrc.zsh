@@ -1,5 +1,6 @@
 ## Uncomment for performance stats
-# zmodload zsh/zprof
+date "+%s.%N"
+zmodload zsh/zprof
 
 # Many of these headers might be moved to separate files in the future.
 # =============================================================================
@@ -474,3 +475,5 @@ fi
 
 # added by travis gem
 [ -f /Users/elias.norrby/.travis/travis.sh ] && source /Users/elias.norrby/.travis/travis.sh
+
+date "+%s.%N"
