@@ -78,33 +78,6 @@ function list_colors_long() {
   for code ({000..255}) print -P -- "$code: %F{$code}This is how your text would look like%f";
 }
 
-# === nvm lazy loading ===
-export NVM_DIR="$HOME/.nvm"
-if [ -d "$NVM_DIR" ]; then
-  function load_nvm() {
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-  }
-
-  # Add every binary that requires nvm, npm or node to run to an array of node globals
-  NODE_GLOBALS=(`find ~/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' | xargs -n1 basename | sort | uniq`)
-  # NODE_GLOBALS+=("node")
-  NODE_GLOBALS+=("nvm")
-  NODE_GLOBALS+=("nvim")
-  NODE_GLOBALS+=("yarn")
-  # This makes vim-test work
-  NODE_GLOBALS+=("node_modules/.bin/jasmine")
-
-  # load_nvm () {
-  #     export NVM_DIR=~/.nvm
-  #     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-  # }
-
-  for cmd in "${NODE_GLOBALS[@]}"; do
-      eval "${cmd}(){echo 'Loading node...'; unset -f ${NODE_GLOBALS}; load_nvm; ${cmd} \$@ }"
-  done
-fi
-
 # =============================================================================
 #                                   Variables
 # =============================================================================
@@ -115,9 +88,6 @@ if [ "$(uname)" = "Darwin" ]; then
   # For Ruby
   export PATH="/usr/local/opt/ruby/bin:$PATH"
   export PATH="/usr/local/lib/ruby/gems/2.6.0/bin:$PATH"
-
-  # For node
-  export PATH="~/.nvm/versions/node/v10.15.1/bin/node:$PATH"
 
   # For using GNU coreutils with default names
   # NTS: I use this for the 'tree' command
