@@ -52,7 +52,7 @@ DIR=$(dirname $([ -L "$0" ] && readlink -f "$0" || echo $0))
 # Source color script
 . $DIR/colors.sh
 
-BG_OK=${BG_BLUE}
+BG_OK=${BG_GREEN}
 BG_WARN=${BG_ORANGE}
 BG_DANGER=${BG_RED}
 BG_MISSING=${BG_LIGHT_GRAY}
