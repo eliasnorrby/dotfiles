@@ -10,8 +10,6 @@
 
 ;; FIXME this should probably not be here, but I'm too much of a newbie to know
 ;; Look into this: https://github.com/purcell/exec-path-from-shell
-(setenv "PATH" (concat "/Users/elias.norrby/.nvm/versions/node/v10.15.1/bin:" (getenv "PATH")))
-(setq exec-path (append exec-path '("/Users/elias.norrby/.nvm/versions/node/v10.15.1/bin")))
 
 (setq doom-leader-alt-key "M-m"
       doom-localleader-alt-key "M-m m")
