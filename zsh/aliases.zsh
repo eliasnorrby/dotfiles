@@ -64,6 +64,7 @@ alias c="code"
 
 # Script aliases
 alias cs="complete-section"
+alias fgc="find-git-changes"
 
 # TODO: This is no longer true, but I could follow the link and reenable them.
 # Git log aliases are found in: gitconfig
