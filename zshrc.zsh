@@ -23,34 +23,6 @@ function tn() {
   tmux new-session -s "$1"
 }
 
-function zup() {
-  source ~/.dotfiles/zsh/extra_plugins.zsh
-}
-
-function minp9k() {
-  export DEFAULT_USER="$USER";
-  source ~/.dotfiles/zsh/powerlevel9k_minimal.zsh && reloadp9k;
-}
-
-function maxp9k() {
-  export DEFAULT_USER="";
-  source ~/.dotfiles/zsh/powerlevel9k_default.zsh && reloadp9k;
-}
-
-function reloadp9k() {
-  prompt_powerlevel9k_teardown && prompt_powerlevel9k_setup;
-}
-
-function toggleMultilinePrompt() {
-  if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" = true ]] ; then
-    POWERLEVEL9K_PROMPT_ON_NEWLINE=false
-    POWERLEVEL9K_PROMPT_ADD_NEWLINE=false
-  elif [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" = false ]] ; then
-    POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-    POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
-  fi
-}
-
 # === Utilities ===
 
 function tkey() {
@@ -184,32 +156,12 @@ zplug "zsh-users/zsh-syntax-highlighting", defer:2
 # tmux wants colors to be set or something...
 export TERM="xterm-256color"
 
-# THEME_TO_USE="P9K"
-THEME_TO_USE="PURE"
-
-# ----------------------------------------
-# Powerlevel9k
-# ----------------------------------------
-if [ "$THEME_TO_USE" = "P9K" ]; then 
-  zplug "bhilburn/powerlevel9k", use:powerlevel9k.zsh-theme
-  source ~/.dotfiles/zsh/powerlevel9k_common.zsh
-  if [ "$(uname)" = "Darwin" ]; then
-    source ~/.dotfiles/zsh/powerlevel9k_default.zsh
-    #source ~/.dotfiles/powerlevel9k_minimal.zsh
-  fi
-  if [ "$(uname)" = "Linux" ]; then
-    source ~/.dotfiles/zsh/powerlevel9k_server.zsh
-  fi
-fi
-
 # ----------------------------------------
 # Pure
 # ----------------------------------------
 # Minimal zsh theme - much faster prompt
-if [ "$THEME_TO_USE" = "PURE" ]; then
-  zplug "mafredri/zsh-async", from:github
-  zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
-fi
+zplug "mafredri/zsh-async", from:github
+zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 
 # =============================================================================
 #                                   Options
@@ -273,35 +225,17 @@ export FZF_DEFAULT_OPTS='
   --color info:7,prompt:4,spinner:6,pointer:4,marker:4,gutter:0
 '
 
-#  --prompt "❯ "
-#  --prompt "λ: "
-
 alias ls="ls --color=auto"
 
 # =============================================================================
 #                                 Performance
 # =============================================================================
 
-if [[ 1 == 2 ]] ; then
-  #DISABLE_UNTRACKED_FILES_DIRTY="true"
-  # Default:
-  #POWERLEVEL9K_VCS_GIT_HOOKS=(vcs-detect-changes git-untracked git-aheadbehind git-stash git-remotebranch git-tagname)
-  #POWERLEVEL9K_VCS_GIT_HOOKS=(vcs-detect-changes git-aheadbehind git-remotebranch git-tagname)
-  POWERLEVEL9K_VCS_GIT_HOOKS=(vcs-detect-changes)
-fi
-
 # =============================================================================
 #                                 Completions
 # =============================================================================
 
 fpath=(~/.zsh/completion $fpath)
-
-# zstyle ':completion:*' rehash true
-# zstyle ':completion:*' verbose yes
-#zstyle ':completion:*:descriptions' format '%B%d%b'
-#zstyle ':completion:*:messages' format '%d'
-#zstyle ':completion:*:warnings' format 'No matches for: %d'
-#zstyle ':completion:*' group-name ''
 
 # case-insensitive (all), partial-word and then substring completion
 zstyle ":completion:*" matcher-list \
