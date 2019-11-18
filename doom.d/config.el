@@ -68,7 +68,7 @@
 ;; which-key
 ;; Make which-key display sooner. I should make it slower as I learn more, but
 ;; having it be quick helps discoverability in the beginning.
-(setq which-key-idle-delay 0.4)
+;; (setq which-key-idle-delay 0.4)
 
 ;; web mode
 ;; (add-to-list 'auto-mode-alist )
@@ -85,14 +85,14 @@
 ;; (add-hook 'javascript-mode-hook 'prettier-js-mode)
 ;; (add-hook 'js-jsx-mode-hook 'prettier-js-mode)
 
-;; stolen from https://github.com/ar1a/dotfiles/blob/master/emacs/.doom.d/config.el
-(after! emmet-mode
-  ;; this is already done in emmet :config but it doesn't seem to get set on my
-  ;; machine, so let's do it again
-  (map! :map emmet-mode-keymap
-        :v [tab] #'emmet-wrap-with-markup
-        ;; :i [tab] #'+web/indent-or-yas-or-emmet-expand
-        :i "C-e" #'emmet-expand-line))
+;; ;; stolen from https://github.com/ar1a/dotfiles/blob/master/emacs/.doom.d/config.el
+;; (after! emmet-mode
+;;   ;; this is already done in emmet :config but it doesn't seem to get set on my
+;;   ;; machine, so let's do it again
+;;   (map! :map emmet-mode-keymap
+;;         :v [tab] #'emmet-wrap-with-markup
+;;         ;; :i [tab] #'+web/indent-or-yas-or-emmet-expand
+;;         :i "C-e" #'emmet-expand-line))
 
 ;;; Bug fixing
 ;; Henrik told me to try this snippet to fix broken session reestores
