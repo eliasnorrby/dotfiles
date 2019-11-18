@@ -3,8 +3,8 @@
 #alias dircolors="gdircolors"
 
 # Generic command adaptations
-alias grep='() { $(whence -p grep) --color=auto $@ }'
-alias egrep='() { $(whence -p egrep) --color=auto $@ }'
+# alias grep='() { $(whence -p grep) --color=auto $@ }'
+# alias egrep='() { $(whence -p egrep) --color=auto $@ }'
 
 # Overrides l= "ls -lah"
 alias l="ls -1"
@@ -32,7 +32,7 @@ alias cdd="cd ~/dev"
 alias cdl="cd ~/learn"
 alias cdb="cd ~/boilerplate"
 alias cds="cd ~/sandbox"
-alias cdck="cd ~/dev/code-is-king" 
+alias cdck="cd ~/dev/code-is-king"
 
 # Aliases for creating new CIK projects
 alias npsht="sh newTypeScriptProject.sh"
@@ -86,7 +86,7 @@ alias alac="vim ~/.dotfiles/alacritty.yml"
 # fi
 
 # Nightly build of neovim
-alias nnvim=~/tmp/nvim-osx64/bin/nvim 
+alias nnvim=~/tmp/nvim-osx64/bin/nvim
 # Load node and launch neovim
 alias v="n;~/tmp/nvim-osx64/bin/nvim"
 alias n="node -v > /dev/null"

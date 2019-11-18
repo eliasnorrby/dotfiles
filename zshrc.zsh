@@ -1,6 +1,5 @@
 ## Uncomment for performance stats
-date "+%s.%N"
-zmodload zsh/zprof
+# zmodload zsh/zprof
 
 # Many of these headers might be moved to separate files in the future.
 # =============================================================================
@@ -72,14 +71,13 @@ if [ "$(uname)" = "Darwin" ]; then
   export PATH=/Users/elias.norrby/bin:$PATH
 fi
 
-# Remove duplicates from $PATH (produced by running 'zsh' to refresh config)
+# Remove duplicates from $PATH (produced by refreshing config)
 typeset -aU path
 
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 
-# Path to your oh-my-zsh installation.
-#export ZSH="/Users/elias.norrby/.oh-my-zsh"
+export GREP_OPTIONS='--color=always'
 
 # =============================================================================
 #                                   Keybinds
@@ -87,12 +85,7 @@ export LC_ALL="en_US.UTF-8"
 
 bindkey -v
 # Autosuggestion key-bind
-# bindkey '^ ' autosuggest-accept
-# bindkey 'jk' vi-cmd-mode
-# Unbind esc key - why do I wan't that..?
 bindkey -s '^[7' '|'
-#bindkey '^[[1;9C' forward-word
-#bindkey '^[[1;9D' backward-word
 bindkey '^w' backward-kill-word
 bindkey ',q' push-line
 bindkey -M viins ',.' insert-last-word
@@ -118,13 +111,17 @@ source $ZPLUG_HOME/init.zsh
 # zplug
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
+# fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# travis gem
+[ -f /Users/elias.norrby/.travis/travis.sh ] && source /Users/elias.norrby/.travis/travis.sh
+
 # Miscellaneous
-zplug "k4rthik/git-cal",  as:command
+# zplug "k4rthik/git-cal",  as:command
 
 # Enhanced dir list with git features
-zplug "supercrabtree/k" 
+# zplug "supercrabtree/k"
 
 if [ "$(uname)" = "Darwin" ]; then
   # Directory colors
@@ -143,7 +140,7 @@ ZSH_SYSTEM_CLIPBOARD_TMUX_SUPPORT=true
 zplug "plugins/z",                 from:oh-my-zsh
 
 zplug "plugins/git",               from:oh-my-zsh
-zplug "plugins/git-flow",          from:oh-my-zsh
+# zplug "plugins/git-flow",          from:oh-my-zsh
 
 # zsh-syntax-highlighting must be loaded after executing compinit command
 # and sourcing other plugins
@@ -169,10 +166,6 @@ zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 
 # User configuration
 DEFAULT_USER="elias.norrby"
-# DEFAULT_USER=""
-
-# improved less option
-#export LESS="--tabs=4 --no-init --LONG-PROMPT --ignore-case --quit-if-one-screen --RAW-CONTROL-CHARS"
 
 # Uncomment the following line to use hyphen-insensitive completion.
 # Case-sensitive completion must be off. _ and - will be interchangeable.
@@ -184,20 +177,11 @@ DISABLE_AUTO_UPDATE="true"
 # Uncomment the following line to enable command auto-correction.
 ENABLE_CORRECTION="true"
 
-# NTS: This is nice, but leads to bugs with cursor jumping about when using tab completion and multiline prompt
-# Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
-
-
-# source $ZSH/oh-my-zsh.sh
-
 # History
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=$HISTSIZE
 
-# setopt autocd                   # Allow changing directories without `cd`
-# setopt cdablevars               # Dont require ~ expasion of vars
 setopt append_history           # Dont overwrite history
 setopt extended_history         # Also record time and duration of commands.
 setopt share_history            # Share history between multiple shells
@@ -209,15 +193,13 @@ setopt hist_reduce_blanks       # Remove superfluous blanks.
 setopt hist_save_no_dups        # Omit older commands in favor of newer ones.
 setopt hist_ignore_space        # Ignore commands that start with space.
 
-
 # unsetopt BEEP                 # Turn off all beeps
-unsetopt LIST_BEEP              # Turn off autocomplete beeps 
+unsetopt LIST_BEEP              # Turn off autocomplete beeps
 
 # export FZF_DEFAULT_COMMAND='fd --type f'
 # export FZF_DEFAULT_COMMAND='rg --files --glob=!node_modules/*'
 export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-# export FZF_DEFAULT_OPTS='--height 40% --reverse --extended --border --inline-info --color=dark,bg+:235,hl+:10,pointer:5'
 
 export FZF_DEFAULT_OPTS='
   --prompt "λ: "
@@ -255,7 +237,7 @@ zstyle ':completion:*' list-dirs-first true
 
 # TODO: Find out why there are multiple compinit calls
 # autoload -Uz compinit && compinit -i
-autoload -Uz compinit && compinit
+# autoload -Uz compinit && compinit
 # if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
 #   compinit;
 # else
@@ -265,15 +247,6 @@ autoload -Uz compinit && compinit
 # =============================================================================
 #                                   Startup
 # =============================================================================
-
-## Adds ~0.3 seconds to startup time
-# Install plugins if there are plugins that have not been installed
-# if ! zplug check; then
-#     printf "Install plugins? [y/N]: "
-#     if read -q; then
-#         echo; zplug install
-#     fi
-# fi
 
 if [ "$(uname)" = "Darwin" ]; then
   alias dircolors='gdircolors'
@@ -293,12 +266,8 @@ zplug load
 #                             Post zplug load
 # =============================================================================
 
-# Change color of pure prompt to yellow instead of magenta (extracted from source)
-# Apparently, the first line isn't needed
-# from source: if a virtualenv is activated, display it in grey
-# PROMPT='%(12V.%F{242}%12v%f .)'
-# prompt turns red if the previous command didn't exit with 0
-PROMPT='%(1j.%j .)%(?.%F{yellow}.%F{red})${prompt_pure_state[prompt]}%f '
+zstyle :prompt:pure:git:dirty color yellow
+zstyle :prompt:pure:prompt:success color yellow
 
 # Set zsh autosuggestion text to a brighter color
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
@@ -338,41 +307,13 @@ else
     awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' |
     fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open > /dev/null 2> /dev/null
   }
-
-  # search in lynx
-  # Opens a lynx browser searching any terms that follow the name of this script
-  function test_search() {
-    url="https://www.google.com/search?q="
-
-    for term in "$@"
-    do
-      url=$url"+"$term
-    done
-
-    lynx -accept_all_cookies $url
-  }
-
-  function cool_echo() {
-    artii --font slant "$1" | lolcat
-  }
 fi
 
 # =============================================================================
 #                                   Done
 # =============================================================================
-# cd ~/.dotfiles
-# branch_string=$(git branch | grep \* | cut -d ' ' -f2)
-# commit_message=$(git log -1 --no-merges --pretty=%B)
-# cd - > /dev/null
-# echo ".dotfiles branch: $branch_string"
-# echo "latest commit: $commit_message"
 
 # =============================================================================
 #                              Experimenting
 # =============================================================================
 
-
-# added by travis gem
-[ -f /Users/elias.norrby/.travis/travis.sh ] && source /Users/elias.norrby/.travis/travis.sh
-
-date "+%s.%N"
