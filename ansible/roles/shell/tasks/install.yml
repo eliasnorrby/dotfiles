@@ -1,0 +1,31 @@
+---
+- name: install zplug
+  block:
+    - name: check if zplug is installed
+      stat:
+        path: "{{ zplug_home}}"
+      register: zplug
+
+    - name: run install script
+      shell: "curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh"
+      args:
+        warn: false
+      when: zplug.stat.isdir is not defined
+      register: install
+      notify: patch zplug add
+
+    - name: make sure zplug_home is a directory
+      file:
+        path: "{{ zplug_home}}/base/core"
+        state: directory
+
+    - meta: flush_handlers
+
+    - name: run zplug install
+      shell: zsh -ic "zplug install"
+      when: install.changed
+      register: zplug_install
+      notify: patch zplug add in repo
+  environment:
+    ZPLUG_HOME: "{{ zplug_home }}"
+    ZPLUG_PIPE_FIX: true

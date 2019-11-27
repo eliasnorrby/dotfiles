@@ -1,0 +1,7 @@
+---
+enabled_roles:
+  - shell
+  # - editor
+  # - brew
+  # - brew-cask
+  # - miscellaneous

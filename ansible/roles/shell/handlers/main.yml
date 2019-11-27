@@ -1,0 +1,12 @@
+---
+# handlers file for shell
+- name: patch zplug add
+  copy:
+    src: add.zsh
+    dest: "{{ zplug_home }}/base/core/add.zsh"
+
+# update
+- name: patch zplug add in repo
+  copy:
+    src: add.zsh
+    dest: "{{ zplug_home }}/repos/zplug/zplug/base/core/add.zsh"
