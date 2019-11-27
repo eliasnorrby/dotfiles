@@ -1,0 +1,46 @@
+#+TITLE: planning
+
+* Operations
+
+- install
+- update
+- remove
+- link?
+
+* Roles
+
+** shell
+Needs chsh
+*** zsh
+**** zprofile
+**** zshrc
+***** zplug
+*** tmux
+** editor
+*** vim
+*** emacs
+*** vscode
+*** intellij?
+** apps
+*** general
+**** dropbox
+**** magnet
+**** bartender
+**** amethyst
+*** dev
+**** docker
+**** postman
+**** alacritty?
+** fonts
+- iosevka
+- meslo
+- sourcecode pro
+
+* Files
+
+** bootstrap.sh
+One liner to get started
+** cli.sh
+CLI for operations
+** prerequisites.sh
+For downloading prerequisites
