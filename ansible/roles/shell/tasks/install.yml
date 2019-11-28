@@ -7,25 +7,37 @@
       register: zplug
 
     - name: run install script
-      shell: "curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh"
+      shell: >-
+        curl -sL --proto-redir -all,https
+        https://raw.githubusercontent.com/zplug/installer/master/installer.zsh
+        | zsh > /dev/null 2>&1
       args:
         warn: false
       when: zplug.stat.isdir is not defined
       register: install
       notify: patch zplug add
 
-    - name: make sure zplug_home is a directory
-      file:
-        path: "{{ zplug_home}}/base/core"
-        state: directory
+    - name: wait until zplug_home is present before continuing
+      wait_for:
+        timeout: 10
+        path: "{{ zplug_home }}"
 
     - meta: flush_handlers
 
     - name: run zplug install
-      shell: zsh -ic "zplug install"
+      shell: |
+        . $ZPLUG_PLUGS
+        zplug install > /dev/null 2>&1
+      args:
+        executable: "{{ ansible_user_shell }}"
+
       when: install.changed
       register: zplug_install
       notify: patch zplug add in repo
+
+    - meta: flush_handlers
+
   environment:
     ZPLUG_HOME: "{{ zplug_home }}"
+    ZPLUG_PLUGS: "{{ ansible_user_dir }}/.dotfiles/plugins.zsh"
     ZPLUG_PIPE_FIX: true

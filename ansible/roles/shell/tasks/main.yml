@@ -2,7 +2,7 @@
 # tasks file for shell
 - name: "Install"
   import_tasks: install.yml
-  tags: ["install"]
-# - name: "Update"
-#   import_tasks: update.yml
-#   tags: ["update"]
+  tags: install
+- name: "Update"
+  import_tasks: update.yml
+  tags: update
