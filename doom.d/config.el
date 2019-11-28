@@ -33,6 +33,8 @@
       (:prefix "d"
         "l" #'avy-kill-whole-line
         "r" #'avy-kill-region))
+(map! :map 'ivy-minibuffer-map
+      "S-SPC" #'ivy-immediate-done)
 
 ;; avy
 ;; Make avy target all windows
