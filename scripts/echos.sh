@@ -2,7 +2,8 @@
 
 # Source this file to use its functions
 
-. ./colors.sh
+DIR=$(dirname $([ -L "$0" ] && readlink -f "$0" || echo $0))
+[ -f $DIR/colors.sh ] && . $DIR/colors.sh || (echo "Could not source 'colors', aborting" && exit 1)
 
 function echo-info  { printf "\r${BG_BLUE}${BLACK}${BOLD} INFO ${NC} %s\n" "$*"; }
 function echo-skip  { printf "\r${BG_DARK_GRAY}${WHITE} SKIP ${NC} %s\n" "$*"; }

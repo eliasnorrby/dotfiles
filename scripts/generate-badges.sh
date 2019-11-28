@@ -43,4 +43,9 @@ PKG_NAME="$SCOPE/$REPO_NAME"
 cat <<EOF
 [![Travis](https://img.shields.io/travis/com/$REPO_OWNER/$REPO_NAME?style=for-the-badge)](https://travis-ci.com/$REPO_OWNER/$REPO_NAME)
 [![npm](https://img.shields.io/npm/v/$PKG_NAME?style=for-the-badge)](https://www.npmjs.com/package/$PKG_NAME)
+
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=$REPO_OWNER/$REPO_NAME)](https://dependabot.com)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 EOF
+
+# Netlify: [![Netlify Status](https://api.netlify.com/api/v1/badges/67dbd163-fcd7-4ea4-8af7-7925bf8c5c7c/deploy-status)](https://app.netlify.com/sites/eliasnorrby-portfolio/deploys)

@@ -10,11 +10,12 @@
 # Put this in a file in the default location or reference it with the
 # -f flag.
 
-[ -f colors-tput.sh ] && . ./colors-tput.sh
+DIR=$(dirname $([ -L "$0" ] && readlink -f "$0" || echo $0))
+[ -f $DIR/echos.sh ] && . $DIR/echos.sh || (echo "Could not source 'echos', aborting" && exit 1)
 
 TOKEN_FILE_PATH="$HOME/.travis/slack-token"
 ACCOUNT="eliasnorrby-dev"
-CHANNEL=""
+CHANNEL="cicd"
 
 ERROR="Bad usage, see $0 -h"
 
@@ -46,7 +47,7 @@ while getopts f:a:c:dh opt; do
   esac
 done
 
-if [ ! -f travis.yml ] ; then
+if [ ! -f .travis.yml ] ; then
   echo-fail "No travis.yml found in the current directory, aborting"
   exit 1
 fi
@@ -71,3 +72,6 @@ else
   travis login --pro --auto
   travis encrypt --pro "$VALUE" --add "$FIELD"
 fi
+
+# template:
+#      - "Build <%{build_url}|%{result}> for %{repository_slug}@%{branch} (<%{compare_url}|%{commit}>)"
