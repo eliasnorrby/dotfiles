@@ -6,4 +6,4 @@
         name: "{{ item }}"
       with_items:
         - "{{ enabled_roles }}"
-  # tags: [install, update]
+      tags: [install, update]
