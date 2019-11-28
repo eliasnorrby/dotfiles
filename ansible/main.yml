@@ -1,9 +1,5 @@
 ---
 - name: " === dotfiler === "
   hosts: machine
-  tasks:
-    - include_role:
-        name: "{{ item }}"
-      with_items:
-        - "{{ enabled_roles }}"
-      tags: [install, update]
+  roles:
+    - shell
