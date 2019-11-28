@@ -1,13 +1,4 @@
 ---
-- name: install zsh
-  homebrew:
-    name: zsh
-    state: present
-
-# - name: set user shell to zsh
-#   user:
-#     shell: /usr/local/bin/zsh
-
 - name: install zplug
   block:
     - name: check if zplug is installed

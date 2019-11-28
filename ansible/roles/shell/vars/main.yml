@@ -1,3 +1,11 @@
 ---
 # vars file for shell
 zplug_home: ~/.zplug
+
+brew_formulas:
+  - zsh
+  - bash
+  - fzf
+
+brew_casks:
+  - alacritty

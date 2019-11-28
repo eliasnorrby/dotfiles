@@ -1,6 +1,6 @@
 ---
-- name: "zsh"
-  import_tasks: zsh.yml
+- import_tasks: brew.yml
+- import_tasks: zsh.yml
   environment:
     ZPLUG_HOME: "{{ zplug_home }}"
     ZPLUG_PLUGS: "{{ ansible_user_dir }}/.dotfiles/plugins.zsh"

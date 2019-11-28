@@ -9,13 +9,60 @@
 
 * Roles
 
+** genereic role
+*** vars
+*** tasks
+**** main.yml
+**** brew.yml
+**** brew-cask.yml
+**** <other>.yml
+** dotfiles
+*** vars
+*** tasks
+**** main.yml
+**** dotfiles.yml
+***** install
+- clone repo
+- link dotfiles
+***** update
+- check if repo up to date
 ** shell
-Needs chsh
-*** zsh
-**** zprofile
-**** zshrc
-***** zplug
+*** vars
+*** tasks
+**** main.yml
+**** brew.yml
+- zsh
+- bash
+- fzf
+- ...
+**** brew-cask.yml
+- alacritty
+- fonts
+**** zsh.yml
+- zplug install / update
+**** bash.yml
+- nothing?
 *** tmux
+Just a brew dependency
+*** misc
+**** travis gem
+** dev
+*** node
+**** globals
+
+/usr/local/lib
+├── gatsby-cli@2.8.11
+├── lorem-ipsum@2.0.3
+├── netlify-cli@2.21.0
+├── nodemon@1.19.4
+├── npm@6.12.1
+├── prettier@1.19.1
+├── semantic-release-cli@5.2.3
+└── serve@11.2.0
+*** vm
+**** vagrant
+**** docker
+
 ** editor
 *** vim
 *** emacs
