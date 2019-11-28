@@ -2,37 +2,13 @@
 - name: update zplug
   block:
     - name: install missing plugins
-      shell: |
-        . ${ZPLUG_PLUGS}
-        if ! zplug check ; then
-          echo "changed"
-          zplug install > /dev/null 2>&1
-        else
-          echo "unchanged"
-        fi
-      args:
-        executable: "{{ ansible_user_shell }}"
+      script: install_missing_plugins.zsh
       register: install
-      changed_when: install.stdout == 'changed'
-    # - name: install missing plugins
-    #   script: install_missing_plugins.zsh
-    #   register: install
-    #   changed_when: install.stdout.startswith('changed')
+      changed_when: install.stdout.startswith('changed')
     - name: update plugins
-      shell: |
-        . ${ZPLUG_PLUGS}
-        zplug status | grep -m 1 "Local out of date" > /dev/null 2>&1
-        if [ "$?" -eq 0 ] ; then
-          echo "changed"
-          zplug update > /dev/null 2>&1
-        else
-          echo "unchanged"
-        fi
-      args:
-        executable: "{{ ansible_user_shell }}"
+      script: update_plugins.zsh
       register: update
-      changed_when: update.stdout == 'changed'
-
+      changed_when: update.stdout.startswith('changed')
   environment:
     ZPLUG_HOME: "{{ zplug_home }}"
     ZPLUG_PLUGS: "{{ ansible_user_dir }}/.dotfiles/plugins.zsh"

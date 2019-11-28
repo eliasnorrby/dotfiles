@@ -22,19 +22,15 @@
         timeout: 10
         path: "{{ zplug_home }}"
 
+    # flush handlers to patch zplug add
     - meta: flush_handlers
 
     - name: run zplug install
-      shell: |
-        . $ZPLUG_PLUGS
-        zplug install > /dev/null 2>&1
-      args:
-        executable: "{{ ansible_user_shell }}"
-
+      script: install_missing_plugins.zsh
       when: install.changed
-      register: zplug_install
       notify: patch zplug add in repo
 
+    # flush handlers to patch zplug add
     - meta: flush_handlers
 
   environment:
