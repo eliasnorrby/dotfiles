@@ -96,69 +96,6 @@ bindkey ',l' clear-screen
 export KEYTIMEOUT=8
 
 
-# =============================================================================
-#                                   Plugins
-# =============================================================================
-
-if [ "$(uname)" = "Darwin" ]; then
-  export ZPLUG_HOME=/usr/local/opt/zplug
-fi
-if [ "$(uname)" = "Linux" ]; then
-  export ZPLUG_HOME=~/.zplug
-fi
-source $ZPLUG_HOME/init.zsh
-
-# zplug
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-
-# fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# travis gem
-[ -f /Users/elias.norrby/.travis/travis.sh ] && source /Users/elias.norrby/.travis/travis.sh
-
-# Miscellaneous
-# zplug "k4rthik/git-cal",  as:command
-
-# Enhanced dir list with git features
-# zplug "supercrabtree/k"
-
-if [ "$(uname)" = "Darwin" ]; then
-  # Directory colors
-  zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
-  # Suggestions are pretty laggy on ssh connection, try disabling it on remotes
-  zplug "zsh-users/zsh-autosuggestions"
-fi
-
-# Jump back to parent directory
-zplug "tarrasch/zsh-bd"
-
-# Copy to system clipboard
-zplug "kutsan/zsh-system-clipboard"
-ZSH_SYSTEM_CLIPBOARD_TMUX_SUPPORT=true
-
-zplug "plugins/z",                 from:oh-my-zsh
-
-zplug "plugins/git",               from:oh-my-zsh
-# zplug "plugins/git-flow",          from:oh-my-zsh
-
-# zsh-syntax-highlighting must be loaded after executing compinit command
-# and sourcing other plugins
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-
-# =============================================================================
-#                                   Themes
-# =============================================================================
-
-# tmux wants colors to be set or something...
-export TERM="xterm-256color"
-
-# ----------------------------------------
-# Pure
-# ----------------------------------------
-# Minimal zsh theme - much faster prompt
-zplug "mafredri/zsh-async", from:github
-zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 
 # =============================================================================
 #                                   Options
@@ -248,10 +185,6 @@ zstyle ':completion:*' list-dirs-first true
 #                                   Startup
 # =============================================================================
 
-if [ "$(uname)" = "Darwin" ]; then
-  alias dircolors='gdircolors'
-  eval `gdircolors /usr/local/opt/zplug/repos/seebi/dircolors-solarized/dircolors.ansi-dark`
-fi
 
 # Personal aliases
 source ~/.dotfiles/zsh/aliases.zsh
@@ -259,6 +192,17 @@ source ~/.dotfiles/zsh/aliases.zsh
 # TODO: migrate more stuff here
 # Additional functions
 source ~/.dotfiles/zsh/functions.zsh
+
+# =============================================================================
+#                                   Plugins
+# =============================================================================
+source ~/.dotfiles/plugins.zsh
+
+dircolors_dir=${ZPLUG_HOME}/repos/seebi/dircolors-solarized/dircolors.ansi-dark
+if [ "$(uname)" = "Darwin" ] && [ -d dircolors_dir ]&& command -v gdircolors > /dev/null ; then
+  alias dircolors='gdircolors'
+  eval `gdircolors dircolors_dir`
+fi
 
 zplug load
 
