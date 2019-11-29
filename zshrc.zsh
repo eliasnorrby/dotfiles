@@ -198,10 +198,10 @@ source ~/.dotfiles/zsh/functions.zsh
 # =============================================================================
 source ~/.dotfiles/plugins.zsh
 
-dircolors_dir=${ZPLUG_HOME}/repos/seebi/dircolors-solarized/dircolors.ansi-dark
-if [ "$(uname)" = "Darwin" ] && [ -d dircolors_dir ]&& command -v gdircolors > /dev/null ; then
+dircolors_file=${ZPLUG_HOME}/repos/seebi/dircolors-solarized/dircolors.ansi-dark
+if [ "$(uname)" = "Darwin" ] && [ -f $dircolors_file ] && command -v gdircolors > /dev/null ; then
   alias dircolors='gdircolors'
-  eval `gdircolors dircolors_dir`
+  eval $(gdircolors $dircolors_file)
 fi
 
 zplug load

@@ -10,11 +10,11 @@ nnoremap <Space> <Nop>
 " ===                           PLUGINS                                    === "
 " ============================================================================ "
 " Download vimplug if not already installed
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
+" if empty(glob('~/.vim/autoload/plug.vim'))
+"   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+"     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"   autocmd VimEnter * PlugInstall --sync | q | source $MYVIMRC
+" endif
 
 call plug#begin('~/.vim/plugged')
 
@@ -641,7 +641,7 @@ if has("termguicolors")
   if s:theme_to_use == "ayu"
     set termguicolors     " enable true colors support
     let ayucolor="mirage" " for mirage version of theme
-    colorscheme ayu 
+    silent! colorscheme ayu 
   endif
 
   " {{{ Ayu color reference
@@ -681,15 +681,15 @@ if has("termguicolors")
     set termguicolors
     set background=dark
     let g:gruvbox_contrast_dark = "medium"
-    colorscheme gruvbox
+    silent! colorscheme gruvbox
   endif
 
   if s:theme_to_use == "seoul256"
     let g:seoul256_background = 235
-    colorscheme seoul256
+    silent! colorscheme seoul256
   endif
 else
-  colorscheme onedark
+  silent! colorscheme onedark
   hi Normal ctermbg=000
 endif
 
