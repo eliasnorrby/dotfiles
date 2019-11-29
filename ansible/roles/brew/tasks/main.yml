@@ -1,5 +1,8 @@
 ---
+# tasks file for brew
 - block:
+    - debug:
+        var: brew_formulas
     - name: "brew : install formulas"
       homebrew:
         name: "{{ brew_formulas }}"

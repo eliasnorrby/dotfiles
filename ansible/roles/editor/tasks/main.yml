@@ -1,6 +1,7 @@
 ---
 # tasks file for editor
-- import_tasks: brew.yml
+- import_role:
+    name: brew
 - import_tasks: vim.yml
   tags: vim
 # - import_tasks: emacs.yml

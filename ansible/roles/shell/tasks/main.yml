@@ -1,5 +1,7 @@
 ---
-- import_tasks: brew.yml
+# tasks file for shell
+- import_role:
+    name: brew
 - import_tasks: zsh.yml
   environment:
     ZPLUG_HOME: "{{ zplug_home }}"
