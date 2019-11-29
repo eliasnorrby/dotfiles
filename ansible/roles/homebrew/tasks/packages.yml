@@ -1,5 +1,5 @@
 ---
-# tasks file for brew
+# TODO: enable taps
 - block:
     - debug:
         var: brew_formulas

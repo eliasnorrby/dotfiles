@@ -7,7 +7,7 @@ UPGRADE_LOG=$(vim +'PlugUpgrade' +qall 2>/dev/null)
 grep -o "vim-plug has been upgraded" <<< "$UPGRADE_LOG" > /dev/null
 
 if [ "$?" -eq 0 ] ; then
-  echo "changed"
+  echo -n "changed"
 else
-  echo "unchanged"
+  echo -n "unchanged"
 fi

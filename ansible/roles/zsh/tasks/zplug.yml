@@ -26,7 +26,7 @@
     - meta: flush_handlers
 
     - name: run zplug install
-      script: install_missing_plugins.zsh
+      script: ansible/install_missing_plugins.zsh
       when: install.changed
       notify: patch zplug add in repo
 
@@ -37,11 +37,11 @@
 - name: update zplug
   block:
     - name: install missing plugins
-      script: install_missing_plugins.zsh
+      script: ansible/install_missing_plugins.zsh
       register: install
       changed_when: install.stdout.startswith('changed')
     - name: update plugins
-      script: update_plugins.zsh
+      script: ansible/update_plugins.zsh
       register: update
       changed_when: update.stdout.startswith('changed')
   tags: update

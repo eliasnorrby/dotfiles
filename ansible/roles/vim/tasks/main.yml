@@ -1,0 +1,7 @@
+---
+# tasks file for editor
+- import_role:
+    name: homebrew
+    tasks_from: packages
+- import_tasks: vim.yml
+  tags: vim

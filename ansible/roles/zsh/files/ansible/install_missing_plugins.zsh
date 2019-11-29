@@ -2,8 +2,8 @@
 
 . ${ZPLUG_PLUGS}
 if ! zplug check ; then
-  echo "changed"
+  echo -p "changed"
   zplug install > /dev/null 2>&1
 else
-  echo "unchanged"
+  echo -p "unchanged"
 fi

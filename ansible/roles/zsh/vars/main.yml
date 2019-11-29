@@ -6,6 +6,3 @@ brew_formulas:
   - zsh
   - bash
   - fzf
-
-brew_casks:
-  - alacritty

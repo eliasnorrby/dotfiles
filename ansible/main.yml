@@ -1,6 +1,34 @@
 ---
-- name: " === dotfiler === "
+- name: " === prerequisites === "
   hosts: machine
   roles:
-    - shell
-    - editor
+    - homebrew
+
+- name: " === shell === "
+  hosts: machine
+  roles:
+    - zsh
+    - tmux
+    - alacritty
+
+- name: " === editor === "
+  hosts: machine
+  roles:
+    - vim
+    - emacs
+
+# - name: " === lang === "
+#   hosts: machine
+#   roles:
+#     - java
+#     - python
+#     - node
+#     - go
+
+- name: " === base === "
+  hosts: machine
+  roles:
+    # - keyboard
+    - amethyst
+    - apps
+    # - development

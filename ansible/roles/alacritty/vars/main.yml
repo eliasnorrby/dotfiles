@@ -1,0 +1,4 @@
+---
+# vars file for alacritty
+brew_casks:
+  - alacritty

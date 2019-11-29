@@ -1,8 +1,9 @@
 ---
 # tasks file for shell
 - import_role:
-    name: brew
-- import_tasks: zsh.yml
+    name: homebrew
+    tasks_from: packages
+- import_tasks: zplug.yml
   environment:
     ZPLUG_HOME: "{{ zplug_home }}"
     ZPLUG_PLUGS: "{{ ansible_user_dir }}/.dotfiles/plugins.zsh"
