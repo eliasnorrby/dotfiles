@@ -1,0 +1,8 @@
+---
+# tasks file for editor
+- import_tasks: brew.yml
+- import_tasks: vim.yml
+  tags: vim
+# - import_tasks: emacs.yml
+# - import_tasks: vscode.yml
+# - import_tasks: intellij.yml

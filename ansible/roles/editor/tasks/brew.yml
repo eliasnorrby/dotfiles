@@ -1,0 +1,24 @@
+---
+- block:
+    - name: "brew : install formulas"
+      homebrew:
+        name: "{{ brew_formulas }}"
+        state: present
+    - name: "brew : install casks"
+      homebrew_cask:
+        name: "{{ brew_casks }}"
+        state: present
+  tags: install
+
+- block:
+    - name: "brew : update formulas"
+      homebrew:
+        name: "{{ brew_formulas }}"
+        state: latest
+        update_homebrew: yes
+    - name: "brew : update casks"
+      homebrew_cask:
+        name: "{{ brew_casks }}"
+        state: upgraded
+        update_homebrew: yes
+  tags: update

@@ -14,7 +14,6 @@
 *** tasks
 **** main.yml
 **** brew.yml
-**** brew-cask.yml
 **** <other>.yml
 ** dotfiles
 *** vars
@@ -28,12 +27,16 @@
 - check if repo up to date
 ** shell
 *** vars
+- zplug_home
+- brew_formulas
+- brew_casks
 *** tasks
 **** main.yml
 **** brew.yml
 - zsh
 - bash
 - fzf
+- tmux
 - ...
 **** brew-cask.yml
 - alacritty
@@ -42,8 +45,6 @@
 - zplug install / update
 **** bash.yml
 - nothing?
-*** tmux
-Just a brew dependency
 *** misc
 **** travis gem
 ** dev
@@ -68,17 +69,34 @@ Just a brew dependency
 *** emacs
 *** vscode
 *** intellij?
-** apps
+** base
 *** general
 **** dropbox
-**** magnet
+**** magnet !
+**** tooth fairy !
 **** bartender
+**** alfred
 **** amethyst
+**** discord
+**** chrome
+**** lastpass
+**** google-chrome
+**** karabiner-elements
+**** hammerspoon
+**** istat-menus
+**** textexpander
+**** drafts !
+**** spotify
+**** slack
+**** things !
 *** dev
-**** docker
 **** postman
-**** alacritty?
+**** visual-studio-code
+**** intellij-idea-ce
+**** emacs ? d12frosted/emacs-plus
+**** firefox developer edition ? homebrew/cask-versions
 ** fonts
+Tap cask-fonts
 - iosevka
 - meslo
 - sourcecode pro

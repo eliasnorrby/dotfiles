@@ -3,3 +3,4 @@
   hosts: machine
   roles:
     - shell
+    - editor

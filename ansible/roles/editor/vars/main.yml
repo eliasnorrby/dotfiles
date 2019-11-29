@@ -1,0 +1,15 @@
+---
+# vars file for editor
+vim_home: ~/.vim
+
+# TODO: install emacs without spacemacs icon
+brew_formulas:
+  - vim
+  - emacs-plus
+
+brew_taps:
+  - d12frosted/emacs-plus
+
+brew_casks:
+  - visual-studio-code
+  # - intellij-idea-ce
