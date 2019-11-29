@@ -13,9 +13,10 @@
 *** vars
 *** tasks
 **** main.yml
-**** brew.yml
+- import brew
+- other task files
 **** <other>.yml
-** dotfiles
+** WAIT dotfiles
 *** vars
 *** tasks
 **** main.yml
@@ -47,6 +48,12 @@
 - nothing?
 *** misc
 **** travis gem
+** keyboard
+*** vars
+*** tasks
+**** main.yml
+**** hammerspoon.yml
+**** karabiner.yml
 ** dev
 *** node
 **** globals
