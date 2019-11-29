@@ -11,5 +11,5 @@ brew_taps:
   - d12frosted/emacs-plus
 
 brew_casks:
-  - visual-studio-code
+  # - visual-studio-code
   # - intellij-idea-ce
