@@ -4,18 +4,26 @@
     msg: "Not implemented"
   tags: install
 
+- name: determine taps
+  set_fact:
+    brew_taps: "{{ q('dict', brew_taps) | map(attribute='value') | list | flatten | unique }}"
+  when: brew_taps is defined
+  tags: always
+
 - name: determine formulas
   set_fact:
     brew_formulas: "{{ q('dict', brew_formulas) | map(attribute='value') | list | flatten | unique }}"
+  when: brew_formulas is defined
   tags: always
 
-  # when: brew_formulas is defined
 - name: determine casks
   set_fact:
     brew_casks: "{{ q('dict', brew_casks) | map(attribute='value') | list | flatten | unique }}"
+  when: brew_casks is defined
   tags: always
 
-  # when: brew_casks is defined
+# - debug:
+#     var: brew_taps
 # - debug:
 #     var: brew_formulas
 # - debug:

@@ -1,15 +1,26 @@
 ---
-# TODO: enable taps
 - block:
     - debug:
+        var: brew_taps
+        verbosity: 1
+    - name: "brew : tap kegs"
+      homebrew_tap:
+        name: "{{ brew_taps }}"
+        state: present
+      when: brew_taps is defined
+
+    - debug:
         var: brew_formulas
+        verbosity: 1
     - name: "brew : install formulas"
       homebrew:
         name: "{{ brew_formulas }}"
         state: present
       when: brew_formulas is defined
+
     - debug:
         var: brew_casks
+        verbosity: 1
     - name: "brew : install casks"
       homebrew_cask:
         name: "{{ brew_casks }}"
@@ -20,14 +31,17 @@
 - block:
     - debug:
         var: brew_formulas
+        verbosity: 1
     - name: "brew : update formulas"
       homebrew:
         name: "{{ brew_formulas }}"
         state: latest
         update_homebrew: yes
       when: brew_formulas is defined
+
     - debug:
         var: brew_casks
+        verbosity: 1
     - name: "brew : update casks"
       homebrew_cask:
         name: "{{ brew_casks }}"
