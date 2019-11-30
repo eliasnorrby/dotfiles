@@ -3,4 +3,5 @@
 vim_home: ~/.vim
 
 brew_formulas:
-  - vim
+  vim:
+    - vim

@@ -1,0 +1,4 @@
+---
+- name: copy alacritty dotfile
+  debug:
+    msg: Not implemented yet

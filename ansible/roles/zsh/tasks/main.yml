@@ -1,10 +1,6 @@
 ---
-# tasks file for shell
-- import_role:
-    name: homebrew
-    tasks_from: packages
 - import_tasks: zplug.yml
   environment:
     ZPLUG_HOME: "{{ zplug_home }}"
-    ZPLUG_PLUGS: "{{ ansible_user_dir }}/.dotfiles/plugins.zsh"
+    ZPLUG_PLUGS: "{{ ansible_user_dir | default('~') }}/.dotfiles/plugins.zsh"
     ZPLUG_PIPE_FIX: true

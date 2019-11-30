@@ -7,21 +7,31 @@
       homebrew:
         name: "{{ brew_formulas }}"
         state: present
+      when: brew_formulas is defined
+    - debug:
+        var: brew_casks
     - name: "brew : install casks"
       homebrew_cask:
         name: "{{ brew_casks }}"
         state: present
+      when: brew_casks is defined
   tags: install
 
 - block:
+    - debug:
+        var: brew_formulas
     - name: "brew : update formulas"
       homebrew:
         name: "{{ brew_formulas }}"
         state: latest
         update_homebrew: yes
+      when: brew_formulas is defined
+    - debug:
+        var: brew_casks
     - name: "brew : update casks"
       homebrew_cask:
         name: "{{ brew_casks }}"
         state: upgraded
         update_homebrew: yes
+      when: brew_casks is defined
   tags: update

@@ -1,2 +1,2 @@
 ---
-# tasks file for alacritty
+- import_tasks: alacritty.yml

@@ -1,4 +1,8 @@
 ---
-# vars file for alacritty
+brew_formulas:
+  alacritty:
+    - fzf
+
 brew_casks:
-  - alacritty
+  alacritty:
+    - alacritty

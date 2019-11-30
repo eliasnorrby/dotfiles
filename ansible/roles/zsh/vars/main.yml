@@ -1,8 +1,8 @@
 ---
-# vars file for shell
 zplug_home: ~/.zplug
 
 brew_formulas:
-  - zsh
-  - bash
-  - fzf
+  zsh:
+    - zsh
+    - bash
+    - fzf

@@ -39,9 +39,9 @@
     - name: install missing plugins
       script: ansible/install_missing_plugins.zsh
       register: install
-      changed_when: install.stdout.startswith('changed')
+      changed_when: install.stdout is defined and install.stdout.startswith('changed')
     - name: update plugins
       script: ansible/update_plugins.zsh
       register: update
-      changed_when: update.stdout.startswith('changed')
+      changed_when: update.stdout is defined and update.stdout.startswith('changed')
   tags: update
