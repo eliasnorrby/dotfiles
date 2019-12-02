@@ -1,4 +1,6 @@
 ---
+- debug:
+    var: brew
 - name: install homebrew
   debug:
     msg: "Not implemented"

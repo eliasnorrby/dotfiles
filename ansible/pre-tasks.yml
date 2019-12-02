@@ -6,3 +6,5 @@
         gather_timeout: 10
       tags: always
       when: ansible_facts == {}
+    - set_fact:
+        site_running: true

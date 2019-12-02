@@ -1,7 +1,3 @@
 ---
 - import_tasks: vim.yml
   tags: vim
-
-- set_fact:
-    brew: "{{ brew }}"
-  tags: always

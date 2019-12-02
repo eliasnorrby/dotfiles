@@ -5,4 +5,11 @@
     - zsh
     - tmux
     - alacritty
+  post_tasks:
+    - set_fact:
+        brew: "{{ brew }}"
+      tags: always
+    - include_role:
+        name: homebrew
+      when: site_running is undefined
   tags: shell
