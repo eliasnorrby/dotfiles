@@ -1,0 +1,6 @@
+---
+- name: " === editor === "
+  hosts: machine
+  roles:
+    - vim
+    - emacs

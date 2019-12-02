@@ -1,0 +1,7 @@
+---
+- name: " === pre-tasks === "
+  hosts: machine
+  tasks:
+    - setup:
+        gather_timeout: 10
+      tags: always

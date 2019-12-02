@@ -1,0 +1,8 @@
+---
+- name: " === base === "
+  hosts: machine
+  roles:
+    # - keyboard
+    - amethyst
+    - apps
+    # - development

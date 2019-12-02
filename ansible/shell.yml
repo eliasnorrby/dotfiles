@@ -1,0 +1,9 @@
+---
+- name: " === shell === "
+  hosts: machine
+  roles:
+    - homebrew
+    - zsh
+    - tmux
+    - alacritty
+  tags: shell

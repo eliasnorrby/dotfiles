@@ -1,0 +1,8 @@
+---
+- name: " === lang === "
+  hosts: machine
+  roles:
+    - java
+    - python
+    - node
+    - go
