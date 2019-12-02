@@ -1,8 +1,9 @@
 ---
 zplug_home: ~/.zplug
 
-brew_formulas:
-  zsh:
-    - zsh
-    - bash
-    - fzf
+brew:
+  formulas:
+    zsh:
+      - zsh
+      - bash
+      - fzf

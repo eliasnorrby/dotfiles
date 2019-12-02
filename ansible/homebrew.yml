@@ -1,0 +1,6 @@
+---
+- name: " === homebrew === "
+  hosts: machine
+  roles:
+    - homebrew
+  tags: homebrew

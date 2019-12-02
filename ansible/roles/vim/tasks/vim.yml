@@ -15,7 +15,7 @@
     - name: "vim : run PlugInstall"
       script: vim-plug-install.sh
       register: vim_plug_install
-      changed_when: vim_plug_install.stdout.startswith("changed")
+      changed_when: vim_plug_install.stdout is defined and vim_plug_install.stdout.startswith("changed")
       when: vim_plug_install.changed
   tags: install
 
@@ -23,13 +23,13 @@
     - name: "vim : install missing plugins"
       script: vim-plug-install.sh
       register: vim_plug_install
-      changed_when: vim_plug_install.stdout.startswith("changed")
+      changed_when: vim_plug_install.stdout is defined and vim_plug_install.stdout.startswith("changed")
     - name: "vim : update plugins"
       script: vim-plug-update.sh
       register: vim_plug_update
-      changed_when: vim_plug_update.stdout.startswith("changed")
+      changed_when: vim_plug_update.stdout is defined and vim_plug_update.stdout.startswith("changed")
     - name: "vim : upgrade vim-plug"
       script: vim-plug-upgrade.sh
       register: vim_plug_upgrade
-      changed_when: vim_plug_upgrade.stdout.startswith("changed")
+      changed_when: vim_plug_upgrade.stdout is defined and vim_plug_upgrade.stdout.startswith("changed")
   tags: update

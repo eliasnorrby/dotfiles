@@ -2,7 +2,6 @@
 - name: " === editor === "
   hosts: machine
   roles:
-    - homebrew
     - vim
     # - emacs
   tags: editor

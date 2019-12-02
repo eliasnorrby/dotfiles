@@ -1,8 +1,8 @@
 ---
-brew_formulas:
-  alacritty:
-    - fzf
-
-brew_casks:
-  alacritty:
-    - alacritty
+brew:
+  formulas:
+    alacritty:
+      - fzf
+  casks:
+    alacritty:
+      - alacritty

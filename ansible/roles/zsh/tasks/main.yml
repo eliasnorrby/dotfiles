@@ -4,3 +4,13 @@
     ZPLUG_HOME: "{{ zplug_home }}"
     ZPLUG_PLUGS: "{{ ansible_user_dir | default('~') }}/.dotfiles/plugins.zsh"
     ZPLUG_PIPE_FIX: true
+
+- debug:
+    var: brew
+    verbosity: 2
+- set_fact:
+    brew: "{{ brew }}"
+  tags: always
+- debug:
+    var: brew
+    verbosity: 2

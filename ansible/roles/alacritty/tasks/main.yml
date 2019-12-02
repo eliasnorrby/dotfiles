@@ -1,2 +1,6 @@
 ---
 - import_tasks: alacritty.yml
+
+- set_fact:
+    brew: "{{ brew }}"
+  tags: always

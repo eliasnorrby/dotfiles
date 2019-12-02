@@ -4,29 +4,46 @@
     msg: "Not implemented"
   tags: install
 
+# - block:
+#     - debug:
+#         var: brew.taps
+#         verbosity: 1
+#     - debug:
+#         var: brew.formulas
+#         verbosity: 1
+#     - debug:
+#         var: brew.casks
+#         verbosity: 1
+#   tags: always
+
 - name: determine taps
   set_fact:
-    brew_taps: "{{ q('dict', brew_taps) | map(attribute='value') | list | flatten | unique }}"
-  when: brew_taps is defined
-  tags: always
-
-- name: determine formulas
-  set_fact:
-    brew_formulas: "{{ q('dict', brew_formulas) | map(attribute='value') | list | flatten | unique }}"
-  when: brew_formulas is defined
+    brew_taps: "{{ q('dict', brew.taps) | map(attribute='value') | list | flatten | unique }}"
+  when: brew.taps is defined
   tags: always
 
 - name: determine casks
   set_fact:
-    brew_casks: "{{ q('dict', brew_casks) | map(attribute='value') | list | flatten | unique }}"
-  when: brew_casks is defined
+    brew_casks: "{{ q('dict', brew.casks) | map(attribute='value') | list | flatten | unique }}"
+  when: brew.casks is defined
   tags: always
 
-# - debug:
-#     var: brew_taps
-# - debug:
-#     var: brew_formulas
-# - debug:
-#     var: brew_casks
+- name: determine formulas
+  set_fact:
+    brew_formulas: "{{ q('dict', brew.formulas) | map(attribute='value') | list | flatten | unique }}"
+  when: brew.formulas is defined
+  tags: always
+
+# - block:
+#     - debug:
+#         var: brew_taps
+#         verbosity: 1
+#     - debug:
+#         var: brew_formulas
+#         verbosity: 1
+#     - debug:
+#         var: brew_casks
+#         verbosity: 1
+#   tags: always
 
 - import_tasks: packages.yml

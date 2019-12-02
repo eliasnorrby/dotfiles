@@ -4,3 +4,5 @@
 - import_playbook: editor.yml
 # - import_playbook: lang.yml
 # - import_playbook: base.yml
+
+- import_playbook: homebrew.yml

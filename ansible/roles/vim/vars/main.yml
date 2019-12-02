@@ -1,7 +1,7 @@
 ---
-# vars file for editor
 vim_home: ~/.vim
 
-brew_formulas:
-  vim:
-    - vim
+brew:
+  formulas:
+    vim:
+      - vim

@@ -5,3 +5,4 @@
     - setup:
         gather_timeout: 10
       tags: always
+      when: ansible_facts == {}
