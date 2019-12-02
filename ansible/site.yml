@@ -1,6 +1,6 @@
 ---
 - import_playbook: pre-tasks.yml
 - import_playbook: shell.yml
-# - import_playbook: editor.yml
+- import_playbook: editor.yml
 # - import_playbook: lang.yml
 # - import_playbook: base.yml
