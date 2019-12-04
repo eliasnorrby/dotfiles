@@ -68,6 +68,7 @@ Plug 'joshdick/onedark.vim'
 Plug 'ayu-theme/ayu-vim'
 Plug 'morhetz/gruvbox'
 Plug 'junegunn/seoul256.vim'
+Plug 'drewtempelmeyer/palenight.vim'
 
 " Testing
 Plug 'janko-m/vim-test'
@@ -449,7 +450,8 @@ set foldlevelstart=20
 " ============================================================================ "
 
 " let s:theme_to_use="ayu"
-let s:theme_to_use="gruvbox"
+" let s:theme_to_use="gruvbox"
+let s:theme_to_use="palenight"
 " let s:theme_to_use="seoul256"
 
 syntax enable " enable syntax processing
@@ -511,7 +513,7 @@ let g:netrw_browse_split = 3
 " ==== Lightline ====
 if has("termguicolors")
   let g:lightline = {
-    \ 'colorscheme': 'gruvbox',
+    \ 'colorscheme': 'palenight',
     \ 'active': {
     \   'left': [ [ 'mode', 'paste' ],
     \             [ 'gitbranch', 'readonly', 'filename' ],
@@ -676,6 +678,12 @@ if has("termguicolors")
   " hi! DiffAdd guibg=#a6cc70 guifg=#212733
   " hi! DiffAdd guifg=#a6cc70 guifg=#272D38
   " }}}
+
+  if s:theme_to_use == "palenight"
+    set termguicolors
+    set background=dark
+    colorscheme palenight
+  endif
 
   if s:theme_to_use == "gruvbox"
     set termguicolors
