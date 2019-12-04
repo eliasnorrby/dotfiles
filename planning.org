@@ -169,6 +169,17 @@ For downloading prerequisites
 ** shell.yml
 ** editor.yml
 ** base.yml
+* directory layout
+** shell
+*** tmux
+*** zsh
+*** bash
+*** git
+** editor
+*** vim
+*** emacs
+*** intellij
+*** vscode
 * maps to
 ** ~/.config/
 *** alacritty
@@ -177,3 +188,26 @@ For downloading prerequisites
 *** tmux
 *** vim
 *** zsh
+* Back to basics
+** dotfiles
+should have a cli for running the playbook if I so desire
+** playbooks
+*** dev-book
+Has a config.yml to configure homebrew and mas
+
+Should reference Brewfile located in .dotfiles/homebrew
+or not.. maybe it's better to keep it in the config. I could have a default and
+reference the dotfile directory to override it.
+
+**** tasks
+Is there anything more? Keep it simple.
+***** zplug
+***** vimplug
+** roles
+*** geerlingguy.homebrew
+*** geerlingguy.mas
+*** eliasnorrby.dotfiles
+**** link all the stuff, but how?
+** tests
+*** test with travis!
+*** and possibly molecule
