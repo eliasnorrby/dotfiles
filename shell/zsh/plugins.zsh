@@ -2,6 +2,7 @@
 #                                   Plugins
 # =============================================================================
 
+# TODO: See if I don't need this for update-all script
 export ZPLUG_PIPE_FIX="true"
 export ZPLUG_HOME=~/.zplug
 source $ZPLUG_HOME/init.zsh
@@ -9,11 +10,6 @@ source $ZPLUG_HOME/init.zsh
 # zplug
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
-# fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# travis gem
-[ -f /Users/elias.norrby/.travis/travis.sh ] && source /Users/elias.norrby/.travis/travis.sh
 
 # Miscellaneous
 # zplug "k4rthik/git-cal",  as:command
