@@ -11,20 +11,7 @@ if type brew &>/dev/null; then
   FPATH=/usr/local/share/zsh/site-functions:$FPATH
 fi
 
-# TODO: load with _load function when it's defined
-# fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh && source ~/.dotfiles/shell/zsh/fzf-functions.zsh
 
-# export FZF_DEFAULT_COMMAND='fd --type f'
-# export FZF_DEFAULT_COMMAND='rg --files --glob=!node_modules/*'
-export FZF_DEFAULT_COMMAND='rg --files'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-
-export FZF_DEFAULT_OPTS='
-  --prompt "λ: "
-  --color fg:7,bg:0,hl:3,fg+:15,bg+:0,hl+:4
-  --color info:7,prompt:4,spinner:6,pointer:4,marker:4,gutter:0
-'
 
 # FIXME: fix absolute path
 # travis gem
@@ -122,6 +109,7 @@ setopt hist_ignore_space        # Ignore commands that start with space.
 # unsetopt BEEP                 # Turn off all beeps
 unsetopt LIST_BEEP              # Turn off autocomplete beeps
 
+
 alias ls="ls --color=auto"
 
 # =============================================================================
@@ -200,6 +188,23 @@ z() {
   [ $# -gt 0 ] && _z "$*" && return
   cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
 }
+
+# TODO: load with _load function when it's defined
+# TODO: move to separate file and make sure to load late
+# fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# export FZF_DEFAULT_COMMAND='fd --type f'
+# export FZF_DEFAULT_COMMAND='rg --files --glob=!node_modules/*'
+export FZF_DEFAULT_COMMAND='rg --files'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+export FZF_DEFAULT_OPTS='
+  --prompt "λ: "
+  --color fg:7,bg:0,hl:3,fg+:15,bg+:0,hl+:4
+  --color info:7,prompt:4,spinner:6,pointer:4,marker:4,gutter:0
+'
+
+source ~/.dotfiles/shell/zsh/fzf-functions.zsh
 
 # =============================================================================
 #                              Session specific
