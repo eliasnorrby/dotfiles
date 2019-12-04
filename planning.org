@@ -1,0 +1,157 @@
+#+TITLE: planning
+
+* Operations
+
+- install
+- update
+- remove
+- link?
+
+* node
+** globals
+
+/usr/local/lib
+├── gatsby-cli@2.8.11
+├── lorem-ipsum@2.0.3
+├── netlify-cli@2.21.0
+├── nodemon@1.19.4
+├── npm@6.12.1
+├── prettier@1.19.1
+├── semantic-release-cli@5.2.3
+└── serve@11.2.0
+
+* base
+** general
+*** dropbox
+*** magnet !
+*** tooth fairy !
+*** bartender
+*** alfred
+*** amethyst
+*** discord
+*** chrome
+*** lastpass
+*** google-chrome
+*** karabiner-elements
+*** hammerspoon
+*** istat-menus
+*** textexpander
+*** drafts !
+*** spotify
+*** slack
+*** things !
+** dev
+*** postman
+*** visual-studio-code
+*** intellij-idea-ce
+*** emacs ? d12frosted/emacs-plus
+*** firefox developer edition ? homebrew/cask-versions
+** fonts
+Tap cask-fonts
+- iosevka
+- meslo
+- sourcecode pro
+
+* Files
+
+** bootstrap.sh
+One liner to get started
+** cli.sh
+CLI for operations
+** prerequisites.sh
+For downloading prerequisites
+* directory layout
+** roles/
+*** alacritty
+**** tasks/
+***** main.yml
+**** vars/
+**** handlers/
+**** files/
+***** alacritty
+****** alacritty.yml
+***** ansible
+*** amethyst
+**** tasks/
+**** vars/
+**** handlers/
+**** files/
+*** apps
+**** tasks/
+**** vars/
+**** handlers/
+**** files/
+*** emacs
+**** tasks/
+**** vars/
+**** handlers/
+**** files/
+***** ansible
+***** emacs
+****** doom.d
+*** homebrew
+**** tasks/
+**** vars/
+**** handlers/
+**** files/
+*** tmux
+**** tasks/
+**** vars/
+**** handlers/
+**** files/
+*** vim
+**** tasks/
+**** vars/
+**** handlers/
+**** files/
+*** zsh
+**** tasks/
+**** vars/
+**** handlers/
+**** files/
+** site.yml
+** shell.yml
+** editor.yml
+** base.yml
+* directory layout
+** shell
+*** tmux
+*** zsh
+*** bash
+*** git
+** editor
+*** vim
+*** emacs
+*** intellij
+*** vscode
+* maps to
+** ~/.config/
+*** alacritty
+*** amethyst
+*** doom.d
+*** tmux
+*** vim
+*** zsh
+* Back to basics
+** dotfiles
+should have a cli for running the playbook if I so desire
+** playbooks
+*** dev-book
+Has a config.yml to configure homebrew and mas
+
+Should reference Brewfile located in .dotfiles/homebrew
+or not.. maybe it's better to keep it in the config. I could have a default and
+reference the dotfile directory to override it.
+
+**** tasks
+Is there anything more? Keep it simple.
+***** zplug
+***** vimplug
+** roles
+*** geerlingguy.homebrew
+*** geerlingguy.mas
+*** eliasnorrby.dotfiles
+**** link all the stuff, but how?
+** tests
+*** test with travis!
+*** and possibly molecule
