@@ -72,6 +72,7 @@ function echo-remote-missing  { printf "${BG_DANGER}${BLACK} %4s ${NC}" "!"; }
 function echo-remote-offline  { printf "${BG_MISSING}${DARK_GRAY} %4s ${NC}" "X"; }
 function echo-upstream-missing  { printf "${BG_DANGER}${BLACK} %4s ${NC}" "!"; }
 
+function echo-red  { printf "${RED} %s ${NC}" "$*"; }
 function echo-orange  { printf "${ORANGE} %s ${NC}" "$*"; }
 function echo-gray  { printf "${LIGHT_GRAY} %s${NC}" "$*"; }
 
@@ -85,8 +86,21 @@ function warn_or_ok {
   [ $1 -gt 0 ] && echo-warn $1 || echo-ok $1
 }
 
-function git_branch {
-  local BRANCH=$(git rev-parse --abbrev-ref HEAD)
+function has_commits {
+  git rev-parse HEAD > /dev/null 2>&1
+}
+
+function get_branch {
+  git rev-parse --abbrev-ref HEAD
+}
+
+function print_git_branch {
+  if has_commits ; then
+    local BRANCH=$(get_branch)
+  else
+    local BRANCH="master?"
+  fi
+
   printf "${LIGHT_GRAY}%s${NC}" "$BRANCH"
 }
 
@@ -101,9 +115,8 @@ function git_header {
   fi
 }
 
-function git_stats {
+function print_git_stats {
   set +e
-  local BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
   local NUM_MODIFIED=$(git status --porcelain | grep -E "^ ?M" -c)
   local NUM_DELETED=$(git status --porcelain | grep -E "^ ?D" -c)
@@ -112,6 +125,13 @@ function git_stats {
   warn_or_ok $NUM_MODIFIED
   warn_or_ok $NUM_DELETED
   warn_or_ok $NUM_UNTRACKED
+
+  if has_commits ; then
+    local BRANCH=$(get_branch)
+  else
+    echo-red '!'
+    return
+  fi
 
   if [ "$OPT_CHECK_REMOTE" == true ] ; then
     local REMOTE=$(git remote)
@@ -169,18 +189,18 @@ for dir in ${DIR_LIST[@]}; do
   for repo in ${REPOS[@]}; do
 
     cd $repo
-    if [ "$OPT_LIST_ALL" == true ] || ! git diff-index --quiet HEAD --; then
+    if [ "$OPT_LIST_ALL" == true ] || ! git diff-index --quiet HEAD -- 2>/dev/null; then
       NAME="${repo##*/}"
       REPO_PATH="${repo/$HOME/\~}"
       PARENT="${REPO_PATH/$NAME/}"
       if [ ! "$OPT_LIST_ONLY" == true ] ; then
-        git_stats
+        print_git_stats
       fi
       echo-gray $PARENT
       echo-orange $NAME
 
       if [ "$OPT_SHOW_BRANCH" == true ] ; then
-        git_branch
+        print_git_branch
       fi
 
       echo # Need a new line after printfs
