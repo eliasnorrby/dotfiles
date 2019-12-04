@@ -65,7 +65,7 @@ if [ "$(uname)" = "Darwin" ]; then
   export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 
   export GOPATH=~/dev/go
-  export PATH=/Users/elias.norrby/Library/Python/3.7/bin:$PATH
+  # export PATH=/Users/elias.norrby/Library/Python/3.7/bin:$PATH
 
   export PATH=/Users/elias.norrby/.emacs.d/bin:$PATH
   export PATH=/Users/elias.norrby/bin:$PATH
@@ -260,4 +260,22 @@ fi
 # =============================================================================
 #                              Experimenting
 # =============================================================================
+#
+# export PYENV_ROOT="$HOME/.pyenv"
+# export PATH="$HOME/.pyenv/bin:$PATH"
+# echo "$(date)"
+# if command -v pyenv 1>/dev/null 2>&1; then
+#   eval "$(pyenv init -)"
+# fi
+# echo "$(date)"
 
+# function brew () {
+#   # check if pyenv is available
+#   # edit: fixed redirect issue in earlier version
+#   if command -v pyenv >/dev/null 2>&1; then
+#     # assumes default location of brew in `/usr/local/bin/brew`
+#     /usr/bin/env PATH="${PATH//$(pyenv root)\/shims:/}" /usr/local/bin/brew "$@"
+#   else
+#     /usr/local/bin/brew "$@"
+#   fi
+# }
