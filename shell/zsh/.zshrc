@@ -1,7 +1,6 @@
 ## Uncomment for performance stats
 # zmodload zsh/zprof
 
-# Many of these headers might be moved to separate files in the future.
 # =============================================================================
 #                                   Functions
 # =============================================================================
@@ -12,14 +11,26 @@ if type brew &>/dev/null; then
   FPATH=/usr/local/share/zsh/site-functions:$FPATH
 fi
 
+# TODO: load with _load function when it's defined
 # fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh && source ~/.dotfiles/shell/zsh/fzf-functions.zsh
 
+# export FZF_DEFAULT_COMMAND='fd --type f'
+# export FZF_DEFAULT_COMMAND='rg --files --glob=!node_modules/*'
+export FZF_DEFAULT_COMMAND='rg --files'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+export FZF_DEFAULT_OPTS='
+  --prompt "λ: "
+  --color fg:7,bg:0,hl:3,fg+:15,bg+:0,hl+:4
+  --color info:7,prompt:4,spinner:6,pointer:4,marker:4,gutter:0
+'
+
+# FIXME: fix absolute path
 # travis gem
 [ -f /Users/elias.norrby/.travis/travis.sh ] && source /Users/elias.norrby/.travis/travis.sh
 
-source ~/.dotfiles/zsh/fzf-functions.zsh
-
+# TODO: move to :tmux: functions.zsh
 function tn() {
   if [[ $# -eq 0 ]] ; then
       echo 'Error: must specify a session name'
@@ -28,36 +39,13 @@ function tn() {
   tmux new-session -s "$1"
 }
 
-# === Utilities ===
-
-function tkey() {
-  grep "$1" ~/.dotfiles/tmux/tmux-cheatsheet.md
-}
-
-function tkeydocs() {
-  vim ~/.dotfiles/tmux/tmux-cheatsheet.md
-}
-
-function mkd() {
-  mkdir -p -- "$1" &&
-    cd -P -- "$1"
-}
-
-function color() {
-  print -P -- "$1: %F{$1}This is what your text would look like%f";
-}
-
-function list_colors_short() {
-  for code ({00..15}) print -P -- "$code: %F{$code}This is what your text would look like%f";
-}
-
-function list_colors_long() {
-  for code ({000..255}) print -P -- "$code: %F{$code}This is how your text would look like%f";
-}
 
 # =============================================================================
 #                                   Variables
 # =============================================================================
+
+# tmux wants colors to be set or something...
+export TERM="xterm-256color"
 
 if [ "$(uname)" = "Darwin" ]; then
   export JAVA_HOME="$(/usr/libexec/java_home -v '1.8*')"
@@ -71,24 +59,18 @@ if [ "$(uname)" = "Darwin" ]; then
   export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 
   export GOPATH=~/dev/go
-  export PATH=/Users/elias.norrby/Library/Python/3.7/bin:$PATH
 
+  # FIXME: fix absolute path
   export PATH=/Users/elias.norrby/.emacs.d/bin:$PATH
   export PATH=/Users/elias.norrby/bin:$PATH
 fi
 
-# Remove duplicates from $PATH (produced by refreshing config)
-typeset -aU path
-
-export LANG="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"
-
-export GREP_OPTIONS='--color=always'
 
 # =============================================================================
 #                                   Keybinds
 # =============================================================================
 
+# TODO: move to keybinds.zsh
 bindkey -v
 # Autosuggestion key-bind
 bindkey -s '^[7' '|'
@@ -107,6 +89,7 @@ export KEYTIMEOUT=8
 #                                   Options
 # =============================================================================
 
+# TODO: move to config.zsh
 # User configuration
 DEFAULT_USER="elias.norrby"
 
@@ -139,17 +122,6 @@ setopt hist_ignore_space        # Ignore commands that start with space.
 # unsetopt BEEP                 # Turn off all beeps
 unsetopt LIST_BEEP              # Turn off autocomplete beeps
 
-# export FZF_DEFAULT_COMMAND='fd --type f'
-# export FZF_DEFAULT_COMMAND='rg --files --glob=!node_modules/*'
-export FZF_DEFAULT_COMMAND='rg --files'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-
-export FZF_DEFAULT_OPTS='
-  --prompt "λ: "
-  --color fg:7,bg:0,hl:3,fg+:15,bg+:0,hl+:4
-  --color info:7,prompt:4,spinner:6,pointer:4,marker:4,gutter:0
-'
-
 alias ls="ls --color=auto"
 
 # =============================================================================
@@ -160,6 +132,7 @@ alias ls="ls --color=auto"
 #                                 Completions
 # =============================================================================
 
+# TODO: move to completion.zsh
 fpath=(~/.zsh/completion $fpath)
 
 # case-insensitive (all), partial-word and then substring completion
@@ -192,17 +165,15 @@ zstyle ':completion:*' list-dirs-first true
 # =============================================================================
 
 
-# Personal aliases
-source ~/.dotfiles/zsh/aliases.zsh
 
-# TODO: migrate more stuff here
-# Additional functions
-source ~/.dotfiles/zsh/functions.zsh
+# FIXME: fix absolute path
+source ~/.dotfiles/shell/zsh/aliases.zsh
 
 # =============================================================================
 #                                   Plugins
 # =============================================================================
-source ~/.dotfiles/plugins.zsh
+# FIXME: fix absolute path
+source ~/.dotfiles/shell/zsh/plugins.zsh
 
 dircolors_file=${ZPLUG_HOME}/repos/seebi/dircolors-solarized/dircolors.ansi-dark
 if [ "$(uname)" = "Darwin" ] && [ -f $dircolors_file ] && command -v gdircolors > /dev/null ; then
@@ -235,28 +206,11 @@ z() {
 # =============================================================================
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
   # remote specifics
+  # FIXME: fix relative path
+  [ -f ~/.dotfiles/shell/zsh/remote.zsh ] && source ~/.dotfiles/shell/zsh/remote.zsh
 else
   # local specifics
-  # chrome - browse chrome history
-  function chrome() {
-    local cols sep google_history open
-    cols=$(( COLUMNS / 3 ))
-    sep='{::}'
-
-    if [ "$(uname)" = "Darwin" ]; then
-      google_history="$HOME/Library/Application Support/Google/Chrome/Default/History"
-      open=open
-    else
-      google_history="$HOME/.config/google-chrome/Default/History"
-      open=xdg-open
-    fi
-    cp -f "$google_history" /tmp/h
-    sqlite3 -separator $sep /tmp/h \
-      "select substr(title, 1, $cols), url
-       from urls order by last_visit_time desc" |
-    awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' |
-    fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open > /dev/null 2> /dev/null
-  }
+  [ -f ~/.dotfiles/shell/zsh/macos.zsh ] && source ~/.dotfiles/shell/zsh/macos.zsh
 fi
 
 # =============================================================================
