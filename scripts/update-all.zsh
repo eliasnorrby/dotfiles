@@ -1,10 +1,9 @@
 #!/usr/bin/env zsh
 
-# TODO: borrow hlissners _is_callable script
+source $(cd ${${(%):-%x}:A:h}/.. && pwd -P)/env
 
 # zplug
-ZPLUG_PLUGS="${HOME}/.dotfiles/plugins.zsh"
-. ${ZPLUG_PLUGS}
+_load shell/zsh/plugins.zsh
 zplug check || zplug install
 zplug update
 
