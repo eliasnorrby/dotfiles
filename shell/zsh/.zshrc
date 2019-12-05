@@ -95,6 +95,7 @@ HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=$HISTSIZE
 
+setopt auto_cd                  # Change directories without cd
 setopt append_history           # Dont overwrite history
 setopt extended_history         # Also record time and duration of commands.
 setopt share_history            # Share history between multiple shells
@@ -227,3 +228,8 @@ fi
 #                              Experimenting
 # =============================================================================
 
+_load_all aliases.zsh
+
+if [ -z "$TMUX" ] ; then
+  tmux attach -t default || tmux new -s default
+fi
