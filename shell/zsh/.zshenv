@@ -1,9 +1,12 @@
 # source env file at root of dotfiles repo
+# TODO: set path myself
+# unsetopt GLOBAL_RCS
+
 source $(cd ${${(%):-%x}:A:h}/../.. && pwd -P)/env
 
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 # TODO I don't dare doing this yet
-# export ZPLUG_HOME="$XDG_CACHE_HOME/zplug"
+export ZPLUG_HOME="$XDG_CACHE_HOME/zplug"
 export ZSH_CACHE="$XDG_CACHE_HOME/zsh"
 
 # paths
@@ -14,6 +17,7 @@ path=( $XDG_BIN_HOME $DOTFILES/bin $DOTFILES_DATA/*.topic/bin(N) $path )
 # fpath=( $ZDOTDIR/functions $XDG_BIN_HOME $fpath )
 
 # envvars
+# export SHELL=$(command -v zsh)
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 export PAGER=less
