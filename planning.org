@@ -1,5 +1,42 @@
 #+TITLE: planning
 
+* Tasks
+** DONE Clean up dotfiles root
+CLOSED: [2019-12-04 Wed 16:53]
+** DONE Remove prettier/eslint
+CLOSED: [2019-12-04 Wed 16:54]
+** PROJ Create shell module
+*** TODO Create zsh sub-module
+**** DONE Create .zshenv                                                :zsh:
+CLOSED: [2019-12-04 Wed 20:08]
+**** DONE Clean .zshrc                                                  :zsh:
+CLOSED: [2019-12-04 Wed 20:08]
+**** TODO Set up links
+#+BEGIN_EXAMPLE
+ZDOT_DIR=~/.config/zsh
+.zshrc-> ~/.config/zsh/.zshrc
+.zshenv-> ~/.config/zsh/.zshenv
+functions -> ~/.config/zsh/functions
+.zshenv -> ~/.zshenv
+#+END_EXAMPLE
+**** TODO Find a way to switch user shell
+
+*** TODO Create tmux sub-module
+**** TODO Enable renumber windows                                      :tmux:
+** PROJ Create editor module
+*** TODO Create vim sub-module
+**** TODO Clean .vimrc                                                  :vim:
+*** TODO Create emacs sub-module
+** PROJ Create keyboard module
+*** TODO Create hammerspoon sub-module
+**** TODO Clean hammerspoon                                        :keyboard:
+*** TODO Create karabiner sub-module
+** PROJ Create langs module
+*** TODO node
+*** TODO java
+*** TODO python
+*** TODO go
+** TODO Make gitignore sensible
 * Operations
 
 - install
@@ -52,78 +89,39 @@ Tap cask-fonts
 - meslo
 - sourcecode pro
 
-* Files
+* scripts
 
 ** bootstrap.sh
 One liner to get started
 ** cli.sh
 CLI for operations
-** prerequisites.sh
+** prerequisites.sh ?
 For downloading prerequisites
+** update-all.sh
+- zplug
+- vimplug
+- homebrew
+- doom?
 * directory layout
-** roles/
-*** alacritty
-**** tasks/
-***** main.yml
-**** vars/
-**** handlers/
-**** files/
-***** alacritty
-****** alacritty.yml
-***** ansible
-*** amethyst
-**** tasks/
-**** vars/
-**** handlers/
-**** files/
-*** apps
-**** tasks/
-**** vars/
-**** handlers/
-**** files/
-*** emacs
-**** tasks/
-**** vars/
-**** handlers/
-**** files/
-***** ansible
-***** emacs
-****** doom.d
-*** homebrew
-**** tasks/
-**** vars/
-**** handlers/
-**** files/
-*** tmux
-**** tasks/
-**** vars/
-**** handlers/
-**** files/
-*** vim
-**** tasks/
-**** vars/
-**** handlers/
-**** files/
-*** zsh
-**** tasks/
-**** vars/
-**** handlers/
-**** files/
-** site.yml
-** shell.yml
-** editor.yml
-** base.yml
-* directory layout
-** shell
-*** tmux
-*** zsh
-*** bash
-*** git
+** base
+** bin
+** dev
+*** docker
+*** vagrant
 ** editor
-*** vim
 *** emacs
 *** intellij
+*** vim
 *** vscode
+** keyboard
+*** hammerspoon
+*** karabiner
+** lang
+** shell
+*** bash
+*** git
+*** tmux
+*** zsh
 * maps to
 ** ~/.config/
 *** alacritty
@@ -155,3 +153,49 @@ Is there anything more? Keep it simple.
 ** tests
 *** test with travis!
 *** and possibly molecule
+* playbook variables
+** Modular approach
+
+Okay, I think I have the sourcing order down.
+
+Least to highest priority:
+- default.config.yml
+- dotfiles*
+
+Dotfiles variables are kept as:
+#+BEGIN_EXAMPLE
+.dotfiles
+- shell
+  - zsh
+    - config.yml
+  - tmux
+    - config.yml
+- editor
+  - vim
+    - config.yml
+- config.yml
+#+END_EXAMPLE
+
+The topic configs need to be sources first: they populate the 'topics' object
+defined in the root config.yml.
+
+But for now, I should work using only the default.config.yml.
+** A way to analyse directory names
+
+#+BEGIN_SRC yaml
+- name: get enabled modules
+  find:
+    path: "{{ dotfiles_data }}"
+    patterns: "*"
+    file_type: directory
+  register: topics
+
+- debug:
+    var: topics.files
+
+- set_fact:
+    enabled_topics: "{{ topics.files | map(attribute='path') | map('regex_replace', '^.*/([^/]+)\\.topic$', '\\1') | map('replace', '.', '/') | list }}"
+
+- debug:
+    msg: "{{ enabled_topics }}"
+#+END_SRC
