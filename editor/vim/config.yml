@@ -1,0 +1,7 @@
+---
+vim_config:
+  name: vim
+  path: editor/vim
+  state: present
+  brew_formulas:
+    - vim
