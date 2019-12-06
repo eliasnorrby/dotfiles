@@ -1,7 +1,13 @@
 ---
 vim_config:
-  name: vim
   path: editor/vim
-  state: present
   brew_formulas:
     - vim
+  links:
+    - .vimrc
+    # - src: .only-src
+    # - just-list-item
+    # - src: a-file
+    #   dest: a-directory/
+    # - src: a-file
+    #   dest: an-actual-file

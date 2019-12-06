@@ -181,22 +181,53 @@ defined in the root config.yml.
 
 But for now, I should work using only the default.config.yml.
 
+To add a new topic: (area/topic)
+- create a config.yml (area/topic/config.yml)
+  - contents:
+    #+BEGIN_SRC yaml
+    topic_config:
+      # required
+      path: area/topic
+      # optional
+      links:
+        - src: something
+          dest: somewhere
+      brew_taps:
+        - something
+        - another
+      brew_formulas:
+        - something
+        - another
+      brew_casks:
+        - something
+        - another
+    #+END_SRC
+- create an entry in the root config.yml (dotfiles/config.yml)
+  #+BEGIN_SRC yaml
+  topics:
+    area:
+      - name: topic
+        state: present
+        config: "{{ topic_config }}"
+  #+END_SRC
+
 *** Schema
 The config schema looks like this:
 
 #+BEGIN_SRC yaml
 - name: zsh
-  path: shell/zsh
   state: present
-  brew_formulas:
-    - zsh
-    - fzf
-    - ripgrep
-  links:
-    - src: .zshrc
-      dest: "{{ ZDOT_DIR }}"
-    - src: .zshenv
-      dest: "{{ ZDOT_DIR }}"
+  config:
+    path: shell/zsh
+    brew_formulas:
+      - zsh
+      - fzf
+      - ripgrep
+    links:
+      - src: .zshrc
+        dest: "{{ ZDOT_DIR }}"
+      - src: .zshenv
+        dest: "{{ ZDOT_DIR }}"
 
 # Link topics
 - name: link topics

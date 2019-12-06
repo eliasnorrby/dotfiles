@@ -3,34 +3,41 @@ pip_packages:
   - molecule
   - docker
 
+# topics:
+#   editor:
+#     - name: vim
+#       path: editor/vim
+#       state: present
+#       brew_formulas:
+#         - vim
+#     - name: emacs
+#       path: editor/emacs
+#       state: present
+#       brew_taps:
+#         - d12frosted/emacs-plus
+#       brew_formulas:
+#         - name: emacs_plus
+#           install_options: without-spacemacs-icon
+#   shell:
+#     - name: zsh
+#       path: shell/zsh
+#       state: present
+#       brew_formulas:
+#         - zsh
+#         - fzf
+#         - ripgrep
+#     - name: tmux
+#       path: shell/tmux
+#       state: present
+#       brew_formulas:
+#         - tmux
+
 topics:
   editor:
     - name: vim
-      path: editor/vim
       state: present
-      brew_formulas:
-        - vim
-    - name: emacs
-      path: editor/emacs
-      state: present
-      brew_taps:
-        - d12frosted/emacs-plus
-      brew_formulas:
-        - name: emacs_plus
-          install_options: without-spacemacs-icon
+      config: "{{ vim_config }}"
   shell:
     - name: zsh
-      path: shell/zsh
       state: present
-      brew_formulas:
-        - zsh
-        - fzf
-        - ripgrep
-    - name: tmux
-      path: shell/tmux
-      state: present
-      brew_formulas:
-        - tmux
-# topics_modular:
-#   editor:
-#     - "{{ vim_config }}"
+      config: "{{ zsh_config }}"

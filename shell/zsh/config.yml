@@ -1,0 +1,12 @@
+---
+zsh_config:
+  path: shell/zsh
+  brew_formulas:
+    - vim
+    - fzf
+    - ripgrep
+  links:
+    - .zshrc
+    - .zshenv
+    - src: .zshenv
+      dest: ~/.zshenv
