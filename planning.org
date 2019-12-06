@@ -180,6 +180,42 @@ The topic configs need to be sources first: they populate the 'topics' object
 defined in the root config.yml.
 
 But for now, I should work using only the default.config.yml.
+
+*** Schema
+The config schema looks like this:
+
+#+BEGIN_SRC yaml
+- name: zsh
+  path: shell/zsh
+  state: present
+  brew_formulas:
+    - zsh
+    - fzf
+    - ripgrep
+  links:
+    - src: .zshrc
+      dest: "{{ ZDOT_DIR }}"
+    - src: .zshenv
+      dest: "{{ ZDOT_DIR }}"
+
+# Link topics
+- name: link topics
+  file:
+    path: "{{ dotfiles + '/' + item.path }}"
+    dest: "{{ dotfiles_data + '/' + (item.path | replace('/', '.')) }}"
+    state: link
+  loop: "{{ enabled_topics }}"
+# Link command:
+- name: link stuff
+  file:
+    path: "{{ item.src }}"
+    dest: "{{ item.dest | regex_replace('/$', '/' + item.src) }}"
+    state: link
+  loop: "{{ all_links }}"
+#+END_SRC
+
+Looping: [[https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html#defining-inner-and-outer-variable-names-with-loop-var][link]]
+
 ** A way to analyse directory names
 
 #+BEGIN_SRC yaml
