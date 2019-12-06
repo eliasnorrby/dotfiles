@@ -66,12 +66,41 @@ if [ ! -z "$CHANNEL" ] ; then
   FIELD=${FIELD}.rooms
 fi
 
+
 if [ "$OPT_DRY_RUN" == true ] ; then
   echo-info "Resulting command: travis encrypt --pro $VALUE --add $FIELD"
 else
+  if grep "^notifications" .travis.yml > /dev/null 2>&1 ; then
+    echo-fail ".travis.yml already has a 'notifications' field."
+    echo-fail "You should comment or remove it."
+    exit 1
+  fi
+
+  TMPFILE=$(mktemp)
+  cp .travis.yml $TMPFILE
+  
+  echo-info "Logging in to travis..."
   travis login --pro --auto
+  echo-info "Encrypting value..."
   travis encrypt --pro "$VALUE" --add "$FIELD"
+
+  LINE_NR=$(grep "^notifications" .travis.yml -n | cut -d ":" -f1)
+
+  NOTIFICATION_LINES=$(sed -n "$LINE_NR,\$p" .travis.yml)
+  mv $TMPFILE .travis.yml
+  echo-info "Adding template settings"
+  cat << EOF >> .travis.yml
+
+$NOTIFICATION_LINES
+    template:
+      - "Build <%{build_url}|%{result}> for %{repository_slug}@%{branch} (<%{compare_url}|%{commit}>)"
+    on_success: change
+    on_failure: always
+EOF
+  echo-info "Done!"
 fi
 
 # template:
-#      - "Build <%{build_url}|%{result}> for %{repository_slug}@%{branch} (<%{compare_url}|%{commit}>)"
+#   - "Build <%{build_url}|%{result}> for %{repository_slug}@%{branch} (<%{compare_url}|%{commit}>)"
+# on_success: change
+# on_failure: always
