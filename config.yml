@@ -41,3 +41,6 @@ topics:
     - name: zsh
       state: present
       config: "{{ zsh_config }}"
+    - name: git
+      state: present
+      config: "{{ git_config }}"
