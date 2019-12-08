@@ -74,21 +74,15 @@ alias fgc="find-git-changes"
 
 alias git="nocorrect git"
 
-alias reloadconfig="source ~/.zshrc"
+alias reloadconfig="source $ZDOTDIR/.zshrc"
 
-alias zshc="vim ~/.dotfiles/zshrc.zsh"
-alias vimc="vim ~/.dotfiles/vimrc.vim"
-alias tmuc="vim ~/.dotfiles/tmux.conf"
-alias alac="vim ~/.dotfiles/alacritty.yml"
+alias zshc="vim $ZDOTDIR/.zshrc"
+alias vimc="vim $VIM_HOME/.vimrc"
+alias tmuc="vim $TMUX_HOME/tmux.conf"
+alias alac="vim $XDG_CONFIG_HOME/alacritty/alacritty.yml"
 
 # There's basically just funky stuff in there...
 # if [ "$(uname)" = "Darwin" ]; then
 #   source ~/.local_zshconfig/*.zsh
 # fi
-
-# Nightly build of neovim
-alias nnvim=~/tmp/nvim-osx64/bin/nvim
-# Load node and launch neovim
-alias v="n;~/tmp/nvim-osx64/bin/nvim"
-alias n="node -v > /dev/null"
 
