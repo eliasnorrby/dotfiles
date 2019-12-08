@@ -36,6 +36,13 @@
 (map! :map 'ivy-minibuffer-map
       "S-SPC" #'ivy-immediate-done)
 
+;; TODO is this the right map? :shrug:
+(map! :map 'evilem-map
+      "C-h" #'evil-window-left
+      "C-j" #'evil-window-down
+      "C-k" #'evil-window-up
+      "C-l" #'evil-window-right)
+
 ;; avy
 ;; Make avy target all windows
 (setq avy-all-windows t)
