@@ -23,23 +23,17 @@ call plug#begin($XDG_DATA_HOME.'/vim/plugged')
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
-Plug 'godlygeek/tabular'
 Plug 'raimondi/delimitmate'
-Plug 'mattn/emmet-vim'
-" Plug 'plasticboy/vim-markdown'
 
 " Ui
 Plug 'tpope/vim-vinegar'
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
 Plug 'mhinz/vim-signify'
-" Plug 'ap/vim-buftabline'
-Plug 'mhinz/vim-startify'
 
 " Navigation
 Plug 'tpope/vim-unimpaired'
 Plug 'easymotion/vim-easymotion'
-" Plug 'haya14busa/incsearch.vim'
 
 " Git
 Plug 'tpope/vim-fugitive'
@@ -77,182 +71,25 @@ Plug 'tpope/vim-dispatch'
 
 " Miscellaneous
 Plug 'takac/vim-hardtime'
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/limelight.vim'
 
 " Formatting
 " post install (yarn install | npm install) then load plugin only for editing supported files
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'npm install',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
-
-" This is very situational and seems to slow down rendering, enable on demand.
-" Seems like neovim does this by default
-" Plug 'ap/vim-css-color'
-
-if has("nvim")
-  " nvim specific settings
-  Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
-  Plug 'w0rp/ale'
-endif
-
-if has("gui_macvim")
-  " MacVim specific settings
-  Plug 'vimwiki/vimwiki'
-
-  " {{{ vimwiki settings
-  let g:vimwiki_list = [{'path': '~/Dropbox/d_COMMON/vimwiki/',
-                        \ 'syntax': 'markdown', 'ext': '.md', 'nested_syntaxes': {'js': 'javascript'}}]
-  " }}}
-endif
-
-if has("gui_vimr")
-  " VimR specific settings
-endif
+" Plug 'prettier/vim-prettier', {
+"   \ 'do': 'npm install',
+"   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
 call plug#end()
-
-" {{{ startify settings
-" let g:startify_bookmarks = ['~/Dropbox/d_COMMON/vimwiki/index.md' ]
-
-" }}}
 
 
 " map /  <Plug>(incsearch-forward)
 " map ?  <Plug>(incsearch-backward)
 " map g/ <Plug>(incsearch-stay)
 
-map \ <Plug>(easymotion-prefix)
-
-" {{{ nvim plugin settings
-if has("nvim")
-  " {{{ coc.vim settings
-  " use <tab> for trigger completion and navigate to next complete item
-  function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-  endfunction
-
-  inoremap <silent><expr> <TAB>
-        \ pumvisible() ? "\<C-n>" :
-        \ <SID>check_back_space() ? "\<TAB>" :
-        \ coc#refresh()
-
-  " use <cr> to accept completion
-  " as suggested in https://github.com/Valloric/YouCompleteMe/issues/232
-  imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
-  " imap <expr> <CR> pumvisible() ? "\<c-y>" : "\<c-r>"
-
-  augroup CocCompletionAutoClose
-    "Close preview window when completion is done.
-    autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-  augroup END
-
-  " Prettier command
-  " Maybe I will switch to running Prettier and eslint in coc
-  " command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
-
-  " vmap <leader>p  <Plug>(coc-format-selected)
-  " nmap <leader>p  <Plug>(coc-format-selected)
-
-  " Some recommended defaults
-  " Better display for messages
-  set cmdheight=2
-
-  " Smaller updatetime for CursorHold & CursorHoldI
-  set updatetime=300
-
-  " don't give |ins-completion-menu| messages.
-  set shortmess+=c
-
-  " Remap keys for gotos
-  nmap <silent> gd <Plug>(coc-definition)
-  nmap <silent> gy <Plug>(coc-type-definition)
-  nmap <silent> gi <Plug>(coc-implementation)
-  nmap <silent> gr <Plug>(coc-references)
-
-  " Remap for rename current word
-  nmap <leader>rn <Plug>(coc-rename)
-
-  " TODO: Remap these after installing vim-unimpaired
-  " Use `[d` and `]d` to navigate diagnostics
-  nmap <silent> [d <Plug>(coc-diagnostic-prev)
-  nmap <silent> ]d <Plug>(coc-diagnostic-next)
-
-  " What is the preview window even?
-  " Use K for show documentation in preview window
-  nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-  function! s:show_documentation()
-    if &filetype == 'vim'
-      execute 'h '.expand('<cword>')
-    else
-      call CocAction('doHover')
-    endif
-  endfunction
-
-  " Highlight symbol under cursor on CursorHold
-  autocmd CursorHold * silent call CocActionAsync('highlight')
-
-  " }}}
-  
-  " {{{ ale settings
-  let g:ale_linters = {
-      \  'javascript': ['eslint'],
-      \  'typescript': ['eslint']
-      \}
-
-  " One symbol config...
-  let g:ale_sign_error = '✖'
-  let g:ale_sign_warning = '⚠'
-  " highlight ALEErrorSign ctermbg=NONE ctermfg=red guibg=NONE guifg=#FF3333
-  " highlight ALEWarningSign ctermbg=NONE ctermfg=yellow guibg=NONE guifg=#FFCC66
-  " highlight link ALEErrorSign    CocErrorSign
-  " highlight link ALEWarningSign  CocWarningSign
-  " }}}
-
-endif
-" }}}
-
-" {{{ goyo-vim settings
-function! s:goyo_enter()
-  silent !tmux set status off
-  " silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
-  " set noshowmode
-  " set noshowcmd
-  let g:buftabline_show = 0
-  set scrolloff=999
-  Limelight
-  " ...
-endfunction
-
-function! s:goyo_leave()
-  silent !tmux set status on
-  " silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
-  " set showmode
-  " set showcmd
-  let g:buftabline_show = 1
-  set scrolloff=5
-  Limelight!
-  " ...
-endfunction
-
-autocmd! User GoyoEnter nested call <SID>goyo_enter()
-autocmd! User GoyoLeave nested call <SID>goyo_leave()
-
-nnoremap <silent> <Leader><Leader>g :Goyo<CR>
-" }}}
+" map \ <Plug>(easymotion-prefix)
+map gs <Plug>(easymotion-prefix)
 
 " {{{ vim-test settings
-
 let test#python#runner = 'pytest'
-
-if has("gui_vimr")
-  " Here goes some VimR specific settings like
-  " cd ~/notes
-  cd ~/Dropbox/d_COMMON/vimwiki/
-  edit index.md
-endif
 
 nnoremap <silent> <Leader>tn :TestNearest<CR>
 nnoremap <silent> <Leader>tf :TestFile<CR>
@@ -306,12 +143,11 @@ let g:list_of_disabled_keys = ["<BS>"]
 " }}}
 
 " {{{ vim-prettier settings 
-" let g:prettier#exec_cmd_path = "/Users/elias.norrby/.nvm/versions/node/v10.15.1/bin/prettier"
-let g:prettier#autoformat = 0
-augroup PrettierAutoformat
-  autocmd! 
-  autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.vue,*.yaml,*.html PrettierAsync
-augroup END
+" let g:prettier#autoformat = 0
+" augroup PrettierAutoformat
+"   autocmd! 
+"   autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.vue,*.yaml,*.html PrettierAsync
+" augroup END
 " }}}
 
 " {{{ vim-polyglot settings
@@ -324,44 +160,6 @@ let g:jsx_ext_required = 1
 " To make signify update on Gcommit
 " autocmd User Fugitive SignifyRefresh
 let g:signify_sign_change = '~'
-" }}}
-
-" {{{ vim-buftabline settings
-" let g:buftabline_show = 1
-" let g:buftabline_numbers = 2
-" let g:buftabline_indicators = 1
-
-" " go to tabs based on their ordinal number
-" nmap <leader>1 <Plug>BufTabLine.Go(1)
-" nmap <leader>2 <Plug>BufTabLine.Go(2)
-" nmap <leader>3 <Plug>BufTabLine.Go(3)
-" nmap <leader>4 <Plug>BufTabLine.Go(4)
-" nmap <leader>5 <Plug>BufTabLine.Go(5)
-" nmap <leader>6 <Plug>BufTabLine.Go(6)
-" nmap <leader>7 <Plug>BufTabLine.Go(7)
-" nmap <leader>8 <Plug>BufTabLine.Go(8)
-" nmap <leader>9 <Plug>BufTabLine.Go(9)
-" nmap <leader>0 <Plug>BufTabLine.Go(10)
-" }}}
-
-" {{{ vim-css-color settings
-" nmap <leader><leader>c :call css_color#toggle()<cr>
-" }}}
-
-" {{{ vim-emmit settings
-let g:user_emmet_mode='i'
-let g:user_emmet_leader_key=','
-let g:user_emmet_settings = {
-\ 'html' : {
-\     'block_all_childless' : 1,
-\   }
-\ }
-
-let g:user_emmet_install_global = 0
-augroup EmmetFileFilter
-  autocmd FileType html,css,jsx EmmetInstall
-augroup END
-
 " }}}
 
 " {{{ delimite settings
