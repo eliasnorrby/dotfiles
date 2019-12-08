@@ -40,8 +40,15 @@ CLOSED: [2019-12-08 Sun 17:58]
 CLOSED: [2019-12-08 Sun 17:59]
 **** DONE run playbook to link
 CLOSED: [2019-12-08 Sun 17:59]
+*** TODO Fix todos in zshrc
+*** TODO move aliases to appropriate topic
 ** PROJ Create editor module
 *** TODO Create vim sub-module
+**** DONE move vim to editor
+CLOSED: [2019-12-08 Sun 18:02]
+**** TODO setup env
+**** TODO setup aliases
+**** TODO add config
 **** TODO Clean .vimrc                                                  :vim:
 *** TODO Create emacs sub-module
 ** PROJ Create keyboard module

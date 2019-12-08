@@ -5,9 +5,3 @@ vim_config:
     - vim
   links:
     - .vimrc
-    # - src: .only-src
-    # - just-list-item
-    # - src: a-file
-    #   dest: a-directory/
-    # - src: a-file
-    #   dest: an-actual-file
