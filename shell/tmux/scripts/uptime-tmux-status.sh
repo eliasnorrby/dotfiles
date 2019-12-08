@@ -1,8 +1,6 @@
 #!/bin/bash
 
 # This is a widget for my tmux statusline. It renders colored load averages.
-# TODO This should probably go in a tmux folder instead of the main scripts
-# directory.
 
 if [[ "$#" -ne 5 ]]; then
   echo "use: low med high black white (colors)"
@@ -18,10 +16,10 @@ WHITE=$5
 LIMIT_MED=4
 LIMIT_HIGH=6
 
-major_loads=`uptime | rev | cut -d":" -f1 | rev | sed s/,\ /./g | cut -d"." -f1,3,5`
-load_1_int=`echo $major_loads | cut -d"." -f1`
-load_5_int=`echo $major_loads | cut -d"." -f2`
-load_15_int=`echo $major_loads | cut -d"." -f3`
+major_loads=$(uptime | rev | cut -d":" -f1 | rev | sed s/,\ /./g | cut -d"." -f1,3,5)
+load_1_int=$(echo $major_loads | cut -d"." -f1)
+load_5_int=$(echo $major_loads | cut -d"." -f2)
+load_15_int=$(echo $major_loads | cut -d"." -f3)
 
 if [ "$load_1_int" -ge "$LIMIT_HIGH" ]; then
   COL1_BG=$HIGH

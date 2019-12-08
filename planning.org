@@ -6,12 +6,14 @@ CLOSED: [2019-12-04 Wed 16:53]
 ** DONE Remove prettier/eslint
 CLOSED: [2019-12-04 Wed 16:54]
 ** PROJ Create shell module
-*** TODO Create zsh sub-module
+*** DONE Create zsh sub-module
+CLOSED: [2019-12-08 Sun 17:23]
 **** DONE Create .zshenv                                                :zsh:
 CLOSED: [2019-12-04 Wed 20:08]
 **** DONE Clean .zshrc                                                  :zsh:
 CLOSED: [2019-12-04 Wed 20:08]
-**** TODO Set up links
+**** DONE Set up links
+CLOSED: [2019-12-08 Sun 17:22]
 #+BEGIN_EXAMPLE
 ZDOT_DIR=~/.config/zsh
 .zshrc-> ~/.config/zsh/.zshrc
@@ -19,10 +21,25 @@ ZDOT_DIR=~/.config/zsh
 functions -> ~/.config/zsh/functions
 .zshenv -> ~/.zshenv
 #+END_EXAMPLE
-**** TODO Find a way to switch user shell
+**** DONE Find a way to switch user shell
+CLOSED: [2019-12-08 Sun 17:22]
 
-*** TODO Create tmux sub-module
-**** TODO Enable renumber windows                                      :tmux:
+*** DONE Create tmux sub-module
+CLOSED: [2019-12-08 Sun 17:59]
+**** DONE Enable renumber windows                                      :tmux:
+CLOSED: [2019-12-08 Sun 17:23]
+**** DONE create config.yml
+CLOSED: [2019-12-08 Sun 17:24]
+**** DONE add to root config.yml
+CLOSED: [2019-12-08 Sun 17:25]
+**** DONE set up aliases
+CLOSED: [2019-12-08 Sun 17:58]
+**** DONE move status bar script to tmux/scripts
+CLOSED: [2019-12-08 Sun 17:58]
+**** DONE extract theme to tmux.theme.conf
+CLOSED: [2019-12-08 Sun 17:59]
+**** DONE run playbook to link
+CLOSED: [2019-12-08 Sun 17:59]
 ** PROJ Create editor module
 *** TODO Create vim sub-module
 **** TODO Clean .vimrc                                                  :vim:
