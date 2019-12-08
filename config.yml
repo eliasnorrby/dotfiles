@@ -33,6 +33,10 @@ pip_packages:
 #         - tmux
 
 topics:
+  base:
+    - name: macos
+      state: present
+      config: "{{ macos_config }}"
   editor:
     - name: vim
       state: present
