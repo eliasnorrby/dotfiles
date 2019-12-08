@@ -48,7 +48,6 @@ if [ "$(uname)" = "Darwin" ]; then
   export GOPATH=~/dev/go
 
   # FIXME: fix absolute path
-  export PATH=/Users/elias.norrby/.emacs.d/bin:$PATH
   export PATH=/Users/elias.norrby/bin:$PATH
 fi
 
