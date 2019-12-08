@@ -42,9 +42,12 @@ topics:
       state: present
       config: "{{ vim_config }}"
   shell:
-    - name: zsh
-      state: present
-      config: "{{ zsh_config }}"
     - name: git
       state: present
       config: "{{ git_config }}"
+    - name: tmux
+      state: present
+      config: "{{ tmux_config }}"
+    - name: zsh
+      state: present
+      config: "{{ zsh_config }}"
