@@ -43,9 +43,12 @@ functions -> ~/.config/zsh/functions
 - update
 - remove
 - link?
-
-* node
-** globals
+* Dependecies
+** python
+*** molecule
+*** ansible, duh
+** node
+*** globals
 
 /usr/local/lib
 ├── gatsby-cli@2.8.11
@@ -57,33 +60,33 @@ functions -> ~/.config/zsh/functions
 ├── semantic-release-cli@5.2.3
 └── serve@11.2.0
 
-* base
-** general
-*** dropbox
-*** magnet !
-*** tooth fairy !
-*** bartender
-*** alfred
-*** amethyst
-*** discord
-*** chrome
-*** lastpass
-*** google-chrome
-*** karabiner-elements
-*** hammerspoon
-*** istat-menus
-*** textexpander
-*** drafts !
-*** spotify
-*** slack
-*** things !
-** dev
-*** postman
-*** visual-studio-code
-*** intellij-idea-ce
-*** emacs ? d12frosted/emacs-plus
-*** firefox developer edition ? homebrew/cask-versions
-** fonts
+** base
+*** general
+**** dropbox
+**** magnet !
+**** tooth fairy !
+**** bartender
+**** alfred
+**** amethyst
+**** discord
+**** chrome
+**** lastpass
+**** google-chrome
+**** karabiner-elements
+**** hammerspoon
+**** istat-menus
+**** textexpander
+**** drafts !
+**** spotify
+**** slack
+**** things !
+*** dev
+**** postman
+**** visual-studio-code
+**** intellij-idea-ce
+**** emacs ? d12frosted/emacs-plus
+**** firefox developer edition ? homebrew/cask-versions
+*** fonts
 Tap cask-fonts
 - iosevka
 - meslo
