@@ -40,17 +40,25 @@ CLOSED: [2019-12-08 Sun 17:58]
 CLOSED: [2019-12-08 Sun 17:59]
 **** DONE run playbook to link
 CLOSED: [2019-12-08 Sun 17:59]
+*** TODO Move alacritty to shell
+*** TODO Move git stuff to git
 *** TODO Fix todos in zshrc
 *** TODO move aliases to appropriate topic
 ** PROJ Create editor module
-*** TODO Create vim sub-module
+*** DONE Create vim sub-module
+CLOSED: [2019-12-08 Sun 19:42]
 **** DONE move vim to editor
 CLOSED: [2019-12-08 Sun 18:02]
-**** TODO setup env
-**** TODO setup aliases
-**** TODO add config
-**** TODO Clean .vimrc                                                  :vim:
+**** DONE setup env
+CLOSED: [2019-12-08 Sun 19:41]
+**** DONE setup aliases
+CLOSED: [2019-12-08 Sun 19:41]
+**** DONE add config
+CLOSED: [2019-12-08 Sun 19:41]
+**** DONE Clean .vimrc                                                  :vim:
+CLOSED: [2019-12-08 Sun 19:41]
 *** TODO Create emacs sub-module
+*** TODO Create editorconfig sub-module
 ** PROJ Create keyboard module
 *** TODO Create hammerspoon sub-module
 **** TODO Clean hammerspoon                                        :keyboard:
@@ -68,6 +76,8 @@ CLOSED: [2019-12-08 Sun 18:02]
 - remove
 - link?
 * Dependecies
+** ruby
+*** travis
 ** python
 *** molecule
 *** ansible, duh

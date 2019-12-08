@@ -41,6 +41,9 @@ topics:
     - name: vim
       state: present
       config: "{{ vim_config }}"
+    - name: emacs
+      state: present
+      config: "{{ emacs_config }}"
   shell:
     - name: git
       state: present
