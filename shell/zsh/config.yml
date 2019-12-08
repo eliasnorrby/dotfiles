@@ -2,7 +2,7 @@
 zsh_config:
   path: shell/zsh
   brew_formulas:
-    - vim
+    - zsh
     - fzf
     - ripgrep
   links:
