@@ -1,0 +1,6 @@
+---
+editorconfig_config:
+  path: editor/editorconfig
+  links:
+    - src: .editorconfig
+      dest: ~/.editorconfig
