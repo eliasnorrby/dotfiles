@@ -67,3 +67,7 @@ topics:
     - name: zsh
       state: present
       config: "{{ zsh_config }}"
+  lang:
+    - name: ruby
+      state: present
+      config: "{{ ruby_config }}"
