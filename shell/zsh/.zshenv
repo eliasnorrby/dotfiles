@@ -5,7 +5,6 @@
 source $(cd ${${(%):-%x}:A:h}/../.. && pwd -P)/env
 
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-# TODO I don't dare doing this yet
 export ZPLUG_HOME="$XDG_CACHE_HOME/zplug"
 export ZSH_CACHE="$XDG_CACHE_HOME/zsh"
 
@@ -24,6 +23,18 @@ export PAGER=less
 export LESS='-R -i -w -M -z-4'
 export LESSHISTFILE="$XDG_DATA_HOME/lesshst"
 export GREP_OPTIONS='--color=always'
+
+# I think this solves an issue with tmux colors
+export TERM="xterm-256color"
+
+if [[ "$(_os)" == "macos" ]]; then
+
+  # For using GNU coreutils with default names
+  # NTS: I use this for the 'tree' command
+  path=( /usr/local/opt/coreutils/libexec/gnubin $path )
+
+  path=( ~/bin $path )
+fi
 
 # initialize enabled topics
 _load_all env.zsh

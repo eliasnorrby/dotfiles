@@ -5,6 +5,7 @@ zsh_config:
     - zsh
     - fzf
     - ripgrep
+    - coreutils
   links:
     - .zshrc
     - .zshenv

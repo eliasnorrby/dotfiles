@@ -11,45 +11,14 @@ if type brew &>/dev/null; then
   FPATH=/usr/local/share/zsh/site-functions:$FPATH
 fi
 
-
-
 # FIXME: fix absolute path
-# travis gem
-[ -f /Users/elias.norrby/.travis/travis.sh ] && source /Users/elias.norrby/.travis/travis.sh
-
-# TODO: move to :tmux: functions.zsh
-function tn() {
-  if [[ $# -eq 0 ]] ; then
-      echo 'Error: must specify a session name'
-      return 1
-  fi
-  tmux new-session -s "$1"
-}
-
+# travis gem completion
+[ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
 
 # =============================================================================
 #                                   Variables
 # =============================================================================
 
-# tmux wants colors to be set or something...
-export TERM="xterm-256color"
-
-if [ "$(uname)" = "Darwin" ]; then
-  export JAVA_HOME="$(/usr/libexec/java_home -v '1.8*')"
-
-  # For Ruby
-  export PATH="/usr/local/opt/ruby/bin:$PATH"
-  export PATH="/usr/local/lib/ruby/gems/2.6.0/bin:$PATH"
-
-  # For using GNU coreutils with default names
-  # NTS: I use this for the 'tree' command
-  export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
-
-  export GOPATH=~/dev/go
-
-  # FIXME: fix absolute path
-  export PATH=/Users/elias.norrby/bin:$PATH
-fi
 
 
 # =============================================================================
