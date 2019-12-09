@@ -16,7 +16,8 @@ export DOTFILES=~/.dotfiles
 
 PLAYBOOK_RELEASE=${1:-v1.0.0-alpha}
 
-_msg() { printf "\r\033[2K\033[0;32m[ .. ] %s\033[0m\n" "$*"; }
+# _msg() { printf "\r\033[2K\033[0;32m[ .. ] %s\033[0m\n" "$*"; }
+_msg() { echo "$*"; }
 
 _get_release() {
   local release=$1
