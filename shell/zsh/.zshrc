@@ -11,14 +11,12 @@ if type brew &>/dev/null; then
   FPATH=/usr/local/share/zsh/site-functions:$FPATH
 fi
 
-# FIXME: fix absolute path
 # travis gem completion
 [ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
 
 # =============================================================================
 #                                 Performance
 # =============================================================================
-
 
 # TODO: Find out why there are multiple compinit calls
 # autoload -Uz compinit && compinit -i
@@ -45,20 +43,12 @@ zplug load
 # =============================================================================
 #                             Post zplug load
 # =============================================================================
-
-zstyle :prompt:pure:path color yellow
-zstyle :prompt:pure:git:dirty color yellow
-zstyle :prompt:pure:prompt:success color cyan
-
-# Set zsh autosuggestion text to a brighter color
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
-
-# fzf
+_load shell/zsh/config.zsh
+_load shell/zsh/completion.zsh
+_load shell/zsh/keybinds.zsh
+_load shell/zsh/prompt.zsh
 _load shell/zsh/fzf.zsh
 
-# =============================================================================
-#                              Session specific
-# =============================================================================
 if _remote; then
   # remote specifics
   _load shell/zsh/remote.zsh
@@ -67,21 +57,12 @@ else
   _load shell/zsh/macos.zsh
 fi
 
-# =============================================================================
-#                                   Done
-# =============================================================================
-
-# =============================================================================
-#                              Experimenting
-# =============================================================================
-
-# _load shell/zsh/prompt.zsh
-_load shell/zsh/config.zsh
-_load shell/zsh/completion.zsh
-_load shell/zsh/keybinds.zsh
-
 _load_all aliases.zsh
 
 if [ -z "$TMUX" ] ; then
   tmux attach -t default || tmux new -s default
 fi
+
+# =============================================================================
+#                              Experimenting
+# =============================================================================
