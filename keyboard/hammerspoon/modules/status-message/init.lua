@@ -9,10 +9,10 @@ statusmessage.new = function(messageText)
     local frame = screen.primaryScreen():frame()
 
     local styledTextAttributes = {
-      font = { name = 'Hack', size = 32 },
+      font = { name = 'Iosevka Nerd Font', size = 24 },
+      color = { hex = '#ffb700' }
     }
 
-    -- local styledText = styledtext.new('🔨 ' .. messageText, styledTextAttributes)
     local styledText = styledtext.new(messageText, styledTextAttributes)
 
     local styledTextSize = drawing.getTextDrawingSize(styledText)
@@ -22,7 +22,7 @@ statusmessage.new = function(messageText)
       w = styledTextSize.w + 40,
       h = styledTextSize.h + 40,
     }
-    local text = drawing.text(textRect, styledText):setAlpha(0.7)
+    local text = drawing.text(textRect, styledText):setAlpha(1)
 
     local background = drawing.rectangle(
       {

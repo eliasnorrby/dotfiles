@@ -14,6 +14,7 @@ end
 
 appMode:bind({}, 'space', exitAppMode)
 
+-- Open LastPass Quick Search
 appMode:bind({}, 'p', function()
     keyUpDown({ 'ctrl', 'cmd', 'shift' }, 'l')
   end)
@@ -22,9 +23,8 @@ appMode:bind({}, 'p', function()
 f16 = hs.hotkey.bind({}, 'F16', enterAppMode, exitAppMode)
 
 -- Non-app bindings
--- Simpler vim movement:
+-- vim movement:
 local charactersToKeystrokes = {
-  --- Movement
   {
     from = 'h',
     to = 'left',
@@ -49,12 +49,6 @@ hs.fnutils.each(charactersToKeystrokes, function(m)
     end)
 end)
 
--- To get into window mode
-appMode:bind({}, 'w', function()
-  appMode:exit()
-  enterWindowMode()
-end)
-
 -- Toggle fullscreen
 appMode:bind({}, 'return', function()
   local win = hs.window.frontmostWindow()
@@ -62,7 +56,7 @@ appMode:bind({}, 'return', function()
 end)
 
 -- Apps
-local status, appModeMappings = pcall(require, 'keyboard.hyper-apps')
+local status, appModeMappings = pcall(require, 'modules.app-mode.app-mappings')
 
 for i, mapping in ipairs(appModeMappings) do
   local key = mapping[1]
@@ -72,7 +66,7 @@ for i, mapping in ipairs(appModeMappings) do
       hs.application.open(app)
       exitAppMode()
     else
-      hs.logger.new('hyper'):e('Invalid mapping for Hyper +', key)
+      hs.logger.new('apps'):e('Invalid mapping for App Mode +', key)
     end
   end)
 end
