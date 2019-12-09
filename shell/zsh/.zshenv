@@ -1,6 +1,6 @@
 # source env file at root of dotfiles repo
 # TODO: set path myself
-# unsetopt GLOBAL_RCS
+unsetopt GLOBAL_RCS
 
 source $(cd ${${(%):-%x}:A:h}/../.. && pwd -P)/env
 
