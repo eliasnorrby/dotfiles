@@ -1,14 +1,10 @@
 # Enable ls colors by aliasing gnu coreutils ls – not needed when included in PATH
-#alias ls="gls"
-#alias dircolors="gdircolors"
-
-# Generic command adaptations
-# alias grep='() { $(whence -p grep) --color=auto $@ }'
-# alias egrep='() { $(whence -p egrep) --color=auto $@ }'
+alias ls="gls --color=auto"
 
 # Overrides l= "ls -lah"
 alias l="ls -1"
 alias ll="ls -l"
+alias lll="ls -lah"
 
 alias cl="clear"
 
