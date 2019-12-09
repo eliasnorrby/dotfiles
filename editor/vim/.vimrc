@@ -442,7 +442,7 @@ if has("termguicolors")
   if s:theme_to_use == "ayu"
     set termguicolors     " enable true colors support
     let ayucolor="mirage" " for mirage version of theme
-    colorscheme ayu 
+    silent! colorscheme ayu 
   endif
 
   " {{{ Ayu color reference
@@ -481,22 +481,22 @@ if has("termguicolors")
   if s:theme_to_use == "palenight"
     set termguicolors
     set background=dark
-    colorscheme palenight
+    silent! colorscheme palenight
   endif
 
   if s:theme_to_use == "gruvbox"
     set termguicolors
     set background=dark
     let g:gruvbox_contrast_dark = "medium"
-    colorscheme gruvbox
+    silent! colorscheme gruvbox
   endif
 
   if s:theme_to_use == "seoul256"
     let g:seoul256_background = 235
-    colorscheme seoul256
+    silent! colorscheme seoul256
   endif
 else
-  colorscheme onedark
+  silent! colorscheme onedark
   hi Normal ctermbg=000
 endif
 
