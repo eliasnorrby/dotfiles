@@ -54,7 +54,7 @@ setopt hist_ignore_space        # Ignore commands that start with space.
 unsetopt LIST_BEEP              # Turn off autocomplete beeps
 
 
-alias ls="ls --color=auto"
+alias ls="gls --color=auto"
 
 # =============================================================================
 #                                 Performance
