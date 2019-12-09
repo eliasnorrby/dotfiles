@@ -1,4 +1,40 @@
+# Setup fzf
+# ---------
+if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
+  export PATH="$PATH:/usr/local/opt/fzf/bin"
+fi
+
+# Auto-completion
+# ---------------
+[[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
+
+# Key bindings
+# ------------
+source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+
+# Customization
+# -------------
+# export FZF_DEFAULT_COMMAND='fd --type f'
+# export FZF_DEFAULT_COMMAND='rg --files --glob=!node_modules/*'
+export FZF_DEFAULT_COMMAND='rg --files'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+export FZF_DEFAULT_OPTS='
+  --prompt "λ: "
+  --color fg:7,bg:0,hl:3,fg+:15,bg+:0,hl+:4
+  --color info:7,prompt:4,spinner:6,pointer:4,marker:4,gutter:0
+'
+
+# Use fzf for z
+alias j="_z 2>&1"
+unalias z 2> /dev/null
+z() {
+  [ $# -gt 0 ] && _z "$*" && return
+  cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
+}
+
 ## FZF FUNCTIONS ##
+# -----------------
 # Inspired by (read: copy-pasted from) the Jarvis dotfiles (ctaylo21/jarvis)
 # Source: https://github.com/ctaylo21/jarvis
 
