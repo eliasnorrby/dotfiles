@@ -2,6 +2,8 @@
 
 alias tmux='tmux -f "$TMUX_HOME/tmux.conf"'
 
+alias tmuc="vim $TMUX_HOME/tmux.conf"
+
 function tn() {
   if [[ $# -eq 0 ]] ; then
       echo 'Error: must specify a session name'

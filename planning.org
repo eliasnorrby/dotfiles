@@ -43,7 +43,8 @@ CLOSED: [2019-12-08 Sun 17:59]
 *** DONE Move alacritty to shell
 CLOSED: [2019-12-09 Mon 10:46]
 *** TODO Move git stuff to git
-*** TODO Fix todos in zshrc
+*** DONE Fix todos in zshrc
+CLOSED: [2019-12-09 Mon 12:27]
 *** TODO move aliases to appropriate topic
 *** TODO groom path setting
 Use path instead of PATH, move statements to appropriate topics
