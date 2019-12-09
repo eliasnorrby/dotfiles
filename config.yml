@@ -67,6 +67,10 @@ topics:
     - name: zsh
       state: present
       config: "{{ zsh_config }}"
+  dev:
+    - name: docker
+      state: present
+      config: "{{ docker_config }}"
   lang:
     - name: ruby
       state: present
