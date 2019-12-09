@@ -6,7 +6,7 @@
 
 SECONDS=0
 
-set -e
+set -exo pipefail
 
 export DOTFILES=~/.dotfiles
 
