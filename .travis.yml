@@ -32,8 +32,13 @@ script:
   #   travis_wait 30
   #   bash <(curl -sL ${curl_target}${TRAVIS_PULL_REQUEST_BRANCH:-TRAVIS_BRANCH}/bootstrap.sh)
   - set -x
+  - echo "$TRAVIS_PULL_REQUEST_BRANCH"
+  - echo "$TRAVIS_BRANCH"
+  - echo "curl -sLO ${curl_target}${TRAVIS_PULL_REQUEST_BRANCH:-TRAVIS_BRANCH}/bootstrap.sh"
   - "curl -sLO ${curl_target}${TRAVIS_PULL_REQUEST_BRANCH:-TRAVIS_BRANCH}/bootstrap.sh"
+  - cat bootstrap.sh
   - chmod +x bootstrap.sh
+  - set +x
   - ./bootstrap.sh
 
 notifications:
