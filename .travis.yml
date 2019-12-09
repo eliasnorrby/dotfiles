@@ -19,26 +19,11 @@ before_install:
   - sudo rm -rf /usr/local/Homebrew
   - sudo rm -rf /usr/local/Caskroom
   - sudo rm -rf /usr/local/bin/brew
-  - pwd
-  - ls -la
-
-# before_script:
-#   # Remove dotfiles
-#   - cd ../
-#   - rm -rf dotfiles
 
 script:
-  # - >
-  #   travis_wait 30
-  #   bash <(curl -sL ${curl_target}${TRAVIS_PULL_REQUEST_BRANCH:-TRAVIS_BRANCH}/bootstrap.sh)
-  - echo "$TRAVIS_PULL_REQUEST_BRANCH"
-  - echo "$TRAVIS_BRANCH"
-  - echo "curl -sLO ${curl_target}${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}/bootstrap.sh"
-  - "curl -sLO ${curl_target}${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}/bootstrap.sh"
-  - cat bootstrap.sh
-  - wc -l bootstrap.sh
-  - chmod +x bootstrap.sh
-  - ./bootstrap.sh
+  - >
+    travis_wait 30
+    bash <(curl -sL ${curl_target}${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}/bootstrap.sh)
 
 notifications:
   slack:
