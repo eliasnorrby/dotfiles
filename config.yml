@@ -71,3 +71,6 @@ topics:
     - name: ruby
       state: present
       config: "{{ ruby_config }}"
+    - name: java
+      state: present
+      config: "{{ java_config }}"
