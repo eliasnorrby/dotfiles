@@ -23,6 +23,6 @@ vim +'PlugInstall --sync' +qall
 # emacs
 _msg "-- doom --"
 _msg "Running doom refresh..."
-doom refresh --yes
+doom --yes refresh
 
 _msg "Done!"
