@@ -1,0 +1,6 @@
+karabiner_config:
+  path: keyboard/karabiner
+  links:
+    - karabiner.json
+  brew_casks:
+    - karabiner-elements

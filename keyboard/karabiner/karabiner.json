@@ -16,7 +16,7 @@
                 },
                 "rules": [
                     {
-                        "description": "Remapping caps lock",
+                        "description": "Remap caps lock to esc / ctrl",
                         "manipulators": [
                             {
                                 "from": {
@@ -42,7 +42,7 @@
                         ]
                     },
                     {
-                        "description": "Remapping right cmd for programs (TEST)",
+                        "description": "Trigger App Mode with right cmd",
                         "manipulators": [
                             {
                                 "from": {
@@ -100,7 +100,7 @@
                         ]
                     },
                     {
-                        "description": "Enhance vim keys",
+                        "description": "Map h/j/k/l to arrow keys in App Mode",
                         "manipulators": [
                             {
                                 "from": {

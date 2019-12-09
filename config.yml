@@ -44,6 +44,10 @@ topics:
     - name: emacs
       state: present
       config: "{{ emacs_config }}"
+  keyboard:
+    - name: karabiner
+      state: present
+      config: "{{ karabiner_config }}"
   shell:
     - name: alacritty
       state: present
