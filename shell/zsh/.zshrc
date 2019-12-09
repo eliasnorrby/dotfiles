@@ -5,6 +5,7 @@
 #                                   Functions
 # =============================================================================
 
+# Enable completion for homebrew packages
 if type brew &>/dev/null; then
   # Uncomment this if brew's location should change for some reason
   # FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
@@ -38,16 +39,16 @@ if [ "$(uname)" = "Darwin" ] && [ -f $dircolors_file ] && command -v gdircolors 
   eval $(gdircolors $dircolors_file)
 fi
 
-zplug load
 
 # =============================================================================
-#                             Post zplug load
+#                                Load all the things
 # =============================================================================
 _load shell/zsh/config.zsh
 _load shell/zsh/completion.zsh
 _load shell/zsh/keybinds.zsh
 _load shell/zsh/prompt.zsh
 _load shell/zsh/fzf.zsh
+zplug load
 
 if _remote; then
   # remote specifics
