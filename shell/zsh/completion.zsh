@@ -1,4 +1,14 @@
-fpath=(~/.zsh/completion $fpath)
+fpath=( ~/.zsh/completion $fpath )
+
+# Enable completion for homebrew packages
+if type brew &>/dev/null; then
+  # Uncomment this if brew's location should change for some reason
+  # FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+  fpath=( /usr/local/share/zsh/site-functions $fpath )
+fi
+
+# travis gem completion
+[ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
 
 # case-insensitive (all), partial-word and then substring completion
 zstyle ":completion:*" matcher-list \
