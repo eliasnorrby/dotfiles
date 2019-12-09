@@ -28,9 +28,13 @@ before_install:
 #   - rm -rf dotfiles
 
 script:
-  - >
-    travis_wait 30
-    bash <(curl -s ${curl_target}${TRAVIS_PULL_REQUEST_BRANCH:-TRAVIS_BRANCH}/bootstrap.sh)
+  # - >
+  #   travis_wait 30
+  #   bash <(curl -sL ${curl_target}${TRAVIS_PULL_REQUEST_BRANCH:-TRAVIS_BRANCH}/bootstrap.sh)
+  - set -x
+  - "curl -sLO ${curl_target}${TRAVIS_PULL_REQUEST_BRANCH:-TRAVIS_BRANCH}/bootstrap.sh"
+  - chmod +x bootstrap.sh
+  - ./bootstrap.sh
 
 notifications:
   slack:
