@@ -100,3 +100,8 @@ function _os {
     cygwin*) echo cygwin ;;
   esac
 }
+
+# check if remote
+function _remote {
+  [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]
+}
