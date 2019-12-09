@@ -29,12 +29,10 @@ fi
 #   compinit -C;
 # fi;
 
-
 # =============================================================================
 #                                   Plugins
 # =============================================================================
-# FIXME: fix absolute path
-source ~/.dotfiles/shell/zsh/plugins.zsh
+_load shell/zsh/plugins.zsh
 
 dircolors_file=${ZPLUG_HOME}/repos/seebi/dircolors-solarized/dircolors.ansi-dark
 if [ "$(uname)" = "Darwin" ] && [ -f $dircolors_file ] && command -v gdircolors > /dev/null ; then
@@ -55,30 +53,8 @@ zstyle :prompt:pure:prompt:success color cyan
 # Set zsh autosuggestion text to a brighter color
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
 
-# Use fzf for z
-alias j="_z 2>&1"
-unalias z 2> /dev/null
-z() {
-  [ $# -gt 0 ] && _z "$*" && return
-  cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
-}
-
-# TODO: load with _load function when it's defined
-# TODO: move to separate file and make sure to load late
 # fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-# export FZF_DEFAULT_COMMAND='fd --type f'
-# export FZF_DEFAULT_COMMAND='rg --files --glob=!node_modules/*'
-export FZF_DEFAULT_COMMAND='rg --files'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-
-export FZF_DEFAULT_OPTS='
-  --prompt "λ: "
-  --color fg:7,bg:0,hl:3,fg+:15,bg+:0,hl+:4
-  --color info:7,prompt:4,spinner:6,pointer:4,marker:4,gutter:0
-'
-
-source ~/.dotfiles/shell/zsh/fzf-functions.zsh
+_load shell/zsh/fzf.zsh
 
 # =============================================================================
 #                              Session specific
