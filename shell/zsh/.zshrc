@@ -16,31 +16,6 @@ fi
 [ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
 
 # =============================================================================
-#                                   Variables
-# =============================================================================
-
-
-
-# =============================================================================
-#                                   Keybinds
-# =============================================================================
-
-# TODO: move to keybinds.zsh
-bindkey -v
-# Autosuggestion key-bind
-bindkey -s '^[7' '|'
-bindkey '^w' backward-kill-word
-bindkey ',q' push-line
-bindkey -M viins ',.' insert-last-word
-bindkey -M viins '.,' insert-last-word
-bindkey ',l' clear-screen
-
-# Make Vi mode transitions faster (KEYTIMEOUT is in hundredths of a second)
-export KEYTIMEOUT=8
-
-
-
-# =============================================================================
 #                                   Options
 # =============================================================================
 
@@ -195,6 +170,11 @@ fi
 # =============================================================================
 #                              Experimenting
 # =============================================================================
+
+# _load shell/zsh/prompt.zsh
+# _load shell/zsh/config.zsh
+# _load shell/zsh/completion.zsh
+_load shell/zsh/keybinds.zsh
 
 _load_all aliases.zsh
 
