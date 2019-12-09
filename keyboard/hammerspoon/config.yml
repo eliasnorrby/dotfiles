@@ -1,0 +1,7 @@
+hammerspoon_config:
+  path: keyboard/hammerspoon
+  links:
+    - init.lua
+    - modules
+  brew_casks:
+    - hammerspoon

@@ -1,4 +1,4 @@
--- Keybindings for launching apps in Hyper Mode
+-- Keybindings for launching apps in App Mode
 return {
   { 'b', 'Bear' },                 -- "B" for "Bear"
   { 'c', 'Google Chrome' },        -- "C" for "Chrome"

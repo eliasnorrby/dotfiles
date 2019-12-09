@@ -45,6 +45,9 @@ topics:
       state: present
       config: "{{ emacs_config }}"
   keyboard:
+    - name: hammerspoon
+      state: present
+      config: "{{ hammerspoon_config }}"
     - name: karabiner
       state: present
       config: "{{ karabiner_config }}"
