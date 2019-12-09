@@ -40,10 +40,13 @@ CLOSED: [2019-12-08 Sun 17:58]
 CLOSED: [2019-12-08 Sun 17:59]
 **** DONE run playbook to link
 CLOSED: [2019-12-08 Sun 17:59]
-*** TODO Move alacritty to shell
+*** DONE Move alacritty to shell
+CLOSED: [2019-12-09 Mon 10:46]
 *** TODO Move git stuff to git
 *** TODO Fix todos in zshrc
 *** TODO move aliases to appropriate topic
+*** TODO groom path setting
+Use path instead of PATH, move statements to appropriate topics
 ** PROJ Create editor module
 *** DONE Create vim sub-module
 CLOSED: [2019-12-08 Sun 19:42]
@@ -57,18 +60,32 @@ CLOSED: [2019-12-08 Sun 19:41]
 CLOSED: [2019-12-08 Sun 19:41]
 **** DONE Clean .vimrc                                                  :vim:
 CLOSED: [2019-12-08 Sun 19:41]
-*** TODO Create emacs sub-module
-*** TODO Create editorconfig sub-module
-** PROJ Create keyboard module
-*** TODO Create hammerspoon sub-module
-**** TODO Clean hammerspoon                                        :keyboard:
-*** TODO Create karabiner sub-module
+*** DONE Create emacs sub-module
+CLOSED: [2019-12-08 Sun 22:07]
+*** TODO Create vscode sub-module
+*** DONE Create editorconfig sub-module
+CLOSED: [2019-12-09 Mon 10:29]
+** DONE Create keyboard module
+CLOSED: [2019-12-09 Mon 10:19]
+*** DONE Create hammerspoon sub-module
+CLOSED: [2019-12-09 Mon 10:19]
+**** DONE Clean hammerspoon                                        :keyboard:
+CLOSED: [2019-12-09 Mon 10:19]
+**** DONE set default entrypoint
+CLOSED: [2019-12-09 Mon 10:19]
+#+BEGIN_SRC bash
+defaults write org.hammerspoon.Hammerspoon MJConfigFile "~/.config/hammerspoon/init.lua"
+#+END_SRC
+*** DONE Create karabiner sub-module
+CLOSED: [2019-12-09 Mon 10:19]
 ** PROJ Create langs module
 *** TODO node
 *** TODO java
 *** TODO python
 *** TODO go
 ** TODO Make gitignore sensible
+** TODO Update readme
+** TODO Add steps to install ansible
 * Operations
 
 - install

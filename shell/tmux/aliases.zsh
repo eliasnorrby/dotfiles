@@ -2,6 +2,14 @@
 
 alias tmux='tmux -f "$TMUX_HOME/tmux.conf"'
 
+function tn() {
+  if [[ $# -eq 0 ]] ; then
+      echo 'Error: must specify a session name'
+      return 1
+  fi
+  tmux new-session -s "$1"
+}
+
 # ftm [SESSION_NAME | FUZZY PATTERN] - create new tmux session, or switch to existing one.
 # Running `ftm` will let you fuzzy-find a session mame
 # Passing an argument to `ftm` will switch to that session if it exists or create it otherwise
