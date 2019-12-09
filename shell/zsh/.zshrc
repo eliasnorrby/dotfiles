@@ -26,28 +26,6 @@ alias ls="gls --color=auto"
 #                                 Performance
 # =============================================================================
 
-# =============================================================================
-#                                 Completions
-# =============================================================================
-
-# TODO: move to completion.zsh
-fpath=(~/.zsh/completion $fpath)
-
-# case-insensitive (all), partial-word and then substring completion
-zstyle ":completion:*" matcher-list \
-  "m:{a-zA-Z}={A-Za-z}" \
-  "r:|[._-]=* r:|=*" \
-  "l:|=* r:|=*"
-
-zstyle ":completion:*:default" list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' menu select
-
-# Enable approximate completions
-zstyle ':completion:*' completer _complete _ignored _approximate
-zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX)/3)) numeric)'
-
-# Keep directories and files separated
-zstyle ':completion:*' list-dirs-first true
 
 # TODO: Find out why there are multiple compinit calls
 # autoload -Uz compinit && compinit -i
@@ -58,14 +36,6 @@ zstyle ':completion:*' list-dirs-first true
 #   compinit -C;
 # fi;
 
-# =============================================================================
-#                                   Startup
-# =============================================================================
-
-
-
-# FIXME: fix absolute path
-source ~/.dotfiles/shell/zsh/aliases.zsh
 
 # =============================================================================
 #                                   Plugins
@@ -139,7 +109,7 @@ fi
 
 # _load shell/zsh/prompt.zsh
 _load shell/zsh/config.zsh
-# _load shell/zsh/completion.zsh
+_load shell/zsh/completion.zsh
 _load shell/zsh/keybinds.zsh
 
 _load_all aliases.zsh
