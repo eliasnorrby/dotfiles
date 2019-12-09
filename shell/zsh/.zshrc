@@ -59,13 +59,12 @@ _load shell/zsh/fzf.zsh
 # =============================================================================
 #                              Session specific
 # =============================================================================
-if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+if _remote; then
   # remote specifics
-  # FIXME: fix relative path
-  [ -f ~/.dotfiles/shell/zsh/remote.zsh ] && source ~/.dotfiles/shell/zsh/remote.zsh
+  _load shell/zsh/remote.zsh
 else
   # local specifics
-  [ -f ~/.dotfiles/shell/zsh/macos.zsh ] && source ~/.dotfiles/shell/zsh/macos.zsh
+  _load shell/zsh/macos.zsh
 fi
 
 # =============================================================================
