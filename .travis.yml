@@ -33,11 +33,11 @@ script:
   #   bash <(curl -sL ${curl_target}${TRAVIS_PULL_REQUEST_BRANCH:-TRAVIS_BRANCH}/bootstrap.sh)
   - echo "$TRAVIS_PULL_REQUEST_BRANCH"
   - echo "$TRAVIS_BRANCH"
-  - echo "curl -sLO ${curl_target}${TRAVIS_PULL_REQUEST_BRANCH:-TRAVIS_BRANCH}/bootstrap.sh"
-  - "curl -sLO ${curl_target}${TRAVIS_PULL_REQUEST_BRANCH:-TRAVIS_BRANCH}/bootstrap.sh"
+  - echo "curl -sLO ${curl_target}${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}/bootstrap.sh"
+  - "curl -sLO ${curl_target}${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}/bootstrap.sh"
   - cat bootstrap.sh
   - wc -l bootstrap.sh
-  # - ./bootstrap.sh
+  - ./bootstrap.sh
 
 notifications:
   slack:
