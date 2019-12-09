@@ -37,7 +37,7 @@ script:
   - "curl -sLO ${curl_target}${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}/bootstrap.sh"
   - cat bootstrap.sh
   - wc -l bootstrap.sh
-  - chmod +x bootstrap
+  - chmod +x bootstrap.sh
   - ./bootstrap.sh
 
 notifications:
