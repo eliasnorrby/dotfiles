@@ -74,3 +74,6 @@ topics:
     - name: java
       state: present
       config: "{{ java_config }}"
+    - name: go
+      state: present
+      config: "{{ go_config }}"
