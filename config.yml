@@ -45,6 +45,9 @@ topics:
       state: present
       config: "{{ emacs_config }}"
   shell:
+    - name: alacritty
+      state: present
+      config: "{{ alacritty_config }}"
     - name: git
       state: present
       config: "{{ git_config }}"
