@@ -12,5 +12,10 @@
   "bugs": {
     "url": "https://github.com/eliasnorrby/dotfiles/issues"
   },
-  "homepage": "https://github.com/eliasnorrby/dotfiles#readme"
+  "homepage": "https://github.com/eliasnorrby/dotfiles#readme",
+  "devDependencies": {
+    "@semantic-release/changelog": "^3.0.6",
+    "@semantic-release/git": "^7.1.0-beta.10",
+    "semantic-release": "^16.0.0-beta.45"
+  }
 }
