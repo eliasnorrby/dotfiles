@@ -23,7 +23,7 @@ _get_release_archive() {
   curl -sL $url | tar xz
 }
 
-PLAYBOOK_RELEASE=$(_get_release_version)
+PLAYBOOK_RELEASE=${_get_release_version:-1.0.0-alpha}
 
 _msg "Downloading release $PLAYBOOK_RELEASE..."
 _get_release_archive $PLAYBOOK_RELEASE
