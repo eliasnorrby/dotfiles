@@ -3,7 +3,7 @@
 sudo: required
 language: objective-c
 # 10.13 (see https://docs.travis-ci.com/user/osx-ci-environment/#OS-X-Version)
-osx_image: xcode9.3
+osx_image: xcode11
 
 env:
   curl_target: https://raw.githubusercontent.com/eliasnorrby/dotfiles/
