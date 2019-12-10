@@ -10,23 +10,23 @@ set -exo pipefail
 
 export DOTFILES=~/.dotfiles
 
-# DOTFILES_REPO="https://github.com/eliasnorrby/dotfiles"
-
-# DOTFILES_BRANCH=${DOTFILES_BRANCH:-develop}
-
-PLAYBOOK_RELEASE=${1:-v1.0.0-alpha}
-
 _msg() { printf "\r\033[2K\033[0;32m[ .. ] %s\033[0m\n" "$*"; }
-# _msg() { echo "$*"; }
 
-_get_release() {
-  local release=$1
-  local url="https://github.com/eliasnorrby/mac-dev-playbook/archive/${release}.tar.gz"
+_get_release_version() {
+  local release_url="https://api.github.com/repos/eliasnorrby/mac-dev-playbook/releases"
+  curl -sL $release_url | grep --color=never -m 1 '^ .*"tag_name"' | grep --color=never -oE '[0-9]+\.[0-9]+\.[0-9]+[^"]*'
+}
+
+_get_release_archive() {
+  release=$1
+  local url="https://github.com/eliasnorrby/mac-dev-playbook/archive/v${release}.tar.gz"
   curl -sL $url | tar xz
 }
 
+PLAYBOOK_RELEASE=$(_get_release_version)
+
 _msg "Downloading release $PLAYBOOK_RELEASE..."
-_get_release $PLAYBOOK_RELEASE
+_get_release_archive $PLAYBOOK_RELEASE
 cd mac-dev-playbook-${PLAYBOOK_RELEASE/v/}
 
 _msg "Installing pip..."
@@ -47,6 +47,6 @@ cd $DOTFILES
 
 _msg "Done!"
 
-ELAPSED="Elapsed: $(($SECONDS / 3600))hrs $((($SECONDS / 60) % 60))min $(($SECONDS % 60))sec"
+ELAPSED="$(($SECONDS / 3600))hrs $((($SECONDS / 60) % 60))min $(($SECONDS % 60))sec"
 
 _msg "Setup completed in $ELAPSED"
