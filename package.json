@@ -1,11 +1,11 @@
 {
   "name": "dotfiles",
-  "version": "1.0.0",
+  "version": "0.0.0-development",
   "description": "Dotfiles for development on Mac",
   "main": "bootstrap.sh",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eliasnorrby/dotfiles.git"
+    "url": "https://github.com/eliasnorrby/dotfiles.git"
   },
   "author": "Elias Norrby",
   "license": "MIT",
@@ -17,5 +17,8 @@
     "@semantic-release/changelog": "^3.0.6",
     "@semantic-release/git": "^7.1.0-beta.10",
     "semantic-release": "^16.0.0-beta.45"
+  },
+  "scripts": {
+    "semantic-release": "semantic-release"
   }
 }
