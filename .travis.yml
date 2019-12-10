@@ -28,7 +28,7 @@ jobs:
           travis_wait 30
           bash <(curl -sL ${curl_target}${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}/bootstrap.sh)
     - stage: release
-      node_js: lts/*
+      node_js: 12
       script: skip
       deploy:
         provider: script
