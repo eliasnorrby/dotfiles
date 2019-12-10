@@ -22,9 +22,11 @@ _load shell/zsh/completion.zsh
 _load shell/zsh/keybinds.zsh
 _load shell/zsh/prompt.zsh
 _load shell/zsh/plugins.zsh
-_load shell/zsh/fzf.zsh
 
 zplug load
+
+# fzf must be sourced after zplug load (or at least the z remap)
+_load shell/zsh/fzf.zsh
 
 if _remote ; then
   _load shell/zsh/remote.zsh
