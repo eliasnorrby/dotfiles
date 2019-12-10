@@ -1,3 +1,4 @@
+---
 tmux_config:
   path: shell/tmux
   brew_formulas:
