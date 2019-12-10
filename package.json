@@ -1,0 +1,16 @@
+{
+  "name": "dotfiles",
+  "version": "1.0.0",
+  "description": "Dotfiles for development on Mac",
+  "main": "bootstrap.sh",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eliasnorrby/dotfiles.git"
+  },
+  "author": "Elias Norrby",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eliasnorrby/dotfiles/issues"
+  },
+  "homepage": "https://github.com/eliasnorrby/dotfiles#readme"
+}
