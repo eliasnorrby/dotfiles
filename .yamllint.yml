@@ -1,6 +1,7 @@
 ---
 extends: default
 ignore: |
+  .dependabot
   .travis.yml
   node_modules
   alacritty.yml
