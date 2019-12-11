@@ -519,7 +519,8 @@ nnoremap <Leader>n :Vexplore<CR>
 nnoremap <silent> <Leader>tl :set invrelativenumber<CR>
 
 " Shortcuts for saving and quitting
-nnoremap <Leader>qq :q<CR>
+nnoremap <Leader>q :q<CR>
+nnoremap <Leader>w :w<CR>
 nnoremap <Leader>Q :q!<CR>
 nnoremap <Leader>fs :w<CR>
 nnoremap <Leader>bk :bd<CR>
