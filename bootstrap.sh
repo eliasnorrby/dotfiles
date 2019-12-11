@@ -12,22 +12,15 @@ export DOTFILES=~/.dotfiles
 
 _msg() { printf "\r\033[2K\033[0;32m[ .. ] %s\033[0m\n" "$*"; }
 
-_get_release_version() {
-  local release_url="https://api.github.com/repos/eliasnorrby/mac-dev-playbook/releases"
-  curl -sL $release_url | grep --color=never -m 1 '^ .*"tag_name"' | grep --color=never -oE '[0-9]+\.[0-9]+\.[0-9]+[^"]*'
-}
-
-_get_release_archive() {
-  release=$1
-  local url="https://github.com/eliasnorrby/mac-dev-playbook/archive/v${release}.tar.gz"
+_get_repo_snapshot() {
+  local url="https://github.com/eliasnorrby/mac-dev-playbook/tarball/master"
   curl -sL $url | tar xz
 }
 
-PLAYBOOK_RELEASE=${_get_release_version:-1.0.0-alpha}
-
-_msg "Downloading release $PLAYBOOK_RELEASE..."
-_get_release_archive $PLAYBOOK_RELEASE
-cd mac-dev-playbook-${PLAYBOOK_RELEASE/v/}
+_msg "Downloading playbook from eliasnorrby/mac-dev-playbook@master..."
+cd $(mkdtemp -d)
+_get_repo_snapshot
+cd eliasnorrby-mac-dev-playbook*
 
 _msg "Installing pip..."
 sudo easy_install pip
