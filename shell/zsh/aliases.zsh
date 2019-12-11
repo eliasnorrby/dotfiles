@@ -39,3 +39,4 @@ alias fgc="find-git-changes"
 
 alias zshc="vim $ZDOTDIR/.zshrc"
 
+alias cdsz="cd $DOTFILES/shell/zsh"
