@@ -1,0 +1,11 @@
+---
+extends: default
+ignore: |
+  .dependabot
+  .travis.yml
+  node_modules
+  alacritty.yml
+rules:
+  line-length:
+    max: 120
+    level: warning

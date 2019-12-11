@@ -1,0 +1,48 @@
+---
+jobs:
+  include:
+    - stage: lint
+      language: python
+      before_script:
+        - pip install yamllint
+      script:
+        - yamllint .
+    - stage: bootstrap test
+      if: branch = master
+      language: objective-c
+      osx_image: xcode11
+      git:
+        clone: false
+      env:
+        curl_target: https://raw.githubusercontent.com/eliasnorrby/dotfiles/
+      before_install:
+        # Uninstall existing Homebrew installation.
+        - curl -sLO https://raw.githubusercontent.com/Homebrew/install/master/uninstall
+        - chmod +x ./uninstall
+        - ./uninstall --force
+        - sudo rm -rf /usr/local/Homebrew
+        - sudo rm -rf /usr/local/Caskroom
+        - sudo rm -rf /usr/local/bin/brew
+      script:
+        - >
+          travis_wait 30
+          bash <(curl -sL ${curl_target}${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}/bootstrap.sh)
+    - stage: release
+      language: node_js
+      node_js: 12
+      script: skip
+      deploy:
+        provider: script
+        skip_cleanup: true
+        script: npx semantic-release
+        on:
+          all_branches: true
+
+notifications:
+  slack:
+    rooms:
+      secure: Pa+eRdIWgs4UjYpAnIMBE0eQl+g5GAbbxclaaFrFsAR+7TYK9XuEGdQKNguQ5u/wABjXAwDzEy0JLB49I6/j05vTPLdCg9zOsQbW5t+MBrI15zSFWDCjFguxhVyraRxMpiHFVJDb6ft0Zb3Iz2CEMnh2ptfhcbjtxI70N6VInFIGEw4PK+wpAu67Ykpr1jj4YmO6lFFO00Icl1Rwub3F46Z/fptO+5N/k9vj4mH5bp4dcddNg6vW/5wtJDjcGP7437dleCnCvLKSGINaP7BUjyJldTP+tcXl+5sa71OvGehKYTZWf/Zu0VH0WfA40A84i9D88MWuAIINNLPKwyGYGcjDndRMdEAvnOtSgY+rOUFoNpBrt2Fdr/yqL8din75JU8jDYfgi84CvktI6iCEW/ty0pN/2g/dM2AI5OYBMP5SzhQ+vscsMaZJhBWZZXdTEzywMuj1D+ZqfBo+dqTXsda4pKEjBKl2RXxQYcGTWUfoRNwS6wpSq5hyucBIHpA3szvOxuQngB5fJXPtYauKX8jyizVoYZbyuRT+flM+PA1hQnCPLfneEmGNBMALkXD1aYFrhdVtG+o+C/p5QUkZwykDwLLIsqoml+AwXQ7iq6gupNfMs8Kmmq9OKy+RE7N27QQ3gCQIo0fdhdUxpiMq/BHa5hwuirPKMnbDxvYpCGJE=
+    template:
+      - "Build <%{build_url}|%{result}> for %{repository_slug}@%{branch} (<%{compare_url}|%{commit}>) in %{duration}"
+    on_success: change
+    on_failure: always

@@ -1,0 +1,10 @@
+---
+tmux_config:
+  path: shell/tmux
+  brew_formulas:
+    - tmux
+  links:
+    - tmux.conf
+    - tmux.remote.conf
+    - tmux.theme.conf
+    - scripts

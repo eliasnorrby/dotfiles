@@ -1,0 +1,7 @@
+---
+alacritty_config:
+  path: shell/alacritty
+  links:
+    - alacritty.yml
+  brew_casks:
+    - alacritty

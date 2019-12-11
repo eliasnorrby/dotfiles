@@ -1,0 +1,7 @@
+---
+vim_config:
+  path: editor/vim
+  brew_formulas:
+    - vim
+  links:
+    - .vimrc

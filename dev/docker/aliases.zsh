@@ -1,0 +1,17 @@
+# Docker aliases
+alias d="docker"
+alias dk="docker container"
+alias dkl="docker container ls"
+alias dks="docker container start"
+alias dkx="docker container stop"
+alias di="docker image"
+alias dil="docker image ls"
+alias ds="docker service"
+alias dsl="docker service ls"
+alias dsp="docker service ps"
+alias dv="docker volume"
+alias dvl="docker volume ls"
+alias dn="docker node"
+alias dnl="docker node ls"
+
+alias dc="docker-compose"

@@ -1,0 +1,1 @@
+export TMUX_HOME="$XDG_CONFIG_HOME/tmux"
