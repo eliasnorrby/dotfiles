@@ -42,6 +42,9 @@ topics:
     - name: vim
       state: present
       config: "{{ vim_config }}"
+    - name: neovim
+      state: disabled
+      config: "{{ neovim_config }}"
     - name: emacs
       state: present
       config: "{{ emacs_config }}"
@@ -59,6 +62,9 @@ topics:
     - name: alacritty
       state: present
       config: "{{ alacritty_config }}"
+    - name: bash
+      state: present
+      config: "{{ bash_config }}"
     - name: git
       state: present
       config: "{{ git_config }}"
@@ -73,12 +79,18 @@ topics:
       state: present
       config: "{{ docker_config }}"
   lang:
-    - name: ruby
-      state: present
-      config: "{{ ruby_config }}"
-    - name: java
-      state: present
-      config: "{{ java_config }}"
     - name: go
       state: present
       config: "{{ go_config }}"
+    - name: java
+      state: present
+      config: "{{ java_config }}"
+    - name: kafka
+      state: absent
+      config: "{{ kafka_config }}"
+    - name: node
+      state: present
+      config: "{{ node_config }}"
+    - name: ruby
+      state: present
+      config: "{{ ruby_config }}"
