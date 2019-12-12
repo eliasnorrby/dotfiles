@@ -10,9 +10,8 @@ nnoremap <Space> <Nop>
 " ===                           PLUGINS                                    === "
 " ============================================================================ "
 " Download vimplug if not already installed
-" TODO: move and refenrece variable when vim module is up
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+if empty(glob($VIM_DIR.'/autoload/plug.vim'))
+  silent !curl -fLo $VIM_DIR/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif

@@ -1,5 +1,5 @@
 alias v=vim
-alias vimc="vim $VIM_HOME/.vimrc"
+alias vimc="vim $DOTFILES/editor/vim/.vimrc"
 
 alias vp="vim package.json"
 alias vg="vim .gitignore"

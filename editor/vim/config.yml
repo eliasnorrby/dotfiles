@@ -4,4 +4,5 @@ vim_config:
   brew_formulas:
     - vim
   links:
-    - .vimrc
+    - src: .vimrc
+      dest: ~/
