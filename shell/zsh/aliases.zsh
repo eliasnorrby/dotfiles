@@ -1,5 +1,5 @@
 # Enable ls colors by aliasing gnu coreutils ls – not needed when included in PATH
-alias ls="gls --color=auto"
+alias ls="gls --color=auto -h --group-directories-first"
 
 # Overrides l= "ls -lah"
 alias l="ls -1"
