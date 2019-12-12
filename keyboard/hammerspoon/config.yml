@@ -6,3 +6,8 @@ hammerspoon_config:
     - modules
   brew_casks:
     - hammerspoon
+  osx_defaults:
+    - domain: org.hammerspoon.Hammerspoon
+      key: MJConfigFile
+      value: "{{ xdg_config_home }}/hammerspoon/init.lua"
+      state: present

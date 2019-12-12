@@ -1,0 +1,12 @@
+---
+fasterkeys_config:
+  path: keyboard/fasterkeys
+  osx_defaults:
+    - key: InitialKeyRepeat
+      value: 10
+      type: int
+      state: present
+    - key: KeyRepeat
+      value: 1
+      type: int
+      state: present

@@ -55,6 +55,9 @@ topics:
       state: present
       config: "{{ vscode_config }}"
   keyboard:
+    - name: fasterkeys
+      state: present
+      config: "{{ fasterkeys_config }}"
     - name: hammerspoon
       state: present
       config: "{{ hammerspoon_config }}"
@@ -109,6 +112,9 @@ topics:
     - name: node
       state: present
       config: "{{ node_config }}"
+    - name: python
+      state: present
+      config: "{{ python_config }}"
     - name: ruby
       state: present
       config: "{{ ruby_config }}"

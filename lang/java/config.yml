@@ -5,3 +5,9 @@ java_config:
     - maven
   brew_casks:
     - intellij-idea-ce
+  osx_defaults:
+    - domain: com.jetbrains.intellij.ce
+      key: ApplePressAndHoldEnabled
+      value: false
+      type: bool
+      state: present
