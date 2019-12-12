@@ -6,7 +6,7 @@ emacs_config:
       dest: "{{ xdg_config_home }}/"
   brew_taps:
     - d12frosted/emacs-plus
-    - gnupg # Used by forge
   brew_formulas:
     - name: emacs-plus
       install_options: without-spacemacs-icon
+    - gnupg # Used by forge
