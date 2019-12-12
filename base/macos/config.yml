@@ -1,3 +1,21 @@
 ---
 macos_config:
   path: base/macos
+  brew_taps:
+    - homebrew/cask-versions
+  brew_casks:
+    # essential
+    - alfred
+    - bartender
+    - discord
+    - dropbox
+    - google-chrome
+    - istat-menus
+    - lastpass
+    - slack
+    - spotify
+    - textexpander
+    - amethyst
+    # dev
+    - firefox-developer-edition
+    - postman

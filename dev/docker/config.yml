@@ -1,3 +1,5 @@
 ---
 docker_config:
   path: dev/docker
+  brew_casks:
+    - docker
