@@ -16,29 +16,16 @@
   block:
     # Recursively search for 'config.yml's in dotfiles repository
     - find:
-        path: "{{ dotfiles }}"
+        path: "{{ playbook_dir }}/.."
         patterns: "config.yml"
         file_type: file
         recurse: true
       register: find_results
     - set_fact:
         configs: "{{ find_results.files | map(attribute='path') | list }}"
-    # Just include them if we're running locally
     - include_vars:
         file: "{{ item }}"
       loop: "{{ configs }}"
-      when: ansible_connection == 'local'
-    # Otherwise, fetch them to a temporary location before sourcing
-    - block:
-        - fetch:
-            src: "{{ item }}"
-            dest: "{{ local_config_dir }}"
-          loop: "{{ configs }}"
-        - include_vars:
-            dir: "{{ local_config_dir }}"
-      when: ansible_connection != 'local'
-      vars:
-        local_config_dir: /tmp/dotfile_configs
 
     - set_fact:
         # to persist
@@ -46,6 +33,16 @@
         present_topics: "{{ q('dict', topics) | map(attribute='value') | list | flatten | selectattr('state', 'equalto', 'present') | list }}"
         disabled_topics: "{{ q('dict', topics) | map(attribute='value') | list | flatten | selectattr('state', 'equalto', 'disabled') | list }}"
         absent_topics: "{{ q('dict', topics) | map(attribute='value') | list | flatten | selectattr('state', 'equalto', 'absent') | list }}"
+
+    - debug:
+        var: present_topics
+    - debug:
+        var: absent_topics
+    - debug:
+        var: disabled_topics
+    - debug:
+        var: absent_topics
+        fail: true
 
 - name: user should have a dotfiles_data directory
   file:
