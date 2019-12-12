@@ -30,3 +30,26 @@ macos_config:
     - font-robotomono-nerd-font
     - font-source-code-pro
     - font-sourcecodepro-nerd-font
+  mas_apps:
+    - id: 950297057
+      name: "FuzzyTime"
+    - id: 1435957248
+      name: "Drafts"
+    - id: 409183694
+      name: "Keynote"
+    - id: 441258766
+      name: "Magnet"
+    - id: 904280696
+      name: "Things"
+    - id: 1191449274
+      name: "ToothFairy"
+    - id: 1091189122
+      name: "Bear"
+    - id: 409201541
+      name: "Pages"
+    - id: 1176895641
+      name: "Spark"
+    - id: 926036361
+      name: "LastPass"
+    - id: 409203825
+      name: "Numbers"
