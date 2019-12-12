@@ -3,6 +3,7 @@ macos_config:
   path: base/macos
   brew_taps:
     - homebrew/cask-versions
+    - homebrew/cask-fonts
   brew_casks:
     # essential
     - alfred
@@ -19,3 +20,13 @@ macos_config:
     # dev
     - firefox-developer-edition
     - postman
+    # fonts
+    - font-3270-nerd-font
+    - font-dejavusansmono-nerd-font
+    - font-firacode-nerd-font
+    - font-hack-nerd-font
+    - font-iosevka-nerd-font
+    - font-mononoki-nerd-font
+    - font-robotomono-nerd-font
+    - font-source-code-pro
+    - font-sourcecodepro-nerd-font
