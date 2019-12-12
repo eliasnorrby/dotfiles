@@ -51,6 +51,9 @@ topics:
     - name: editorconfig
       state: present
       config: "{{ editorconfig_config }}"
+    - name: vscode
+      state: present
+      config: "{{ vscode_config }}"
   keyboard:
     - name: hammerspoon
       state: present
@@ -78,6 +81,12 @@ topics:
     - name: docker
       state: present
       config: "{{ docker_config }}"
+    - name: vagrant
+      state: present
+      config: "{{ vagrant_config }}"
+    - name: kubernetes
+      state: disabled
+      config: "{{ kubernetes_config }}"
   lang:
     - name: go
       state: present

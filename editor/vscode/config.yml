@@ -1,0 +1,5 @@
+---
+vscode_config:
+  path: editor/vscode
+  brew_casks:
+    - visual-studio-code

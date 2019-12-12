@@ -1,0 +1,5 @@
+---
+vagrant_config:
+  path: dev/vagrant
+  brew_formulas:
+    - vagrant
