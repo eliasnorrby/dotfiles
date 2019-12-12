@@ -78,6 +78,12 @@ topics:
       state: present
       config: "{{ zsh_config }}"
   dev:
+    - name: ansible
+      state: present
+      config: "{{ ansible_config }}"
+    - name: cicd
+      state: present
+      config: "{{ cicd_config }}"
     - name: docker
       state: present
       config: "{{ docker_config }}"
@@ -87,6 +93,9 @@ topics:
     - name: kubernetes
       state: disabled
       config: "{{ kubernetes_config }}"
+    - name: web
+      state: present
+      config: "{{ web_config }}"
   lang:
     - name: go
       state: present

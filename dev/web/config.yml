@@ -1,0 +1,10 @@
+---
+web_config:
+  path: dev/web
+  npm_packages:
+    - gatsby-cli
+    - lorem-ipsum
+    - netlify-cli
+    - nodemon
+    - prettier
+    - serve

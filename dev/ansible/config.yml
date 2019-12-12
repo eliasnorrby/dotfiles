@@ -1,0 +1,6 @@
+---
+ansible_config:
+  path: dev/ansible
+  pip_packages:
+    - ansible
+    - molecule
