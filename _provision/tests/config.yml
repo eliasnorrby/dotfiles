@@ -1,0 +1,12 @@
+---
+homebrew_installed_packages:
+  - vim
+  - fzf
+  - name: emacs-plus
+    install_options: without-spacemacs-icon
+
+homebrew_taps:
+  - d12frosted/emacs-plus
+
+homebrew_cask_apps:
+  - alacritty

@@ -1,0 +1,49 @@
+---
+# geerlingguy stuff
+downloads: ~/.ansible-downloads/
+
+homebrew_installed_packages:
+  - hub
+  - httpie
+  - ssh-copy-id
+
+homebrew_taps:
+  - homebrew/core
+  - homebrew/cask
+
+homebrew_cask_appdir: /Applications
+homebrew_cask_apps:
+  # - docker
+  - dropbox
+  - google-chrome
+
+# See `geerlingguy.mas` role documentation for usage instructions.
+mas_installed_apps: []
+mas_email: ""
+mas_password: ""
+
+# Install packages from other package managers.
+# Note: You are responsible for making sure the required package managers are
+# installed, eg. through homebrew.
+gem_packages: []
+npm_packages: []
+pip_packages: []
+
+# Glob pattern to ansible task files to run after all other tasks are finished.
+post_provision_tasks: []
+
+# my stuff
+xdg_config_home: "~/.config"
+xdg_cache_home: "~/.cache"
+xdg_data_home: "~/.local/share"
+xdg_bin_home: "~/.local/bin"
+
+dotfiles: "~/.dotfiles"
+dotfiles_data: "{{ xdg_data_home }}/dotfiles"
+
+# TODO: put these in a more sensible location
+# TODO: tie corresponding tasks to their respective topics somehow
+zdotdir: "{{ xdg_config_home }}/zsh"
+zplug_home: "{{ xdg_cache_home }}/zplug"
+
+doom_home: "~/.emacs.d"

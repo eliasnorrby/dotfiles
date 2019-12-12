@@ -1,0 +1,29 @@
+---
+- name: install global npm packages
+  npm:
+    name: "{{ item.name | default(item) }}"
+    state: "{{ item.state | default('present') }}"
+    version: "{{ item.version | default(omit) }}"
+    global: yes
+    executable: "{{ item.executable | default(omit) }}"
+  # when: topics.lang.node.state = 'present'
+  loop: "{{ npm_packages }}"
+
+- name: install global pip packages
+  pip:
+    name: "{{ item.name | default(item) }}"
+    state: "{{ item.state | default('present') }}"
+    version: "{{ item.version | default(omit) }}"
+    executable: "{{ pip_executable | default(omit) }}"
+  # when: topics.lang.python.state = 'present'
+  with_items: "{{ pip_packages }}"
+
+- name: install global ruby gems
+  gem:
+    name: "{{ item.name | default(item) }}"
+    state: "{{ item.state | default('present') }}"
+    version: "{{ item.version | default(omit) }}"
+    user_install: no
+    executable: "{{ item.executable | default(omit) }}"
+  # when: topics.lang.ruby.state = 'present'
+  with_items: "{{ gem_packages }}"

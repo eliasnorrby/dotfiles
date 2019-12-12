@@ -1,0 +1,57 @@
+---
+- debug:
+    var: topics
+    verbosity: 1
+
+- debug:
+    var: present_topics
+    verbosity: 1
+
+- name: prepare variables for geerlingguy.homebrew
+  set_fact:
+    homebrew_installed_packages: "{{ present_topics | selectattr('config.brew_formulas', 'defined') | map(attribute='config.brew_formulas') | list | flatten | unique }}"
+    homebrew_uninstalled_packages: "{{ absent_topics | selectattr('config.brew_formulas', 'defined') | map(attribute='config.brew_formulas') | list | flatten | unique }}"
+    homebrew_taps: "{{ present_topics | selectattr('config.brew_taps', 'defined') | map(attribute='config.brew_taps') | list | flatten | unique }}"
+    homebrew_cask_apps: "{{ present_topics | selectattr('config.brew_casks', 'defined') | map(attribute='config.brew_casks') | list | flatten | unique }}"
+    homebrew_cask_uninstalled_apps: "{{ absent_topics | selectattr('config.brew_casks', 'defined') | map(attribute='config.brew_casks') | list | flatten | unique }}"
+
+- name: prepare variables for gem / npm / pip
+  set_fact:
+    gem_packages: "{{ present_topics | selectattr('config.gem_packages', 'defined') | map(attribute='config.gem_packages') | list | flatten | unique }}"
+    npm_packages: "{{ present_topics | selectattr('config.npm_packages', 'defined') | map(attribute='config.npm_packages') | list | flatten | unique }}"
+    pip_packages: "{{ present_topics | selectattr('config.pip_packages', 'defined') | map(attribute='config.pip_packages') | list | flatten | unique }}"
+    pip_executable: pip3
+
+- name: prepare variables for geerlingguy.mas
+  set_fact:
+    mas_installed_apps: "{{ present_topics | selectattr('config.mas_apps', 'defined') | map(attribute='config.mas_apps') | list | flatten | unique }}"
+
+- name: prepare variables for osx-defaults
+  set_fact:
+    osx_defaults: "{{ present_topics | selectattr('config.osx_defaults', 'defined') | map(attribute='config.osx_defaults') | list | flatten | unique }}"
+
+# in particular for testing
+- name: allow local overrides
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - "{{ playbook_dir }}/config.yml"
+
+- debug:
+    var: homebrew_installed_packages
+    verbosity: 1
+
+- debug:
+    var: homebrew_uninstalled_packages
+    verbosity: 1
+
+- debug:
+    var: homebrew_taps
+    verbosity: 1
+
+- debug:
+    var: homebrew_cask_apps
+    verbosity: 1
+
+- debug:
+    var: homebrew_cask_uninstalled_apps
+    verbosity: 1
