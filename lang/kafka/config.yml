@@ -1,5 +1,6 @@
 ---
 kafka_config:
-  path: lang/kafka # It's not a language, but where do I put it?
+  # It's not a language, but where do I put it?
+  path: lang/kafka
   brew_formulas:
     - kafka
