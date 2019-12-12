@@ -1,0 +1,27 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: eliasnorrby
+  description: Dotfile installation for MacOS/Linux.
+  company: "en-dev"
+  license: "MIT"
+  min_ansible_version: 2.2
+  platforms:
+    - name: GenericUNIX
+      versions:
+        - all
+        - any
+    - name: GenericBSD
+      versions:
+        - all
+        - any
+    - name: GenericLinux
+      versions:
+        - all
+        - any
+  galaxy_tags:
+    - development
+    - system
+    - dotfiles
+    - configuration

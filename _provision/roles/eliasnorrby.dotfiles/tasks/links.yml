@@ -1,0 +1,32 @@
+---
+- block:
+    - debug:
+        msg: "linking {{ dotfiles + '/' + topic.config.path }} to {{ topic_data_path }}"
+        verbosity: 1
+
+    - name: topic should be linked to xdg_data_home/dotfiles
+      file:
+        src: "{{ dotfiles + '/' + topic.config.path }}"
+        path: "{{ topic_data_path }}"
+        state: link
+
+    - debug:
+        msg: "linking {{ topic_data_path + '/' + (item.src | default(item)) }} to {{ (item.dest | default(xdg_config_home + '/' + topic.name + '/')) | regex_replace('/$', '/' + (item.src | default(item))) }}"
+        verbosity: 1
+      when: topic.config.links is defined
+      loop: "{{ topic.config.links }}"
+
+    - name: topic should have a directory in xdg_config_home
+      file:
+        path: "{{ xdg_config_home + '/' + topic.name }}"
+        state: directory
+
+    - name: link files
+      file:
+        src: "{{ topic_data_path + '/' + (item.src | default(item)) }}"
+        path: "{{ (item.dest | default(xdg_config_home + '/' + topic.name + '/')) | regex_replace('/$', '/' + (item.src | default(item))) }}"
+        state: link
+      when: topic.config.links is defined
+      loop: "{{ topic.config.links }}"
+  vars:
+    topic_data_path: "{{ dotfiles_data + '/' + (topic.config.path | replace('/', '.')) + '.topic' }}"

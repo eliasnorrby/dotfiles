@@ -1,0 +1,59 @@
+---
+- name: check if dotfiles folder exists
+  stat:
+    path: "{{ dotfiles }}"
+  register: dotfiles_dir
+
+- name: clone dotfiles
+  git:
+    repo: "{{ dotfiles_repo }}"
+    dest: "{{ dotfiles }}"
+    version: "{{ dotfiles_version }}"
+  # safety for running locally with a more recent version
+  when: dotfiles_dir.stat.isdir is not defined
+
+- name: collect topic configs
+  block:
+    # Recursively search for 'config.yml's in dotfiles repository
+    - find:
+        path: "{{ dotfiles }}"
+        patterns: "config.yml"
+        file_type: file
+        recurse: true
+      register: find_results
+    - set_fact:
+        configs: "{{ find_results.files | map(attribute='path') | list }}"
+    # Just include them if we're running locally
+    - include_vars:
+        file: "{{ item }}"
+      loop: "{{ configs }}"
+      when: ansible_connection == 'local'
+    # Otherwise, fetch them to a temporary location before sourcing
+    - block:
+        - fetch:
+            src: "{{ item }}"
+            dest: "{{ local_config_dir }}"
+          loop: "{{ configs }}"
+        - include_vars:
+            dir: "{{ local_config_dir }}"
+      when: ansible_connection != 'local'
+      vars:
+        local_config_dir: /tmp/dotfile_configs
+
+    - set_fact:
+        # to persist
+        topics: "{{ topics }}"
+        present_topics: "{{ q('dict', topics) | map(attribute='value') | list | flatten | selectattr('state', 'equalto', 'present') | list }}"
+        disabled_topics: "{{ q('dict', topics) | map(attribute='value') | list | flatten | selectattr('state', 'equalto', 'disabled') | list }}"
+        absent_topics: "{{ q('dict', topics) | map(attribute='value') | list | flatten | selectattr('state', 'equalto', 'absent') | list }}"
+
+- name: user should have a dotfiles_data directory
+  file:
+    path: "{{ dotfiles_data }}"
+    state: directory
+
+  # TODO: loop over absent / disabled topics as well, removing links if necessary
+- include_tasks: links.yml
+  loop: "{{ present_topics }}"
+  loop_control:
+    loop_var: topic
