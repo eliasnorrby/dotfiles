@@ -1,7 +1,7 @@
 ---
 cicd_config:
   path: dev/cicd
-  ruby_gems:
+  gem_packages:
     - travis
   npm_packages:
     - semantic-release-cli

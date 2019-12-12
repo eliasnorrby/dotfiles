@@ -155,9 +155,9 @@ Possible fields in topic `config.yml`:
 - `brew_casks`
 - `brew_taps`
 - `osx_defaults` (WIP)
-- `node_modules` (WIP)
+- `npm_packages` (WIP)
 - `pip_packages` (WIP)
-- `ruby_gems` (WIP)
+- `gem_packages` (WIP)
 
 :bangbang: **TODO**: Describe topic config api in detail.
 
