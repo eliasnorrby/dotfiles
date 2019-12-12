@@ -1,3 +1,7 @@
 ---
 git_config:
   path: shell/git
+  brew_formulas:
+    - git
+    - hub
+    # git-flow-avh
