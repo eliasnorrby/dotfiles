@@ -75,7 +75,7 @@ jobs:
 
         # Test the playbook's idempotence (but skip homebrew).
         - idempotence=$(mktemp)
-        - "ansible-playbook playbook.yml --tags 'all,do_homebrew,do_packages,do_defaults' | tee -a ${idempotence}"
+        - "ansible-playbook playbook.yml --tags 'all,do_homebrew,do_packages' | tee -a ${idempotence}"
         - >
           tail -n 50 ${idempotence}
           | grep -q 'changed=0.*failed=0'
