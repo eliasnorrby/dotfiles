@@ -102,7 +102,7 @@ jobs:
       script:
         - >
           travis_wait 50
-          bash <(curl -sL ${curl_target}${TARGET_BRANCH}/bootstrap.sh)
+          bash <(curl -sL ${curl_target}${DOTFILES_VERSION}/bootstrap.sh)
 
     ## Release
     - stage: release
