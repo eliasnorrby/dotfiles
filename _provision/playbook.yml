@@ -23,9 +23,9 @@
       tags: ["never", "do_mas", "bootstrap"]
 
   tasks:
-    - include_tasks: extra-packages.yml
+    - include_tasks: tasks/extra-packages.yml
       tags: ["never", "do_packages", "bootstrap"]
-    - include_tasks: osx-defaults.yml
+    - include_tasks: tasks/osx-defaults.yml
       tags: ["never", "do_defaults", "bootstrap"]
 
     - name: run configured post-provision ansible task files
