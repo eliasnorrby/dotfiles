@@ -5,3 +5,5 @@
 /_provision/roles/geerlingguy*
 /_provision/roles/elliotweiser*
 #!/_provision/roles/eliasnorrby*
+
+/root.config.local.yml

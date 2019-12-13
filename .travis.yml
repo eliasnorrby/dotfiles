@@ -68,7 +68,7 @@ jobs:
         - "ansible-playbook playbook.yml --syntax-check"
 
         # Copy test config.yml into place.
-        - "cp tests/test.config.yml root.config.local.yml"
+        - "cp tests/test.config.yml ../root.config.local.yml"
 
         # Test the playbook.
         - "travis_wait 30 ansible-playbook playbook.yml --tags 'all,do_homebrew' -v"
