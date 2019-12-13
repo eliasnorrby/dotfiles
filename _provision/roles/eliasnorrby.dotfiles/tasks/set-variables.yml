@@ -21,11 +21,19 @@
 
 - name: prepare variables for geerlingguy.homebrew
   set_fact:
-    homebrew_installed_packages: "{{ present_topics | selectattr('config.brew_formulas', 'defined') | map(attribute='config.brew_formulas') | list | flatten | unique }}"
-    homebrew_uninstalled_packages: "{{ absent_topics | selectattr('config.brew_formulas', 'defined') | map(attribute='config.brew_formulas') | list | flatten | unique }}"
-    homebrew_taps: "{{ present_topics | selectattr('config.brew_taps', 'defined') | map(attribute='config.brew_taps') | list | flatten | unique }}"
-    homebrew_cask_apps: "{{ present_topics | selectattr('config.brew_casks', 'defined') | map(attribute='config.brew_casks') | list | flatten | unique }}"
-    homebrew_cask_uninstalled_apps: "{{ absent_topics | selectattr('config.brew_casks', 'defined') | map(attribute='config.brew_casks') | list | flatten | unique }}"
+    # homebrew_installed_packages: "{{ present_topics | selectattr('config.brew_formulas', 'defined') | map(attribute='config.brew_formulas') | list | flatten | unique }}"
+    # homebrew_uninstalled_packages: "{{ absent_topics | selectattr('config.brew_formulas', 'defined') | map(attribute='config.brew_formulas') | list | flatten | unique }}"
+    # homebrew_taps: "{{ present_topics | selectattr('config.brew_taps', 'defined') | map(attribute='config.brew_taps') | list | flatten | unique }}"
+    # homebrew_cask_apps: "{{ present_topics | selectattr('config.brew_casks', 'defined') | map(attribute='config.brew_casks') | list | flatten | unique }}"
+    # homebrew_cask_uninstalled_apps: "{{ absent_topics | selectattr('config.brew_casks', 'defined') | map(attribute='config.brew_casks') | list | flatten | unique }}"
+    homebrew_installed_packages: []
+    homebrew_uninstalled_packages: []
+    homebrew_taps: []
+    homebrew_cask_apps: []
+    homebrew_cask_uninstalled_apps: []
+    brew_formulas: "{{ present_topics | selectattr('config.brew_formulas', 'defined') | map(attribute='config.brew_formulas') | list | flatten | unique }}"
+    brew_taps: "{{ present_topics | selectattr('config.brew_taps', 'defined') | map(attribute='config.brew_taps') | list | flatten | unique }}"
+    brew_casks: "{{ present_topics | selectattr('config.brew_casks', 'defined') | map(attribute='config.brew_casks') | list | flatten | unique }}"
 
 - name: prepare variables for gem / npm / pip
   set_fact:
