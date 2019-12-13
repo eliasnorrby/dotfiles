@@ -17,31 +17,28 @@ bash <(curl -s https://raw.githubusercontent.com/eliasnorrby/dotfiles/develop/bo
 
 This setup script will:
 
-- Download [eliasnorrby/mac-dev-playbook](https://github.com/eliasnorrby/mac-dev-playbook)
+- Download a snapshot version of this repo
 - Install `pip` (using `easy_install`)
 - Install `ansible` (using `pip`)
-- Run the downloaded playbook, wherein:
+- Run the downloaded playbook (`_provision/playbook.yml`), wherein:
   - This repo is cloned to `~/.dotfiles`
   - Symlinks are created
   - xcode command line tools are installed
-  - Dependencies are downloaded (using homebrew)
+  - Dependencies are downloaded (using `homebrew`, `pip`, `ruby` and `npm`)
 - Run the post-install script, wherein:
+  - `zsh` plugins are installed
+  - `vim` plugins are installed
+  - `doom-emacs` packages are installed
 
-  - zsh plugins are installed
-  - vim plugins are installed
-  - doom-emacs packages are installed
+Dependencies:
 
-Read more about the related projects used during setup:
-
-- [eliasnorrby/mac-dev-playbook](https://github.com/eliasnorrby/mac-dev-playbook)
-- [eliasnorrby/ansible-role-dotfiles](https://github.com/eliasnorrby/ansible-role-dotfiles)
-- [geerlingguy/git](https://github.com/geerlingguy/ansible-role-git)
-- [geerlingguy/homebrew](https://homebrewhub.com/geerlingguy/ansible-role-homebrew)
+- [geerlingguy/homebrew][geerlingguy-homebrew-link]
+- [geerlingguy/git][geerlingguy-git-link]
 
 ## Directory structure
 
 Configuration is divided into `topics` (inspired by
-[hlissner](https://github.com/hlissner/dotfiles)).
+[hlissner][hlissner-dotfiles-link]).
 
 Example topics:
 
@@ -86,15 +83,6 @@ _Minimal example of a topic directory layout_
 │   │   └── env.zsh
 │   └── vim
 │       ├── aliases.zsh
-│       ├── colors
-│       │   ├── ayucustom.vim
-│       │   ├── badwolf.vim
-│       │   ├── goodwolf.vim
-│       │   ├── lightline
-│       │   │   ├── ayu.vim
-│       │   │   └── ayucustom.vim
-│       │   ├── nord.vim
-│       │   └── solarized.vim
 │       ├── config.yml
 │       ├── env.zsh
 │       └── gvimrc.vim
@@ -154,10 +142,10 @@ Possible fields in topic `config.yml`:
 - `brew_formulas`
 - `brew_casks`
 - `brew_taps`
-- `osx_defaults` (WIP)
-- `npm_packages` (WIP)
-- `pip_packages` (WIP)
-- `gem_packages` (WIP)
+- `osx_defaults`
+- `npm_packages`
+- `pip_packages`
+- `gem_packages`
 
 :bangbang: **TODO**: Describe topic config api in detail.
 
@@ -173,7 +161,7 @@ topics:
       state: present
       config: "{{ emacs_config }}"
     - name: editorconfig
-      state: present
+      state: disabled
       config: "{{ editorconfig_config }}"
   keyboard:
     - name: hammerspoon
@@ -194,14 +182,14 @@ topics:
       state: present
       config: "{{ java_config }}"
     - name: go
-      state: present
+      state: absent
       config: "{{ go_config }}"
 ```
 
 _Root dotfile configuration example_
 
 In the root `config.yml`, topics can be enabled/disabled/removed by setting
-their `state` to one of `present`, `disabled` or `absent`. Upon running
+their `state` to one of `present`, `disabled` or `absent`. Upon running,
 
 - `present` topics will have their symlinks created (if they don't exist
   already) and their dependencies installed
@@ -213,3 +201,7 @@ their `state` to one of `present`, `disabled` or `absent`. Upon running
 :warning: `disabled` and `absent` states are currently only being ignored
 entirely during playbook runs (marking a topic as `absent` does not remove it).
 See the `next` branch for progress on this feature.
+
+[geerlingguy-homebrew-link]: https://homebrewhub.com/geerlingguy/ansible-role-homebrew
+[geerlingguy-git-link]: https://github.com/geerlingguy/ansible-role-git
+[hlissner-dotfiles-link]: https://github.com/hlissner/dotfiles
