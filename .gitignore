@@ -1,4 +1,5 @@
 /keyboard/hammerspoon/hotspotSSID
 /keyboard/hammerspoon/hotspotPASSPHRASE
 /keyboard/karabiner/automatic_backups
-/_provision/roles/geerlingguy*
+/_provision/roles/
+!/_provision/roles/eliasnorrby*
