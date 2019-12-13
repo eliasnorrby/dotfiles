@@ -202,6 +202,15 @@ their `state` to one of `present`, `disabled` or `absent`. Upon running,
 entirely during playbook runs (marking a topic as `absent` does not remove it).
 See the `next` branch for progress on this feature.
 
+## Leftovers
+
+After running the provisioning script, there are a few things that need to be
+configured manually.
+
+1. Set main Alfred hotkey to <kbd>⌥</kbd> + <kbd>SPACE</kbd>
+2. Install the Things 3 helper
+3. ...?
+
 [travis-badge]: https://img.shields.io/travis/com/eliasnorrby/dotfiles?style=for-the-badge
 [travis-link]: https://travis-ci.com/eliasnorrby/dotfiles
 [dependabot-badge]: https://api.dependabot.com/badges/status?host=github&repo=eliasnorrby/dotfiles
