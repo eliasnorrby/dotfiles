@@ -9,7 +9,7 @@
     repo: "{{ dotfiles_repo }}"
     dest: "{{ dotfiles }}"
     version: "{{ lookup('env','DOTFILES_VERSION') or dotfiles_version }}"
-  # safety for running locally with a more recent version
+  # Safety for running locally with a more recent version
   when: dotfiles_dir.stat.isdir is not defined
 
 - name: source topic configs
@@ -32,19 +32,10 @@
   with_fileglob:
     - "{{ playbook_dir }}/../root.config.yml"
 
-# in particular for testing
 - name: allow local overrides
   include_vars: "{{ item }}"
   with_fileglob:
     - "{{ playbook_dir }}/../root.config.local.yml"
-
-# TODO: remove temporary debug
-- stat:
-    path: "{{ playbook_dir }}/../root.config.local.yml"
-  register: local_config
-- debug:
-    msg: "Using overrides in root.config.local"
-  when: local_config.stat.exists
 
 - name: map configs to variables
   import_tasks: set-variables.yml

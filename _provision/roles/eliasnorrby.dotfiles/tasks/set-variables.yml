@@ -59,6 +59,10 @@
     verbosity: 1
 
 - debug:
+    var: mas_apps
+    verbosity: 1
+
+- debug:
     var: gem_packages
     verbosity: 1
 - debug:

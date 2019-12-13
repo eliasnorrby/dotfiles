@@ -71,11 +71,11 @@ jobs:
         - "cp tests/test.config.yml ../root.config.local.yml"
 
         # Test the playbook.
-        - "travis_wait 30 ansible-playbook playbook.yml --tags 'all,do_homebrew' -v"
+        - "travis_wait 40 ansible-playbook playbook.yml --tags 'all,do_homebrew,do_packages,do_packages,do_defaults' -v"
 
         # Test the playbook's idempotence (but skip homebrew).
         - idempotence=$(mktemp)
-        - "ansible-playbook playbook.yml | tee -a ${idempotence}"
+        - "ansible-playbook playbook.yml --tags 'all,do_homebrew,do_packages,do_defaults' | tee -a ${idempotence}"
         - >
           tail ${idempotence}
           | grep -q 'changed=0.*failed=0'
@@ -101,7 +101,7 @@ jobs:
         - sudo rm -rf /usr/local/bin/brew
       script:
         - >
-          travis_wait 45
+          travis_wait 50
           bash <(curl -sL ${curl_target}${TARGET_BRANCH}/bootstrap.sh)
 
     ## Release
