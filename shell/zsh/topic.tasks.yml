@@ -1,0 +1,14 @@
+---
+- name: install zplug
+  block:
+    - name: check if zplug is installed
+      stat:
+        path: "{{ zplug_home }}"
+      register: zplug
+    - name: clone zplug repo
+      git:
+        repo: https://github.com/zplug/zplug
+        dest: "{{ zplug_home }}"
+        version: master
+      when: zplug.stat.isdir is undefined
+  tags: install

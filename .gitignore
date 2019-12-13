@@ -1,3 +1,9 @@
 /keyboard/hammerspoon/hotspotSSID
 /keyboard/hammerspoon/hotspotPASSPHRASE
 /keyboard/karabiner/automatic_backups
+# The reverse pattern breaks counsel-find-file
+/_provision/roles/geerlingguy*
+/_provision/roles/elliotweiser*
+#!/_provision/roles/eliasnorrby*
+
+/root.config.local.yml

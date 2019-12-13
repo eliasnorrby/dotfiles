@@ -1,0 +1,5 @@
+---
+bash_config:
+  path: shell/bash
+  brew_formulas:
+    - bash

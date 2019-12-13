@@ -6,28 +6,26 @@
 
 SECONDS=0
 
+if [ -z "$DOTFILES_VERSION" ] ; then
+  DOTFILES_VERSION=${1:-master}
+fi
+
 set -exo pipefail
 
+export DOTFILES_REPO="https://github.com/eliasnorrby/dotfiles"
+export TARBALL_URL="$DOTFILES_REPO/tarball/$DOTFILES_VERSION"
 export DOTFILES=~/.dotfiles
 
 _msg() { printf "\r\033[2K\033[0;32m[ .. ] %s\033[0m\n" "$*"; }
 
-_get_release_version() {
-  local release_url="https://api.github.com/repos/eliasnorrby/mac-dev-playbook/releases"
-  curl -sL $release_url | grep --color=never -m 1 '^ .*"tag_name"' | grep --color=never -oE '[0-9]+\.[0-9]+\.[0-9]+[^"]*'
+_get_repo_snapshot() {
+  curl -sL $TARBALL_URL | tar xz
 }
 
-_get_release_archive() {
-  release=$1
-  local url="https://github.com/eliasnorrby/mac-dev-playbook/archive/v${release}.tar.gz"
-  curl -sL $url | tar xz
-}
-
-PLAYBOOK_RELEASE=${_get_release_version:-1.0.0-alpha}
-
-_msg "Downloading release $PLAYBOOK_RELEASE..."
-_get_release_archive $PLAYBOOK_RELEASE
-cd mac-dev-playbook-${PLAYBOOK_RELEASE/v/}
+_msg "Downloading repository snapshot from eliasnorrby/dotfiles@$DOTFILES_VERSION..."
+cd $(mktemp -d)
+_get_repo_snapshot
+cd eliasnorrby-dotfiles*
 
 _msg "Installing pip..."
 sudo easy_install pip
@@ -36,10 +34,11 @@ _msg "Installing ansible..."
 sudo pip install ansible
 
 _msg "Installing playbook requirements..."
+cd _provision
 ansible-galaxy install -r requirements.yml
 
 _msg "Running the playbook..."
-ansible-playbook main.yml --tags 'all,do_homebrew' -v
+ansible-playbook playbook.yml --tags 'all,do_homebrew,do_packages,do_defaults' -v
 
 _msg "Run post-install script..."
 cd $DOTFILES

@@ -20,6 +20,7 @@
 _load shell/zsh/config.zsh
 _load shell/zsh/completion.zsh
 _load shell/zsh/keybinds.zsh
+_load shell/zsh/utilities.zsh
 _load shell/zsh/prompt.zsh
 _load shell/zsh/plugins.zsh
 

@@ -1,0 +1,56 @@
+---
+# Curtesy of https://github.com/geerlingguy/mac-dev-playbook
+language: objective-c
+os: osx
+osx_image: xcode11
+
+before_install:
+  # Uninstall existing Homebrew installation.
+  - curl -sLO https://raw.githubusercontent.com/Homebrew/install/master/uninstall
+  - chmod +x ./uninstall
+  - ./uninstall --force
+  - sudo rm -rf /usr/local/Homebrew
+  - sudo rm -rf /usr/local/Caskroom
+  - sudo rm -rf /usr/local/bin/brew
+
+install:
+  # Install pip.
+  - sudo easy_install pip
+
+  # Install Ansible.
+  - sudo pip install ansible
+
+  # Profile tasks (but beware of 'tail' used in idempotence test)
+  # Profiling adds extra lines to the output, potentially failing the test
+  # - "echo 'callback_whitelist = profile_tasks' >> ansible.cfg"
+
+script:
+  # Install dependencies.
+  - "ansible-galaxy install -r requirements.yml"
+
+  # Check the role/playbook's syntax.
+  - "ansible-playbook main.yml --syntax-check"
+
+  # Copy test config.yml into place.
+  - "cp tests/config.yml config.yml"
+
+  # Test the playbook.
+  - "travis_wait 30 ansible-playbook main.yml --tags 'all,do_homebrew' -v"
+
+  # Test the playbook's idempotence (but skip homebrew).
+  - idempotence=$(mktemp)
+  - "ansible-playbook main.yml | tee -a ${idempotence}"
+  - >
+    tail ${idempotence}
+    | grep -q 'changed=0.*failed=0'
+    && (echo 'Idempotence test: pass' && exit 0)
+    || (echo 'Idempotence test: fail' && exit 1)
+
+notifications:
+  slack:
+    rooms:
+      secure: Qs2AUVD6JiRTNJ3LTSWY0vg/FsNI2EDy+pMVDX+j3vYwvt8rB3jcuJ1jlMKpJXl0l+GbtKFfMsExAJe351d0fgdxz4utYI6+jsEN8/hYYwjbQmEtAZM7u3uK5wwP2htcSdyT8TJMKSHsPdZ3d/Ttnc6tmwVXr+tq4gf1Y/m+aPJX4dhMVkam6u0pniXH6z7oExJtl0NGKKnDww/GwcGlwGNVcOyPr1+iHdEZ7HSRc7KXRliRVc3X8OZrdQCx67xTaMWVxyE8LVAjSansKZz0iE/89dy8LNt0dkEixfz4J7AF3C6zP2VBrykr0qV21XvLIFp5c/DCyV/ohwrjArcCQbVnfeAGi1C3iTTPFeF3qfAk3K6GPKPMUjzbbHObT9JEx0sRI0zSN52KwHYArykQAltROcUQFFnrSHgX+qQoas5Qnq4NIagsuQriUj7gWAvMObjkDVbtpcaZ3SJyaVtAaqTzVG+3kRdoMEjpg77awfzedTs7uQNm45iYvSIOTPZ1cAHZyu09epInRMy3elELrDuMQwud3fWKXV6KcA11ijVZwgwG02qeWwIQH9G6g3ySn9u57P227sjp98TJ5elD7UreyJe68wcr7BaaFmgCAfUJl1rXjzfiftQbSbXloBAMhKlxNCjjym59APLbqDoXBCuGoU4FrtAE4in8hb6dYQE=
+    template:
+      - "Build <%{build_url}|%{result}> for %{repository_slug}@%{branch} (<%{compare_url}|%{commit}>)"
+    on_success: change
+    on_failure: always

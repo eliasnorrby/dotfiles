@@ -1,12 +1,7 @@
 ---
 extends: default
 ignore: |
-  .dependabot
   .travis.yml
-  node_modules
-  alacritty.yml
-  _provision/roles/
-  !_provision/roles/eliasnorrby*
 rules:
   line-length:
     max: 120

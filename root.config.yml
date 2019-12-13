@@ -1,38 +1,4 @@
 ---
-pip_packages:
-  - ansible
-  - molecule
-  - docker
-
-# topics:
-#   editor:
-#     - name: vim
-#       path: editor/vim
-#       state: present
-#       brew_formulas:
-#         - vim
-#     - name: emacs
-#       path: editor/emacs
-#       state: present
-#       brew_taps:
-#         - d12frosted/emacs-plus
-#       brew_formulas:
-#         - name: emacs_plus
-#           install_options: without-spacemacs-icon
-#   shell:
-#     - name: zsh
-#       path: shell/zsh
-#       state: present
-#       brew_formulas:
-#         - zsh
-#         - fzf
-#         - ripgrep
-#     - name: tmux
-#       path: shell/tmux
-#       state: present
-#       brew_formulas:
-#         - tmux
-
 topics:
   base:
     - name: macos
@@ -42,13 +8,22 @@ topics:
     - name: vim
       state: present
       config: "{{ vim_config }}"
+    - name: neovim
+      state: disabled
+      config: "{{ neovim_config }}"
     - name: emacs
       state: present
       config: "{{ emacs_config }}"
     - name: editorconfig
       state: present
       config: "{{ editorconfig_config }}"
+    - name: vscode
+      state: present
+      config: "{{ vscode_config }}"
   keyboard:
+    - name: fasterkeys
+      state: present
+      config: "{{ fasterkeys_config }}"
     - name: hammerspoon
       state: present
       config: "{{ hammerspoon_config }}"
@@ -59,6 +34,9 @@ topics:
     - name: alacritty
       state: present
       config: "{{ alacritty_config }}"
+    - name: bash
+      state: present
+      config: "{{ bash_config }}"
     - name: git
       state: present
       config: "{{ git_config }}"
@@ -69,16 +47,40 @@ topics:
       state: present
       config: "{{ zsh_config }}"
   dev:
+    - name: ansible
+      state: present
+      config: "{{ ansible_config }}"
+    - name: cicd
+      state: present
+      config: "{{ cicd_config }}"
     - name: docker
       state: present
       config: "{{ docker_config }}"
+    - name: vagrant
+      state: present
+      config: "{{ vagrant_config }}"
+    - name: kubernetes
+      state: disabled
+      config: "{{ kubernetes_config }}"
+    - name: web
+      state: present
+      config: "{{ web_config }}"
   lang:
-    - name: ruby
-      state: present
-      config: "{{ ruby_config }}"
-    - name: java
-      state: present
-      config: "{{ java_config }}"
     - name: go
       state: present
       config: "{{ go_config }}"
+    - name: java
+      state: present
+      config: "{{ java_config }}"
+    - name: kafka
+      state: absent
+      config: "{{ kafka_config }}"
+    - name: node
+      state: present
+      config: "{{ node_config }}"
+    - name: python
+      state: present
+      config: "{{ python_config }}"
+    - name: ruby
+      state: present
+      config: "{{ ruby_config }}"

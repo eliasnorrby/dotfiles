@@ -1,0 +1,14 @@
+---
+- name: install doom emacs
+  block:
+    - name: check if doom is installed
+      stat:
+        path: "{{ doom_home }}"
+      register: doom
+    - name: clone doom repo
+      git:
+        repo: https://github.com/hlissner/doom-emacs
+        dest: "{{ doom_home }}"
+        version: develop
+      when: doom.stat.isdir is undefined
+  tags: install

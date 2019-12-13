@@ -5,3 +5,5 @@ vim_config:
     - vim
   links:
     - .vimrc
+    - src: .vimrc
+      dest: ~/

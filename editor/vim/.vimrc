@@ -5,14 +5,18 @@ set encoding=utf-8
 let mapleader=" "
 nnoremap <Space> <Nop>
 
+if has('nvim')
+  set runtimepath^=~/.vim runtimepath+=~/.vim/after
+  let &packpath = &runtimepath
+endif
+
 " {{{ Plugins
 " ============================================================================ "
 " ===                           PLUGINS                                    === "
 " ============================================================================ "
 " Download vimplug if not already installed
-" TODO: move and refenrece variable when vim module is up
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+if empty(glob($VIM_DIR.'/autoload/plug.vim'))
+  silent !curl -sfLo $VIM_DIR/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
@@ -519,7 +523,8 @@ nnoremap <Leader>n :Vexplore<CR>
 nnoremap <silent> <Leader>tl :set invrelativenumber<CR>
 
 " Shortcuts for saving and quitting
-nnoremap <Leader>qq :q<CR>
+nnoremap <Leader>q :q<CR>
+nnoremap <Leader>w :w<CR>
 nnoremap <Leader>Q :q!<CR>
 nnoremap <Leader>fs :w<CR>
 nnoremap <Leader>bk :bd<CR>

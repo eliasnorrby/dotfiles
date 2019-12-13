@@ -1,0 +1,64 @@
+---
+- name: check if dotfiles folder exists
+  stat:
+    path: "{{ dotfiles }}"
+  register: dotfiles_dir
+
+- name: clone dotfiles
+  git:
+    repo: "{{ dotfiles_repo }}"
+    dest: "{{ dotfiles }}"
+    version: "{{ lookup('env','DOTFILES_VERSION') or dotfiles_version }}"
+  # Safety for running locally with a more recent version
+  when: dotfiles_dir.stat.isdir is not defined
+
+- name: source topic configs
+  block:
+    # Recursively search for 'config.yml's in dotfiles repository
+    - find:
+        path: "{{ playbook_dir }}/.."
+        patterns: "topic.config.yml"
+        file_type: file
+        recurse: true
+      register: found_configs
+    - set_fact:
+        topic_configs: "{{ found_configs.files | map(attribute='path') | list }}"
+    - include_vars:
+        file: "{{ item }}"
+      loop: "{{ topic_configs }}"
+
+- name: source root config
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - "{{ playbook_dir }}/../root.config.yml"
+
+- name: allow local overrides
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - "{{ playbook_dir }}/../root.config.local.yml"
+
+- name: map configs to variables
+  import_tasks: set-variables.yml
+  tags: always
+
+- name: collect post provisioning tasks
+  block:
+    - find:
+        path: "{{ playbook_dir }}/.."
+        patterns: "topic.tasks.yml"
+        file_type: file
+        recurse: true
+      register: found_tasks
+    - set_fact:
+        post_provision_tasks: "{{ found_tasks.files | map(attribute='path') | list }}"
+
+- name: user should have a dotfiles_data directory
+  file:
+    path: "{{ dotfiles_data }}"
+    state: directory
+
+  # TODO: loop over absent / disabled topics as well, removing links if necessary
+- include_tasks: links.yml
+  loop: "{{ present_topics }}"
+  loop_control:
+    loop_var: topic

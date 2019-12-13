@@ -1,0 +1,7 @@
+---
+kubernetes_config:
+  path: dev/kubernetes
+  brew_formulas:
+    - minikube
+    - kubectl
+    # - docker-machine-driver-hyperkit

@@ -1,0 +1,53 @@
+---
+# minimal config to test playbook
+# Should test
+# - [x] brew_formulas
+# - [x] brew_casks
+# - [x] brew_taps
+#
+# - [x] osx_defaults
+#
+# - [x] pip_packages
+# - [x] npm_packages
+# - [x] gem_packages
+topics:
+  editor:
+    # has brew formulas
+    - name: vim
+      state: present
+      config: "{{ vim_config }}"
+    # has a brew tap
+    - name: emacs
+      state: present
+      config: "{{ emacs_config }}"
+    # has a brew cask
+    - name: alacritty
+      state: present
+      config: "{{ alacritty_config }}"
+  keyboard:
+    # has osx defaults
+    - name: hammerspoon
+      state: present
+      config: "{{ hammerspoon_config }}"
+  dev:
+    # has a gem_package & a npm_package
+    - name: cicd
+      state: present
+      config: "{{ cicd_config }}"
+    # has pip_packages
+    - name: ansible
+      state: present
+      config: "{{ ansible_config }}"
+  lang:
+    # needed for npm
+    - name: node
+      state: present
+      config: "{{ node_config }}"
+    # needed for pip
+    - name: python
+      state: present
+      config: "{{ python_config }}"
+    # needed for gem
+    - name: ruby
+      state: present
+      config: "{{ ruby_config }}"

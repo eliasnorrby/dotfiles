@@ -1,0 +1,38 @@
+---
+- hosts: mac
+
+  ## Incorrectly triggered during CI, log in using GUI instead
+  # vars_prompt:
+  #   - name: mas_email
+  #     prompt: What is your Mac App Store username?
+  #     private: no
+  #     tags: ["never", "do_mas", "bootstrap"]
+
+  #   - name: mas_password
+  #     prompt: What is your Mac App Store password?
+  #     tags: ["never", "do_mas", "bootstrap"]
+
+  vars_files:
+    - default.config.yml
+
+  roles:
+    - role: eliasnorrby.dotfiles
+      tags: ["dotfiles", "bootstrap"]
+    - role: geerlingguy.homebrew
+      tags: ["never", "do_homebrew", "bootstrap"]
+    - role: geerlingguy.mas
+      tags: ["never", "do_mas", "bootstrap"]
+
+  tasks:
+    - include_tasks: tasks/homebrew.yml
+      tags: ["never", "do_homebrew", "bootstrap"]
+    - include_tasks: tasks/extra-packages.yml
+      tags: ["never", "do_packages", "bootstrap"]
+    - include_tasks: tasks/osx-defaults.yml
+      tags: ["never", "do_defaults", "bootstrap"]
+
+    - name: run configured post-provision ansible task files
+      include_tasks: "{{ outer_item }}"
+      loop: "{{ post_provision_tasks | default(omit) }}"
+      loop_control:
+        loop_var: outer_item

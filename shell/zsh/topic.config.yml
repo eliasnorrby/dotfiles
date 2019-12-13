@@ -1,0 +1,24 @@
+---
+zsh_config:
+  path: shell/zsh
+  brew_formulas:
+    # essentials
+    - zsh
+    - fzf
+    - ripgrep
+    - coreutils
+    - watch
+    - tree
+    - mosh
+    - ssh-copy-id
+    # extras
+    - jq
+    - pandoc
+  links:
+    - .zshrc
+    - .zshenv
+    - src: .zshenv
+      dest: ~/.zshenv
+
+zdotdir: "{{ xdg_config_home }}/zsh"
+zplug_home: "{{ xdg_cache_home }}/zplug"

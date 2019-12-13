@@ -1,0 +1,7 @@
+---
+cicd_config:
+  path: dev/cicd
+  # gem_packages:
+  #   - travis
+  npm_packages:
+    - semantic-release-cli

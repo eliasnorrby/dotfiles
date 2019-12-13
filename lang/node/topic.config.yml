@@ -1,0 +1,7 @@
+---
+node_config:
+  path: lang/node
+  brew_formulas:
+    - node
+    # - node@10
+    - yarn

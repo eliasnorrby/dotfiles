@@ -1,0 +1,15 @@
+---
+- name: tap homebrew taps
+  homebrew_tap:
+    tap: "{{ brew_taps }}"
+    state: present
+
+- name: install homebrew packages
+  homebrew:
+    name: "{{ brew_formulas }}"
+    state: present
+
+- name: install homebrew casks
+  homebrew_cask:
+    name: "{{ brew_casks }}"
+    state: present

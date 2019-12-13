@@ -1,0 +1,16 @@
+---
+vscode_config:
+  path: editor/vscode
+  brew_casks:
+    - visual-studio-code
+  osx_defaults:
+    - domain: com.microsoft.VSCode
+      key: ApplePressAndHoldEnabled
+      value: false
+      type: bool
+      state: present
+    - domain: com.microsoft.VSCodeInsiders
+      key: ApplePressAndHoldEnabled
+      value: false
+      type: bool
+      state: present

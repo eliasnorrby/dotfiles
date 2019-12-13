@@ -1,0 +1,8 @@
+---
+- osx_defaults:
+    domain: "{{ item.domain | default(omit) }}"
+    key: "{{ item.key | mandatory }}"
+    type: "{{ item.type | default(omit) }}"
+    value: "{{ item.value | mandatory }}"
+    state: "{{ item.state | default('present') }}"
+  loop: "{{ osx_defaults }}"

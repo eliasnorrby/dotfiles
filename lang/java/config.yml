@@ -1,7 +1,0 @@
----
-java_config:
-  path: lang/java
-  brew_formulas:
-    - maven
-  brew_casks:
-    - intellij-idea-ce

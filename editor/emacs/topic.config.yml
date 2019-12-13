@@ -7,5 +7,9 @@ emacs_config:
   brew_taps:
     - d12frosted/emacs-plus
   brew_formulas:
-    - name: emacs-plus
-      install_options: without-spacemacs-icon
+    # - name: emacs-plus
+    #   install_options: without-spacemacs-icon
+    - emacs-plus
+    - gnupg # Used by forge
+
+doom_home: "~/.emacs.d"
