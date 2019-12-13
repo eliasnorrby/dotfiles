@@ -5,13 +5,18 @@ set encoding=utf-8
 let mapleader=" "
 nnoremap <Space> <Nop>
 
+if has('nvim')
+  set runtimepath^=~/.vim runtimepath+=~/.vim/after
+  let &packpath = &runtimepath
+endif
+
 " {{{ Plugins
 " ============================================================================ "
 " ===                           PLUGINS                                    === "
 " ============================================================================ "
 " Download vimplug if not already installed
 if empty(glob($VIM_DIR.'/autoload/plug.vim'))
-  silent !curl -fLo $VIM_DIR/autoload/plug.vim --create-dirs
+  silent !curl -sfLo $VIM_DIR/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif

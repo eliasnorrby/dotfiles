@@ -6,4 +6,4 @@ neovim_config:
   links:
     - init.vim
     - src: "{{ dotfiles }}/editor/vim/.vimrc"
-      dest: "~/.vimrc"
+      dest: "{{ xdg_config_home }}/vim/.vimrc"
