@@ -15,11 +15,8 @@ jobs:
       services: docker
 
       env:
-        global:
-          - ROLE_NAME: dotfiles
-        jobs:
-          - MOLECULE_DISTRO: centos7
-          - MOLECULE_DISTRO: ubuntu1804
+        - MOLECULE_DISTRO=centos7 ROLE_NAME=dotfiles
+        - MOLECULE_DISTRO=ubuntu1804 ROLE_NAME=dotfiles
 
       install:
         # Install test dependencies
