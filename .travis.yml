@@ -1,4 +1,8 @@
 ---
+env:
+  global:
+    - TARGET_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
+
 jobs:
   include:
     ## Lint all yaml files
@@ -11,23 +15,21 @@ jobs:
 
     ## Ensure topic configs are sourced and links are set up
     - stage: dotfiles role
+      name: centos7
       language: python
       services: docker
-
       env:
-        - MOLECULE_DISTRO=centos7 ROLE_NAME=dotfiles
-        - MOLECULE_DISTRO=ubuntu1804 ROLE_NAME=dotfiles
-
+        - ROLE_NAME=dotfiles
+        - DOTFILES_VERSION=$TARGET_BRANCH
       install:
         # Install test dependencies
         - pip install molecule docker
-
       before_script:
         - cd _provision/roles/eliasnorrby.$ROLE_NAME
-
       script:
         # Run tests
-        - molecule test
+        - MOLECULE_DISTRO=centos7 molecule test
+        - MOLECULE_DISTRO=ubuntu1804 molecule test
 
     ## Makes sure the playbook runs with a minimal config
     - stage: playbook
@@ -98,7 +100,6 @@ jobs:
       script:
         - >
           travis_wait 45
-          export TARGET_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
           bash <(curl -sL ${curl_target}${TARGET_BRANCH}/bootstrap.sh)
 
     ## Release
