@@ -58,7 +58,7 @@ jobs:
 
         # Profile tasks (but beware of 'tail' used in idempotence test)
         # Profiling adds extra lines to the output, potentially failing the test
-        # - "echo 'callback_whitelist = profile_tasks' >> ansible.cfg"
+        - "echo 'callback_whitelist = profile_tasks' >> ansible.cfg"
 
       script:
         # Install dependencies.
@@ -77,7 +77,7 @@ jobs:
         - idempotence=$(mktemp)
         - "ansible-playbook playbook.yml --tags 'all,do_homebrew,do_packages,do_defaults' | tee -a ${idempotence}"
         - >
-          tail ${idempotence}
+          tail -n 50 ${idempotence}
           | grep -q 'changed=0.*failed=0'
           && (echo 'Idempotence test: pass' && exit 0)
           || (echo 'Idempotence test: fail' && exit 1)
