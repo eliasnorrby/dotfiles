@@ -14,22 +14,25 @@ jobs:
         - yamllint .
 
     ## Ensure topic configs are sourced and links are set up
-    - stage: dotfiles role
-      name: centos7
+    - &role-testing
+      stage: dotfiles role
       language: python
       services: docker
       env:
-        - ROLE_NAME=dotfiles
+        - MOLECULE_DISTRO=centos7
       install:
         # Install test dependencies
         - pip install molecule docker
       before_script:
+        - export ROLE_NAME=dotfiles
         - cd _provision/roles/eliasnorrby.$ROLE_NAME
       script:
         # Run tests
-        - MOLECULE_DISTRO=centos7 molecule test
+        - molecule test
         - MOLECULE_DISTRO=ubuntu1804 molecule test
-
+    - <<: *role-testing
+      env:
+        - MOLECULE_DISTRO=ubuntu1804
     ## Makes sure the playbook runs with a minimal config
     - stage: playbook
       language: objective-c
