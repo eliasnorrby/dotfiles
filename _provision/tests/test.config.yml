@@ -1,0 +1,28 @@
+---
+# minimal config to test playbook
+topics:
+  editor:
+    - name: vim
+      state: present
+      config: "{{ vim_config }}"
+    - name: emacs
+      state: present
+      config: "{{ emacs_config }}"
+  keyboard:
+    - name: hammerspoon
+      state: present
+      config: "{{ hammerspoon_config }}"
+  shell:
+    - name: zsh
+      state: present
+      config: "{{ zsh_config }}"
+  lang:
+    - name: node
+      state: present
+      config: "{{ node_config }}"
+    - name: python
+      state: present
+      config: "{{ python_config }}"
+    - name: ruby
+      state: present
+      config: "{{ ruby_config }}"

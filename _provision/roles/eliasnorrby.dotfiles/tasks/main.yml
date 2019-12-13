@@ -12,37 +12,46 @@
   # safety for running locally with a more recent version
   when: dotfiles_dir.stat.isdir is not defined
 
-- name: collect topic configs
+- name: source topic configs
   block:
     # Recursively search for 'config.yml's in dotfiles repository
     - find:
         path: "{{ playbook_dir }}/.."
-        patterns: "config.yml"
+        patterns: "topic.config.yml"
         file_type: file
         recurse: true
-      register: find_results
+      register: found_configs
     - set_fact:
-        configs: "{{ find_results.files | map(attribute='path') | list }}"
+        topic_configs: "{{ found_configs.files | map(attribute='path') | list }}"
     - include_vars:
         file: "{{ item }}"
-      loop: "{{ configs }}"
+      loop: "{{ topic_configs }}"
 
+- name: source root config
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - "{{ playbook_dir }}/../root.config.yml"
+
+# in particular for testing
+- name: allow local overrides
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - "{{ playbook_dir }}/../root.config.local.yml"
+
+- name: map configs to variables
+  import_tasks: set-variables.yml
+  tags: always
+
+- name: collect post provisioning tasks
+  block:
+    - find:
+        path: "{{ playbook_dir }}/.."
+        patterns: "topic.tasks.yml"
+        file_type: file
+        recurse: true
+      register: found_tasks
     - set_fact:
-        # to persist
-        topics: "{{ topics }}"
-        present_topics: "{{ q('dict', topics) | map(attribute='value') | list | flatten | selectattr('state', 'equalto', 'present') | list }}"
-        disabled_topics: "{{ q('dict', topics) | map(attribute='value') | list | flatten | selectattr('state', 'equalto', 'disabled') | list }}"
-        absent_topics: "{{ q('dict', topics) | map(attribute='value') | list | flatten | selectattr('state', 'equalto', 'absent') | list }}"
-
-    - debug:
-        var: present_topics
-    - debug:
-        var: absent_topics
-    - debug:
-        var: disabled_topics
-    - debug:
-        var: absent_topics
-        fail: true
+        post_provision_tasks: "{{ found_tasks.files | map(attribute='path') | list }}"
 
 - name: user should have a dotfiles_data directory
   file:

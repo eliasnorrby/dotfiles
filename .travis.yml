@@ -1,12 +1,87 @@
 ---
 jobs:
   include:
+    ## Lint all yaml files
     - stage: lint
       language: python
-      before_script:
+      install:
         - pip install yamllint
       script:
         - yamllint .
+
+    ## Ensure topic configs are sourced and links are set up
+    - stage: dotfiles role
+      language: python
+      services: docker
+
+      env:
+        global:
+          - ROLE_NAME: dotfiles
+        jobs:
+          - MOLECULE_DISTRO: centos7
+          - MOLECULE_DISTRO: ubuntu1804
+
+      install:
+        # Install test dependencies
+        - pip install molecule docker
+
+      before_script:
+        - cd _provision/roles/eliasnorrby.$ROLE_NAME
+
+      script:
+        # Run tests
+        - molecule test
+
+    ## Makes sure the playbook runs with a minimal config
+    - stage: playbook
+      language: objective-c
+      os: osx
+      osx_image: xcode11
+
+      before_install:
+        # Uninstall existing Homebrew installation.
+        - curl -sLO https://raw.githubusercontent.com/Homebrew/install/master/uninstall
+        - chmod +x ./uninstall
+        - ./uninstall --force
+        - sudo rm -rf /usr/local/Homebrew
+        - sudo rm -rf /usr/local/Caskroom
+        - sudo rm -rf /usr/local/bin/brew
+        - cd _provision
+
+      install:
+        # Install pip.
+        - sudo easy_install pip
+
+        # Install Ansible.
+        - sudo pip install ansible
+
+        # Profile tasks (but beware of 'tail' used in idempotence test)
+        # Profiling adds extra lines to the output, potentially failing the test
+        # - "echo 'callback_whitelist = profile_tasks' >> ansible.cfg"
+
+      script:
+        # Install dependencies.
+        - "ansible-galaxy install -r requirements.yml"
+
+        # Check the role/playbook's syntax.
+        - "ansible-playbook playbook.yml --syntax-check"
+
+        # Copy test config.yml into place.
+        - "cp tests/test.config.yml root.config.local.yml"
+
+        # Test the playbook.
+        - "travis_wait 30 ansible-playbook main.yml --tags 'all,do_homebrew' -v"
+
+        # Test the playbook's idempotence (but skip homebrew).
+        - idempotence=$(mktemp)
+        - "ansible-playbook main.yml | tee -a ${idempotence}"
+        - >
+          tail ${idempotence}
+          | grep -q 'changed=0.*failed=0'
+          && (echo 'Idempotence test: pass' && exit 0)
+          || (echo 'Idempotence test: fail' && exit 1)
+
+    ## Test a complete bootstrap
     - stage: bootstrap test
       if: branch = master
       language: objective-c
@@ -25,8 +100,11 @@ jobs:
         - sudo rm -rf /usr/local/bin/brew
       script:
         - >
-          travis_wait 30
-          bash <(curl -sL ${curl_target}${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}/bootstrap.sh)
+          travis_wait 45
+          export TARGET_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
+          bash <(curl -sL ${curl_target}${TARGET_BRANCH}/bootstrap.sh)
+
+    ## Release
     - stage: release
       language: node_js
       node_js: 12

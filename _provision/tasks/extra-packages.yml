@@ -4,7 +4,7 @@
     name: "{{ item.name | default(item) }}"
     state: "{{ item.state | default('present') }}"
     version: "{{ item.version | default(omit) }}"
-    global: yes
+    global: true
     executable: "{{ item.executable | default(omit) }}"
   # when: topics.lang.node.state = 'present'
   loop: "{{ npm_packages }}"
@@ -23,7 +23,7 @@
     name: "{{ item.name | default(item) }}"
     state: "{{ item.state | default('present') }}"
     version: "{{ item.version | default(omit) }}"
-    user_install: no
+    user_install: false
     executable: "{{ item.executable | default(omit) }}"
   # when: topics.lang.ruby.state = 'present'
   with_items: "{{ gem_packages }}"

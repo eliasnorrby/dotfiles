@@ -10,3 +10,5 @@ emacs_config:
     - name: emacs-plus
       install_options: without-spacemacs-icon
     - gnupg # Used by forge
+
+doom_home: "~/.emacs.d"

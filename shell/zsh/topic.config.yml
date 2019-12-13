@@ -14,9 +14,11 @@ zsh_config:
     # extras
     - jq
     - pandoc
-
   links:
     - .zshrc
     - .zshenv
     - src: .zshenv
       dest: ~/.zshenv
+
+zdotdir: "{{ xdg_config_home }}/zsh"
+zplug_home: "{{ xdg_cache_home }}/zplug"

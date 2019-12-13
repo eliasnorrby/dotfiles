@@ -1,10 +1,22 @@
 ---
+- set_fact:
+    # to persist
+    topics: "{{ topics }}"
+    present_topics: "{{ q('dict', topics) | map(attribute='value') | list | flatten | selectattr('state', 'equalto', 'present') | list }}"
+    disabled_topics: "{{ q('dict', topics) | map(attribute='value') | list | flatten | selectattr('state', 'equalto', 'disabled') | list }}"
+    absent_topics: "{{ q('dict', topics) | map(attribute='value') | list | flatten | selectattr('state', 'equalto', 'absent') | list }}"
+
 - debug:
     var: topics
     verbosity: 1
-
 - debug:
     var: present_topics
+    verbosity: 1
+- debug:
+    var: absent_topics
+    verbosity: 1
+- debug:
+    var: disabled_topics
     verbosity: 1
 
 - name: prepare variables for geerlingguy.homebrew
@@ -30,28 +42,28 @@
   set_fact:
     osx_defaults: "{{ present_topics | selectattr('config.osx_defaults', 'defined') | map(attribute='config.osx_defaults') | list | flatten | unique }}"
 
-# in particular for testing
-- name: allow local overrides
-  include_vars: "{{ item }}"
-  with_fileglob:
-    - "{{ playbook_dir }}/config.yml"
-
 - debug:
     var: homebrew_installed_packages
     verbosity: 1
-
 - debug:
     var: homebrew_uninstalled_packages
     verbosity: 1
-
 - debug:
     var: homebrew_taps
     verbosity: 1
-
 - debug:
     var: homebrew_cask_apps
     verbosity: 1
-
 - debug:
     var: homebrew_cask_uninstalled_apps
+    verbosity: 1
+
+- debug:
+    var: gem_packages
+    verbosity: 1
+- debug:
+    var: npm_packages
+    verbosity: 1
+- debug:
+    var: pip_packages
     verbosity: 1

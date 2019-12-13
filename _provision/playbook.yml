@@ -6,23 +6,20 @@
 
   roles:
     - role: eliasnorrby.dotfiles
-      tags: ["dotfiles"]
+      tags: dotfiles
+    - role: geerlingguy.homebrew
+      tags: never,do_homebrew,bootstrap
+    - role: geerlingguy.mas
+      tags: never,do_homebrew,bootstrap
 
   tasks:
-    # TODO: Scope this properly. Now, it's possible to disable zsh in
-    # dotfiles/config.yml and still have the zplug tasks trigger.
-    - import_tasks: tasks/zplug.yml
-    - import_tasks: tasks/doom-emacs.yml
-    - import_tasks: tasks/set-variables.yml
-    # include within tasks because set-variables needs to be executed first.
-    # can it be run withing dotfiles role instead?
-    - include_role:
-        role: geerlingguy.homebrew
-      tags: never,do_homebrew,bootstrap
-    - include_role:
-        role: geerlingguy.mas
-      tags: never,do_mas,bootstrap
-    - import_tasks: tasks/extra-packages.yml
+    - include_tasks: extra-packages.yml
       tags: never,do_packages,bootstrap
-    - import_tasks: tasks/osx-defaults.yml
+    - include_tasks: osx-defaults.yml
       tags: never,do_defaults,bootstrap
+
+    - name: run configured post-provision ansible task files
+      include_tasks: "{{ outer_item }}"
+      loop: "{{ post_provision_tasks | default(omit) }}"
+      loop_control:
+        loop_var: outer_item

@@ -1,7 +1,7 @@
 ---
-# geerlingguy stuff
 downloads: ~/.ansible-downloads/
 
+# for geerlingguy.homebrew
 homebrew_installed_packages:
   - hub
   - httpie
@@ -13,10 +13,10 @@ homebrew_taps:
 
 homebrew_cask_appdir: /Applications
 homebrew_cask_apps:
-  # - docker
   - dropbox
   - google-chrome
 
+# form geerlingguy.mas
 # See `geerlingguy.mas` role documentation for usage instructions.
 mas_installed_apps: []
 mas_email: ""
@@ -40,10 +40,3 @@ xdg_bin_home: "~/.local/bin"
 
 dotfiles: "~/.dotfiles"
 dotfiles_data: "{{ xdg_data_home }}/dotfiles"
-
-# TODO: put these in a more sensible location
-# TODO: tie corresponding tasks to their respective topics somehow
-zdotdir: "{{ xdg_config_home }}/zsh"
-zplug_home: "{{ xdg_cache_home }}/zplug"
-
-doom_home: "~/.emacs.d"
