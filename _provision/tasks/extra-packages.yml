@@ -16,7 +16,7 @@
     version: "{{ item.version | default(omit) }}"
     executable: "{{ pip_executable | default(omit) }}"
   # when: topics.lang.python.state = 'present'
-  with_items: "{{ pip_packages }}"
+  loop: "{{ pip_packages }}"
 
 - name: install global ruby gems
   gem:
@@ -26,4 +26,4 @@
     user_install: false
     executable: "{{ item.executable | default(omit) }}"
   # when: topics.lang.ruby.state = 'present'
-  with_items: "{{ gem_packages }}"
+  loop: "{{ gem_packages }}"
