@@ -1,15 +1,16 @@
 ---
 - hosts: mac
 
-  vars_prompt:
-    - name: mas_email
-      prompt: What is your Mac App Store username?
-      private: no
-      tags: ["never", "do_mas", "bootstrap"]
+  ## Incorrectly triggered during CI, log in using GUI instead
+  # vars_prompt:
+  #   - name: mas_email
+  #     prompt: What is your Mac App Store username?
+  #     private: no
+  #     tags: ["never", "do_mas", "bootstrap"]
 
-    - name: mas_password
-      prompt: What is your Mac App Store password?
-      tags: ["never", "do_mas", "bootstrap"]
+  #   - name: mas_password
+  #     prompt: What is your Mac App Store password?
+  #     tags: ["never", "do_mas", "bootstrap"]
 
   vars_files:
     - default.config.yml
