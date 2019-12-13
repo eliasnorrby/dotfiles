@@ -67,11 +67,11 @@ jobs:
         - "cp tests/test.config.yml root.config.local.yml"
 
         # Test the playbook.
-        - "travis_wait 30 ansible-playbook main.yml --tags 'all,do_homebrew' -v"
+        - "travis_wait 30 ansible-playbook playbook.yml --tags 'all,do_homebrew' -v"
 
         # Test the playbook's idempotence (but skip homebrew).
         - idempotence=$(mktemp)
-        - "ansible-playbook main.yml | tee -a ${idempotence}"
+        - "ansible-playbook playbook.yml | tee -a ${idempotence}"
         - >
           tail ${idempotence}
           | grep -q 'changed=0.*failed=0'
