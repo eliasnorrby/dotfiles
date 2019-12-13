@@ -6,14 +6,14 @@
 
 SECONDS=0
 
-if [ -z "$TARGET_BRANCH" ] ; then
-  TARGET_BRANCH=${1:-master}
+if [ -z "$DOTFILES_VERSION" ] ; then
+  DOTFILES_VERSION=${1:-master}
 fi
 
 set -exo pipefail
 
 export DOTFILES_REPO="https://github.com/eliasnorrby/dotfiles"
-export TARBALL_URL="$DOTFILES_REPO/tarball/$TARGET_BRANCH"
+export TARBALL_URL="$DOTFILES_REPO/tarball/$DOTFILES_VERSION"
 export DOTFILES=~/.dotfiles
 
 _msg() { printf "\r\033[2K\033[0;32m[ .. ] %s\033[0m\n" "$*"; }
@@ -22,7 +22,7 @@ _get_repo_snapshot() {
   curl -sL $TARBALL_URL | tar xz
 }
 
-_msg "Downloading repository snapshot from eliasnorrby/dotfiles@$TARGET_BRANCH..."
+_msg "Downloading repository snapshot from eliasnorrby/dotfiles@$DOTFILES_VERSION..."
 cd $(mktemp -d)
 _get_repo_snapshot
 cd eliasnorrby-dotfiles*

@@ -8,7 +8,7 @@
   git:
     repo: "{{ dotfiles_repo }}"
     dest: "{{ dotfiles }}"
-    version: "{{ lookup('env','DOTFILES_VERSION') | default(dotfiles_version) }}"
+    version: "{{ lookup('env','DOTFILES_VERSION') or dotfiles_version }}"
   # safety for running locally with a more recent version
   when: dotfiles_dir.stat.isdir is not defined
 

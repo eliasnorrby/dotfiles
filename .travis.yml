@@ -1,7 +1,7 @@
 ---
 env:
   global:
-    - TARGET_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
+    - DOTFILES_VERSION=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
 
 jobs:
   include:
@@ -20,7 +20,6 @@ jobs:
       services: docker
       env:
         - ROLE_NAME=dotfiles
-        - DOTFILES_VERSION=$TARGET_BRANCH
       install:
         # Install test dependencies
         - pip install molecule docker
