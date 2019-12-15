@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # This script is a convenience tool for saving progress in an online course
 # to a git repository.
@@ -68,8 +68,8 @@ cleanup() {
   if [ -f $LECTURE_COUNTER ] ; then
     echo "Resetting the lecture counter"
     {
-      git reset $LECTURE_COUNTER 
-      git checkout $LECTURE_COUNTER 2>&1 
+      git reset $LECTURE_COUNTER
+      git checkout $LECTURE_COUNTER 2>&1
     } > /dev/null
   fi
   exit 1
@@ -122,7 +122,7 @@ fi
 
 
 git add -A
-git status
+git status --short
 
 echo "Staged all changes."
 echo "Commit message: $MSG"
