@@ -33,8 +33,10 @@ jobs:
     - <<: *role-testing
       env:
         - MOLECULE_DISTRO=ubuntu1804
+
     ## Makes sure the playbook runs with a minimal config
     - stage: playbook
+      if: branch != master
       language: objective-c
       os: osx
       osx_image: xcode11
