@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/eliasnorrby/dotfiles/compare/v1.1.0...v1.1.1) (2019-12-15)
+
+
+### Bug Fixes
+
+* **deps:** [security] bump npm from 6.13.3 to 6.13.4 ([6d26c36](https://github.com/eliasnorrby/dotfiles/commit/6d26c369d58f12451115cc3940937630d6741b0c))
+
 # [1.1.0](https://github.com/eliasnorrby/dotfiles/compare/v1.0.0...v1.1.0) (2019-12-13)
 
 
