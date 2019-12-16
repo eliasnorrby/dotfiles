@@ -2,7 +2,7 @@
 
 [![Travis][travis-badge]][travis-link]
 
-[![Dependabot Status][dependabot-link]][dependabot-link]
+[![Dependabot Status][dependabot-badge]][dependabot-link]
 [![semantic-release][semantic-release-badge]][semantic-release-link]
 
 Declarative dotfiles for development on MacOS.
