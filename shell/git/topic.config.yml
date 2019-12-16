@@ -1,6 +1,9 @@
 ---
 git_config:
   path: shell/git
+  links:
+    - config
+    - ignore
   brew_formulas:
     - git
     - hub

@@ -1,0 +1,13 @@
+[user]
+  email = elias.norrby@gmail.com
+  name = Elias Norrby
+[alias]
+  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --branches
+  extend = commit --amend --no-edit
+  amend = commit --amend
+[push]
+  default = current
+[hub]
+  protocol = https
+[github]
+  user = eliasnorrby
