@@ -198,10 +198,6 @@ their `state` to one of `present`, `disabled` or `absent`. Upon running,
 - `absent` topics will have their symlinks remove (if they exist) and their
   dependencies uninstalled (if they are installed)
 
-:warning: `disabled` and `absent` states are currently only being ignored
-entirely during playbook runs (marking a topic as `absent` does not remove it).
-See the `next` branch for progress on this feature.
-
 ## Leftovers
 
 After running the provisioning script, there are a few things that need to be
