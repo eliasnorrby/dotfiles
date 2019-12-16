@@ -2,6 +2,7 @@
 env:
   global:
     - DOTFILES_VERSION=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
+    - ANSIBLE_FORCE_COLOR=true
 
 jobs:
   include:
