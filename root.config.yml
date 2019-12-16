@@ -9,7 +9,7 @@ topics:
       state: present
       config: "{{ vim_config }}"
     - name: neovim
-      state: disabled
+      state: present
       config: "{{ neovim_config }}"
     - name: emacs
       state: present

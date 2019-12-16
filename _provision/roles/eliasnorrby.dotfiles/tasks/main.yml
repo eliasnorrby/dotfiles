@@ -59,6 +59,6 @@
 
   # TODO: loop over absent / disabled topics as well, removing links if necessary
 - include_tasks: links.yml
-  loop: "{{ present_topics }}"
+  loop: "{{ present_topics + disabled_topics + absent_topics }}"
   loop_control:
     loop_var: topic
