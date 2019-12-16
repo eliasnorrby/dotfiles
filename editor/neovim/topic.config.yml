@@ -1,9 +1,10 @@
 ---
 neovim_config:
   path: editor/neovim
+  dirname: nvim
   brew_formulas:
     - neovim
   links:
-    - init.vim
-    - src: "{{ dotfiles }}/editor/vim/.vimrc"
-      dest: "{{ xdg_config_home }}/vim/.vimrc"
+    - src: "{{ dotfiles_data }}/editor.vim.topic/.vimrc"
+      absolute: true
+      dest: "{{ xdg_config_home }}/nvim/init.vim"

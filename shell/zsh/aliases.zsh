@@ -8,6 +8,10 @@ alias lll="ls -lah"
 
 alias cl="clear"
 
+# For example, to list all directories that contain a certain file: find . -name
+# .gitattributes | map dirname
+alias map="xargs -n1"
+
 # Folder managemant
 # alias d='dirs -v'
 # alias 1='pu'

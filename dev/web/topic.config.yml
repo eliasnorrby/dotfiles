@@ -1,6 +1,8 @@
 ---
 web_config:
   path: dev/web
+  brew_formulas:
+    - httpie
   npm_packages:
     - gatsby-cli
     - lorem-ipsum

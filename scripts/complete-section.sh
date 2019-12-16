@@ -1,7 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # This script is a convenience tool for saving progress in an online course
 # to a git repository.
+DIR=$(dirname $([ -L "$0" ] && readlink -f "$0" || echo $0))
+[ -f $DIR/echos.sh ] && . $DIR/echos.sh || (echo "Could not source 'echos', aborting" && exit 1)
+
 set -e
 
 if [ ! -d .git ] ; then
@@ -19,7 +22,7 @@ DEFAULT_MSG_BASE="L"
 validate_number() {
   local REGEX='^[0-9]+$'
   if ! [[ $1 =~ $REGEX ]] ; then
-     echo "error: Not a number" >&2; return 1
+     echo-fail "error: Not a number" >&2; return 1
   fi
 }
 
@@ -37,7 +40,7 @@ read_lecture_counter() {
 
 increment_counter() {
   if [ ! -f $LECTURE_COUNTER ] ; then
-    echo "No counter file found. Creating..."
+    echo-info "No counter file found. Creating..."
   fi
 
   if [ ! -z "$ARG_NUMBER" ] ; then
@@ -45,7 +48,7 @@ increment_counter() {
       echo $ARG_NUMBER > $LECTURE_COUNTER
       return
     else
-      echo "That's not a number: $ARG_NUMBER"
+      echo-fail "That's not a number: $ARG_NUMBER"
     fi
   fi
 
@@ -54,22 +57,22 @@ increment_counter() {
     while [ -z "$INPUT_NUMBER" ] || ! validate_number $INPUT_NUMBER ; do
       read -p "Which lecture is this? " INPUT_NUMBER
     done
-    echo "Setting lecture counter to: $INPUT_NUMBER"
+    echo-info "Setting lecture counter to: $INPUT_NUMBER"
     echo $INPUT_NUMBER > $LECTURE_COUNTER
   else
     local INPUT_NUMBER=$(read_lecture_counter)
-    echo "Incrementing lecture counter: $INPUT_NUMBER -> $((INPUT_NUMBER+1))"
+    echo-info "Incrementing lecture counter: $INPUT_NUMBER -> $((INPUT_NUMBER+1))"
     echo $((INPUT_NUMBER+1)) > lecture_counter
   fi
 }
 
 cleanup() {
-  echo "Cleaning up..."
+  echo-info "Cleaning up..."
   if [ -f $LECTURE_COUNTER ] ; then
-    echo "Resetting the lecture counter"
+    echo-info "Resetting the lecture counter"
     {
-      git reset $LECTURE_COUNTER 
-      git checkout $LECTURE_COUNTER 2>&1 
+      git reset $LECTURE_COUNTER
+      git checkout $LECTURE_COUNTER 2>&1
     } > /dev/null
   fi
   exit 1
@@ -109,23 +112,23 @@ fi
 ### Check for repo
 git status 2>&1 > /dev/null
 if [ "$?" -ne 0 ]; then
-  echo "Not a git repository! Have you completed the setup yet?"
+  echo-fail "Not a git repository! Have you completed the setup yet?"
   exit 1
 fi
 
 ### Check for changes
 if git diff-index --quiet HEAD --; then
-  echo "No local changes found."
+  echo-info "No local changes found."
 else
-  echo "Found local changes!"
+  echo-info "Found local changes!"
 fi
 
 
 git add -A
-git status
+git status --short
 
-echo "Staged all changes."
-echo "Commit message: $MSG"
+echo-info "Staged all changes."
+echo-info "Commit message: $MSG"
 
 ## 3: Commit and push the changes
 PROMPT_MSG="Commit changes? [y/n] "
@@ -133,14 +136,14 @@ read -p "$PROMPT_MSG" -n 1 -r CHOICE
 echo
 YES_NO_REGEXP='([yY]|[yY][eE][sS]|[nN]|[nN][oO])'
 while [[ ! $CHOICE =~ $YES_NO_REGEXP ]]; do
-  echo "Please type y or n"
+  echo-fail "Please type y or n"
   read -p "$PROMPT_MSG" -n 1 -r CHOICE
   echo
 done
 
 case $CHOICE in
   [yY]|[yY][eE][sS])
-    echo "Committing changes"
+    echo-info "Committing changes"
     if [ "$OPT_EDIT_MSG" == true ] ; then
       git commit -vem "${DEFAULT_MSG}: "
     else
@@ -148,12 +151,12 @@ case $CHOICE in
     fi
     ;;
   [nN]|[nN][oO])
-    echo "Aborting"
+    echo-info "Aborting"
     cleanup
     exit 0
     ;;
   *)
-    echo "Invalid choice"
+    echo-fail "Invalid choice"
     exit 1
     ;;
 esac
@@ -163,21 +166,21 @@ read -p "$PROMPT_MSG" -n 1 -r CHOICE
 echo
 YES_NO_REGEXP='([yY]|[yY][eE][sS]|[nN]|[nN][oO])'
 while [[ ! $CHOICE =~ $YES_NO_REGEXP ]]; do
-  echo "Please type y or n"
+  echo-fail "Please type y or n"
   read -p "$PROMPT_MSG" -n 1 -r CHOICE
   echo
 done
 
 case $CHOICE in
   [yY]|[yY][eE][sS])
-    echo "Pushing changes"
+    echo-info "Pushing changes"
     git push
     ;;
   [nN]|[nN][oO])
-    echo "Skipping pushing"
+    echo-skip "Skipping pushing"
     ;;
   *)
-    echo "Invalid choice"
+    echo-fail "Invalid choice"
     exit 1
     ;;
 esac

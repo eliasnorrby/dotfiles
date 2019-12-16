@@ -57,8 +57,12 @@
     path: "{{ dotfiles_data }}"
     state: directory
 
-  # TODO: loop over absent / disabled topics as well, removing links if necessary
-- include_tasks: links.yml
+- include_tasks: link-topic.yml
   loop: "{{ present_topics }}"
+  loop_control:
+    loop_var: topic
+
+- include_tasks: unlink-topic.yml
+  loop: "{{ disabled_topics + absent_topics }}"
   loop_control:
     loop_var: topic

@@ -2,6 +2,7 @@
 env:
   global:
     - DOTFILES_VERSION=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
+    - ANSIBLE_FORCE_COLOR=true
 
 jobs:
   include:
@@ -33,8 +34,10 @@ jobs:
     - <<: *role-testing
       env:
         - MOLECULE_DISTRO=ubuntu1804
+
     ## Makes sure the playbook runs with a minimal config
     - stage: playbook
+      if: branch != master
       language: objective-c
       os: osx
       osx_image: xcode11

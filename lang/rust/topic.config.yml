@@ -1,0 +1,5 @@
+---
+rust_config:
+  path: lang/rust
+  brew_formulas:
+    - rustup
