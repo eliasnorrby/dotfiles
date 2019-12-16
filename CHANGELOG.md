@@ -1,3 +1,26 @@
+# [1.2.0](https://github.com/eliasnorrby/dotfiles/compare/v1.1.1...v1.2.0) (2019-12-16)
+
+
+### Bug Fixes
+
+* **emacs:** disable flyspell ([3923797](https://github.com/eliasnorrby/dotfiles/commit/39237978fb6a62216c3ab9569f57a60029c2a9a0))
+
+
+### Features
+
+* **editorconfig:** set indent_size=4 for rust ([195d0e0](https://github.com/eliasnorrby/dotfiles/commit/195d0e07eabf5436ce3bfc803693bc8c937aff88))
+* **emacs:** add rust module ([1f3e4e2](https://github.com/eliasnorrby/dotfiles/commit/1f3e4e2fef50cc59df6c72939cff4a6f71454845))
+* **emacs:** enable ansible module ([7e36f87](https://github.com/eliasnorrby/dotfiles/commit/7e36f87f62d7b06b52e14dcd038e865576b75aa9))
+* **git:** replace old git settings ([cbe34f9](https://github.com/eliasnorrby/dotfiles/commit/cbe34f9d73641bb427f9d684b6830476cb33cf80))
+* **provision:** enable pipelining ([0881986](https://github.com/eliasnorrby/dotfiles/commit/088198611fb14fbbee1d12180804a5c56dc00848))
+* **provision:** remove links for non-present topics ([44f12d6](https://github.com/eliasnorrby/dotfiles/commit/44f12d6ca48bca9432cdc9381518d5dab6844ae5))
+* **provision:** use yaml stdout callback ([0481d71](https://github.com/eliasnorrby/dotfiles/commit/0481d71e76c1b791c6074dbd25bb78775268ba87))
+* **scripts:** add better prints to complete-section ([dad7af7](https://github.com/eliasnorrby/dotfiles/commit/dad7af72849aaed7f48e6903340b4671aa0a2302))
+* **scripts:** add short flag to git status ([e90f47c](https://github.com/eliasnorrby/dotfiles/commit/e90f47c5a19e1375535966816758d6f76802b1d4))
+* **web:** add httpie brew formula ([02d8e14](https://github.com/eliasnorrby/dotfiles/commit/02d8e14e819fd2778d575df9fd2536c918828cb9))
+* **zsh:** add map alias ([c5a2a85](https://github.com/eliasnorrby/dotfiles/commit/c5a2a858955363c8d729d0399b16d8b4a8af759c))
+* add rust topic ([e0b495c](https://github.com/eliasnorrby/dotfiles/commit/e0b495cced1cf7fa8e58de5da0ffb1f0945c4ad7))
+
 ## [1.1.1](https://github.com/eliasnorrby/dotfiles/compare/v1.1.0...v1.1.1) (2019-12-15)
 
 
