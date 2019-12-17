@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
-# Outputs tags to be placed in a github README for build status and
+# Outputs badges to be placed in a github README for build status and
 # package version.
 
 REPO_NAME="${PWD##*/}"
-REPO_OWNER="${1-eliasnorrby}"
-SCOPE="${2-@eliasnorrby}"
-STYLE="${3-for-the-badge}"
+REPO_OWNER="eliasnorrby"
+SCOPE="@eliasnorrby"
+STYLE="for-the-badge"
 
 ERROR="Bad usage, see $0 -h"
 
 read -r -d "" USAGE <<EOF
-Create readme tags for build status and package version
+Create readme badges for build status and package version
 
 Usage: ${0##*/} [-rusxh]
   -r REPO     Specify name of remote repo (default: current directory)
@@ -41,11 +41,20 @@ done
 PKG_NAME="$SCOPE/$REPO_NAME"
 
 cat <<EOF
-[![Travis](https://img.shields.io/travis/com/$REPO_OWNER/$REPO_NAME?style=for-the-badge)](https://travis-ci.com/$REPO_OWNER/$REPO_NAME)
-[![npm](https://img.shields.io/npm/v/$PKG_NAME?style=for-the-badge)](https://www.npmjs.com/package/$PKG_NAME)
+[![Travis][travis-badge]][travis-link]
+[![npm][npm-badge]][npm-link]
 
-[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=$REPO_OWNER/$REPO_NAME)](https://dependabot.com)
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+[![Dependabot Status][dependabot-badge]][dependabot-link]
+[![semantic-release][semantic-release-badge]][semantic-release-link]
+
+[travis-badge]: https://img.shields.io/travis/com/$REPO_OWNER/$REPO_NAME?style=$STYLE
+[travis-link]: https://travis-ci.com/$REPO_OWNER/$REPO_NAME
+[npm-badge]: https://img.shields.io/npm/v/$PKG_NAME?style=$STYLE
+[npm-link]: https://www.npmjs.com/package/$PKG_NAME
+[dependabot-badge]: https://api.dependabot.com/badges/status?host=github&repo=$REPO_OWNER/$REPO_NAME
+[dependabot-link]: https://dependabot.com
+[semantic-release-badge]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
+[semantic-release-link]: https://github.com/semantic-release/semantic-release
 EOF
 
 # Netlify: [![Netlify Status](https://api.netlify.com/api/v1/badges/67dbd163-fcd7-4ea4-8af7-7925bf8c5c7c/deploy-status)](https://app.netlify.com/sites/eliasnorrby-portfolio/deploys)
