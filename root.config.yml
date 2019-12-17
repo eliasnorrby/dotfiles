@@ -1,5 +1,9 @@
 ---
 topics:
+  dotfiles:
+    - name: cli
+      state: present
+      config: "{{ cli_config }}"
   base:
     - name: macos
       state: present
