@@ -88,10 +88,19 @@ npm install
 echo-info "Install tools"
 echo-info "> semantic-release-config..."
 npx @eliasnorrby/semantic-release-config
+echo-ok "> semantic-release-config installed"
 echo-info "> commitlint-config..."
 npx @eliasnorrby/commitlint-config
+echo-ok "> commitlint-config installed"
 echo-info "> prettier-config..."
 npx @eliasnorrby/prettier-config
+echo-ok "> prettier-config installed"
+echo-info "> git-config..."
+npx @eliasnorrby/git-config
+echo-ok "> git-config installed"
+echo-info "> dependabot-config..."
+npx @eliasnorrby/dependabot-config
+echo-ok "> dependabot-config installed"
 
 if ! command -v travis >/dev/null 2>&1 ; then
   echo-skip "Could not find travis cli in path, not writing notification settings"
@@ -100,5 +109,36 @@ fi
 
 echo-info "Add slack build notifications"
 $DIR/add-slack-notifications.sh
+
+if [ -e LICENSE ] ; then
+  echo-skip "LICENSE exists, not writing"
+fi
+
+echo-info "Writing LICENSE"
+cat <<EOF >> LICENSE
+The MIT License (MIT)
+
+Copyright (c) 2019 Elias Norrby.
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+EOF
 
 echo-info "Done!"
