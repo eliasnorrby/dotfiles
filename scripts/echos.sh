@@ -7,6 +7,7 @@ DIR=$(dirname $([ -L "$0" ] && readlink -f "$0" || echo $0))
 
 function echo-info  { printf "\r${BG_BLUE}${BLACK}${BOLD} INFO ${NC} %s\n" "$*"; }
 function echo-skip  { printf "\r${BG_DARK_GRAY}${WHITE} SKIP ${NC} %s\n" "$*"; }
+function echo-warn  { printf "\r${BG_ORANGE}${BLACK}${BOLD} WARN ${NC} %s\n" "$*"; }
 function echo-ok  { printf "\r${BG_GREEN}${BLACK}${BOLD}  OK  ${NC} %s\n" "$*"; }
 function echo-fail  { printf "\r${BG_RED}${BLACK}${BOLD} FAIL ${NC} %s\n" "$*"; }
 
