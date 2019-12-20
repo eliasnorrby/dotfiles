@@ -67,6 +67,7 @@ increment_counter() {
 }
 
 cleanup() {
+  echo
   echo-info "Cleaning up..."
   if [ -f $LECTURE_COUNTER ] ; then
     echo-info "Resetting the lecture counter"
