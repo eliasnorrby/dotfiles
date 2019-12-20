@@ -31,9 +31,14 @@ echo-info "Updating brew formulas..."
 brew update && brew upgrade && brew cleanup
 echo-ok "brew updated!"
 
+# TODO: brew cask
+
 # emacs
 echo "$SPACE"
 echo-info "Upgrading doom..."
 doom --yes upgrade
 echo-ok "doom upgraded!"
 echo "$SPACE"
+
+# TODO: global npm/gem/pip packages
+
