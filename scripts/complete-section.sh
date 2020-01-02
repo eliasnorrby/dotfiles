@@ -92,12 +92,14 @@ if [ -z "$LECTURE_NUMBER" ] ; then
   # This branch shouldn't happen any more
   EXTENDED_MSG="e.g. 'Complete lecture 12'"
   while [ -z "$MSG" ]; do
+    echo-input
     read -p "$BASE_MSG ($EXTENDED_MSG): " MSG
   done
 else
   # DEFAULT_MSG="Complete lecture $((LECTURE_NUMBER+1))"
   DEFAULT_MSG="${DEFAULT_MSG_BASE}${LECTURE_NUMBER}"
   EXTENDED_MSG="default: '$DEFAULT_MSG'"
+  echo-input
   read -p "$BASE_MSG ($EXTENDED_MSG) ($VIM_MSG): " MSG
   if [ -z "$MSG" ] ; then
     MSG=$DEFAULT_MSG
@@ -133,11 +135,13 @@ echo-info "Commit message: $MSG"
 
 ## 3: Commit and push the changes
 PROMPT_MSG="Commit changes? [y/n] "
+echo-input
 read -p "$PROMPT_MSG" -n 1 -r CHOICE
 echo
 YES_NO_REGEXP='([yY]|[yY][eE][sS]|[nN]|[nN][oO])'
 while [[ ! $CHOICE =~ $YES_NO_REGEXP ]]; do
   echo-fail "Please type y or n"
+  echo-input
   read -p "$PROMPT_MSG" -n 1 -r CHOICE
   echo
 done
@@ -163,11 +167,13 @@ case $CHOICE in
 esac
 
 PROMPT_MSG="Push to remote? [y/n] "
+echo-input
 read -p "$PROMPT_MSG" -n 1 -r CHOICE
 echo
 YES_NO_REGEXP='([yY]|[yY][eE][sS]|[nN]|[nN][oO])'
 while [[ ! $CHOICE =~ $YES_NO_REGEXP ]]; do
   echo-fail "Please type y or n"
+  echo-input
   read -p "$PROMPT_MSG" -n 1 -r CHOICE
   echo
 done
