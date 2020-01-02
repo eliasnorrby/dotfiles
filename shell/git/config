@@ -1,6 +1,8 @@
 [user]
   email = elias.norrby@gmail.com
   name = Elias Norrby
+[core]
+  pager = diff-so-fancy | less --tabs=4
 [alias]
   lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --branches
   extend = commit --amend --no-edit
