@@ -110,8 +110,11 @@ font:
     # family: SauceCodePro Nerd Font
     # style: Regular
 
-    family: Iosevka Nerd Font
-    style: Light
+    # family: Iosevka Nerd Font
+    # style: Light
+
+    family: Dank Mono
+    style: Regular
 
   # Bold font face
   # bold:
