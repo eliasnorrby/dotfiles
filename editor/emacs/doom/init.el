@@ -24,7 +24,7 @@
        ;;ido               ; the other *other* search engine...
        ;; ivy               ; a search engine for love and life
        (ivy
-        +fuzzy
+        ;; +fuzzy
         +prescient
         +childframe
         +icons)
