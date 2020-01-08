@@ -1,3 +1,24 @@
+# [1.3.0](https://github.com/eliasnorrby/dotfiles/compare/v1.2.0...v1.3.0) (2020-01-08)
+
+
+### Bug Fixes
+
+* **scripts:** print newline before cleanup ([dd29a56](https://github.com/eliasnorrby/dotfiles/commit/dd29a56a8e4548cbf0ce6deb384c4338ddac745c))
+* **tmux:** escape backslashes in config ([708df13](https://github.com/eliasnorrby/dotfiles/commit/708df131f8a5a136f3d291643ddcead5606e6180))
+* include coreutils in path ([6713bd8](https://github.com/eliasnorrby/dotfiles/commit/6713bd8b08124b99ad9ea66ad991785dcd8c4af8))
+
+
+### Features
+
+* **cli:** provide script for running playbook ([f67be01](https://github.com/eliasnorrby/dotfiles/commit/f67be01513dfa544a092bccbc70baf38f27e91a8))
+* **git:** use diff-so-fancy for diffs ([d634c71](https://github.com/eliasnorrby/dotfiles/commit/d634c71246e1d7de944ec1746b8fb85e5788cd11))
+* **scripts:** add duration to slack notification ([efa3bac](https://github.com/eliasnorrby/dotfiles/commit/efa3bac6e3bf33f7cd79c95a3043e38986c2e703))
+* **scripts:** add echo-input to print prefix ([fe441a1](https://github.com/eliasnorrby/dotfiles/commit/fe441a1d30cb43367bce8d9f1cf1467b4690b667))
+* **scripts:** add echo-warn ([704ed64](https://github.com/eliasnorrby/dotfiles/commit/704ed645b080fbed9e1f6b24a2b48407831c2e91))
+* **scripts:** improve bootstrap ([c708b85](https://github.com/eliasnorrby/dotfiles/commit/c708b85317462c9e11a2a5198dbc70e9a94746fa))
+* **scripts:** use reference style links for badges ([1d15a1f](https://github.com/eliasnorrby/dotfiles/commit/1d15a1fb3504892581dd8451bb03103376f56674))
+* add dotfiles/cli topic ([74a2cbd](https://github.com/eliasnorrby/dotfiles/commit/74a2cbdfd980db53f4a02438c1d77bf701ca1d1e))
+
 # [1.2.0](https://github.com/eliasnorrby/dotfiles/compare/v1.1.1...v1.2.0) (2019-12-16)
 
 
