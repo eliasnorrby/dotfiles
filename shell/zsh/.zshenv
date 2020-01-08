@@ -32,7 +32,8 @@ if [[ "$(_os)" == "macos" ]]; then
   # For using GNU coreutils with default names
   # NTS: I use this for the 'tree' command
   # FIXME: No, appearently I don't. Is it for gnu ls?
-  # path=( /usr/local/opt/coreutils/libexec/gnubin $path )
+  # FIXME: I need it to do readlink -f
+  path=( /usr/local/opt/coreutils/libexec/gnubin $path )
 
   path=( ~/bin $path )
 fi

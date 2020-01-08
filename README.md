@@ -7,7 +7,13 @@
 
 Declarative dotfiles for development on MacOS.
 
-## Getting started
+## Bootstrap
+
+To provision a new workstation from scratch, use the `bootstrap.sh` script.
+
+> :warning: **Warning** :warning:
+> This script has only been tested in CI. I have yet to try this on an actual
+> machine myself.
 
 Run
 
@@ -26,9 +32,12 @@ This setup script will:
   - xcode command line tools are installed
   - Dependencies are downloaded (using `homebrew`, `pip`, `ruby` and `npm`)
 - Run the post-install script, wherein:
+
   - `zsh` plugins are installed
   - `vim` plugins are installed
   - `doom-emacs` packages are installed
+
+:clock1: Estimated duration: ~45 minutes
 
 Dependencies:
 
@@ -47,8 +56,11 @@ Example topics:
 - `editor/vim`
 
 Topics are grouped by category (`editor`, `shell`, etc). Each topic must contain
-a `config.yml`, and can optionally include an `aliases.zsh`, an `env.zsh`, as
-well as any other files relevant to its configuration.
+a `topic.config.yml`, and can optionally include a `topic.tasks.yml`, an
+`aliases.zsh`, an `env.zsh`, as well as any other files relevant to its
+configuration.
+
+Ansible tasks defined in `topic.tasks.yml` will be run during provisioning.
 
 Environment variables defined in `env.zsh` will be sourced during shell startup
 if the topic is enabled. The same is true for aliases defined in `aliases.zsh`.
@@ -59,7 +71,8 @@ if the topic is enabled. The same is true for aliases defined in `aliases.zsh`.
     ├── topic
     │   ├── aliases.zsh
     │   ├── env.zsh
-    │   └── config.yml
+    │   ├── topic.config.yml
+    │   └── topic.tasks.yml
     └── another-topic
 ```
 
@@ -72,10 +85,10 @@ _Minimal example of a topic directory layout_
 .dotfiles
 ├── editor
 │   ├── editorconfig
-│   │   └── config.yml
+│   │   └── topic.config.yml
 │   ├── emacs
 │   │   ├── aliases.zsh
-│   │   ├── config.yml
+│   │   ├── topic.config.yml
 │   │   ├── doom
 │   │   │   ├── config.el
 │   │   │   ├── init.el
@@ -83,32 +96,30 @@ _Minimal example of a topic directory layout_
 │   │   └── env.zsh
 │   └── vim
 │       ├── aliases.zsh
-│       ├── config.yml
 │       ├── env.zsh
-│       └── gvimrc.vim
-├── env
+│       ├── gvimrc.vim
+│       └── topic.config.yml
 └── shell
    ├── alacritty
    │   ├── alacritty.yml
    │   ├── aliases.zsh
-   │   └── config.yml
+   │   └── topic.config.yml
    ├── git
    │   ├── aliases.zsh
-   │   └── config.yml
+   │   └── topic.config.yml
    ├── tmux
    │   ├── aliases.zsh
-   │   ├── config.yml
    │   ├── env.zsh
    │   ├── scripts
    │   │   └── uptime-tmux-status.sh
    │   ├── tmux-cheatsheet.md
    │   ├── tmux.conf
    │   ├── tmux.remote.conf
-   │   └── tmux.theme.conf
+   │   ├── tmux.theme.conf
+   │   └── topic.config.yml
    └── zsh
        ├── aliases.zsh
        ├── completion.zsh
-       ├── config.yml
        ├── config.zsh
        ├── fzf.zsh
        ├── keybinds.zsh
@@ -116,13 +127,15 @@ _Minimal example of a topic directory layout_
        ├── plugins.zsh
        ├── prompt.zsh
        ├── remote.zsh
-       └── utilities.zsh
+       ├── utilities.zsh
+       └── topic.config.yml
+       └── topic.tasks.yml
 ```
 
 </details>
 
-Each topic declares it's configuration (brew dependencies, symlinks, etc) in a
-`config.yml` within its coresponding directory.
+Each topic declares its configuration (brew dependencies, symlinks, etc) in a
+`topic.config.yml` within its coresponding directory.
 
 ```yaml
 vim_config:
@@ -135,7 +148,7 @@ vim_config:
 
 _Topic configuration example_
 
-Possible fields in topic `config.yml`:
+Possible fields in `topic.config.yml`:
 
 - `path` (required)
 - `links`
@@ -149,7 +162,7 @@ Possible fields in topic `config.yml`:
 
 :bangbang: **TODO**: Describe topic config api in detail.
 
-Each topic configuration is mapped to the root `config.yml`:
+Each topic configuration is mapped to `root.config.yml`:
 
 ```yaml
 topics:
@@ -188,7 +201,7 @@ topics:
 
 _Root dotfile configuration example_
 
-In the root `config.yml`, topics can be enabled/disabled/removed by setting
+In `root.config.yml`, topics can be enabled/disabled/removed by setting
 their `state` to one of `present`, `disabled` or `absent`. Upon running,
 
 - `present` topics will have their symlinks created (if they don't exist
@@ -197,6 +210,12 @@ their `state` to one of `present`, `disabled` or `absent`. Upon running,
   dependencies left alone (if they are installed)
 - `absent` topics will have their symlinks remove (if they exist) and their
   dependencies uninstalled (if they are installed)
+
+## CLI
+
+> :wrench: [eliasnorrby/dotfiles-cli][dotfiles-cli-link]
+
+The CLI provides a simpler way to edit, view and apply configurations.
 
 ## Leftovers
 
@@ -216,3 +235,4 @@ configured manually.
 [geerlingguy-homebrew-link]: https://homebrewhub.com/geerlingguy/ansible-role-homebrew
 [geerlingguy-git-link]: https://github.com/geerlingguy/ansible-role-git
 [hlissner-dotfiles-link]: https://github.com/hlissner/dotfiles
+[dotfiles-cli-link]: https://github.com/eliasnorrby/dotfiles-cli

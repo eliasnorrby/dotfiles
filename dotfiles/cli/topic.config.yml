@@ -1,0 +1,10 @@
+---
+cli_config:
+  path: dotfiles/cli
+  dirname: boom
+  links:
+    - .boomrc.js
+  # npm_packages:
+  #   - @eliasnorrby/dotfiles-cli
+  # pip_packages:
+  #   - ansible

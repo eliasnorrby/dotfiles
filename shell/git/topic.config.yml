@@ -7,4 +7,5 @@ git_config:
   brew_formulas:
     - git
     - hub
+    - diff-so-fancy
     # git-flow-avh

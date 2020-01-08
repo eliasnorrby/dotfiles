@@ -93,7 +93,7 @@ else
 
 $NOTIFICATION_LINES
     template:
-      - "Build <%{build_url}|%{result}> for %{repository_slug}@%{branch} (<%{compare_url}|%{commit}>)"
+      - "Build <%{build_url}|%{result}> for %{repository_slug}@%{branch} (<%{compare_url}|%{commit}>) in %{duration}"
     on_success: change
     on_failure: always
 EOF
