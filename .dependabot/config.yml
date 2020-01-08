@@ -1,3 +1,4 @@
+---
 version: 1
 update_configs:
   - package_manager: "javascript"
@@ -15,3 +16,5 @@ update_configs:
           dependency_type: "production"
           update_type: "semver:patch"
     version_requirement_updates: widen_ranges
+    default_reviewers:
+      - "eliasnorrby"
