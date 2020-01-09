@@ -4,6 +4,7 @@ web_config:
   brew_formulas:
     - httpie
   npm_packages:
+    - firebase-tools
     - gatsby-cli
     - lorem-ipsum
     - netlify-cli
