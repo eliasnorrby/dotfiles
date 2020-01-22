@@ -23,6 +23,7 @@ Steps:
 Usage: ${0##*/} [-p]
   -r REPO     Specify name of remote repo (default: current directory)
   -p          Make the remote repository private
+  -f          Run even if current directory is not empty
   -h          Show usage
 
 Example:
@@ -34,10 +35,11 @@ set -eo pipefail
 
 REPO_NAME="${PWD##*/}"
 
-while getopts r:ph opt; do
+while getopts r:pfh opt; do
   case $opt in
     r) REPO_NAME=$OPTARG                        ;;
     p) HUB_FLAGS="-p"                           ;;
+    f) OPT_CHECK_EMPTY="false"                ;;
     h) echo "$USAGE" && exit 0                  ;;
     *) echo-fail "$ERROR" && exit 1             ;;
   esac
@@ -58,26 +60,44 @@ if ! command -v semantic-release-cli >/dev/null 2>&1 ; then
   exit 1
 fi
 
-if [ ! $(ls -a1 | wc -l ) -eq 2 ] ; then
+if [ "$OPT_CHECK_EMPTY" != "false" ] && [ ! $(ls -a1 | wc -l ) -eq 2 ] ; then
   echo-fail "Directory is not empty, aborting"
   exit 1
 fi
 
-echo-info "Initialize local repository"
-git init
+# End of checks
 
-echo-info "Create remote repository on github"
-hub create $HUB_FLAGS $REPO_NAME
+if [ ! -d .git ] ; then
+  echo-info "Initialize local repository"
+  git init
+else
+  echo-skip "Local repository already set up"
+fi
 
-echo-info "Run npm init"
-npm init --scope @eliasnorrby -y
+if [ -z "$(git remote)" ] ; then
+  echo-info "Create remote repository on github"
+  hub create $HUB_FLAGS $REPO_NAME
+else
+  echo-skip "Remote repository already set up"
+fi
 
-echo-info "Create README"
-echo "# $REPO_NAME" > README.md
-echo "" >> README.md
+if [ ! -f package.json ] ; then
+  echo-info "Run npm init"
+  npm init --scope @eliasnorrby -y
+else
+  echo-skip "package.json already set up"
+fi
 
-echo-info "Generate badges for README"
-$DIR/generate-badges.sh >> README.md
+if [ ! -f README.md ] ; then
+  echo-info "Create README"
+  echo "# $REPO_NAME" > README.md
+  echo "" >> README.md
+
+  echo-info "Generate badges for README"
+  $DIR/generate-badges.sh >> README.md
+else
+  echo-skip "README.md already set up"
+fi
 
 echo-info "Run semantic-release-cli : provide your credentials"
 semantic-release-cli setup
