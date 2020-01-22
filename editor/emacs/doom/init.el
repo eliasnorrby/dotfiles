@@ -63,8 +63,11 @@
        ;;god               ; run Emacs commands without modifier keys
        ;;lispy             ; vim for lisp, for people who dont like vim
        multiple-cursors  ; editing in many places at once
+       ;;objed             ; text object editing for the innocent
+       ;;parinfer          ; turn lisp into python, sort of
        rotate-text       ; cycle region at point between text candidates
        snippets          ; my elves. They type so I don't have to
+       ;;word-wrap         ; soft wrapping with language-aware indent
 
        :emacs
        (dired            ; making dired pretty [functional]
@@ -72,12 +75,18 @@
        +icons          ; colorful icons for dired-mode
         )
        electric          ; smarter, keyword-based electric-indent
+       ibuffer           ; interactive buffer management
        vc                ; version-control and Emacs, sitting in a tree
 
        :term
        ;;eshell            ; a consistent, cross-platform shell (WIP)
        ;;term              ; terminals in Emacs
        vterm             ; another terminals in Emacs
+
+       :checkers
+       syntax              ; tasing you for every semicolon you forget
+       ;;spell             ; tasing you for misspelling mispelling
+       ;;grammar           ; tasing grammar mistake every you make
 
        :tools
        ansible
@@ -86,13 +95,11 @@
        ;;docker
        editorconfig      ; let someone else argue about tabs vs spaces
        ;;ein               ; tame Jupyter notebooks with emacs
-       eval              ; run code, run (also, repls)
-       flycheck          ; tasing you for every semicolon you forget
-       ;; flyspell          ; tasing you for misspelling mispelling
+       (eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
        (lookup           ; helps you navigate your code and documentation
         +docsets)        ; ...or in Dash docsets locally
-       ;;lsp
+       lsp
        ;;macos             ; MacOS-specific commands
        magit             ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
@@ -103,7 +110,6 @@
        ;;terraform         ; infrastructure as code
        ;;tmux              ; an API for interacting with tmux
        ;;upload            ; map local to remote projects via ssh/ftp
-       ;;wakatime
 
        :lang
        ;;agda              ; types of types of types of types...
@@ -126,7 +132,8 @@
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ;
        ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
-       javascript        ; all(hope(abandon(ye(who(enter(here))))))
+       (javascript
+        +lsp)        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
        ;;latex             ; writing papers in Emacs has never been so fun
@@ -137,13 +144,13 @@
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org              ; organize your plain life in plain text
-        +attach          ; custom attachment system
-        +babel           ; running code in org
+        ;; +attach          ; custom attachment system
+        ;; +babel           ; running code in org
         +capture         ; org-capture in and outside of Emacs
-        +export          ; Exporting org to whatever you want
-        +habit           ; Keep track of your habits
-        +present         ; Emacs for presentations
-        +protocol)       ; Support for org-protocol:// links
+        ;; +export          ; Exporting org to whatever you want
+        ;; +habit           ; Keep track of your habits
+        +present)        ; Emacs for presentations
+        ;; +protocol)       ; Support for org-protocol:// links
        ;;perl              ; write code no one else can comprehend
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
