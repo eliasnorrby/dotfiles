@@ -37,8 +37,7 @@
 (map! :map 'ivy-minibuffer-map
       "S-SPC" #'ivy-immediate-done)
 
-;; TODO is this the right map? :shrug:
-(map! :map 'evilem-map
+(map! :n
       "C-h" #'evil-window-left
       "C-j" #'evil-window-down
       "C-k" #'evil-window-up
