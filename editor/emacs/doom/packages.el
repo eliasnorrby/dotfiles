@@ -11,3 +11,5 @@
 ;; (package! web-mode)
 
 ;; (package! emmet-mode)
+
+(package! js-react-redux-yasnippets :recipe (:host github :repo "eliasnorrby/js-react-redux-yasnippets"))
