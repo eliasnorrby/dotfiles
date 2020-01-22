@@ -11,5 +11,8 @@ emacs_config:
     #   install_options: without-spacemacs-icon
     - emacs-plus
     - gnupg # Used by forge
+  npm_packages:
+    - typescript-language-server
+    - typescript
 
 doom_home: "~/.emacs.d"
