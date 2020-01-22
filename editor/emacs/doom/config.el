@@ -44,6 +44,10 @@
       "C-k" #'evil-window-up
       "C-l" #'evil-window-right)
 
+(map! :leader
+  (:prefix "f"
+    "f" #'format-all-buffer))
+
 ;; avy
 ;; Make avy target all windows
 (setq avy-all-windows t)
