@@ -1,0 +1,5 @@
+---
+gcloud_config:
+  path: dev/gcloud
+  brew_casks:
+    - google-cloud-sdk
