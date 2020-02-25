@@ -1,3 +1,25 @@
+# [1.4.0](https://github.com/eliasnorrby/dotfiles/compare/v1.3.0...v1.4.0) (2020-02-25)
+
+
+### Bug Fixes
+
+* **emacs:** bind vim window movement to n map ([dff2c28](https://github.com/eliasnorrby/dotfiles/commit/dff2c2827f756b8e704df2bab9d8441935eb0e28))
+
+
+### Features
+
+* **emacs:** add react snippets ([03d44f2](https://github.com/eliasnorrby/dotfiles/commit/03d44f2b5a485b04926e49d2fd479247adc4e877))
+* **emacs:** enable lsp mode for javascript/typescript ([c7ff7a5](https://github.com/eliasnorrby/dotfiles/commit/c7ff7a5916aaa77f92579d24f1362edb3933a1e2))
+* **gcloud:** add gcloud topic ([89ec70a](https://github.com/eliasnorrby/dotfiles/commit/89ec70ae92ee1eb29cf4c57466630cc9d717ec87))
+* **java:** default to java13 ([094e339](https://github.com/eliasnorrby/dotfiles/commit/094e339fe6ae5e26748b28d13c47443d8d90777f))
+* **provision:** log output of update script ([bd2f4c7](https://github.com/eliasnorrby/dotfiles/commit/bd2f4c71cce1592c0e49ae700961cd73ff5a20aa))
+* **provision:** update npm packages in update-all ([67c2b5a](https://github.com/eliasnorrby/dotfiles/commit/67c2b5ac031aae8b7a235b5db82f6258cf5493f8))
+* **python:** use brew's python before system ([d65160f](https://github.com/eliasnorrby/dotfiles/commit/d65160ff8f9d1eec9d049b0cea76e85651885864))
+* **scripts:** add more checks to bootstrap-project ([74a9c7d](https://github.com/eliasnorrby/dotfiles/commit/74a9c7d0f216f8f147ef9d1e485d480513c0b735))
+* **web:** add cra alias ([3164bac](https://github.com/eliasnorrby/dotfiles/commit/3164bac38a66116a113919dda72763c28bc73aad))
+* format manually ([7efaee4](https://github.com/eliasnorrby/dotfiles/commit/7efaee4385673238764f0d67abd3f46725c6d28a))
+* **web:** add firebase-tools ([993556b](https://github.com/eliasnorrby/dotfiles/commit/993556bc4c8f49011ae43ec62ffb7f39de9ebfa7))
+
 # [1.3.0](https://github.com/eliasnorrby/dotfiles/compare/v1.2.0...v1.3.0) (2020-01-08)
 
 
