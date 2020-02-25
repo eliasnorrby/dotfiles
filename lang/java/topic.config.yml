@@ -4,7 +4,11 @@ java_config:
   brew_formulas:
     - maven
   brew_casks:
+    - java
     - intellij-idea-ce
+  brew_taps:
+    - homebrew/cask-versions
+    - adoptopenjdk/openjdk
   osx_defaults:
     - domain: com.jetbrains.intellij.ce
       key: ApplePressAndHoldEnabled

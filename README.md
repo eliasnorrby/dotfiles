@@ -208,7 +208,7 @@ their `state` to one of `present`, `disabled` or `absent`. Upon running,
   already) and their dependencies installed
 - `disabled` topics will have their symlinks removed (if they exist), but their
   dependencies left alone (if they are installed)
-- `absent` topics will have their symlinks remove (if they exist) and their
+- `absent` topics will have their symlinks removed (if they exist) and their
   dependencies uninstalled (if they are installed)
 
 ## CLI
