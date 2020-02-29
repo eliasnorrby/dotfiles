@@ -8,6 +8,15 @@ set commentary
 
 let mapleader = " "
 
+" === easymotion ===
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+set easymotion
+nmap gsj <Plug>(easymotion-j)
+nmap gsk <Plug>(easymotion-k)
+nmap gs<space> <Plug>(easymotion-s)
+
+nmap gsw <Plug>(easymotion-wl)
+
 " === WINDOWS & TABS ===
 " splits
 nmap <leader>wv <C-W>v
