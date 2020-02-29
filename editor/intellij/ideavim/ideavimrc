@@ -1,0 +1,121 @@
+" GUI stuff
+set number
+set relativenumber
+set clipboard+=unnamed
+
+set surround
+set commentary
+
+let mapleader = " "
+
+" === WINDOWS & TABS ===
+" splits
+nmap <leader>wv <C-W>v
+nmap <leader>ws <C-W>s
+
+" shifting focus
+nmap <leader>wh <C-W>h
+nmap <leader>wj <C-W>j
+nmap <leader>wk <C-W>k
+nmap <leader>wl <C-W>l
+
+" shifting focus
+nmap <C-h> <C-W>h
+nmap <C-j> <C-W>j
+nmap <C-k> <C-W>k
+nmap <C-l> <C-W>l
+
+" shifting placement
+nmap <leader>wH :action TabShiftActions.ShiftLeft<CR>
+nmap <leader>wJ :action TabShiftActions.ShiftDown<CR>
+nmap <leader>wK :action TabShiftActions.ShiftUp<CR>
+nmap <leader>wL :action TabShiftActions.ShiftRight<CR>
+
+nmap <leader>w} :action ChangeSplitOrientation<CR>
+
+" close windows
+nmap <leader>wc <C-W>c
+nmap <leader>wC :action HideSideWindows<CR>
+
+" switch windows menu
+nmap <leader>s :action Switcher<CR>
+
+" === PROJECTS ===
+nmap <leader><tab>. :action OpenProjectWindows<CR>
+nmap <leader><tab>d :action CloseProject<CR>
+nmap <leader>pp :action RecentProjectListGroup<CR>
+" ManageRecentProjects?
+
+" === MISC ===
+nmap <leader>nc :action CloseFirstNotification<CR>
+
+" reload configuration
+nmap <leader>vr :source ~/.config/ideavim/ideavimrc<CR>
+
+" === BUFFERS & FILES ===
+nmap <leader>bk :action CloseEditor<CR>
+" nmap <leader>bk :action CloseActiveTab<CR>
+nmap <leader>fs :w<CR>
+nmap <leader>fl :action SelectInProjectView<CR>
+
+nmap <leader>wo :action TabShiftActions.ToggleMaximizeRestore<CR>
+nmap <leader>wO :action CloseAllEditorsButActive<CR>
+
+" formatting
+nmap <leader>ff :action ReformatCode<CR>
+nmap <leader>oo :action OptimizeImports<CR>
+" not sure about this one yet
+nmap <leader>gq :action FillParagraph<CR>
+
+" refactoring
+nmap <leader>fR :action RenameFile<CR>
+nmap <leader>cr :action RenameElement<CR>
+nmap <leader>cc :action Refactorings.QuickListPopupAction<CR>
+nmap <leader>cR :action RefactoringMenu<CR>
+
+nmap <leader>cv :action IntroduceVariable<CR>
+imap <C-V> <C-O>:action IntroduceVariable<CR>
+
+nmap <leader>im :action ImplementMethods<CR>
+
+" === RUN ===
+nmap <leader>rR :action ChooseRunConfiguration<CR>
+" nmap <leader>rr :action RunConfiguration<CR>
+nmap <leader>rr :action Run<CR>
+nmap <leader>rs :action Stop<CR>
+
+" === NAVIGATION ===
+nmap <leader><leader> :action SearchEverywhere<CR>
+nmap <leader>, :action RecentFiles<CR>
+nmap <leader>: :action GotoAction<CR>
+nmap <leader>gf :action GotoFile<CR>
+nmap <leader>gc :action GotoClass<CR>
+nmap <leader>gs :action GotoSymbol<CR>
+nmap <leader>tw :action ToolWindowsGroup<CR>
+
+" lang stuff
+nmap gd :action GotoDeclaration<CR>
+nmap gi :action GotoImplementation<CR>
+nmap gs :action GotoSuperMethod<CR>
+nmap gu :action ShowUsages<CR>
+nmap gf :action QuickActionPopup<CR>
+
+nmap ]e :action GotoNextError<CR>
+nmap [e :action GotoPreviousError<CR>
+
+" minimal
+nmap <leader>mm :action EditorBreadcrumbsHideBoth<CR>:action ViewNavigationBar<CR>
+" maximal
+nmap <leader>MM :action EditorBreadcrumbsShowBelow<CR>:action ViewNavigationBar<CR>
+
+" settings I can get at with actions:
+" - Tab placement
+" - Show tool window bars
+
+" Interesting actions
+" ShowPopupMenu
+
+" List
+" https://centic9.github.io/IntelliJ-Action-IDs/
+" Also, :actionlist <pattern>
+

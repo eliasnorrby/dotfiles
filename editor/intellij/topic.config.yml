@@ -1,0 +1,14 @@
+---
+intellij_config:
+  path: editor/intellij
+  brew_casks:
+    - intellij-idea-ce
+  osx_defaults:
+    - domain: com.jetbrains.intellij.ce
+      key: ApplePressAndHoldEnabled
+      value: false
+      type: bool
+      state: present
+  links:
+    - src: ideavim
+      dest: "{{ xdg_config_home }}/"
