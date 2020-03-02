@@ -88,10 +88,25 @@ imap <C-V> <C-O>:action IntroduceVariable<CR>
 nmap <leader>im :action ImplementMethods<CR>
 
 " === RUN ===
-nmap <leader>rR :action ChooseRunConfiguration<CR>
+nmap <leader>rc :action ChooseRunConfiguration<CR>
 " nmap <leader>rr :action RunConfiguration<CR>
 nmap <leader>rr :action Run<CR>
+nmap <leader>rR :action Rerun<CR>
 nmap <leader>rs :action Stop<CR>
+
+" === DEBUG ===
+nmap <leader>dc :action ChooseDebugConfiguration<CR>
+nmap <leader>dd :action Debug<CR>
+nmap <leader>ds :action Stop<CR>
+
+" Breakpoints
+nmap <leader>dbl :action ToggleLineBreakpoint<CR>
+nmap <leader>dbm :action ToggleMethodBreakpoint<CR>
+nmap <leader>dbf :action ToggleFieldBreakpoint<CR>
+
+nmap <leader>dbt :action ToggleBreakpointEnabled<CR>
+
+nmap <leader>dbc :action Debugger.RemoveAllBreakpoints<CR>
 
 " === NAVIGATION ===
 nmap <leader><leader> :action SearchEverywhere<CR>
@@ -101,6 +116,14 @@ nmap <leader>gf :action GotoFile<CR>
 nmap <leader>gc :action GotoClass<CR>
 nmap <leader>gs :action GotoSymbol<CR>
 nmap <leader>tw :action ToolWindowsGroup<CR>
+
+" popup with list of methods in file
+nmap <leader>fn :action FileStructurePopup<CR>
+
+nmap gh :action ShowErrorDescription<cr>
+
+nmap <C-o> :action Back<CR>
+nmap <C-i> :action Forward<CR>
 
 " lang stuff
 nmap gd :action GotoDeclaration<CR>
@@ -121,8 +144,13 @@ nmap <leader>MM :action EditorBreadcrumbsShowBelow<CR>:action ViewNavigationBar<
 " - Tab placement
 " - Show tool window bars
 
+nmap <leader>tlr :set invrelativenumber<CR>
+nmap <leader>tll :action EditorToggleShowLineNumbers<CR>
+nmap <leader>tlL :action EditorGutterToggleGlobalLineNumbers<CR>
+
 " Interesting actions
 " ShowPopupMenu
+" QuickFixes?
 
 " List
 " https://centic9.github.io/IntelliJ-Action-IDs/
