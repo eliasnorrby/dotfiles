@@ -1,0 +1,417 @@
+{
+  "window.zoomLevel": 1,
+  "workbench.sideBar.location": "right",
+  "workbench.activityBar.visible": true,
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.editor.closeOnFileDelete": true,
+  "workbench.editor.highlightModifiedTabs": true,
+  "workbench.editor.showTabs": false,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "terminal.integrated.lineHeight": 1.14,
+  "terminal.integrated.fontFamily": "Iosevka Nerd Font",
+  "workbench.colorTheme": "Palenight Italic",
+  // Separate ayu color config for terminal
+  "workbench.colorCustomizations": {
+    "terminal.background": "#1F2430",
+    "terminal.foreground": "#ABB2BF",
+    "terminalCursor.background": "#ABB2BF",
+    "terminalCursor.foreground": "#ABB2BF",
+    "terminal.ansiBlack": "#1F2430",
+    "terminal.ansiBlue": "#61AFEF",
+    "terminal.ansiBrightBlack": "#545862",
+    "terminal.ansiBrightBlue": "#61AFEF",
+    "terminal.ansiBrightCyan": "#56B6C2",
+    "terminal.ansiBrightGreen": "#98C379",
+    "terminal.ansiBrightMagenta": "#C678DD",
+    "terminal.ansiBrightRed": "#E06C75",
+    "terminal.ansiBrightWhite": "#C8CCD4",
+    "terminal.ansiBrightYellow": "#E5C07B",
+    "terminal.ansiCyan": "#56B6C2",
+    "terminal.ansiGreen": "#98C379",
+    "terminal.ansiMagenta": "#C678DD",
+    "terminal.ansiRed": "#E06C75",
+    "terminal.ansiWhite": "#ABB2BF",
+    "terminal.ansiYellow": "#E5C07B"
+  },
+  "editor.tabSize": 2,
+  "editor.fontFamily": "Dank Mono",
+  "editor.fontLigatures": true,
+  "editor.lineNumbers": "relative",
+  // "emmet.triggerExpansionOnTab": true,
+  "sync.gist": "81cfa26143dff6b0bd0cedd42e33178d",
+  // VIM
+  "vim.leader": " ",
+  "vim.easymotion": false,
+  "vim.sneak": true,
+  "vim.camelCaseMotion.enable": false,
+  "vim.incsearch": true,
+  "vim.useSystemClipboard": true,
+  "vim.useCtrlKeys": true,
+  "vim.hlsearch": false,
+  // "vim.normalModeKeyBindings": [],
+  "vim.normalModeKeyBindingsNonRecursive": [
+    // Shifting focus
+    {
+      "before": [
+        "<leader>",
+        "w",
+        "h"
+      ],
+      "commands": [
+        "workbench.action.focusLeftGroup"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "w",
+        "l"
+      ],
+      "commands": [
+        "workbench.action.focusRightGroup"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "w",
+        "k"
+      ],
+      "commands": [
+        "workbench.action.focusAboveGroup"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "w",
+        "j"
+      ],
+      "commands": [
+        "workbench.action.focusBelowGroup"
+      ]
+    },
+    // Moving windows
+    {
+      "before": [
+        "<leader>",
+        "w",
+        "L"
+      ],
+      "commands": [
+        "workbench.action.moveEditorToRightGroup"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "w",
+        "H"
+      ],
+      "commands": [
+        "workbench.action.moveEditorToLeftGroup"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "w",
+        "K"
+      ],
+      "commands": [
+        "workbench.action.moveEditorToAboveGroup"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "w",
+        "J"
+      ],
+      "commands": [
+        "workbench.action.moveEditorToBelowGroup"
+      ]
+    },
+    // Commands
+    {
+      "before": [
+        "<leader>",
+        ":"
+      ],
+      "commands": [
+        "workbench.action.showCommands"
+      ]
+    },
+    // File operations
+    {
+      "before": [
+        "<leader>",
+        "f",
+        "s"
+      ],
+      "commands": [
+        ":w"
+      ]
+    },
+    // Buffer operations
+    {
+      "before": [
+        "<leader>",
+        "b",
+        "k"
+      ],
+      "commands": [
+        ":q!"
+      ]
+    },
+    // {
+    //   "before": ["<leader>", "b", "o"],
+    //   "commands": ["workbench.action.closeEditorsInOtherGroups"]
+    // },
+    {
+      "before": [
+        "<leader>",
+        "b",
+        "]"
+      ],
+      "commands": [
+        "workbench.action.nextEditor"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "b",
+        "["
+      ],
+      "commands": [
+        "workbench.action.previousEditor"
+      ]
+    },
+    // Opening stuff
+    {
+      "before": [
+        "<leader>",
+        "o"
+      ],
+      "commands": [
+        "workbench.action.quickOpen"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "<leader>"
+      ],
+      "commands": [
+        "workbench.action.showAllEditors"
+      ]
+      // "commands": ["workbench.action.quickOpen"]
+    },
+    {
+      "before": [
+        "<leader>",
+        "."
+      ],
+      "commands": [
+        "workbench.action.showAllSymbols"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "b",
+        "b"
+      ],
+      // "commands": ["workbench.action.quickOpen"]
+      "commands": [
+        "workbench.action.showAllEditors"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "b",
+        "o"
+      ],
+      // "commands": ["workbench.action.closeOtherEditors"]
+      "commands": [
+        "workbench.action.joinAllGroups"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "b",
+        "N"
+      ],
+      "commands": [
+        "workbench.action.files.newUntitledFile"
+      ]
+    },
+    // Layouts
+    {
+      "before": [
+        "<leader>",
+        "w",
+        "v"
+      ],
+      // "commands": ["workbench.action.editorLayoutTwoColumns"]
+      // "commands": ["workbench.action.newGroupRight"]
+      "commands": [
+        "workbench.action.splitEditorRight"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "w",
+        "s"
+      ],
+      // "commands": ["workbench.action.editorLayoutTwoRows"]
+      // "commands": ["workbench.action.newGroupBelow"]
+      "commands": [
+        "workbench.action.splitEditorDown"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "w",
+        "c"
+      ],
+      "commands": [
+        "workbench.action.closeGroup"
+      ]
+      // "commands": ["workbench.action.closeEditorsInGroup"]
+    },
+    {
+      "before": [
+        "<leader>",
+        "w",
+        "o"
+      ],
+      "commands": [
+        "workbench.action.joinAllGroups"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "w",
+        "="
+      ],
+      "commands": [
+        "workbench.action.evenEditorWidths"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "w",
+        "z"
+      ],
+      "commands": [
+        "workbench.action.joinAllGroups"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "w",
+        "}"
+      ],
+      "commands": [
+        "workbench.action.toggleEditorGroupLayout"
+      ]
+    },
+    // Toggles
+    {
+      "before": [
+        "<leader>",
+        "t",
+        "a"
+      ],
+      "commands": [
+        "workbench.action.toggleActivityBarVisibility"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "t",
+        "l"
+      ],
+      "commands": [
+        ":set invrelativenumber"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "t",
+        "L"
+      ],
+      "commands": [
+        ":set invnumber"
+      ]
+    },
+    // Legacy
+    {
+      "before": [
+        "<leader>",
+        ","
+      ],
+      "commands": [
+        ":nohl"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "u"
+      ],
+      "commands": [
+        "workbench.action.increaseViewSize"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "U"
+      ],
+      "commands": [
+        "workbench.action.decreaseViewSize"
+      ]
+    }
+  ],
+  "vim.handleKeys": {
+    "<C-h>": false,
+    "<C-j>": false,
+    "<C-k>": false,
+    "<C-l>": false
+  },
+  // --- VIM
+  // "wallaby.node": "/Users/elias.norrby/.nvm/versions/node/v10.15.1/bin/node",
+  "multiCommand.commands": [
+    {
+      "command": "multiCommand.makeRoom",
+      "sequence": [
+        "workbench.action.toggleSidebarVisibility",
+        "workbench.action.toggleActivityBarVisibility"
+      ]
+    }
+  ],
+  "editor.minimap.enabled": false,
+  "breadcrumbs.enabled": false,
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "diffEditor.ignoreTrimWhitespace": true,
+  "workbench.statusBar.visible": true,
+  "editor.formatOnSave": true,
+}

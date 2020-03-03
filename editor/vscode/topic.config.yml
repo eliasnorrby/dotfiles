@@ -3,6 +3,13 @@ vscode_config:
   path: editor/vscode
   brew_casks:
     - visual-studio-code
+  links:
+    - src: settings.json
+      dest: "{{ vscode_home }}/"
+    - src: keybindings.json
+      dest: "{{ vscode_home }}/"
+    - src: snippets
+      dest: "{{ vscode_home }}/"
   osx_defaults:
     - domain: com.microsoft.VSCode
       key: ApplePressAndHoldEnabled
@@ -14,3 +21,5 @@ vscode_config:
       value: false
       type: bool
       state: present
+
+vscode_home: "~/Library/Application Support/Code/User"
