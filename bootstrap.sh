@@ -38,7 +38,7 @@ cd _provision
 ansible-galaxy install -r requirements.yml
 
 _msg "Running the playbook..."
-ansible-playbook playbook.yml --tags 'all,do_homebrew,do_packages,do_defaults' -v
+ansible-playbook playbook.yml --tags 'all,do_homebrew,do_packages,do_defaults,do_post_provision' -v
 
 _msg "Run post-install script..."
 cd $DOTFILES

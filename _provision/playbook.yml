@@ -36,3 +36,4 @@
       loop: "{{ post_provision_tasks | default(omit) }}"
       loop_control:
         loop_var: outer_item
+      tags: ["never", "do_post_provision", "bootstrap"]
