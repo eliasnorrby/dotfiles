@@ -13,6 +13,7 @@ zsh_config:
     - ssh-copy-id
     # extras
     - jq
+    - yq
     - pandoc
   links:
     - .zshrc
