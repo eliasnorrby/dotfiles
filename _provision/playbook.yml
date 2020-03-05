@@ -19,7 +19,7 @@
     - role: eliasnorrby.dotfiles
       tags: ["dotfiles", "bootstrap"]
     - role: geerlingguy.homebrew
-      tags: ["never", "do_homebrew", "bootstrap"]
+      tags: ["never", "setup_homebrew", "bootstrap"]
     - role: geerlingguy.mas
       tags: ["never", "do_mas", "bootstrap"]
 
