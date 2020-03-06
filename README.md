@@ -35,6 +35,7 @@ This setup script will:
 
   - `zsh` plugins are installed
   - `vim` plugins are installed
+  - `vscode` plugins are installed
   - `doom-emacs` packages are installed
 
 :clock1: Estimated duration: ~45 minutes
