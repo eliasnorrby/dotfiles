@@ -41,7 +41,7 @@
   import_tasks: set-variables.yml
   tags: always
 
-- name: collect post provisioning tasks
+- name: collect topic tasks
   block:
     - find:
         path: "{{ playbook_dir }}/.."
@@ -50,7 +50,13 @@
         recurse: true
       register: found_tasks
     - set_fact:
-        post_provision_tasks: "{{ found_tasks.files | map(attribute='path') | list }}"
+        topic_tasks: "{{ found_tasks.files | map(attribute='path') | list }}"
+
+- name: run topic tasks
+  include_tasks: "{{ outer_item }}"
+  loop: "{{ topic_tasks | default(omit) }}"
+  loop_control:
+    loop_var: outer_item
 
 - name: user should have a dotfiles_data directory
   file:

@@ -1,0 +1,8 @@
+---
+- name: create settings dir
+  file:
+    state: directory
+    path: "{{ vscode_home }}"
+  when:
+    - topics.editor.vscode is defined
+    - topics.editor.vscode.state == "present"
