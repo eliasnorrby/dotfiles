@@ -1,7 +1,9 @@
 ---
 karabiner_config:
   path: keyboard/karabiner
-  links:
-    - karabiner.json
+  # Karabiner requires us to symlink the entire karabiner folder
+  # rather than just the karabiner.json file.
+  # https://pqrs.org/osx/karabiner/document.html#configuration-file-path
+  link_entire_topic: true
   brew_casks:
     - karabiner-elements
