@@ -226,7 +226,8 @@ configured manually.
 1. Set main Alfred hotkey to <kbd>⌥</kbd> + <kbd>SPACE</kbd>
 2. Install the Things 3 helper
 3. Download the [Dank Mono font](https://dank.sh)
-4. ...?
+4. Enable shortcuts for desktop navigation (Preferences -> Keyboard -> Shortcuts -> Mission Control)
+5. ...?
 
 [travis-badge]: https://img.shields.io/travis/com/eliasnorrby/dotfiles?style=for-the-badge
 [travis-link]: https://travis-ci.com/eliasnorrby/dotfiles
