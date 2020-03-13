@@ -8,6 +8,7 @@ Listing them here because I don't have anywhere better to put them
 - AceJump
 - Material Theme UI
 - Lombok
+- Google Java Format
 
 ## SETTINGS
 
