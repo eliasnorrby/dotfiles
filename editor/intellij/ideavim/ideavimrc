@@ -135,6 +135,9 @@ nmap gf :action QuickActionPopup<CR>
 nmap ]e :action GotoNextError<CR>
 nmap [e :action GotoPreviousError<CR>
 
+nmap ]s :action MoveStatementDown<CR>
+nmap [s :action MoveStatementUp<CR>
+
 " minimal
 nmap <leader>mm :action EditorBreadcrumbsHideBoth<CR>:action ViewNavigationBar<CR>
 " maximal
