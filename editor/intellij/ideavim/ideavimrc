@@ -138,6 +138,9 @@ nmap [e :action GotoPreviousError<CR>
 nmap ]s :action MoveStatementDown<CR>
 nmap [s :action MoveStatementUp<CR>
 
+" git stuff
+nmap <leader>gb :action Annotate<CR>
+
 " minimal
 nmap <leader>mm :action EditorBreadcrumbsHideBoth<CR>:action ViewNavigationBar<CR>
 " maximal
