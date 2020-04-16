@@ -14,9 +14,9 @@ end
 
 appMode:bind({}, 'space', exitAppMode)
 
--- Open LastPass Quick Search
+-- Open 1Password Quick Search
 appMode:bind({}, 'p', function()
-    keyUpDown({ 'ctrl', 'cmd', 'shift' }, 'l')
+    keyUpDown({ 'cmd', 'alt' }, '\\')
   end)
 
 -- Bind the right cmd key
