@@ -30,6 +30,7 @@ if [ -z "$DOTFILES_VERSION" ] ; then
 fi
 
 ANSIBLE_TAGS=all,setup_homebrew,do_homebrew,do_packages,do_defaults
+ANSIBLE_FLAGS=-v
 
 if [ "$DO_MAS" == true ]; then
   ANSIBLE_TAGS="${ANSIBLE_TAGS},do_mas"
@@ -37,7 +38,7 @@ fi
 
 if [ "$ASK_PASS" == true ]; then
   # Ask for sudo password (possibly required for homebrew role)
-  ANSIBLE_FLAGS="-K"
+  ANSIBLE_FLAGS="${ANSIBLE_FLAGS} -K"
 fi
 
 set -exo pipefail
@@ -68,7 +69,7 @@ cd _provision
 ansible-galaxy install -r requirements.yml
 
 _msg "Running the playbook..."
-ansible-playbook playbook.yml --tags "$ANSIBLE_TAGS" "$ANSIBLE_FLAGS" -v
+ansible-playbook playbook.yml --tags "$ANSIBLE_TAGS" "$ANSIBLE_FLAGS"
 
 _msg "Run post-install script..."
 cd $DOTFILES
