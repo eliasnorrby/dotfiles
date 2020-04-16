@@ -42,6 +42,8 @@ end
 appMode:bind({}, 'F17', disableBackspace)
 appMode:bind({}, '=', enableBackspace)
 
+enableBackspace()
+
 -- Non-app bindings
 -- vim movement:
 local charactersToKeystrokes = {
