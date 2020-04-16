@@ -29,8 +29,7 @@ if [ -z "$DOTFILES_VERSION" ] ; then
   DOTFILES_VERSION=${1:-master}
 fi
 
-ANSIBLE_TAGS='all,setup_homebrew,do_homebrew,do_packages,do_defaults'
-ANSIBLE_FLAGS=''
+ANSIBLE_TAGS=all,setup_homebrew,do_homebrew,do_packages,do_defaults
 
 if [ "$DO_MAS" == true ]; then
   ANSIBLE_TAGS="${ANSIBLE_TAGS},do_mas"
