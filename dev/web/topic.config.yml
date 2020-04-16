@@ -9,5 +9,6 @@ web_config:
     - lorem-ipsum
     - netlify-cli
     - nodemon
+    - npm-check-updates
     - prettier
     - serve
