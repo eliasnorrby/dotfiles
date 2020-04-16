@@ -15,6 +15,8 @@ zsh_config:
     - jq
     - yq
     - pandoc
+    # misc
+    - neofetch
   links:
     - .zshrc
     - .zshenv
