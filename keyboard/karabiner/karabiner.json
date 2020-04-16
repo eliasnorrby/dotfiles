@@ -127,7 +127,8 @@
                                         ],
                                         "optional": [
                                             "left_option",
-                                            "left_shift"
+                                            "left_shift",
+                                            "left_command"
                                         ]
                                     }
                                 },
@@ -147,7 +148,8 @@
                                         ],
                                         "optional": [
                                             "left_option",
-                                            "left_shift"
+                                            "left_shift",
+                                            "left_command"
                                         ]
                                     }
                                 },
@@ -167,7 +169,8 @@
                                         ],
                                         "optional": [
                                             "left_option",
-                                            "left_shift"
+                                            "left_shift",
+                                            "left_command"
                                         ]
                                     }
                                 },
@@ -187,7 +190,8 @@
                                         ],
                                         "optional": [
                                             "left_option",
-                                            "left_shift"
+                                            "left_shift",
+                                            "left_command"
                                         ]
                                     }
                                 },
