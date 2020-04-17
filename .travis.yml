@@ -105,7 +105,10 @@ jobs:
       script:
         - >
           travis_wait 60
-          bash <(curl -sL ${curl_target}${DOTFILES_VERSION}/bootstrap.sh)
+          bash <(curl -sL ${curl_target}${DOTFILES_VERSION}/bootstrap.sh) > test.log
+      after_failure:
+        - "[ -f test.log ] && cat test.log && sleep 10"
+        - echo "== End of test log =="
 
     ## Release
     - stage: release
