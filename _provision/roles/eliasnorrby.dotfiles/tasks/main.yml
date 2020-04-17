@@ -59,7 +59,7 @@
 
 - name: include topic tasks for present topics
   include_tasks: "{{ outer_item.file_path }}"
-  loop: "{{ topic_tasks | default(omit) }}"
+  loop: "{{ topic_tasks | default([]) }}"
   loop_control:
     loop_var: outer_item
   when: (present_topics | selectattr('config.path','equalto',outer_item.topic_path) | first) is defined
