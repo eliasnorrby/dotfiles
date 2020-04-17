@@ -104,8 +104,10 @@ jobs:
         - sudo rm -rf /usr/local/bin/brew
       script:
         - >
-          travis_wait 60
+          travis_wait 120
           bash <(curl -sL ${curl_target}${DOTFILES_VERSION}/bootstrap.sh) | tee test.log
+      after_script:
+        - sleep 10
       after_failure:
         - "[ -f test.log ] && cat test.log && sleep 10"
         - echo "== End of test log =="
