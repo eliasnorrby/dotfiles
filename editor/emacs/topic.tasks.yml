@@ -11,6 +11,3 @@
         dest: "{{ doom_home }}"
         version: develop
       when: doom.stat.isdir is undefined
-  when:
-    - topics.editor.emacs is defined
-    - topics.editor.emacs.state == "present"

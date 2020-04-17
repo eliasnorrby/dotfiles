@@ -11,6 +11,3 @@
         dest: "{{ zplug_home }}"
         version: master
       when: zplug.stat.isdir is undefined
-  when:
-    - topics.shell.zsh is defined
-    - topics.shell.zsh.state == "present"
