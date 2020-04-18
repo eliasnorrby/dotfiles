@@ -69,10 +69,6 @@ Plug 'morhetz/gruvbox'
 Plug 'junegunn/seoul256.vim'
 Plug 'drewtempelmeyer/palenight.vim'
 
-" Testing
-Plug 'janko-m/vim-test'
-Plug 'tpope/vim-dispatch'
-
 " Miscellaneous
 Plug 'takac/vim-hardtime'
 
@@ -91,46 +87,6 @@ call plug#end()
 
 " map \ <Plug>(easymotion-prefix)
 map gs <Plug>(easymotion-prefix)
-
-" {{{ vim-test settings
-let test#python#runner = 'pytest'
-
-nnoremap <silent> <Leader>tn :TestNearest<CR>
-nnoremap <silent> <Leader>tf :TestFile<CR>
-nnoremap <silent> <Leader>ts :TestSuite<CR>
-nnoremap <silent> <Leader>tt :TestLast<CR>
-
-nnoremap <silent> <leader>toe :call EnableTestOnSave()<CR>
-nnoremap <silent> <leader>tod :call DisableTestOnSave()<CR>
-
-function! EnableTestOnSave() abort
-  augroup TestOnSave
-    autocmd! * <buffer>
-    autocmd BufWrite <buffer> :TestLast
-  augroup END
-  echom "Run last test on save: enabled"
-endfunction
-
-function! DisableTestOnSave() abort
-  augroup TestOnSave
-    autocmd! * <buffer>
-  augroup END
-  echom "Run last test on save: disabled"
-endfunction
-
-" let test#javascript#jasmine#file_pattern = '\.test\.ts'
-" let test#typescript#jasmine#file_pattern = '\.test\.ts'
-
-" --- {{{ TypeScript
-let g:test#javascript#jasmine#file_pattern = '\v.*\.test\.(ts|tsx)$'
-function! TypeScriptTransform(cmd) abort
-  return substitute(a:cmd, '\v(.*)jasmine', 'JASMINE_CONFIG_PATH=jasmine.json \1jasmine', '')
-endfunction
-let g:test#custom_transformations = {'typescript': function('TypeScriptTransform')}
-let g:test#transformation = 'typescript'
-" --- }}}
-
-" }}}
 
 " {{{ tmux-navigator settings
 " Disable tmux navigator when zooming the Vim pane
