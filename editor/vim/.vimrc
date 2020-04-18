@@ -74,7 +74,6 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'benmills/vimux'
 
 " Colorschemes
-Plug 'joshdick/onedark.vim'
 Plug 'morhetz/gruvbox'
 Plug 'drewtempelmeyer/palenight.vim'
 
@@ -258,57 +257,36 @@ let g:netrw_browse_split = 3
 " {{{ Lightline
 
 " ==== Lightline ====
-if has("termguicolors")
-  let g:lightline = {
-    \ 'colorscheme': 'palenight',
-    \ 'active': {
-    \   'left': [ [ 'mode', 'paste' ],
-    \             [ 'gitbranch', 'readonly', 'filename' ],
-    \             [ 'modified' ] ],
-    \   'right': [ ['lineinfo'], 
-    \              ['percent'], 
-    \              ['fileformat', 'fileencoding', 'filetype'] ],
-    \ },
-    \ 'inactive': {
-    \   'left': [ ['filename'], 
-    \             ['modified'] ],
-    \   'right': [ ['lineinfo'], 
-    \              ['percent'] ],
-    \ },
-    \ 'component': {
-    \   'lineinfo': '%3l:%-2v',
-    \ },
-    \ 'component_function': {
-    \   'readonly': 'LightlineReadonly',
-    \   'gitbranch': 'LightlineGitbranch',
-    \   'fileformat': 'LightlineFileformat',
-    \   'fileencoding': 'LightlineFileencoding',
-    \   'filetype': 'LightlineFiletype',
-    \   'cocstatus': 'coc#status',
-    \   'currentfunction': 'CocCurrentFunction'
-    \ },
-    \ }
-    " \ 'separator': { 'left': '', 'right': '' },
-    " \ 'subseparator': { 'left': '', 'right': '' },
-    " \ }
-else
-  let g:lightline = {
-    \ 'colorscheme': 'onedark',
-    \ 'active': {
-    \   'left': [ [ 'mode', 'paste' ],
-    \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-    \ },
-    \ 'component': {
-    \   'lineinfo': '%3l:%-2v',
-    \ },
-    \ 'component_function': {
-    \   'readonly': 'LightlineReadonly',
-    \   'gitbranch': 'LightlineGitbranch'
-    \ },
-    \ 'separator': { 'left': '', 'right': '' },
-    \ 'subseparator': { 'left': '', 'right': '' }
-    \ }
-endif
+let g:lightline = {
+  \ 'colorscheme': 'palenight',
+  \ 'active': {
+  \   'left': [ [ 'mode', 'paste' ],
+  \             [ 'gitbranch', 'readonly', 'filename' ],
+  \             [ 'modified' ] ],
+  \   'right': [ ['lineinfo'], 
+  \              ['percent'], 
+  \              ['fileformat', 'fileencoding', 'filetype'] ],
+  \ },
+  \ 'inactive': {
+  \   'left': [ ['filename'], 
+  \             ['modified'] ],
+  \   'right': [ ['lineinfo'], 
+  \              ['percent'] ],
+  \ },
+  \ 'component': {
+  \   'lineinfo': '%3l:%-2v',
+  \ },
+  \ 'component_function': {
+  \   'readonly': 'LightlineReadonly',
+  \   'gitbranch': 'LightlineGitbranch',
+  \   'fileformat': 'LightlineFileformat',
+  \   'fileencoding': 'LightlineFileencoding',
+  \   'filetype': 'LightlineFiletype',
+  \ },
+  \ }
+  " \ 'separator': { 'left': '', 'right': '' },
+  " \ 'subseparator': { 'left': '', 'right': '' },
+  " \ }
 
 function! LightlineFileformat()
   return winwidth(0) > 90 ? &fileformat : '' 
@@ -331,7 +309,7 @@ function! LightlineGitbranch()
     return ''
   elseif exists('*gitbranch#name')
     let branch = gitbranch#name()
-    return branch !=# '' ? ''.branch : ''
+    return branch !=# '' ? ' '.branch : ''
   endif
   return ''
 endfunction
@@ -373,25 +351,19 @@ augroup MyColors
   autocmd ColorScheme * call MyHighlights()
 augroup END
 
-" TODO: Sourcing MYVIMRC breaks coc highlighting
+if s:theme_to_use == "palenight"
+  set background=dark
+  silent! colorscheme palenight
+endif
+
+if s:theme_to_use == "gruvbox"
+  set background=dark
+  let g:gruvbox_contrast_dark = "medium"
+  silent! colorscheme gruvbox
+endif
+
 if has("termguicolors")
-
-  if s:theme_to_use == "palenight"
-    set termguicolors
-    set background=dark
-    silent! colorscheme palenight
-  endif
-
-  if s:theme_to_use == "gruvbox"
-    set termguicolors
-    set background=dark
-    let g:gruvbox_contrast_dark = "medium"
-    silent! colorscheme gruvbox
-  endif
-
-else
-  silent! colorscheme onedark
-  hi Normal ctermbg=000
+  set termguicolors
 endif
 
 
