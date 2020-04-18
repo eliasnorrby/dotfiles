@@ -1,6 +1,15 @@
-" Why is this here? 
-scriptencoding utf-8
+"         ___                                  __         
+"   ___  / (_)___ __________  ____  __________/ /_  __  __
+"  / _ \/ / / __ `/ ___/ __ \/ __ \/ ___/ ___/ __ \/ / / /
+" /  __/ / / /_/ (__  ) / / / /_/ / /  / /  / /_/ / /_/ / 
+" \___/_/_/\__,_/____/_/ /_/\____/_/  /_/  /_.___/\__, /  
+"                                                /____/   
+" Filename:   .vimrc
+" Github:     https://github.com/eliasnorrby/dotfiles
+" Maintainer: Elias Norrby
+                     
 set encoding=utf-8
+scriptencoding utf-8
 
 let mapleader=" "
 nnoremap <Space> <Nop>
@@ -10,10 +19,12 @@ if has('nvim')
   let &packpath = &runtimepath
 endif
 
-" {{{ Plugins
+" Plugins {{{ 
+
 " ============================================================================ "
 " ===                           PLUGINS                                    === "
 " ============================================================================ "
+
 " Download vimplug if not already installed
 if empty(glob($VIM_DIR.'/autoload/plug.vim'))
   silent !curl -sfLo $VIM_DIR/autoload/plug.vim --create-dirs
@@ -66,7 +77,6 @@ Plug 'benmills/vimux'
 Plug 'joshdick/onedark.vim'
 Plug 'ayu-theme/ayu-vim'
 Plug 'morhetz/gruvbox'
-Plug 'junegunn/seoul256.vim'
 Plug 'drewtempelmeyer/palenight.vim'
 
 " Miscellaneous
@@ -80,12 +90,10 @@ Plug 'takac/vim-hardtime'
 
 call plug#end()
 
-
 " map /  <Plug>(incsearch-forward)
 " map ?  <Plug>(incsearch-backward)
 " map g/ <Plug>(incsearch-stay)
 
-" map \ <Plug>(easymotion-prefix)
 map gs <Plug>(easymotion-prefix)
 
 " {{{ tmux-navigator settings
@@ -122,8 +130,12 @@ let g:jsx_ext_required = 1
 let g:signify_sign_change = '~'
 " }}}
 
-" {{{ delimite settings
+" {{{ delimitmate settings
+
 let delimitMate_expand_cr=1
+
+" }}}
+
 " }}}
 
 " {{{ Editing options
@@ -145,13 +157,14 @@ set so=5
 nnoremap <C-E> <C-E><C-E><C-E>
 nnoremap <C-Y> <C-Y><C-Y><C-Y>
 
+set hidden
 
 set clipboard=unnamed
 
 " ==== BACKUPS ETC ====
 set backup                       " enable backups
 set undofile                     " for storing undos
-" set noswapfile                 " disbale swapfiles
+" set noswapfile                 " disable swapfiles
 set undodir=~/.vimtmp/undo//     " undo files
 set backupdir=~/.vimtmp/backup// " backups
 set directory=~/.vimtmp/swap//   " swap files
@@ -193,17 +206,10 @@ set ttimeoutlen=10
 "   autocmd InsertLeave * set timeoutlen=250
 " augroup END
 
-set foldmethod=marker
-set foldlevelstart=20
-
-" this is the default
-" set complete=.,w,b,u,t,i
-" set complete=.,b,u,]
-" set wildmode=longest,list:longest
-
 " }}}
 
 " {{{ UI
+
 " ============================================================================ "
 " ===                                UI                                    === "
 " ============================================================================ "
@@ -211,7 +217,6 @@ set foldlevelstart=20
 " let s:theme_to_use="ayu"
 " let s:theme_to_use="gruvbox"
 let s:theme_to_use="palenight"
-" let s:theme_to_use="seoul256"
 
 syntax enable " enable syntax processing
 
@@ -234,15 +239,10 @@ set showcmd        " show command in bottom bar
 set incsearch      " search as characters are entered
 set nohlsearch     " highlight matches
 
-set laststatus=2    " for showing lightline
+set laststatus=2   " for showing lightline
 set noshowmode 
 
-" :set listchars=eol:¬,tab:>·,trail:·,extends:>,precedes:<,space:␣
-" set listchars=eol:¬,trail:␣
-" set list
-set hidden
 set signcolumn=yes
-
 
 augroup CursorLineOnInsert
   if s:theme_to_use == "ayu"
@@ -451,10 +451,6 @@ if has("termguicolors")
     silent! colorscheme gruvbox
   endif
 
-  if s:theme_to_use == "seoul256"
-    let g:seoul256_background = 235
-    silent! colorscheme seoul256
-  endif
 else
   silent! colorscheme onedark
   hi Normal ctermbg=000
@@ -499,6 +495,7 @@ nnoremap <silent> k gk
 " Map fzf commands
 nnoremap <C-P> :Files<CR>
 nnoremap <Leader><Leader> :Files<CR>
+nnoremap <Leader>. :Files<CR>
 nnoremap <Leader>bb :Buffers<CR>
 nnoremap <Leader>, :Buffers<CR>
 nnoremap <leader>h :Helptags<CR>
@@ -525,8 +522,14 @@ vnoremap <Leader>gb :Gbrowse<CR>
 
 " experimentating
 
+set path+=**
+set wildignore+=**/node_modules/**
+set wildmenu
+
 set synmaxcol=128
 syntax sync minlines=256
 
 set diffopt=internal,algorithm:patience
 set lazyredraw
+
+" vim:foldmethod=marker:foldlevel=0
