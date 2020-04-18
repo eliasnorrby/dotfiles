@@ -324,33 +324,6 @@ endfunction
 
 " }}}
 
-
-function! MyHighlights() abort
-  " Make background transparent for many things
-  " highlight!   Normal              ctermbg=NONE    guibg=NONE
-  " highlight!   NonText             ctermbg=NONE    guibg=NONE
-  highlight!   LineNr              ctermbg=NONE    guibg=NONE
-  highlight!   SignColumn          ctermbg=NONE    guibg=NONE
-
-  " Highlight git change signs
-  highlight!   SignifySignAdd                      guibg=NONE   guifg=#99C794
-  highlight!   SignifySignDelete                   guibg=NONE   guifg=#EC5F67
-  highlight!   SignifySignChange                   guibg=NONE   guifg=#C594C5
-
-  " ALE Signs
-  " for some reason these are cleared on re-sourcing vimrc
-  highlight!   CocErrorSign       ctermfg=9                     guifg=#FF0000
-  highlight!   CocWarningSign     ctermfg=130                   guifg=#FF922B
-  highlight!   link ALEErrorSign    CocErrorSign
-  highlight!   link ALEWarningSign  CocWarningSign
-
-endfunction
-
-augroup MyColors
-  autocmd!
-  autocmd ColorScheme * call MyHighlights()
-augroup END
-
 if s:theme_to_use == "palenight"
   set background=dark
   silent! colorscheme palenight
