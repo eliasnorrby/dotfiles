@@ -3,19 +3,19 @@
 echo "> Installing test dependencies..."
 
 brew_taps=(
-d12frosted/emacs-plus
+  d12frosted/emacs-plus
 )
 
 brew_formulae=(
-zsh
-vim
-jq
-yq
-emacs-plus
+  zsh
+  vim
+  jq
+  yq
+  emacs-plus
 )
 
 brew_casks=(
-vscode
+  visual-studio-code
 )
 
 echo ">> Tap brew taps..."
@@ -25,9 +25,9 @@ done
 echo
 
 echo ">> Install brew formulae..."
-brew install $brew_formulae
+brew install ${brew_formulae[@]}
 echo
 
 echo ">> Install brew casks..."
-brew cask install $brew_casks
+brew cask install ${brew_casks[@]}
 echo
