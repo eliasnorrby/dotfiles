@@ -209,34 +209,34 @@ colors:
   # }}}
 
   # {{{ Ayu dark
-  #   # Default colors
-  #   primary:
-  #     background: '#222732'
-  #     foreground: '#D8D7CF'
+  # Default colors
+  # primary:
+  #   background: '#222732'
+  #   foreground: '#D8D7CF'
 
-  #   # Normal colors
-  #   normal:
-  #     black: '#222631'
-  #     red: '#E1787B'
-  #     green: '#C4E38B'
-  #     yellow: '#F8CD76'
-  #     # blue: '#56A1D3'
-  #     blue: '#73D0F3'
-  #     magenta: '#D1C0FA'
-  #     cyan: '#A7E3CD'
-  #     white: '#C8C7C7'
+  # # Normal colors
+  # normal:
+  #   black: '#222631'
+  #   red: '#E1787B'
+  #   green: '#C4E38B'
+  #   yellow: '#F8CD76'
+  #   # blue: '#56A1D3'
+  #   blue: '#73D0F3'
+  #   magenta: '#D1C0FA'
+  #   cyan: '#A7E3CD'
+  #   white: '#C8C7C7'
 
-  #   # Bright colors
-  #   bright:
-  #     # black: '0x686868'
-  #     black: '0x343434'
-  #     red: '#E1787B'
-  #     green: '#D1E462'
-  #     yellow: '#FBDF8D'
-  #     blue: '#6875F7'
-  #     magenta: '#F181F9'
-  #     cyan: '#BAFAE3'
-  #     white: '#FFFFFF'
+  # # Bright colors
+  # bright:
+  #   # black: '0x686868'
+  #   black: '0x343434'
+  #   red: '#E1787B'
+  #   green: '#D1E462'
+  #   yellow: '#FBDF8D'
+  #   blue: '#6875F7'
+  #   magenta: '#F181F9'
+  #   cyan: '#BAFAE3'
+  #   white: '#FFFFFF'
   # }}}
 
   # {{{ Palenight
