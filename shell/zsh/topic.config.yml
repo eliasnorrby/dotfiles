@@ -5,6 +5,7 @@ zsh_config:
     # essentials
     - zsh
     - fzf
+    - bat
     - ripgrep
     - coreutils
     - watch
