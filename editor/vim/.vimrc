@@ -1,13 +1,13 @@
-"         ___                                  __         
-"   ___  / (_)___ __________  ____  __________/ /_  __  __
-"  / _ \/ / / __ `/ ___/ __ \/ __ \/ ___/ ___/ __ \/ / / /
-" /  __/ / / /_/ (__  ) / / / /_/ / /  / /  / /_/ / /_/ / 
-" \___/_/_/\__,_/____/_/ /_/\____/_/  /_/  /_.___/\__, /  
-"                                                /____/   
+"         ___                                  __          "
+"   ___  / (_)___ __________  ____  __________/ /_  __  __ "
+"  / _ \/ / / __ `/ ___/ __ \/ __ \/ ___/ ___/ __ \/ / / / "
+" /  __/ / / /_/ (__  ) / / / /_/ / /  / /  / /_/ / /_/ /  "
+" \___/_/_/\__,_/____/_/ /_/\____/_/  /_/  /_.___/\__, /   "
+"                                                /____/    "
 " Filename:   .vimrc
 " Github:     https://github.com/eliasnorrby/dotfiles
 " Maintainer: Elias Norrby
-                     
+
 set encoding=utf-8
 scriptencoding utf-8
 
@@ -19,7 +19,7 @@ if has('nvim')
   let &packpath = &runtimepath
 endif
 
-" Plugins {{{ 
+" Plugins: {{{
 
 " ============================================================================ "
 " ===                           PLUGINS                                    === "
@@ -34,73 +34,94 @@ endif
 
 call plug#begin($XDG_DATA_HOME.'/vim/plugged')
 
-" Editing
+" Editing:
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-abolish'
 Plug 'raimondi/delimitmate'
+Plug 'mattn/emmet-vim'
 
-" Ui
+" Config:
+Plug 'editorconfig/editorconfig-vim'
+
+" Snippets:
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
+" Ui:
 Plug 'tpope/vim-vinegar'
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
 Plug 'mhinz/vim-signify'
 
-" Navigation
+" Navigation:
 Plug 'tpope/vim-unimpaired'
 Plug 'easymotion/vim-easymotion'
 
-" Git
+" Git:
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 Plug 'junegunn/gv.vim'
 
-" Text objects
+" Text_objects:
 Plug 'wellle/targets.vim'
 Plug 'kana/vim-textobj-function'
 Plug 'kana/vim-textobj-user'
+Plug 'whatyouhide/vim-textobj-xmlattr'
 Plug 'haya14busa/vim-textobj-function-syntax'
 
-" Filetypes and syntax
+" Filetypes_and_syntax:
 Plug 'sheerun/vim-polyglot'
 Plug 'neoclide/jsonc.vim'
 
-" Fuzzy finder
+" Fuzzy_finder:
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 
-" Tmux integration
+" Tmux_integration:
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'benmills/vimux'
 
-" Colorschemes
+" Colorschemes:
+Plug 'ayu-theme/ayu-vim'
 Plug 'morhetz/gruvbox'
 Plug 'drewtempelmeyer/palenight.vim'
 
-" Miscellaneous
+" Miscellaneous:
 Plug 'takac/vim-hardtime'
 
-" Formatting
-" post install (yarn install | npm install) then load plugin only for editing supported files
-" Plug 'prettier/vim-prettier', {
-"   \ 'do': 'npm install',
-"   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+" Formatting:
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'npm install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+
+" Completion:
+" Plug 'ycm-core/YouCompleteMe' , { 'for': 'typescript' }
+" Plug 'ycm-core/YouCompleteMe'
+Plug 'ycm-core/YouCompleteMe', {
+  \ 'on': [],
+  \ 'do': './install.py --ts-completer' }
+
+augroup load_ycm
+    autocmd!
+    autocmd CursorHold * call plug#load('YouCompleteMe') | autocmd! load_ycm
+augroup END
 
 call plug#end()
 
-" map /  <Plug>(incsearch-forward)
-" map ?  <Plug>(incsearch-backward)
-" map g/ <Plug>(incsearch-stay)
-
+" Setings: easymotion {{{
 map gs <Plug>(easymotion-prefix)
+map gs<Space> <Plug>(easymotion-sn)
+" }}}
 
-" {{{ tmux-navigator settings
+" Settings: tmux-navigator {{{
 " Disable tmux navigator when zooming the Vim pane
 let g:tmux_navigator_disable_when_zoomed = 1
 " }}}
 
-" {{{ vim-hardtime settings
-let g:hardtime_default_on = 0 
+" Settings: vim-hardtime {{{
+let g:hardtime_default_on = 0
 let g:hardtime_showmsg = 0
 let g:hardtime_maxcount = 1
 let g:hardtime_allow_different_key = 1
@@ -108,35 +129,73 @@ let g:list_of_insert_keys = ["<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
 let g:list_of_disabled_keys = ["<BS>"]
 " }}}
 
-" {{{ vim-prettier settings 
-" let g:prettier#autoformat = 0
+" Settings: vim-prettier {{{
+let g:prettier#autoformat = 0
+nnoremap <leader>ff :PrettierAsync<CR>
+" Format certain files on save
 " augroup PrettierAutoformat
-"   autocmd! 
+"   autocmd!
 "   autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.vue,*.yaml,*.html PrettierAsync
 " augroup END
 " }}}
 
-" {{{ vim-polyglot settings
+" Settings: vim-polyglot {{{
 " Polyglot incorrectly marks js files as jsx :(
 let g:jsx_ext_required = 1
 " }}}
 
-" {{{ vim-signify settings
+" Settings: vim-signify {{{
 " Does this conflict with dispatch?
 " To make signify update on Gcommit
 " autocmd User Fugitive SignifyRefresh
 let g:signify_sign_change = '~'
 " }}}
 
-" {{{ delimitmate settings
-
+" Settings: delimitmate {{{
 let delimitMate_expand_cr=1
+" }}}
 
+" Settings: emmet-vim {{{
+let g:user_emmet_mode='inv'
+let g:user_emmet_leader_key=','
+" let g:user_emmet_settings = {
+" \ 'html' : {
+" \     'indent_blockelement' : 1,
+" \   }
+" \ }
+inoremap ,<CR> <CR><C-o>==<C-o>O
+" }}}
+
+" Settings: fzf-vim {{{
+" Show a preview window during file selection
+command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+" }}}
+
+" Settings: YouCompleteMe {{{
+nnoremap <silent> gd :YcmCompleter GoTo<CR>
+nnoremap <silent> gr :YcmCompleter GoToReferences<CR>
+nnoremap <silent> <leader>cr :YcmCompleter RefactorRename<space>
+nnoremap <silent> <leader>cf :YcmCompleter FixIt<CR>
+let g:ycm_always_populate_location_list = 1
+" }}}
+
+" Settings: UltiSnips {{{
+" let g:UltiSnipsExpandTrigger="<c-s>"
+" let g:UltiSnipsJumpForwardTrigger="<c-f>"
+" let g:UltiSnipsJumpBackwardTrigger="<c-b>"
+let g:UltiSnipsExpandTrigger=";s"
+let g:UltiSnipsJumpForwardTrigger=";n"
+let g:UltiSnipsJumpBackwardTrigger=";N"
+" }}}
+
+" Settings: editorconfig {{{
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 " }}}
 
 " }}}
 
-" {{{ Editing options
+" Editing_options: {{{
 " ============================================================================ "
 " ===                           EDITING OPTIONS                            === "
 " ============================================================================ "
@@ -157,12 +216,14 @@ nnoremap <C-Y> <C-Y><C-Y><C-Y>
 
 set hidden
 
+set updatetime=500
+
 set clipboard=unnamed
 
 " ==== BACKUPS ETC ====
 set backup                       " enable backups
 set undofile                     " for storing undos
-" set noswapfile                 " disable swapfiles
+set noswapfile                 " disable swapfiles
 set undodir=~/.vimtmp/undo//     " undo files
 set backupdir=~/.vimtmp/backup// " backups
 set directory=~/.vimtmp/swap//   " swap files
@@ -206,12 +267,13 @@ set ttimeoutlen=10
 
 " }}}
 
-" {{{ UI
+" UI: {{{
 
 " ============================================================================ "
 " ===                                UI                                    === "
 " ============================================================================ "
 
+" let s:theme_to_use="ayu"
 " let s:theme_to_use="gruvbox"
 let s:theme_to_use="palenight"
 
@@ -225,7 +287,7 @@ augroup END
 augroup FiletypeCorrections
   autocmd!
   autocmd BufReadPost,BufNewFile *.test.ts set  syntax=jasmine
-  autocmd BufReadPost,BufNewFile tsconfig.json set filetype=jsonc 
+  autocmd BufReadPost,BufNewFile tsconfig.json set filetype=jsonc
 augroup END
 
 " ==== UI Elements ====
@@ -237,7 +299,7 @@ set incsearch      " search as characters are entered
 set nohlsearch     " highlight matches
 
 set laststatus=2   " for showing lightline
-set noshowmode 
+set noshowmode
 
 set signcolumn=yes
 
@@ -248,29 +310,27 @@ let g:netrw_winsize = -28
 " tree-view
 let g:netrw_liststyle = 3
 
-" sort is affecting only: directories on the top, files below
+"  sort is affecting only: directories on the top, files below
 let g:netrw_sort_sequence = '[\/]$,*'
 
 " open file in a new tab
 let g:netrw_browse_split = 3
 
-" {{{ Lightline
+" Lightline: {{{
 
-" ==== Lightline ====
 let g:lightline = {
-  \ 'colorscheme': 'palenight',
   \ 'active': {
   \   'left': [ [ 'mode', 'paste' ],
   \             [ 'gitbranch', 'readonly', 'filename' ],
   \             [ 'modified' ] ],
-  \   'right': [ ['lineinfo'], 
-  \              ['percent'], 
+  \   'right': [ ['lineinfo'],
+  \              ['percent'],
   \              ['fileformat', 'fileencoding', 'filetype'] ],
   \ },
   \ 'inactive': {
-  \   'left': [ ['filename'], 
+  \   'left': [ ['filename'],
   \             ['modified'] ],
-  \   'right': [ ['lineinfo'], 
+  \   'right': [ ['lineinfo'],
   \              ['percent'] ],
   \ },
   \ 'component': {
@@ -283,28 +343,31 @@ let g:lightline = {
   \   'fileencoding': 'LightlineFileencoding',
   \   'filetype': 'LightlineFiletype',
   \ },
+  \ 'tab_component_function': {
+  \   'filename': 'LightlineTabname'
+  \ },
   \ }
   " \ 'separator': { 'left': '', 'right': '' },
   " \ 'subseparator': { 'left': '', 'right': '' },
   " \ }
 
-function! LightlineFileformat()
-  return winwidth(0) > 90 ? &fileformat : '' 
+function! LightlineFileformat() abort
+  return winwidth(0) > 90 ? &fileformat : ''
 endfunction
 
-function! LightlineFileencoding ()
+function! LightlineFileencoding() abort
   return winwidth(0) > 80 ? &fileencoding : ''
 endfunction
 
-function! LightlineFiletype ()
+function! LightlineFiletype() abort
   return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
 endfunction
 
-function! LightlineReadonly()
+function! LightlineReadonly() abort
   return &readonly ? '' : ''
 endfunction
 
-function! LightlineGitbranch()
+function! LightlineGitbranch() abort
   if winwidth(0) < 65
     return ''
   elseif exists('*gitbranch#name')
@@ -312,6 +375,10 @@ function! LightlineGitbranch()
     return branch !=# '' ? ' '.branch : ''
   endif
   return ''
+endfunction
+
+function! LightlineTabname(n) abort
+  return fnamemodify(getcwd(tabpagewinnr(a:n), a:n), ':t')
 endfunction
 
 " function! LightlineFugitive()
@@ -324,48 +391,80 @@ endfunction
 
 " }}}
 
+
+if has("termguicolors")
+  set termguicolors
+endif
+
+if s:theme_to_use == "ayu"
+  function! AyuCorrections() abort
+    " Ayu fixes
+    highlight!   LineNr              ctermbg=NONE    guibg=NONE
+    highlight!   SignColumn          ctermbg=NONE    guibg=NONE
+    highlight!   SignifySignAdd                      guibg=NONE   guifg=#99C794
+    highlight!   SignifySignDelete                   guibg=NONE   guifg=#EC5F67
+    highlight!   SignifySignChange                   guibg=NONE   guifg=#C594C5
+  endfunction
+
+  augroup AyuColors
+    autocmd!
+    autocmd ColorScheme ayu call AyuCorrections()
+  augroup END
+
+  let ayucolor="mirage" " for mirage version of theme
+  let g:lightline.colorscheme = 'ayu'
+  silent! colorscheme ayu
+endif
+
 if s:theme_to_use == "palenight"
+  function! JsxHtmlItalics() abort
+    highlight!   jsxAttrib ctermfg=180 guifg=#ffcb6b cterm=italic gui=italic
+    highlight!   htmlArg cterm=italic gui=italic
+  endfunction
+
+  augroup PalenightColors
+    autocmd!
+    autocmd ColorScheme palenight call JsxHtmlItalics()
+  augroup END
+
   set background=dark
+  let g:palenight_terminal_italics=1
+  let g:lightline.colorscheme = 'palenight'
   silent! colorscheme palenight
 endif
 
 if s:theme_to_use == "gruvbox"
   set background=dark
   let g:gruvbox_contrast_dark = "medium"
+  let g:lightline.colorscheme = 'gruvbox'
   silent! colorscheme gruvbox
 endif
 
-if has("termguicolors")
-  set termguicolors
-endif
-
-
 " }}}
 
-" {{{ Keybinds
+" Keybinds: {{{
 " ============================================================================ "
-" ===                           KEYBINDS                            === "
+" ===                           KEYBINDS                                   === "
 " ============================================================================ "
 
 " toggle hardtime
-" nnoremap <Leader><Leader>h :HardTimeToggle<CR>
+nnoremap <leader>th :HardTimeToggle<CR>
 " open netwr in vertical split
-nnoremap <Leader>n :Vexplore<CR>
-" turn off search highlight
-" nnoremap <Leader><Leader>, :nohlsearch<CR>
+nnoremap <leader>n :Vexplore<CR>
 " toggle relative line numbering
-" nnoremap <silent> <Leader>r :set invrelativenumber<CR>
-nnoremap <silent> <Leader>tl :set invrelativenumber<CR>
+nnoremap <silent> <leader>tl :set invrelativenumber<CR>
+" toggle all line numbering
+nnoremap <silent> <leader>tL :set invrelativenumber invnumber<CR>
 
 " Shortcuts for saving and quitting
-nnoremap <Leader>q :q<CR>
-nnoremap <Leader>w :w<CR>
-nnoremap <Leader>Q :q!<CR>
-nnoremap <Leader>fs :w<CR>
-nnoremap <Leader>bk :bd<CR>
-nnoremap <Leader>z za<CR>
-" nnoremap <Leader>fo zo<CR>
-" nnoremap <Leader>fc za<CR>
+nnoremap <leader>q :q<CR>
+nnoremap <leader>w :w<CR>
+nnoremap <leader>Q :q!<CR>
+nnoremap <leader>fs :w<CR>
+nnoremap <leader>bk :bd<CR>
+nnoremap <leader>z za<CR>
+" nnoremap <leader>fo zo<CR>
+" nnoremap <leader>fc za<CR>
 
 
 " ==== MOVEMENT ====
@@ -377,10 +476,10 @@ nnoremap <silent> k gk
 
 " Map fzf commands
 nnoremap <C-P> :Files<CR>
-nnoremap <Leader><Leader> :Files<CR>
-nnoremap <Leader>. :Files<CR>
-nnoremap <Leader>bb :Buffers<CR>
-nnoremap <Leader>, :Buffers<CR>
+nnoremap <leader><leader> :Files<CR>
+nnoremap <leader>. :Files %:p:h<CR>
+nnoremap <leader>bb :Buffers<CR>
+nnoremap <leader>, :Buffers<CR>
 nnoremap <leader>h :Helptags<CR>
 nnoremap <leader>/b :BLines<CR>
 nnoremap <leader>/d :Lines<CR>
@@ -391,15 +490,20 @@ nnoremap <leader>/d :Lines<CR>
 
 nnoremap <leader>sr :SignifyRefresh<CR>
 
-nnoremap <Leader><Leader>r :source $MYVIMRC<CR>
+nnoremap <leader>vr :source $MYVIMRC<CR>
+nnoremap <leader>ve :tabedit $MYVIMRC <bar> :lcd $DOTFILES<CR>
+" nnoremap <leader>ve :tabedit $MYVIMRC <bar>
+"       \ :execute "lcd" fnamemodify($MYVIMRC, ":p:h")<CR>
+nnoremap <leader>vo :tabedit $MYVIMRC<CR>
 
 " vim-fugitive mappings
-nnoremap <Leader>gs :Gstatus<CR>
-nnoremap <Leader>gw :Gwrite<CR>
-nnoremap <Leader>gc :Gcommit<CR>
-nnoremap <Leader>gd :Gdiff<CR>
-nnoremap <Leader>gb :Gbrowse<CR>
-vnoremap <Leader>gb :Gbrowse<CR>
+"
+nnoremap <leader>gs :Git<CR>
+nnoremap <leader>gw :Gwrite<CR>
+nnoremap <leader>gc :Git commit<CR>
+nnoremap <leader>gd :Gdiffsplit<CR>
+nnoremap <leader>gb :GBrowse<CR>
+xnoremap <leader>gb :GBrowse<CR>
 
 " }}}
 
@@ -412,7 +516,28 @@ set wildmenu
 set synmaxcol=128
 syntax sync minlines=256
 
+" Performance optimizations:
 set diffopt=internal,algorithm:patience
 set lazyredraw
+
+" Stuff I wanna use:
+" - ,, for emmet
+" - ,<cr> for opening tags
+" - C-Wo for 'only-ing' a window
+" ]b [b for buffers
+" ]l [l from locations (ycm diagnostics)
+
+" Trying to use tabs for projects
+nnoremap <silent> <leader><tab>. :Windows<CR>
+nnoremap <silent> <leader><tab>N :tabnew<CR>
+
+nnoremap <silent> <leader><tab>1 1gt
+nnoremap <silent> <leader><tab>2 2gt
+nnoremap <silent> <leader><tab>3 3gt
+nnoremap <silent> <leader><tab>4 4gt
+nnoremap <silent> <leader><tab>5 5gt
+nnoremap <silent> <leader><tab>6 6gt
+
+nnoremap <silent> <leader><tab>cd :lcd %:p:h<CR>
 
 " vim:foldmethod=marker:foldlevel=0

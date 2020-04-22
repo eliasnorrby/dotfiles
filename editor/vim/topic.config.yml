@@ -4,6 +4,7 @@ vim_config:
   brew_formulas:
     - vim
     - fzf
+    - bat
     - python
   pip_packages:
     - pynvim
