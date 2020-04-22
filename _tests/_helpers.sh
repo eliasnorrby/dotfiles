@@ -10,7 +10,7 @@ function get_complete_list() {
   for topic_file in ${topic_config_files[@]}; do
     local topic_name=${topic_file%/*}
     local topic_name=${topic_name##*/}
-    local topic_values=$(yq r $topic_file "${topic_name}_config.${config_key}" -j | jq -r '.[]')
+    local topic_values=$(yq r $topic_file "${topic_name}_config.${config_key}" -j | jq -r '.[]?')
     values="$values $topic_values"
   done
 

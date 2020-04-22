@@ -38,5 +38,3 @@ if [ "$should_fail" == true ] ; then
   echo "There were problems, check the output above"
   exit 1
 fi
-
-

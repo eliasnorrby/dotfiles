@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DIR="$( cd "$(dirname "${BASH_SORUCE[0]}")" && pwd )"
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}")" && pwd )"
 echo "DIR: $DIR"
 
 echo "Clone doom emacs repo..."
