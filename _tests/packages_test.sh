@@ -4,6 +4,7 @@ SECONDS=0
 echo "Checking to see if all listed npm/pip packages are available"
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}")" && pwd )"
+echo "DIR: $DIR"
 . $DIR/_helpers.sh
 
 npm_packages=$(get_complete_list "npm_packages")
@@ -13,7 +14,7 @@ echo "npm version:"
 npm --version
 echo
 echo "pip version:"
-pip --version
+pip3 --version
 echo
 
 echo "> Checking npm packages..."
@@ -26,7 +27,7 @@ done
 echo "> Checking pip packages..."
 for package in $pip_packages; do
   printf "${package}... "
-  pip search $package > /dev/null
+  pip3 search $package > /dev/null
   [ "$?" == 0 ] && printf " OK \n" || should_fail=true
 done
 
