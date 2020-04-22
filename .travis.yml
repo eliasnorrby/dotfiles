@@ -85,6 +85,16 @@ jobs:
           && (echo 'Idempotence test: pass' && exit 0)
           || (echo 'Idempotence test: fail' && exit 1)
 
+    ## Make sure all brew/npm/pip dependencies are available
+    - stage: packages test
+      language: objective-c
+      osx_image: xcode11
+      install: ./_tests/_setup_tests.sh
+      script:
+        - ./_tests/brew_test.sh
+        - ./_tests/packages_test.sh
+        - ./_tests/post_install_test.sh
+
     ## Test a complete bootstrap
     - stage: bootstrap test
       if: branch = master
@@ -94,6 +104,8 @@ jobs:
         clone: false
       env:
         curl_target: https://raw.githubusercontent.com/eliasnorrby/dotfiles/
+        DO_POST_INSTALL: false
+        ANSIBLE_TAGS: all,setup_homebrew,do_defaults
       before_install:
         # Uninstall existing Homebrew installation.
         - curl -sLO https://raw.githubusercontent.com/Homebrew/install/master/uninstall
@@ -104,7 +116,7 @@ jobs:
         - sudo rm -rf /usr/local/bin/brew
       script:
         - >
-          travis_wait 120
+          travis_wait 50
           bash <(curl -sL ${curl_target}${DOTFILES_VERSION}/bootstrap.sh) | tee test.log && exit "${PIPESTATUS[0]}"
       after_script:
         - sleep 10

@@ -9,14 +9,17 @@
 # There are a number of environment variables you can set prior to
 # running this script in order to customize its behaviour.
 #
-# DOTFILES_VERSION: (master|develop|...)
+# DOTFILES_VERSION=master|develop|... (default: master)
 #   Select which branch to download a snapshot of
-# DO_MAS: (true)
+# DO_MAS=true (default: false)
 #   Enable to install Mac App Store apps. Make sure you log into the
 #   App Store app with your Apple ID first.
-# ASK_PASS: (true)
+# ASK_PASS=true (default: false)
 #   Add the -K (--ask-become-pass) flag to ansible-playbook. This may
 #   or may not be needed to properly install homebrew.
+# DO_POST_INSTALL=false (default: true)
+#   Avoid running the post install script. Mainly used to get around
+#   the time limit for jobs on travis-ci.com.
 #
 # # Extended example:
 #
@@ -29,7 +32,7 @@ if [ -z "$DOTFILES_VERSION" ] ; then
   DOTFILES_VERSION=${1:-master}
 fi
 
-ANSIBLE_TAGS=all,setup_homebrew,do_homebrew,do_packages,do_defaults
+ANSIBLE_TAGS=${ANSIBLE_TAGS:-all,setup_homebrew,do_homebrew,do_packages,do_defaults}
 ANSIBLE_FLAGS=-v
 
 if [ "$DO_MAS" == true ]; then
@@ -40,6 +43,8 @@ if [ "$ASK_PASS" == true ]; then
   # Ask for sudo password (possibly required for homebrew role)
   ANSIBLE_FLAGS="${ANSIBLE_FLAGS} -K"
 fi
+
+DO_POST_INSTALL=${DO_POST_INSTALL:-true}
 
 set -exo pipefail
 
@@ -71,9 +76,11 @@ ansible-galaxy install -r requirements.yml
 _msg "Running the playbook..."
 ansible-playbook playbook.yml --tags "$ANSIBLE_TAGS" "$ANSIBLE_FLAGS"
 
-_msg "Run post-install script..."
-cd $DOTFILES
-./post-install.zsh
+if [ "$DO_POST_INSTALL" == true ] ; then
+  _msg "Run post-install script..."
+  cd $DOTFILES
+  ./post-install.zsh
+fi
 
 _msg "Done!"
 
