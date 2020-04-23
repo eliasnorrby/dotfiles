@@ -116,8 +116,8 @@ jobs:
       script:
         - >
           travis_wait 50
-          bash <(curl -sL ${curl_target}${DOTFILES_VERSION}/bootstrap.sh) | tee test.log && exit "${PIPESTATUS[0]}"
-        - ./_tests/post_install_checks.sh
+          bash <(curl -sL ${curl_target}${DOTFILES_VERSION}/bootstrap.sh) | tee test.log && return "${PIPESTATUS[0]}"
+        - ./_tests/post_install_checks.zsh
       after_script:
         - sleep 10
       after_failure:
