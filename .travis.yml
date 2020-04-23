@@ -96,7 +96,6 @@ jobs:
 
     ## Test bootstrap script (without package installs)
     - stage: bootstrap test
-      if: branch = master
       language: objective-c
       osx_image: xcode11
       git:
