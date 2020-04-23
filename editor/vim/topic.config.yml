@@ -3,6 +3,11 @@ vim_config:
   path: editor/vim
   brew_formulas:
     - vim
+    - fzf
+    - bat
+    - python
+  pip_packages:
+    - pynvim
   links:
     - .vimrc
     - src: .vimrc

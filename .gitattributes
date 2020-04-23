@@ -1,0 +1,6 @@
+# Use LF in repo
+* text=auto
+
+# Remove package-lock.json from diff
+package-lock.json -diff
+

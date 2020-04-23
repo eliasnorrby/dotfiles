@@ -5,6 +5,7 @@ zsh_config:
     # essentials
     - zsh
     - fzf
+    - bat
     - ripgrep
     - coreutils
     - watch
@@ -13,12 +14,14 @@ zsh_config:
     - ssh-copy-id
     # extras
     - jq
+    - yq
     - pandoc
+    # misc
+    - neofetch
   links:
     - .zshrc
     - .zshenv
     - src: .zshenv
       dest: ~/.zshenv
 
-zdotdir: "{{ xdg_config_home }}/zsh"
 zplug_home: "{{ xdg_cache_home }}/zplug"

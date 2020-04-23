@@ -60,7 +60,7 @@ if ! command -v semantic-release-cli >/dev/null 2>&1 ; then
   exit 1
 fi
 
-if [ "$OPT_CHECK_EMPTY" != "false" ] && [ ! $(ls -a1 | wc -l ) -eq 2 ] ; then
+if [[ "$OPT_CHECK_EMPTY" != false ]] && [ ! $(ls -a1 | wc -l ) -eq 2 ] ; then
   echo-fail "Directory is not empty, aborting"
   exit 1
 fi

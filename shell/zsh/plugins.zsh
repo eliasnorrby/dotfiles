@@ -7,7 +7,7 @@ source $ZPLUG_HOME/init.zsh
 # zplug
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
-if [ "$(uname)" = "Darwin" ]; then
+if [[ "$(_os)" == macos ]]; then
   # Directory colors
   zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
   # Suggestions are pretty laggy on ssh connection, try disabling it on remotes

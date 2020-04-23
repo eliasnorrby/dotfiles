@@ -37,7 +37,13 @@ brew update && brew upgrade && brew cleanup | tee $brew_log
 echo-ok "brew updated!"
 echo-info "Wrote logs to $brew_log"
 
-# TODO: brew cask
+# brew casks
+brew_cask_log=$(mktemp)
+echo "$SPACE"
+echo-info "Updating brew casks..."
+brew cask upgrade | tee $brew_cask_log
+echo-ok "brew casks updated!"
+echo-info "Wrote logs to $brew_cask_log"
 
 # emacs
 doom_log=$(mktemp)
@@ -65,6 +71,7 @@ echo-info "Logs available at:"
 echo "  zplug: $zplug_log"
 echo "  vim_plug: $vim_plug_log"
 echo "  brew: $brew_log"
+echo "  brew cask: $brew_cask_log"
 echo "  doom: $doom_log"
 echo "  npm: $npm_log"
 echo-ok "Done!"

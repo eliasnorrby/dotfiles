@@ -11,4 +11,3 @@
         dest: "{{ doom_home }}"
         version: develop
       when: doom.stat.isdir is undefined
-  tags: install

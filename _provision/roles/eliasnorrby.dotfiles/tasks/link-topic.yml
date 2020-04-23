@@ -18,6 +18,15 @@
         state: directory
       when: topic.config.links is defined
 
+    - name: topic should be linked to xdg_config_home
+      file:
+        src: "{{ dotfiles_data }}/keyboard.karabiner.topic"
+        dest: "{{ xdg_config_home + '/' + topic_config_dirname }}"
+        state: link
+      when:
+        - topic.config.link_entire_topic is defined
+        - topic.config.link_entire_topic
+
     - name: link files
       file:
         src: "{{ link_src }}"

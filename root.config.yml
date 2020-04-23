@@ -24,6 +24,9 @@ topics:
     - name: vscode
       state: present
       config: "{{ vscode_config }}"
+    - name: intellij
+      state: present
+      config: "{{ intellij_config }}"
   keyboard:
     - name: fasterkeys
       state: present

@@ -3,13 +3,16 @@
   homebrew_tap:
     tap: "{{ brew_taps }}"
     state: present
+  when: brew_taps | length > 0
 
 - name: install homebrew packages
   homebrew:
     name: "{{ brew_formulas }}"
     state: present
+  when: brew_formulas | length > 0
 
 - name: install homebrew casks
   homebrew_cask:
     name: "{{ brew_casks }}"
     state: present
+  when: brew_casks | length > 0

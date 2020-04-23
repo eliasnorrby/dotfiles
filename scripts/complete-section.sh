@@ -103,7 +103,7 @@ else
   read -p "$BASE_MSG ($EXTENDED_MSG) ($VIM_MSG): " MSG
   if [ -z "$MSG" ] ; then
     MSG=$DEFAULT_MSG
-  elif [ "$MSG" == "v" ] ; then
+  elif [[ "$MSG" == "v" ]] ; then
     OPT_EDIT_MSG=true
     MSG="<to be edited in vim>"
   else
@@ -149,7 +149,7 @@ done
 case $CHOICE in
   [yY]|[yY][eE][sS])
     echo-info "Committing changes"
-    if [ "$OPT_EDIT_MSG" == true ] ; then
+    if [[ "$OPT_EDIT_MSG" == true ]] ; then
       git commit -vem "${DEFAULT_MSG}: "
     else
       git commit -m "$MSG"

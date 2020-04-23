@@ -74,26 +74,36 @@ jobs:
         - "cp tests/test.config.yml ../root.config.local.yml"
 
         # Test the playbook.
-        - "travis_wait 40 ansible-playbook playbook.yml --tags 'all,do_homebrew,do_packages,do_defaults' -v"
+        - "travis_wait 40 ansible-playbook playbook.yml --tags 'all,setup_homebrew,do_homebrew,do_packages,do_defaults' -v"
 
         # Test the playbook's idempotence (but skip homebrew).
         - idempotence=$(mktemp)
-        - "ansible-playbook playbook.yml --tags 'all,do_homebrew,do_packages' | tee -a ${idempotence}"
+        - "ansible-playbook playbook.yml --tags 'all,setup_homebrew,do_homebrew,do_packages' | tee -a ${idempotence}"
         - >
           tail -n 50 ${idempotence}
           | grep -q 'changed=0.*failed=0'
           && (echo 'Idempotence test: pass' && exit 0)
           || (echo 'Idempotence test: fail' && exit 1)
 
-    ## Test a complete bootstrap
+    ## Make sure all brew/npm/pip dependencies are available
+    - stage: packages test
+      language: objective-c
+      osx_image: xcode11
+      install: ./_tests/_setup_tests.sh
+      script:
+        - ./_tests/brew_test.sh
+        - ./_tests/packages_test.sh
+
+    ## Test bootstrap script (without package installs)
     - stage: bootstrap test
-      if: branch = master
       language: objective-c
       osx_image: xcode11
       git:
         clone: false
       env:
         curl_target: https://raw.githubusercontent.com/eliasnorrby/dotfiles/
+        DO_POST_INSTALL: false
+        ANSIBLE_TAGS: all,setup_homebrew,do_defaults
       before_install:
         # Uninstall existing Homebrew installation.
         - curl -sLO https://raw.githubusercontent.com/Homebrew/install/master/uninstall
@@ -105,7 +115,12 @@ jobs:
       script:
         - >
           travis_wait 50
-          bash <(curl -sL ${curl_target}${DOTFILES_VERSION}/bootstrap.sh)
+          bash <(curl -sL ${curl_target}${DOTFILES_VERSION}/bootstrap.sh) | tee test.log && return "${PIPESTATUS[0]}"
+      after_script:
+        - sleep 10
+      after_failure:
+        - "[ -f test.log ] && cat test.log && sleep 10"
+        - echo "== End of test log =="
 
     ## Release
     - stage: release

@@ -29,8 +29,8 @@ gem_packages: []
 npm_packages: []
 pip_packages: []
 
-# Glob pattern to ansible task files to run after all other tasks are finished.
-post_provision_tasks: []
+# Glob pattern to ansible task files to run
+topic_tasks: []
 
 # my stuff
 xdg_config_home: "~/.config"

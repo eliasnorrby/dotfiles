@@ -6,7 +6,7 @@ function chrome() {
   cols=$(( COLUMNS / 3 ))
   sep='{::}'
 
-  if [ "$(uname)" = "Darwin" ]; then
+  if [[ "$(_os)" == macos ]]; then
     google_history="$HOME/Library/Application Support/Google/Chrome/Default/History"
     open=open
   else

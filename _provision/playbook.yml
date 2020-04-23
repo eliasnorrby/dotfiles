@@ -19,7 +19,7 @@
     - role: eliasnorrby.dotfiles
       tags: ["dotfiles", "bootstrap"]
     - role: geerlingguy.homebrew
-      tags: ["never", "do_homebrew", "bootstrap"]
+      tags: ["never", "setup_homebrew", "bootstrap"]
     - role: geerlingguy.mas
       tags: ["never", "do_mas", "bootstrap"]
 
@@ -30,9 +30,3 @@
       tags: ["never", "do_packages", "bootstrap"]
     - include_tasks: tasks/osx-defaults.yml
       tags: ["never", "do_defaults", "bootstrap"]
-
-    - name: run configured post-provision ansible task files
-      include_tasks: "{{ outer_item }}"
-      loop: "{{ post_provision_tasks | default(omit) }}"
-      loop_control:
-        loop_var: outer_item

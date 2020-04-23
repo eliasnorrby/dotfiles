@@ -11,4 +11,3 @@
         dest: "{{ zplug_home }}"
         version: master
       when: zplug.stat.isdir is undefined
-  tags: install

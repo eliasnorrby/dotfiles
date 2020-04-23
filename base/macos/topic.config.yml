@@ -29,7 +29,7 @@ macos_config:
     - font-mononoki-nerd-font
     - font-robotomono-nerd-font
     - font-source-code-pro
-    - font-sourcecodepro-nerd-font
+    - font-saucecodepro-nerd-font
   mas_apps:
     - id: 950297057
       name: "FuzzyTime"
