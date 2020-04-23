@@ -14,7 +14,7 @@ code --version
 [ "$?" = 0 ] || should_fail=true
 echo
 
-if [ "$should_fail" = true ] ; then
+if [[ "$should_fail" = true ]]; then
   echo "There were problems, check the output above"
   exit 1
 fi

@@ -21,20 +21,20 @@ echo "> Checking npm packages..."
 for package in $npm_packages; do
   printf "${package}... "
   npm info $package > /dev/null
-  [ "$?" == 0 ] && printf " OK \n" || should_fail=true
+  [ $? -eq 0 ] && printf " OK \n" || should_fail=true
 done
 
 echo "> Checking pip packages..."
 for package in $pip_packages; do
   printf "${package}... "
   pip3 search $package > /dev/null
-  [ "$?" == 0 ] && printf " OK \n" || should_fail=true
+  [ $? -eq 0 ] && printf " OK \n" || should_fail=true
 done
 
 ELAPSED="$(($SECONDS / 3600))hrs $((($SECONDS / 60) % 60))min $(($SECONDS % 60))sec"
 echo "Check completed in $ELAPSED"
 
-if [ "$should_fail" == true ] ; then
+if [[ "$should_fail" == true ]] ; then
   echo "There were problems, check the output above"
   exit 1
 fi

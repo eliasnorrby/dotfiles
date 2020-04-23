@@ -28,18 +28,18 @@
 
 SECONDS=0
 
-if [ -z "$DOTFILES_VERSION" ] ; then
+if [ -z "$DOTFILES_VERSION" ]; then
   DOTFILES_VERSION=${1:-master}
 fi
 
 ANSIBLE_TAGS=${ANSIBLE_TAGS:-all,setup_homebrew,do_homebrew,do_packages,do_defaults}
 ANSIBLE_FLAGS=-v
 
-if [ "$DO_MAS" == true ]; then
+if [[ "$DO_MAS" == true ]]; then
   ANSIBLE_TAGS="${ANSIBLE_TAGS},do_mas"
 fi
 
-if [ "$ASK_PASS" == true ]; then
+if [[ "$ASK_PASS" == true ]]; then
   # Ask for sudo password (possibly required for homebrew role)
   ANSIBLE_FLAGS="${ANSIBLE_FLAGS} -K"
 fi
@@ -76,7 +76,7 @@ ansible-galaxy install -r requirements.yml
 _msg "Running the playbook..."
 ansible-playbook playbook.yml --tags "$ANSIBLE_TAGS" "$ANSIBLE_FLAGS"
 
-if [ "$DO_POST_INSTALL" == true ] ; then
+if [[ "$DO_POST_INSTALL" == true ]]; then
   _msg "Run post-install script..."
   cd $DOTFILES
   ./post-install.zsh

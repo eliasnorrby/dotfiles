@@ -17,7 +17,7 @@ if ! [ -z "$brew_taps" ] ; then
   for tap in ${brew_taps[@]}; do
     printf "${tap}... "
     brew tap $tap > /dev/null
-    [ "$?" == 0 ] && printf " OK \n" || should_fail=true
+    [ $? -eq 0 ] && printf " OK \n" || should_fail=true
   done
 else
   echo "None found"
@@ -29,14 +29,14 @@ echo "> Checking brew formulae..."
 #   printf "Checking ${formula}..."
 #   brew info $formula > /dev/null
 #   # echo "works" > /dev/null
-#   [ "$?" == 0 ] && printf " OK \n" || should_fail=true
+#   [ $? -eq 0 ] && printf " OK \n" || should_fail=true
 # done
 
 if ! [ -z "$brew_formulae" ] ; then
   echo "$brew_formulae" | tr ' ' '\n'
   echo
   brew info $brew_formulae > /dev/null
-  [ "$?" == 0 ] && printf " OK \n" || should_fail=true
+  [ $? -eq 0 ] && printf " OK \n" || should_fail=true
 else
   echo "None found"
 fi
@@ -47,14 +47,14 @@ echo "> Checking brew casks.."
 #   printf "Checking ${cask}..."
 #   brew cask info $cask > /dev/null
 #   # echo "broken" && false > /dev/null
-#   [ "$?" == 0 ] && printf " OK \n" || should_fail=true
+#   [ $? -eq 0 ] && printf " OK \n" || should_fail=true
 # done
 
 if ! [ -z "$brew_casks" ] ; then
   echo "$brew_casks" | tr ' ' '\n'
   echo
   brew cask info $brew_casks > /dev/null
-  [ "$?" == 0 ] && printf " OK \n" || should_fail=true
+  [ $? -eq 0 ] && printf " OK \n" || should_fail=true
 else
   echo "None found"
 fi
@@ -63,7 +63,7 @@ echo
 ELAPSED="$(($SECONDS / 3600))hrs $((($SECONDS / 60) % 60))min $(($SECONDS % 60))sec"
 echo "Check completed in $ELAPSED"
 
-if [ "$should_fail" == true ] ; then
+if [[ "$should_fail" == true ]] ; then
   echo "There were problems, check brew's output above"
   exit 1
 fi

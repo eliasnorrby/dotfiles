@@ -108,7 +108,7 @@ function git_header {
   printf " %4s " "MOD"
   printf " %4s " "DEL"
   printf " %4s " "UNT"
-  if [ "$OPT_CHECK_REMOTE" == true ] ; then
+  if [[ "$OPT_CHECK_REMOTE" == true ]] ; then
     printf " %4s " "REM"
     printf " %4s " "CA"
     printf " %4s " "CB"
@@ -133,13 +133,13 @@ function print_git_stats {
     return
   fi
 
-  if [ "$OPT_CHECK_REMOTE" == true ] ; then
+  if [[ "$OPT_CHECK_REMOTE" == true ]] ; then
     local REMOTE=$(git remote)
     if [ -z "$REMOTE" ] ; then
       echo-remote-missing
       echo-skip
       echo-skip
-    elif [ "$OFFLINE" == true ] || { [ "$OPT_FETCH" == true ] && ! git fetch > /dev/null 2>&1 ; } ; then
+    elif [[ "$OFFLINE" == true ]] || { [[ "$OPT_FETCH" == true ]] && ! git fetch > /dev/null 2>&1 ; } ; then
       OFFLINE=true
       echo-remote-offline
       echo-skip
@@ -164,7 +164,7 @@ function print_git_stats {
   set -e
 }
 
-if [ ! "$OPT_LIST_ONLY" == true ] ; then
+if [[ ! "$OPT_LIST_ONLY" == true ]] ; then
   git_header
 fi
 for dir in ${DIR_LIST[@]}; do
@@ -189,25 +189,25 @@ for dir in ${DIR_LIST[@]}; do
   for repo in ${REPOS[@]}; do
 
     cd $repo
-    if [ "$OPT_LIST_ALL" == true ] || ! git diff-index --quiet HEAD -- 2>/dev/null; then
+    if [[ "$OPT_LIST_ALL" == true ]] || ! git diff-index --quiet HEAD -- 2>/dev/null; then
       NAME="${repo##*/}"
       REPO_PATH="${repo/$HOME/\~}"
       PARENT="${REPO_PATH/$NAME/}"
-      if [ ! "$OPT_LIST_ONLY" == true ] ; then
+      if [[ ! "$OPT_LIST_ONLY" == true ]] ; then
         print_git_stats
       fi
       echo-gray $PARENT
       echo-orange $NAME
 
-      if [ "$OPT_SHOW_BRANCH" == true ] ; then
+      if [[ "$OPT_SHOW_BRANCH" == true ]] ; then
         print_git_branch
       fi
 
       echo # Need a new line after printfs
 
-      if [ "$OPT_STATS" == true ] ; then
+      if [[ "$OPT_STATS" == true ]] ; then
         git diff --shortstat
-      elif [ "$OPT_LONG_STATS" == true ] ; then
+      elif [[ "$OPT_LONG_STATS" == true ]] ; then
         git diff --stat --stat-width=80 --stat-name-width=40
       fi
     fi
