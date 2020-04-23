@@ -1,3 +1,61 @@
+# [2.0.0](https://github.com/eliasnorrby/dotfiles/compare/v1.4.0...v2.0.0) (2020-04-23)
+
+
+### Bug Fixes
+
+* **fonts:** rename sourcecodepro nerd font ([b0fb15c](https://github.com/eliasnorrby/dotfiles/commit/b0fb15c863405d94f24cac4fed7c84e49f56abe4)), closes [Homebrew/homebrew-cask-fonts#1992](https://github.com/Homebrew/homebrew-cask-fonts/issues/1992)
+* **provision:** make topic_tasks default to [] ([615173d](https://github.com/eliasnorrby/dotfiles/commit/615173d81a55d02f28db79a17829a5417765e2c7))
+* **provision:** only do brew tasks if lists have items ([6e70efe](https://github.com/eliasnorrby/dotfiles/commit/6e70efe8fec7b7ae0722cad8e4f338bd69d884eb))
+* **provision:** properly filter topic tasks based ([200151c](https://github.com/eliasnorrby/dotfiles/commit/200151cb17c3e0b004c3fd60038448b889e48188))
+* **tmux:** make clipboard work again ([13d7b60](https://github.com/eliasnorrby/dotfiles/commit/13d7b602666d6b553ef6d3b049ce737969d52252))
+
+
+### Code Refactoring
+
+* **provision:** revamp topic_tasks ([6955cf7](https://github.com/eliasnorrby/dotfiles/commit/6955cf7ee1f0b85fff4b68a5b27648e488261787)), closes [#20](https://github.com/eliasnorrby/dotfiles/issues/20)
+
+
+### Features
+
+* **editor:** add intellij topic ([5d9157d](https://github.com/eliasnorrby/dotfiles/commit/5d9157d14e888f94b4f3dea9ed80a5b3b908d3e0))
+* **editor:** add settings to vscode topic ([a82638d](https://github.com/eliasnorrby/dotfiles/commit/a82638d2a7cda4c14f61d3bc57cbe9bc84e4a1b0))
+* **intellij:** add easymotion ([ad0f64c](https://github.com/eliasnorrby/dotfiles/commit/ad0f64cae498be3d85c15d660dbe83a09d7a7c5d))
+* **intellij:** add keybinding for git blame ([5dd5f47](https://github.com/eliasnorrby/dotfiles/commit/5dd5f47ffe754a6103c4d64ba57b83f07f04a005))
+* **intellij:** add keybinding for moving statements ([a4715d1](https://github.com/eliasnorrby/dotfiles/commit/a4715d198a16c6800b5ea9d4c3060b485cc5a54b))
+* **intellij:** add keybindings for debugging ([0d718cf](https://github.com/eliasnorrby/dotfiles/commit/0d718cfce4425647cf16dfc55106c3a20312c51a))
+* **karabiner:** add mappings for Ducky One 2 mini ([d8f75e0](https://github.com/eliasnorrby/dotfiles/commit/d8f75e054d34d4d34f898a2e5c9d47a9eea299ff))
+* **keyboard:** add backspace toggle ([01f6a94](https://github.com/eliasnorrby/dotfiles/commit/01f6a94c0f44c5c876968caf2fce86d02379d77f))
+* **prov:** add option to link entire topic dir ([5a9396e](https://github.com/eliasnorrby/dotfiles/commit/5a9396eec9bbbaaf7e6b5feded87232ff00d910c))
+* **provision:** add 'setup_homebrew' tag ([60de319](https://github.com/eliasnorrby/dotfiles/commit/60de319ab9d30567b13727997848a62b2bb8a4b4))
+* **provision:** add env var config to bootstrap ([f49e63f](https://github.com/eliasnorrby/dotfiles/commit/f49e63f1b2167a4190a8e701381f63abbbe87638))
+* **provision:** add tags to post_provision ([5f578f7](https://github.com/eliasnorrby/dotfiles/commit/5f578f7399aa74dccaf1a0a96e77170c117e7169))
+* **vscode:** add install script for plugins ([d970d55](https://github.com/eliasnorrby/dotfiles/commit/d970d55283c27e14bfac19f72a7c47c6485ef48f))
+
+
+### BREAKING CHANGES
+
+* **provision:** removes the 'do_post_provision' tag.
+
+Tasks kept in `topic.tasks.yaml` files, previously known as
+'post_provision_tasks' are now refered to as 'topic_tasks'. They are
+executed immediately after the files are sourced, i.e. in the
+eliasnorrby/dotfiles role, rather than as the last step of the playbook.
+
+Tasks are only run if their corresponding topic is enabled. The check
+for this is rather cumbersome, but is the best I could find at this
+time.
+
+```
+ # breaks if shell/zsh is undefined
+when: topics.shell.zsh.state == "present"
+ # requires installing jmespath
+when: topics | json_query('shell.zsh.state') == "present"
+ # works
+when:
+  - topics.shell.zsh is defined
+  - topics.shell.zsh.state == "present"
+```
+
 # [1.4.0](https://github.com/eliasnorrby/dotfiles/compare/v1.3.0...v1.4.0) (2020-02-25)
 
 
