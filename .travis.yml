@@ -94,7 +94,7 @@ jobs:
         - ./_tests/brew_test.sh
         - ./_tests/packages_test.sh
 
-    ## Test a complete bootstrap
+    ## Test bootstrap script (without package installs)
     - stage: bootstrap test
       if: branch = master
       language: objective-c
@@ -117,7 +117,6 @@ jobs:
         - >
           travis_wait 50
           bash <(curl -sL ${curl_target}${DOTFILES_VERSION}/bootstrap.sh) | tee test.log && return "${PIPESTATUS[0]}"
-        - ./_tests/post_install_checks.zsh
       after_script:
         - sleep 10
       after_failure:
