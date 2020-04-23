@@ -3,7 +3,7 @@
 echo "> Installing test dependencies..."
 
 brew_taps=(
-  d12frosted/emacs-plus
+  # add taps if needed
 )
 
 brew_formulae=(
@@ -12,23 +12,28 @@ brew_formulae=(
   vim
   jq
   yq
-  emacs-plus
 )
 
 brew_casks=(
-  visual-studio-code
+  # add casks if needed
 )
 
-echo ">> Tap brew taps..."
-for tap in ${brew_taps[@]}; do
-  brew tap $tap
-done
-echo
+if [ ! -z "$brew_taps" ] ; then
+  echo ">> Tap brew taps..."
+  for tap in ${brew_taps[@]}; do
+    brew tap $tap
+  done
+  echo
+fi
 
-echo ">> Install brew formulae..."
-brew install ${brew_formulae[@]}
-echo
+if [ ! -z "$brew_formulae" ] ; then
+  echo ">> Install brew formulae..."
+  brew install ${brew_formulae[@]}
+  echo
+fi
 
-echo ">> Install brew casks..."
-brew cask install ${brew_casks[@]}
-echo
+if [ ! -z "$brew_casks" ] ; then
+  echo ">> Install brew casks..."
+  brew cask install ${brew_casks[@]}
+  echo
+fi

@@ -93,7 +93,6 @@ jobs:
       script:
         - ./_tests/brew_test.sh
         - ./_tests/packages_test.sh
-        - ./_tests/post_install_test.sh
 
     ## Test a complete bootstrap
     - stage: bootstrap test
@@ -118,6 +117,7 @@ jobs:
         - >
           travis_wait 50
           bash <(curl -sL ${curl_target}${DOTFILES_VERSION}/bootstrap.sh) | tee test.log && exit "${PIPESTATUS[0]}"
+        - ./_tests/post_install_checks.sh
       after_script:
         - sleep 10
       after_failure:
