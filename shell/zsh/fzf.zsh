@@ -72,7 +72,7 @@ fgr() {
 
   if [[ -n $file ]]
   then
-     vim $file +$line
+     nvim $file +$line
   fi
 }
 
