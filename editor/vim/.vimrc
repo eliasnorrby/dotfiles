@@ -355,9 +355,26 @@ endfunction
 "   return ''
 " endfunction
 
+" autocmd VimEnter * call SetupLightlineColors()
+function SetupLightlineColors() abort
+  " transparent background in statusbar
+  let l:palette = lightline#palette()
+
+  let l:palette.normal.middle = [ [ 'NONE', 'NONE', 'NONE', 'NONE' ] ]
+  let l:palette.insert.middle = l:palette.normal.middle
+  let l:palette.visual.middle = l:palette.normal.middle
+  let l:palette.inactive.middle = l:palette.normal.middle
+  let l:palette.tabline.middle = l:palette.normal.middle
+
+  call lightline#colorscheme()
+endfunction
+
 function! LightlineReload() abort
   call lightline#init()
   call lightline#colorscheme()
+
+  call SetupLightlineColors()
+
   call lightline#update()
 endfunction
 
