@@ -6,6 +6,7 @@ git_config:
     - ignore
   brew_formulas:
     - git
+    - tig
     - hub
     - diff-so-fancy
     # git-flow-avh
