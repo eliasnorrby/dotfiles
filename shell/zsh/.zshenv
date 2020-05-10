@@ -34,6 +34,7 @@ if [[ "$(_os)" == "macos" ]]; then
   # FIXME: No, appearently I don't. Is it for gnu ls?
   # FIXME: I need it to do readlink -f
   path=( /usr/local/opt/coreutils/libexec/gnubin $path )
+  path=( /usr/local/mysql/bin $path )
 
   path=( ~/bin $path )
 fi
