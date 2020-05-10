@@ -17,19 +17,21 @@ nnoremap <space> <nop>
 if has('nvim')
   set runtimepath^=~/.vim runtimepath+=~/.vim/after
   let &packpath = &runtimepath
+  " set fcs=eob:\
+  set inccommand=nosplit
 endif
 
-" Plugins: {{{
+" Plugins: {{{1
 " ============================================================================ "
 " ===                           PLUGINS                                    === "
 " ============================================================================ "
 
 " Download vimplug if not already installed
-if empty(glob($VIM_DIR.'/autoload/plug.vim'))
-  silent !curl -sfLo $VIM_DIR/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
+" if empty(glob($VIM_DIR.'/autoload/plug.vim'))
+"   silent !curl -sfLo $VIM_DIR/autoload/plug.vim --create-dirs
+"     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+" endif
 
 call plug#begin($XDG_DATA_HOME.'/vim/plugged')
 
@@ -40,6 +42,10 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-abolish'
 Plug 'raimondi/delimitmate'
 Plug 'mattn/emmet-vim'
+
+Plug 'tommcdo/vim-exchange'
+Plug 'machakann/vim-highlightedyank'
+Plug 'junegunn/vim-easy-align'
 
 " Config:
 Plug 'editorconfig/editorconfig-vim'
@@ -77,8 +83,8 @@ Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 
 " Tmux_integration:
-Plug 'christoomey/vim-tmux-navigator'
-" Plug 'benmills/vimux'
+" Plug 'christoomey/vim-tmux-navigator'
+Plug 'benmills/vimux'
 
 " Colorschemes:
 Plug 'morhetz/gruvbox'
@@ -103,27 +109,31 @@ Plug 'ycm-core/YouCompleteMe', {
 
 call plug#end()
 
-" Setings: easymotion {{{
+" Settings: vim-highlightedyank {{{2
+let g:highlightedyank_highlight_duration = 100
+
+" Settings: vim-unimpaired {{{2
+xmap K [egv
+xmap J ]egv
+
+" Setings: easymotion {{{2
 map gs <Plug>(easymotion-prefix)
 map gs<space> <Plug>(easymotion-sn)
-" }}}
 
-" Settings: tmux-navigator {{{
-let g:tmux_navigator_disable_when_zoomed = 1
-" }}}
+" Settings: tmux-navigator {{{2
+" let g:tmux_navigator_disable_when_zoomed = 1
 
-" Settings: vim-hardtime {{{
+" Settings: vim-hardtime {{{2
 let g:hardtime_default_on = 0
-let g:hardtime_showmsg = 1
-let g:hardtime_maxcount = 1
+let g:hardtime_showmsg = 0
+let g:hardtime_maxcount = 2
 let g:hardtime_allow_different_key = 1
 let g:list_of_insert_keys = ["<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
 let g:list_of_disabled_keys = ["<BS>"]
 
 nnoremap <leader>th :HardTimeToggle<CR>
-" }}}
 
-" Settings: vim-prettier {{{
+" Settings: vim-prettier {{{2
 let g:prettier#autoformat = 0
 nnoremap <leader>ff :PrettierAsync<CR>
 " Format certain files on save
@@ -131,30 +141,30 @@ nnoremap <leader>ff :PrettierAsync<CR>
 "   autocmd!
 "   autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.vue,*.yaml,*.html PrettierAsync
 " augroup END
-" }}}
 
-" Settings: vim-polyglot {{{
+" Settings: vim-polyglot {{{2
 " let g:jsx_ext_required = 1
+let g:vim_markdown_frontmatter = 1
 augroup FiletypeCorrections
   autocmd!
   autocmd BufReadPost,BufNewFile tsconfig.json set filetype=jsonc
 augroup END
-" }}}
 
-" Settings: vim-signify {{{
+" Settings: vim-css-color {{{2
+nnoremap <silent> <leader>tc :call css_color#toggle()<CR>
+
+" Settings: vim-signify {{{2
 let g:signify_sign_change = '~'
 let g:signify_disable_by_default = 1
 
 nnoremap <silent> <leader>tsh :SignifyToggleHighlight<CR>
 nnoremap <silent> <leader>tS :SignifyToggle<CR>
 nnoremap <silent> <leader>sr :SignifyRefresh<CR>
-" }}}
 
-" Settings: delimitmate {{{
+" Settings: delimitmate {{{2
 let delimitMate_expand_cr=1
-" }}}
 
-" Settings: emmet-vim {{{
+" Settings: emmet-vim {{{2
 let g:user_emmet_mode='inv'
 let g:user_emmet_leader_key=','
 " Effortlessly indents new block elements, but breaks wrapping
@@ -164,33 +174,39 @@ let g:user_emmet_leader_key=','
 " \   }
 " \ }
 inoremap ,; <CR><C-o>==<C-o>O
-" }}}
 
-" Settings: fzf-vim {{{
+" Settings: fzf-vim {{{2
+" let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.7 } }
+
+if has('nvim') && !exists('g:fzf_layout')
+  autocmd! FileType fzf
+  autocmd  FileType fzf set laststatus=0
+    \| autocmd BufLeave <buffer> set laststatus=2
+endif
+
 " Show a preview window during file selection
 command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
-nnoremap <C-P> :Files<CR>
-nnoremap <leader><leader> :Files<CR>
-nnoremap <leader>. :Files %:p:h<CR>
-nnoremap <leader>P :Files! %:p:h<CR>
-nnoremap <leader>bb :Buffers<CR>
-nnoremap <leader>bn :bnext<CR>
-nnoremap <leader>bp :bprevious<CR>
-nnoremap <leader>, :Buffers<CR>
-nnoremap <leader>h :Helptags<CR>
-nnoremap <leader>/b :BLines<CR>
-nnoremap <leader>/d :Lines<CR>
-nnoremap <leader>/p :Rg<CR>
+nnoremap <silent> <C-P> :Files<CR>
+nnoremap <silent> <leader><leader> :Files<CR>
+nnoremap <silent> <leader>. :Files %:p:h<CR>
+nnoremap <silent> <leader>P :Files! %:p:h<CR>
+nnoremap <silent> <leader>bb :Buffers<CR>
+nnoremap <silent> <leader>bn :bnext<CR>
+nnoremap <silent> <leader>bp :bprevious<CR>
+nnoremap <silent> <leader>, :Buffers<CR>
+nnoremap <silent> <leader>h :Helptags<CR>
+nnoremap <silent> <leader>/b :BLines<CR>
+nnoremap <silent> <leader>/d :Lines<CR>
+nnoremap <silent> <leader>// :Rg<CR>
 
 nnoremap <leader>;m :Marks<CR>
 nnoremap <leader>;sh :History/<CR>
 nnoremap <leader>;ch :History:<CR>
 
-" }}}
 
-" Settings: ALE {{{
+" Settings: ALE {{{2
 let g:ale_fixers = {
       \ 'javascript': ['eslint'],
       \ 'typescript': ['eslint'],
@@ -226,9 +242,8 @@ endfunction
 nnoremap <silent> <leader>td :call ToggleALEGui()<CR>
 nnoremap <silent> <leader>tA :ALEToggle<CR>
 " nnoremap <silent> <leader>cf :ALEFix<CR>
-" }}}
 
-" Settings: YouCompleteMe {{{
+" Settings: YouCompleteMe {{{2
 " ALE in quickfix
 " YCM in location list
 let g:ycm_always_populate_location_list = 1
@@ -240,7 +255,7 @@ let g:ycm_enable_diagnostic_highlighting = 0
 
 augroup load_ycm
     autocmd!
-    autocmd CursorHold * call plug#load('YouCompleteMe') | autocmd! load_ycm
+    autocmd CursorHold *.ts,*.tsx,*.js,*.jsx call plug#load('YouCompleteMe') | autocmd! load_ycm
 augroup END
 
 nnoremap <silent> gd :YcmCompleter GoTo<CR>
@@ -250,32 +265,27 @@ nnoremap <silent> <leader>cf :YcmCompleter FixIt<CR>
 nnoremap <silent> <leader>sd :YcmDiags<CR>
 nnoremap <silent> ge :YcmShowDetailedDiagnostic<CR>
 nnoremap <silent> gh :YcmCompleter GetType<CR>
-" }}}
 
-" Settings: UltiSnips {{{
+" Settings: UltiSnips {{{2
 let g:UltiSnipsExpandTrigger=";s"
 let g:UltiSnipsJumpForwardTrigger=";n"
 let g:UltiSnipsJumpBackwardTrigger=";N"
-" }}}
 
-" Settings: editorconfig {{{
+" Settings: editorconfig {{{2
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
-" }}}
 
-" Settings: quick-scope {{{
+" Settings: quick-scope {{{2
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
-" }}}
 
-" Settings: vim-fugitive {{{
+" Settings: vim-fugitive {{{2
 nnoremap <leader>gg :Git<CR>
 nnoremap <leader>gw :Gwrite<CR>
 nnoremap <leader>gc :Git commit -v<CR>
 nnoremap <leader>gd :Gdiffsplit<CR>
 nnoremap <leader>gb :GBrowse<CR>
 xnoremap <leader>gb :GBrowse<CR>
-" }}}
 
-" Settings: lightline {{{
+" Settings: lightline {{{2
 let g:lightline = {
   \ 'active': {
   \   'left': [ [ 'mode', 'paste' ],
@@ -382,18 +392,15 @@ augroup LightlineRefresh
   autocmd!
   autocmd ColorScheme * call LightlineReload()
 augroup END
-" }}}
 
-" }}}
 
-" Searching: {{{
+" Searching: {{{1
 set nohlsearch
 set incsearch
 set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
 nnoremap <leader>/p :silent grep<space>
-" }}}
 
-" Editing_options: {{{
+" Editing_options: {{{1
 " ============================================================================ "
 " ===                           EDITING OPTIONS                            === "
 " ============================================================================ "
@@ -420,9 +427,8 @@ augroup GitSpelling
   autocmd!
   autocmd Filetype gitcommit setlocal spell textwidth=72
 augroup END
-" }}}
 
-" UI: {{{
+" UI: {{{1
 " ============================================================================ "
 " ===                                UI                                    === "
 " ============================================================================ "
@@ -454,6 +460,10 @@ if has("termguicolors")
   set termguicolors
 endif
 
+function! NoTildes() abort
+  highlight! EndOfBuffer ctermfg=NONE ctermbg=NONE guifg=NONE guibg=NONE
+endfunction
+
 function! TransparentBg() abort
   highlight! Normal ctermbg=NONE guibg=NONE
   highlight! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
@@ -471,14 +481,19 @@ endfunction
 
 function! PalenightSetup() abort
   set background=dark
-  let g:palenight_terminal_italics = 1
+  if has('nvim')
+    let g:palenight_terminal_italics = 1
+  endif
   let g:lightline.colorscheme = 'palenight'
 endfunction
 augroup PalenightColors
   autocmd!
   autocmd ColorSchemePre palenight call PalenightSetup()
   autocmd ColorScheme palenight call TransparentBg()
-  autocmd ColorScheme palenight call JsxHtmlItalics()
+  autocmd ColorScheme palenight call NoTildes()
+  if has('nvim')
+    autocmd ColorScheme palenight call JsxHtmlItalics()
+  endif
   autocmd ColorScheme palenight call JsObjectColors()
 augroup END
 
@@ -503,9 +518,8 @@ endif
 
 execute 'colorscheme' s:theme_to_use
 
-" }}}
 
-" Keybinds: {{{
+" Keybinds: {{{1
 " ============================================================================ "
 " ===                           KEYBINDS                                   === "
 " ============================================================================ "
@@ -560,8 +574,8 @@ nnoremap <silent> <leader>cc :cclose<CR>
 nnoremap <silent> <leader>LL :ll<CR>
 nnoremap <silent> <leader>CC :cc<CR>
 
-" }}}
 
+" Experimenting: {{{1
 " ============================================================================ "
 " ===                         EXPERIMENTING                                === "
 " ============================================================================ "
@@ -580,7 +594,11 @@ set lazyredraw
 " - ,<cr> for opening tags
 " - C-Wo for 'only-ing' a window
 " ]b [b for buffers
-" ]l [l from locations (ycm diagnostics)
+" ]l [l for locations (ycm diagnostics)
+" ]q [q for quickfix
+" zj zk for next/previous fold
+" @: to replay previous command
+" q: to use command window
 
 " Trying to use tabs for projects
 nnoremap <silent> <leader><tab>. :Windows<CR>
