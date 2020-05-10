@@ -21,8 +21,8 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 export FZF_DEFAULT_OPTS='
   --prompt "λ: "
-  --color fg:7,bg:0,hl:3,fg+:15,bg+:0,hl+:4
-  --color info:7,prompt:4,spinner:6,pointer:4,marker:4,gutter:0
+  --color fg:7,bg:-1,hl:3,fg+:15,bg+:-1,hl+:4
+  --color info:7,prompt:4,spinner:6,pointer:4,marker:4,gutter:-1
 '
 
 # Use fzf for z
