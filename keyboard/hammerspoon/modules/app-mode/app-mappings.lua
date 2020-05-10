@@ -12,8 +12,11 @@ return {
   { 'm', 'Gmail'},                 -- "M" for "Mail"
   { 'q', 'MySQLWorkbench'},        -- "Q" for "sQl"
   { 'n', 'Postman'},
-  { 'w', 'MacVim'},                -- "W" for "Wiki"
+  -- { 'w', 'MacVim'},                -- "W" for "Wiki"
   { 'i', 'IntelliJ IDEA CE'},      -- "I" for "IntelliJ"
   { 'u', 'Spotify' },              -- "U" for some reason
   { 'x', 'Firefox Developer Edition' },
+  -- { 'u', 'Microsoft PowerPoint' },
+  { 'a', 'Microsoft Teams' },
+  { 'z', 'Slack' },
 }
