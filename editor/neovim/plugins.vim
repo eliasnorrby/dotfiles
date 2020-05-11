@@ -45,6 +45,7 @@ Plug 'itchyny/vim-gitbranch'
 runtime plugins.d/tpope/vim-unimpaired.vim
 runtime plugins.d/easymotion/vim-easymotion.vim
 runtime plugins.d/unblevable/quick-scope.vim
+Plug 'justinmk/vim-sneak'
 
 " Git:
 runtime plugins.d/tpope/vim-fugitive.vim
