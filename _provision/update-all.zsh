@@ -25,7 +25,7 @@ echo-info "Wrote logs to $zplug_log"
 vim_plug_log=$(mktemp)
 echo "$SPACE"
 echo-info "Updating vim-plug plugins..."
-vim +'PlugInstall --sync' +PlugUpdate +PlugUpgrade +qall | tee $vim_plug_log
+nvim +'PlugInstall --sync' +PlugUpdate +PlugUpgrade +qall | tee $vim_plug_log
 echo-ok "vim-plug updated!"
 echo-info "Wrote logs to $vim_plug_log"
 
