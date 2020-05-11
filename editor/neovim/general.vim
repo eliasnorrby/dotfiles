@@ -1,0 +1,32 @@
+syntax enable " enable syntax processing
+
+set nohlsearch
+set incsearch
+set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
+set inccommand=nosplit
+
+set hidden
+set updatetime=300
+set clipboard=unnamed
+set smartcase ignorecase
+set ttimeoutlen=10
+
+set noswapfile
+set nobackup
+set undofile undodir=~/.vimtmp/undo//
+if !isdirectory(expand(&undodir))
+    call mkdir(expand(&undodir), "p")
+endif
+
+set tabstop=8 softtabstop=2 expandtab shiftwidth=2 autoindent
+set linebreak
+
+set autoread
+set backspace=indent,eol,start " set backspace=2
+
+set splitbelow splitright
+set scrolloff=5
+set showcmd
+set noshowmode
+set signcolumn=yes
+

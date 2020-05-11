@@ -6,5 +6,12 @@ neovim_config:
     - neovim
   links:
     - init.vim
+    - plugins.vim
+    - general.vim
+    - autocmds.vim
+    - theme.vim
+    - keybindings.vim
+    - experimental.vim
+    - plugins.d
     - UltiSnips
     - coc-settings.json
