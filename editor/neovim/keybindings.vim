@@ -19,7 +19,6 @@ nnoremap <C-Y> <C-Y><C-Y><C-Y>
 nnoremap <silent> <leader>q :q<CR>
 nnoremap <silent> <leader>fs :w<CR>
 nnoremap <silent> <leader>Q :q!<CR>
-nnoremap <silent> <leader>bk :bd<CR>
 
 " windows
 nnoremap <silent> <leader>w <C-W>

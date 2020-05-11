@@ -11,6 +11,8 @@ endif
 
 call plug#begin(stdpath('data') . '/plugged')
 
+" Plugins requiring configuration get their own file in plugins.d
+
 " Editing:
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
@@ -70,6 +72,7 @@ Plug 'drewtempelmeyer/palenight.vim'
 " " Miscellaneous:
 Plug 'tpope/vim-dispatch'
 runtime plugins.d/takac/vim-hardtime.vim
+runtime plugins.d/moll/vim-bbye.vim
 
 " " Formatting:
 " Plug 'prettier/vim-prettier', {
@@ -81,6 +84,7 @@ runtime plugins.d/takac/vim-hardtime.vim
 
 " " Completion:
 " runtime plugins.d/ycm-core/YouCompleteMe.vim
+
 
 call plug#end()
 
