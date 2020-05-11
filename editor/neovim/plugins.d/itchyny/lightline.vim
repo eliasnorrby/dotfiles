@@ -81,7 +81,7 @@ endfunction
 " endfunction
 
 " autocmd VimEnter * call SetupLightlineColors()
-function SetupLightlineColors() abort
+function! SetupLightlineColors() abort
   " transparent background in statusbar
   let l:palette = lightline#palette()
 
