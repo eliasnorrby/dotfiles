@@ -44,4 +44,4 @@ function! SynStack()
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
 
-" set fcs=eob:\
+set fcs=eob:.
