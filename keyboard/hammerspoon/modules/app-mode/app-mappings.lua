@@ -2,7 +2,7 @@
 return {
   { 'b', 'Bear' },                 -- "B" for "Bear"
   { 'c', 'Google Chrome' },        -- "C" for "Chrome"
-  { 'o', 'Outlook' },              -- "O" for "Outlook"
+  { 'o', 'Microsoft Outlook' },    -- "O" for "Outlook"
   { 'e', 'Visual Studio Code' },   -- "E" for "Editor"
   { 'f', 'Fantastical 2' },        -- "F" for "Fantastical"
   { 's', 'Emacs' },                -- "S" for "Sublime"
