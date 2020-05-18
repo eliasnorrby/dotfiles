@@ -85,6 +85,7 @@ runtime plugins.d/moll/vim-bbye.vim
 
 " " Completion:
 " runtime plugins.d/ycm-core/YouCompleteMe.vim
+runtime plugins.d/neoclide/coc.vim
 
 
 call plug#end()

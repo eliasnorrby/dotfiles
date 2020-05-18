@@ -1,4 +1,20 @@
 {
-  /* "suggest.autoTrigger": "trigger" */
-  "suggest.autoTrigger": "none"
+  // suggestions
+  "suggest.autoTrigger": "none",
+  "signature.target": "echo",
+  "suggest.noselect": false,
+  // diagnostics
+  "diagnostic.enable": false,
+  // explorer
+  "explorer.width": 30,
+  /* "explorer.icon.enableNerdfont": true, */
+  "explorer.previewAction.onHover": false,
+  "explorer.keyMappings": {
+    "<cr>": ["expandable?", "expand", "open"],
+  },
+  // python
+  "python.jediEnabled": false,
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+  "python.formatting.provider": "black"
 }
