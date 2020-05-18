@@ -24,6 +24,7 @@ export LC_ALL="en_US.UTF-8"
 export PAGER=less
 export LESS='-R -i -w -M -z-4'
 export LESSHISTFILE="$XDG_DATA_HOME/lesshst"
+export CLICOLOR=1
 
 # I think this solves an issue with tmux colors
 export TERM="xterm-256color"
