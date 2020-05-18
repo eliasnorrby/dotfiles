@@ -7,7 +7,7 @@ let g:lightline = {
   \             [ 'gitbranch', 'readonly', 'filename' ],
   \             [ 'modified' ] ],
   \   'right': [ ['lineinfo'],
-  \              ['percent'],
+  \              ['percent', 'cocstatus'],
   \              ['fileformat', 'fileencoding', 'filetype'] ],
   \ },
   \ 'inactive': {
@@ -26,11 +26,31 @@ let g:lightline = {
   \   'fileencoding': 'LightlineFileencoding',
   \   'filetype': 'LightlineFiletype',
   \   'modified': 'LightlineModified',
+  \   'cocstatus': 'StatusDiagnostic'
   \ },
   \ 'tab_component_function': {
   \   'filename': 'LightlineTabname'
   \ },
   \ }
+
+function! StatusDiagnostic() abort
+  if g:coc_custom_diagnostics_enabled == 0 | return 'D' | endif
+  let info = get(b:, 'coc_diagnostic_info', {})
+  if empty(info) | return '' | endif
+  let msgs = []
+  if get(info, 'error', 0)
+    call add(msgs, 'E' . info['error'])
+  endif
+  if get(info, 'warning', 0)
+    call add(msgs, 'W' . info['warning'])
+  endif
+  return join(msgs, ' ') . ' ' . get(g:, 'coc_status', '')
+endfunction
+
+augroup CocStatus
+  autocmd!
+  autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
+augroup END
 
 " let g:lightline.separator = { 'left': '', 'right': '' }
 " let g:lightline.subseparator = { 'left': '', 'right': '' }
