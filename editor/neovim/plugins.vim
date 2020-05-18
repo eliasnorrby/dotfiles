@@ -29,7 +29,7 @@ Plug 'junegunn/vim-easy-align'
 runtime plugins.d/editorconfig/editorconfig-vim.vim
 
 " Snippets:
-runtime plugins.d/sirver/ultisnips.vim
+" runtime plugins.d/sirver/ultisnips.vim
 Plug 'honza/vim-snippets'
 
 " Ui:
