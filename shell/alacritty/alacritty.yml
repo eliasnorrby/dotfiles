@@ -116,3 +116,6 @@ background_opacity: 0.95
 
 mouse:
   hide_when_typing: true
+
+key_bindings:
+  - { key: C,  mods: Alt,           chars: "\x1bc"                       }

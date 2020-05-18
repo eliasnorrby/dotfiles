@@ -1,5 +1,8 @@
 # Make Vi mode transitions faster (KEYTIMEOUT is in hundredths of a second)
-export KEYTIMEOUT=8
+export KEYTIMEOUT=16
+# This is not really specific to Vi mode though.
+# bindkey -rpM viins '\e'
+# Use the above to loose cursor keys in viins and make ESC independent of KEYTIMEOUT
 
 # vi mode
 bindkey -v
