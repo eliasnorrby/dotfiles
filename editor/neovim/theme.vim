@@ -51,8 +51,21 @@ augroup GruvboxColors
   autocmd ColorSchemePre gruvbox call GruvboxSetup()
 augroup END
 
+function! OnedarkSetup() abort
+  let g:lightline.colorscheme = 'onedark'
+  let g:onedark_terminal_italics = 1
+  let g:onedark_hide_endofbuffer = 1
+endfunction
+augroup OnedarkColors
+  autocmd!
+  autocmd ColorSchemePre onedark call OnedarkSetup()
+  let s:white = { "gui": "#ABB2BF", "cterm": "145", "cterm16" : "7" }
+  autocmd ColorScheme onedark call onedark#set_highlight("Normal", { "fg": s:white })
+augroup END
+
 if empty($VIM_COLOR)
   " let s:theme_to_use="gruvbox"
+  " let s:theme_to_use="onedark"
   let s:theme_to_use="palenight"
 else
   let s:theme_to_use=$VIM_COLOR

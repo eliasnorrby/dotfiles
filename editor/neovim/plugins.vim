@@ -68,6 +68,7 @@ runtime plugins.d/benmills/vimux.vim
 " Colorschemes:
 Plug 'morhetz/gruvbox'
 Plug 'drewtempelmeyer/palenight.vim'
+Plug 'joshdick/onedark.vim'
 
 " " Miscellaneous:
 Plug 'tpope/vim-dispatch'
