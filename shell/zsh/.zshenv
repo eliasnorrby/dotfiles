@@ -2,7 +2,9 @@
 # TODO: set path myself
 unsetopt GLOBAL_RCS
 
-source $(cd ${${(%):-%x}:A:h}/../.. && pwd -P)/env
+# subshell-elimination: may not make a world of difference, but then again...
+# source $(cd ${${(%):-%x}:A:h}/../.. && pwd -P)/env
+source $HOME/.dotfiles/env
 
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export ZPLUG_HOME="$XDG_CACHE_HOME/zplug"
