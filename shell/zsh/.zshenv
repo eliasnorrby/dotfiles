@@ -22,7 +22,7 @@ path=( $XDG_BIN_HOME $DOTFILES/bin $DOTFILES_DATA/*.topic/bin(N) $path )
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 export PAGER=less
-export LESS='-R -i -w -M -z-4'
+export LESS='-R -i -w -M -z-4 -F'
 export LESSHISTFILE="$XDG_DATA_HOME/lesshst"
 export CLICOLOR=1
 

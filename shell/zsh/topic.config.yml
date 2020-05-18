@@ -6,6 +6,7 @@ zsh_config:
     - zsh
     - fzf
     - bat
+    - less
     - ripgrep
     - coreutils
     - watch
