@@ -35,7 +35,8 @@ nnoremap <silent> j gj
 nnoremap <silent> k gk
 
 nnoremap <silent> <leader>vr :source $MYVIMRC<CR>
-nnoremap <silent> <leader>ve :execute "tabedit" resolve($MYVIMRC) <bar> :lcd $DOTFILES<CR>
+nnoremap <silent> <leader>ve :execute "tabedit" resolve($MYVIMRC) <bar> :lcd $DOTFILES/editor/neovim<CR>
+nnoremap <silent> <leader>de :tabnew <bar> :lcd $DOTFILES<CR>
 
 " location & quickfix lists
 nnoremap <silent> <leader>lo :lopen<CR>
