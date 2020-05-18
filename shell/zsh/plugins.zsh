@@ -23,9 +23,6 @@ ZSH_SYSTEM_CLIPBOARD_TMUX_SUPPORT=true
 
 zplug "plugins/z",                 from:oh-my-zsh
 
-# TODO: define the aliases I use myself in :git:
-zplug "plugins/git",               from:oh-my-zsh
-
 # zsh-syntax-highlighting must be loaded after executing compinit command
 # and sourcing other plugins
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
