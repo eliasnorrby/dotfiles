@@ -186,3 +186,11 @@ bind-git-helper() {
 }
 bind-git-helper f b t r o s
 unset -f bind-git-helper
+
+# More git love
+
+if command -v gh > /dev/null 2>&1 ; then
+  gpr() {
+    gh pr list | column -s $'\t' -t | fzf | awk '{print $1}' | xargs gh pr checkout
+  }
+fi
