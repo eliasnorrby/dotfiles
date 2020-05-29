@@ -85,6 +85,24 @@ fgr() {
   fi
 }
 
+# FZF heart NPM?
+fnpm() {
+  local repo_root current_dir script
+  if [[ ! -f package.json ]] ; then
+    current_dir=$(pwd)
+    repo_root=$(git rev-parse --show-toplevel)
+    cd $repo_root
+    if [[ ! -f package.json ]] ; then
+      return
+    fi
+  fi
+  script=$( jq -r '.scripts' package.json | jq 'keys[]' | sed 's/"//g' | fzf-down --ansi --reverse \
+    --preview 'jq -r ".scripts[\"$(echo {})\"]" package.json | bat -l sh --color always --decorations never')
+  [ -z "$script" ] && return
+  npm run $script
+  [[ ! -z "$current_dir" ]] && cd $current_dir || return 0
+}
+
 # GIT heart FZF
 # Copied from junegunn's dotfiles and/or this post:
 # https://junegunn.kr/2016/07/fzf-git
