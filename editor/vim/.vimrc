@@ -14,26 +14,19 @@ scriptencoding utf-8
 let mapleader=" "
 nnoremap <space> <nop>
 
-if has('nvim')
-  set runtimepath^=~/.vim runtimepath+=~/.vim/after
-  let &packpath = &runtimepath
-  " set fcs=eob:\
-  set inccommand=nosplit
-endif
-
 " Plugins: {{{1
 " ============================================================================ "
 " ===                           PLUGINS                                    === "
 " ============================================================================ "
 
 " Download vimplug if not already installed
-" if empty(glob($VIM_DIR.'/autoload/plug.vim'))
-"   silent !curl -sfLo $VIM_DIR/autoload/plug.vim --create-dirs
-"     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-"   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-" endif
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
-call plug#begin($XDG_DATA_HOME.'/vim/plugged')
+call plug#begin('~/.vim/plugged')
 
 " Editing:
 Plug 'tpope/vim-surround'
