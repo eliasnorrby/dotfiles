@@ -6,8 +6,6 @@ vim_config:
     - fzf
     - bat
     - python
-  pip_packages:
-    - pynvim
   links:
     - .vimrc
     - src: .vimrc

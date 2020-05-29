@@ -4,6 +4,11 @@ neovim_config:
   dirname: nvim
   brew_formulas:
     - neovim
+    - fzf
+    - bat
+    - python
+  pip_packages:
+    - pynvim
   links:
     - init.vim
     - plugins.vim
