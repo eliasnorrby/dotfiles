@@ -82,8 +82,10 @@ function! LightlineGitbranch() abort
   if winwidth(0) < 65
     return ''
   elseif exists('*gitbranch#name')
+    let max_length = 20
     let branch = gitbranch#name()
-    return branch !=# '' ? ' '.branch : ''
+    let display_branch = strlen(branch) > 20 ? branch[:17].'...' : branch
+    return branch !=# '' ? ' '.display_branch : ''
   endif
   return ''
 endfunction
