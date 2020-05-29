@@ -1,0 +1,26 @@
+global !p
+def titlecase(name):
+  if len(name) == 0:
+    return ''
+  elif len(name) == 1:
+    return name[0].upper()
+  elif len(name) > 1:
+    return name[0].upper() + name[1:]
+endglobal
+
+snippet us
+const [${1}, set`!p snip.rv = titlecase(t[1])`] = useState(${0})
+endsnippet
+
+snippet prop
+${1:propName}={$1} $0
+endsnippet
+
+snippet immu
+import ${1} from '@material-ui/core/$1'
+endsnippet
+
+snippet immun
+import { ${1} } from '@material-ui/core'
+endsnippet
+

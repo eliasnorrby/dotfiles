@@ -62,4 +62,4 @@ string1="#[fg=$COL1_FG,bg=$COL1_BG]$load_1 #[fg=$WHITE,bg=$BLACK]"
 string5="#[fg=$COL5_FG,bg=$COL5_BG]$load_5 #[fg=$WHITE,bg=$BLACK]"
 string15="#[fg=$COL15_FG,bg=$COL15_BG]$load_15 #[fg=$WHITE,bg=$BLACK]"
 
-echo "#[fg=$WHITE,bg=$BLACK]  $string1$string5$string15"
+echo "#[fg=$WHITE,bg=default]  $string1$string5$string15"

@@ -2,7 +2,9 @@
 # TODO: set path myself
 unsetopt GLOBAL_RCS
 
-source $(cd ${${(%):-%x}:A:h}/../.. && pwd -P)/env
+# subshell-elimination: may not make a world of difference, but then again...
+# source $(cd ${${(%):-%x}:A:h}/../.. && pwd -P)/env
+source $HOME/.dotfiles/env
 
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export ZPLUG_HOME="$XDG_CACHE_HOME/zplug"
@@ -20,9 +22,9 @@ path=( $XDG_BIN_HOME $DOTFILES/bin $DOTFILES_DATA/*.topic/bin(N) $path )
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 export PAGER=less
-export LESS='-R -i -w -M -z-4'
+export LESS='-R -i -w -M -z-4 -F'
 export LESSHISTFILE="$XDG_DATA_HOME/lesshst"
-export GREP_OPTIONS='--color=always'
+export CLICOLOR=1
 
 # I think this solves an issue with tmux colors
 export TERM="xterm-256color"
@@ -34,6 +36,7 @@ if [[ "$(_os)" == "macos" ]]; then
   # FIXME: No, appearently I don't. Is it for gnu ls?
   # FIXME: I need it to do readlink -f
   path=( /usr/local/opt/coreutils/libexec/gnubin $path )
+  path=( /usr/local/mysql/bin $path )
 
   path=( ~/bin $path )
 fi

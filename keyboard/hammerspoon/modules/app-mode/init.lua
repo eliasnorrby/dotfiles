@@ -19,6 +19,22 @@ appMode:bind({}, 'p', function()
     keyUpDown({ 'cmd', 'alt' }, '\\')
   end)
 
+-- tmux
+appMode:bind({}, '1', function()
+  keyUpDown({}, 'F1')
+end)
+appMode:bind({}, '2', function()
+  keyUpDown({}, 'F2')
+end)
+appMode:bind({}, '3', function()
+  keyUpDown({}, 'F3')
+end)
+appMode:bind({}, '4', function()
+  keyUpDown({}, 'F4')
+end)
+appMode:bind({}, '5', function()
+  keyUpDown({}, 'F5')
+end)
 -- Bind the right cmd key
 f16 = hs.hotkey.bind({}, 'F16', enterAppMode, exitAppMode)
 

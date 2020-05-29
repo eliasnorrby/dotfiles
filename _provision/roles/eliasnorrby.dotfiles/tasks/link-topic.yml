@@ -20,7 +20,7 @@
 
     - name: topic should be linked to xdg_config_home
       file:
-        src: "{{ dotfiles_data }}/keyboard.karabiner.topic"
+        src: "{{ topic_data_path }}"
         dest: "{{ xdg_config_home + '/' + topic_config_dirname }}"
         state: link
       when:

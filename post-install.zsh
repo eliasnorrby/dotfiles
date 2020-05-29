@@ -19,7 +19,7 @@ zplug install
 # vim-plug
 _msg "-- vim-plug --"
 _msg "Running PlugInstall..."
-vim +'PlugInstall --sync' +qall
+nvim +'PlugInstall --sync' +qall
 
 # emacs
 _msg "-- doom --"

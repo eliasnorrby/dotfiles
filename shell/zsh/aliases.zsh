@@ -29,6 +29,7 @@ alias map="xargs -n1"
 alias cdot="cd ~/.dotfiles"
 
 alias cdd="cd ~/dev"
+alias cdw="cd ~/work"
 alias cdl="cd ~/learn"
 alias cdb="cd ~/boilerplate"
 alias cds="cd ~/sandbox"

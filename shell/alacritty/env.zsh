@@ -1,0 +1,1 @@
+export DEFAULT_THEME=palenight
