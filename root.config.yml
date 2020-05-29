@@ -10,7 +10,7 @@ topics:
       config: "{{ macos_config }}"
   editor:
     - name: vim
-      state: present
+      state: disabled
       config: "{{ vim_config }}"
     - name: neovim
       state: present

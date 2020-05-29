@@ -8,6 +8,8 @@
 " Github:     https://github.com/eliasnorrby/dotfiles
 " Maintainer: Elias Norrby
 
+" DEPRECATED: See editor/neovim/init.vim
+
 set encoding=utf-8
 scriptencoding utf-8
 
