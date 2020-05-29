@@ -1,2 +1,4 @@
 alias vim=nvim
-alias v=vim
+alias v=nvim
+alias vf='nvim +Files'
+alias vd="nvim +'cd $DOTFILES' +Files"
