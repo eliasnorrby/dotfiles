@@ -46,3 +46,4 @@ nnoremap <silent> <leader>cc :cclose<CR>
 nnoremap <silent> <leader>LL :ll<CR>
 nnoremap <silent> <leader>CC :cc<CR>
 
+xnoremap <silent> <leader>x d<C-W><C-W>Gp<C-W><C-W>
