@@ -63,15 +63,15 @@ function! LightlineModified() abort
 endfunction
 
 function! LightlineFileformat() abort
-  return winwidth(0) > 90 ? &fileformat : ''
+  return winwidth(0) > 70 ? &fileformat : ''
 endfunction
 
 function! LightlineFileencoding() abort
-  return winwidth(0) > 80 ? &fileencoding : ''
+  return winwidth(0) > 60 ? &fileencoding : ''
 endfunction
 
 function! LightlineFiletype() abort
-  return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+  return winwidth(0) > 50 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
 endfunction
 
 function! LightlineReadonly() abort
