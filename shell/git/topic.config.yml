@@ -4,9 +4,12 @@ git_config:
   links:
     - config
     - ignore
+  brew_taps:
+    - github/gh
   brew_formulas:
     - git
     - tig
     - hub
+    - github/gh/gh
     - diff-so-fancy
     # git-flow-avh
