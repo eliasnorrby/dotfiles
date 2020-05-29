@@ -1,3 +1,11 @@
+## [2.0.1](https://github.com/eliasnorrby/dotfiles/compare/v2.0.0...v2.0.1) (2020-05-29)
+
+
+### Bug Fixes
+
+* **provision:** use proper path for entire dir link ([ad09fe7](https://github.com/eliasnorrby/dotfiles/commit/ad09fe7f81eaab0fff59fe55dc4073452f0af9a1))
+* **zsh:** remove subshells from lang/java/env ([3265c20](https://github.com/eliasnorrby/dotfiles/commit/3265c20a23c4f4144a49e2110ad6c1eea001c87e))
+
 # [2.0.0](https://github.com/eliasnorrby/dotfiles/compare/v1.4.0...v2.0.0) (2020-04-23)
 
 
