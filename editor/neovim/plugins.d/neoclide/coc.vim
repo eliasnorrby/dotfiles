@@ -1,4 +1,5 @@
-Plug 'neoclide/coc.nvim', { 'branch': 'release', 'for': 'typescript,javascript,json,python' }
+" Plug 'neoclide/coc.nvim', { 'branch': 'release', 'for': 'typescript,javascript,javascriptreact,typescriptreact,json,yaml,python' }
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 
 set cmdheight=2
 set shortmess+=c
