@@ -194,3 +194,37 @@ if command -v gh > /dev/null 2>&1 ; then
     gh pr list | column -s $'\t' -t | fzf | awk '{print $1}' | xargs gh pr checkout
   }
 fi
+
+# FZF Project search
+
+p() {
+  local DIR_LIST=(
+    "${HOME}/dev"
+    "${HOME}/learn"
+    "${HOME}/.dotfiles"
+    "${HOME}/work"
+  )
+
+  for dir in ${DIR_LIST[@]}; do
+    local REPOS="${REPOS}\n$(find ${dir} -name ".git" -type d -maxdepth 3 | sed 's/\/.git$//')"
+  done
+
+  # # Preview with bat or ls
+  # local target="$(echo "$REPOS" |
+  #   sed "s#$HOME##" |
+  #   fzf --border \
+  #   --preview "[ -f ${HOME}{}/README.md ] \
+  #   && bat --color=always ${HOME}{}/README.md \
+  #   || ls --color=always ${HOME}{}")"
+  # echo $PWD
+
+  # # Preview with tree
+  local TARGET="$(echo -e "$REPOS" |
+    sed "s#$HOME##" |
+    fzf --border --no-sort --tac \
+    --preview "tree -C -I node_modules -L 3 ${HOME}{}")"
+
+  if [[ -n "$TARGET" ]] ; then
+    cd "${HOME}/${TARGET}"
+  fi
+}
