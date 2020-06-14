@@ -23,7 +23,7 @@ macos_config:
     # fonts
     - font-3270-nerd-font
     - font-dejavusansmono-nerd-font
-    - font-firacode-nerd-font
+    - font-fira-code-nerd-font
     - font-hack-nerd-font
     - font-iosevka-nerd-font
     - font-mononoki-nerd-font
