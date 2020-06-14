@@ -12,3 +12,4 @@ web_config:
     - npm-check-updates
     - prettier
     - serve
+    - '@vue/cli'
