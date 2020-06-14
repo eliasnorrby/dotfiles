@@ -79,8 +79,8 @@ augroup CocColorCorrections
 augroup END
 
 function! CocRefresh() abort
-  CocDisable
-  CocEnable
+  silent CocDisable
+  silent CocEnable
 endfunction
 
 " Should match the diagnostic.enabled setting in coc-settings for the best
