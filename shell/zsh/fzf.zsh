@@ -103,6 +103,7 @@ fnpm() {
   npm run $script
 }
 
+alias n="fnpm"
 # GIT heart FZF
 # Copied from junegunn's dotfiles and/or this post:
 # https://junegunn.kr/2016/07/fzf-git
