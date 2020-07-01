@@ -19,14 +19,14 @@ source "/usr/local/opt/fzf/shell/key-bindings.zsh"
 
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard' --border"
 
-if command -v fd > /dev/null; then
+if _is_callable fd ; then
   export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
   export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
   export FZF_CTRL_T_COMMAND='fd --type f --hidden --follow --exclude .git'
 fi
 
-command -v bat  > /dev/null && export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always {}'"
-command -v tree > /dev/null && export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+_is_callable bat && export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always {}'"
+_is_callable tree && export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 
 export FZF_DEFAULT_OPTS='
   --prompt "λ: "
