@@ -1,3 +1,31 @@
+# [2.1.0](https://github.com/eliasnorrby/dotfiles/compare/v2.0.1...v2.1.0) (2020-07-01)
+
+
+### Bug Fixes
+
+* **macos:** update fira code cask name ([66ff8c7](https://github.com/eliasnorrby/dotfiles/commit/66ff8c71dd148a01d705341898ab202e875c6c64))
+* **vim:** prefix CocRefresh with silent ([865edf0](https://github.com/eliasnorrby/dotfiles/commit/865edf0869ad3a2d96e7122705b51fda7e0532a1))
+* **vim:** rename tasks file (.yaml -> .yml) ([f635860](https://github.com/eliasnorrby/dotfiles/commit/f6358603dd982fe63d996a13b73121c9fe7378e2))
+
+
+### Features
+
+* **git:** add glogb alias ([3b34a65](https://github.com/eliasnorrby/dotfiles/commit/3b34a653040339fa0d588a92273b6896ab2aad57))
+* **git:** use pull.rebase by default ([35977de](https://github.com/eliasnorrby/dotfiles/commit/35977de1bd5916f84001c19305aa95227055b02d))
+* **hammerspoon:** map W to powerpoint in app mode ([268e490](https://github.com/eliasnorrby/dotfiles/commit/268e490c7e6b528261d3ecbde4e66f2e1a03d5c3))
+* **tmux:** bind C-s to fuzzy session switcher ([e49e71b](https://github.com/eliasnorrby/dotfiles/commit/e49e71b251d95166e3c271c911702d13ab528f43))
+* **tmux:** open new windows using current path ([0b5d0ff](https://github.com/eliasnorrby/dotfiles/commit/0b5d0fff2907eeb00301c545c9c42178e848c241))
+* **vim:** add coc-settings for vue ([9b86229](https://github.com/eliasnorrby/dotfiles/commit/9b862290318e103401566fdf607b879644806948))
+* **vim:** add file outline binding ([a38e9eb](https://github.com/eliasnorrby/dotfiles/commit/a38e9eb0282eb3233092dcdaf6dfb3fcd67be0e0))
+* **vim:** add Fix command for eslint ([a69220d](https://github.com/eliasnorrby/dotfiles/commit/a69220da3941892507ca01119d3919c0648553b7))
+* **vim:** add package.json and .gitignore aliases ([e199406](https://github.com/eliasnorrby/dotfiles/commit/e199406bededffac88db586a87712c10ddfe2b4c))
+* **vim:** add XMLFormat command ([74a3fa4](https://github.com/eliasnorrby/dotfiles/commit/74a3fa40c3fa93b6cf937280bf4fe2eeffbdaadc))
+* **vim:** put coc extensions under version control ([e975bf7](https://github.com/eliasnorrby/dotfiles/commit/e975bf72150ef43499672be1568f0b61316b7d11))
+* **web:** add vue cli ([26897a5](https://github.com/eliasnorrby/dotfiles/commit/26897a52fb86126d18cb3b1b12827f32707c9dbc))
+* **zsh:** add alias n=fnpm ([219aa68](https://github.com/eliasnorrby/dotfiles/commit/219aa685078de9f8afbc65b06bff52d836268d70))
+* **zsh:** add fuzzy project navigation ([53baac8](https://github.com/eliasnorrby/dotfiles/commit/53baac879dedb6769e2fd6cb0fa861121a2e3c21))
+* **zsh:** add zle widget for fuzzy-finding npm scripts ([d133693](https://github.com/eliasnorrby/dotfiles/commit/d1336933607b29e9f71c3c119d4c423be269b5ce))
+
 ## [2.0.1](https://github.com/eliasnorrby/dotfiles/compare/v2.0.0...v2.0.1) (2020-05-29)
 
 
