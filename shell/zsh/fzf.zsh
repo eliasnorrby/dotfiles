@@ -104,6 +104,29 @@ fnpm() {
 }
 
 alias n="fnpm"
+
+npm-widget() {
+  local repo_root package_dir script
+  package_dir="$(pwd)"
+  if [[ ! -f package.json ]] ; then
+    repo_root="$(git rev-parse --show-toplevel)"
+    if [[ ! -f "${repo_root}/package.json" ]] ; then
+      return
+    else
+      package_dir="$repo_root"
+    fi
+  fi
+  script=$( jq -r '.scripts' "${package_dir}/package.json" | jq 'keys[]' | sed 's/"//g' | package_dir="$package_dir" fzf-down --ansi --reverse \
+    --preview 'jq -r ".scripts[\"$(echo {})\"]" "${package_dir}/package.json" | bat -l sh --color always --decorations never')
+  zle reset-prompt
+  [ -z "$script" ] && return
+  BUFFER="npm run ${script}"
+  zle end-of-line
+}
+
+zle -N npm-widget
+bindkey '^N' npm-widget
+
 # GIT heart FZF
 # Copied from junegunn's dotfiles and/or this post:
 # https://junegunn.kr/2016/07/fzf-git
