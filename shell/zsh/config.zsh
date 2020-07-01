@@ -28,12 +28,15 @@ setopt hist_reduce_blanks       # Remove superfluous blanks.
 setopt hist_save_no_dups        # Omit older commands in favor of newer ones.
 setopt hist_ignore_space        # Ignore commands that start with space.
 
+# disable flow control (unbind ^S)
+stty -ixon
+
 # unsetopt BEEP                 # Turn off all beeps
 unsetopt LIST_BEEP              # Turn off autocomplete beeps
 
 # setup up colors for ls
 dircolors_file=${ZPLUG_HOME}/repos/seebi/dircolors-solarized/dircolors.ansi-dark
-if [[ $(_os) == macos ]] && [ -f $dircolors_file ] && command -v gdircolors > /dev/null ; then
+if [[ $(_os) == macos ]] && [ -f $dircolors_file ] && _is_callable gdircolors > /dev/null ; then
   alias dircolors='gdircolors'
   eval $(gdircolors $dircolors_file)
 fi
