@@ -5,6 +5,13 @@
   "suggest.noselect": false,
   // diagnostics
   "diagnostic.enable": false,
+  "eslint.filetypes": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue"
+  ],
   // explorer
   "explorer.width": 30,
   /* "explorer.icon.enableNerdfont": true, */
@@ -16,5 +23,7 @@
   "python.jediEnabled": false,
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": true,
-  "python.formatting.provider": "black"
+  "python.formatting.provider": "black",
+  // Vue
+  "vetur.validation.template": false
 }
