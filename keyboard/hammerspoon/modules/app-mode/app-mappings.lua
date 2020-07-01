@@ -16,7 +16,7 @@ return {
   { 'i', 'IntelliJ IDEA CE'},      -- "I" for "IntelliJ"
   { 'u', 'Spotify' },              -- "U" for some reason
   { 'x', 'Firefox Developer Edition' },
-  -- { 'u', 'Microsoft PowerPoint' },
+  { 'w', 'Microsoft PowerPoint' },
   { 'a', 'Microsoft Teams' },
   { 'z', 'Slack' },
 }

@@ -20,3 +20,5 @@ neovim_config:
     - plugins.d
     - UltiSnips
     - coc-settings.json
+    - src: coc-extensions.json
+      dest: "{{ xdg_config_home }}/coc/extensions/package.json"

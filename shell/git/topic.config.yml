@@ -11,5 +11,6 @@ git_config:
     - tig
     - hub
     - github/gh/gh
+    - grip
     - diff-so-fancy
     # git-flow-avh

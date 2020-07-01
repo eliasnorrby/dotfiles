@@ -57,6 +57,9 @@ omap af <Plug>(coc-funcobj-a)
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
 
+" Add `:Fix` command to fix eslint errors
+command! -nargs=0 Fix :call CocAction('runCommand', 'eslint.executeAutofix')
+
 " Add `:Fold` command to fold current buffer.
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
@@ -79,8 +82,8 @@ augroup CocColorCorrections
 augroup END
 
 function! CocRefresh() abort
-  CocDisable
-  CocEnable
+  silent CocDisable
+  silent CocEnable
 endfunction
 
 " Should match the diagnostic.enabled setting in coc-settings for the best
@@ -101,14 +104,16 @@ nnoremap <silent> <leader>ld :<C-u>CocList diagnostics<cr>
 nmap <silent> [d <Plug>(coc-diagnostic-prev)
 nmap <silent> ]d <Plug>(coc-diagnostic-next)
 
+nmap <silent> go :CocList outline<cr>
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> <leader>gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " Formatting
 xmap <leader>f  <Plug>(coc-format-selected)
 nnoremap <silent> <leader>ff :Format<cr>
+nnoremap <silent> <leader>fe :Fix<cr>
 
 nmap <leader>cr <Plug>(coc-rename)
 nmap <leader>ca <Plug>(coc-codeaction)

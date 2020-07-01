@@ -19,14 +19,14 @@ source "/usr/local/opt/fzf/shell/key-bindings.zsh"
 
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard' --border"
 
-if command -v fd > /dev/null; then
+if _is_callable fd ; then
   export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
   export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
   export FZF_CTRL_T_COMMAND='fd --type f --hidden --follow --exclude .git'
 fi
 
-command -v bat  > /dev/null && export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always {}'"
-command -v tree > /dev/null && export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+_is_callable bat && export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always {}'"
+_is_callable tree && export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 
 export FZF_DEFAULT_OPTS='
   --prompt "λ: "
@@ -87,21 +87,45 @@ fgr() {
 
 # FZF heart NPM?
 fnpm() {
-  local repo_root current_dir script
+  local repo_root package_dir script
+  package_dir="$(pwd)"
   if [[ ! -f package.json ]] ; then
-    current_dir=$(pwd)
-    repo_root=$(git rev-parse --show-toplevel)
-    cd $repo_root
-    if [[ ! -f package.json ]] ; then
+    repo_root="$(git rev-parse --show-toplevel)"
+    if [[ ! -f "${repo_root}/package.json" ]] ; then
       return
+    else
+      package_dir="$repo_root"
     fi
   fi
-  script=$( jq -r '.scripts' package.json | jq 'keys[]' | sed 's/"//g' | fzf-down --ansi --reverse \
-    --preview 'jq -r ".scripts[\"$(echo {})\"]" package.json | bat -l sh --color always --decorations never')
+  script=$( jq -r '.scripts' "${package_dir}/package.json" | jq 'keys[]' | sed 's/"//g' | package_dir="$package_dir" fzf-down --ansi --reverse \
+    --preview 'jq -r ".scripts[\"$(echo {})\"]" "${package_dir}/package.json" | bat -l sh --color always --decorations never')
   [ -z "$script" ] && return
   npm run $script
-  [[ ! -z "$current_dir" ]] && cd $current_dir || return 0
 }
+
+alias n="fnpm"
+
+npm-widget() {
+  local repo_root package_dir script
+  package_dir="$(pwd)"
+  if [[ ! -f package.json ]] ; then
+    repo_root="$(git rev-parse --show-toplevel)"
+    if [[ ! -f "${repo_root}/package.json" ]] ; then
+      return
+    else
+      package_dir="$repo_root"
+    fi
+  fi
+  script=$( jq -r '.scripts' "${package_dir}/package.json" | jq 'keys[]' | sed 's/"//g' | package_dir="$package_dir" fzf-down --ansi --reverse \
+    --preview 'jq -r ".scripts[\"$(echo {})\"]" "${package_dir}/package.json" | bat -l sh --color always --decorations never')
+  zle reset-prompt
+  [ -z "$script" ] && return
+  BUFFER="npm run ${script}"
+  zle end-of-line
+}
+
+zle -N npm-widget
+bindkey '^N' npm-widget
 
 # GIT heart FZF
 # Copied from junegunn's dotfiles and/or this post:
@@ -194,3 +218,37 @@ if command -v gh > /dev/null 2>&1 ; then
     gh pr list | column -s $'\t' -t | fzf | awk '{print $1}' | xargs gh pr checkout
   }
 fi
+
+# FZF Project search
+
+p() {
+  local DIR_LIST=(
+    "${HOME}/dev"
+    "${HOME}/learn"
+    "${HOME}/.dotfiles"
+    "${HOME}/work"
+  )
+
+  for dir in ${DIR_LIST[@]}; do
+    local REPOS="${REPOS}\n$(find ${dir} -name ".git" -type d -maxdepth 3 | sed 's/\/.git$//')"
+  done
+
+  # # Preview with bat or ls
+  # local target="$(echo "$REPOS" |
+  #   sed "s#$HOME##" |
+  #   fzf --border \
+  #   --preview "[ -f ${HOME}{}/README.md ] \
+  #   && bat --color=always ${HOME}{}/README.md \
+  #   || ls --color=always ${HOME}{}")"
+  # echo $PWD
+
+  # # Preview with tree
+  local TARGET="$(echo -e "$REPOS" |
+    sed "s#$HOME##" |
+    fzf --border --no-sort --tac \
+    --preview "tree -C -I node_modules -L 3 ${HOME}{}")"
+
+  if [[ -n "$TARGET" ]] ; then
+    cd "${HOME}/${TARGET}"
+  fi
+}

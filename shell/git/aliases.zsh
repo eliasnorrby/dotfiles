@@ -12,6 +12,7 @@ alias gcm="git checkout master"
 alias gco="git checkout"
 alias gd="git diff"
 alias glog="git log --oneline --decorate --graph"
+alias glogb="glog --branches"
 alias gp="git push"
 alias gst="git status"
 
