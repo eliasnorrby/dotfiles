@@ -87,20 +87,20 @@ fgr() {
 
 # FZF heart NPM?
 fnpm() {
-  local repo_root current_dir script
+  local repo_root package_dir script
+  package_dir="$(pwd)"
   if [[ ! -f package.json ]] ; then
-    current_dir=$(pwd)
-    repo_root=$(git rev-parse --show-toplevel)
-    cd $repo_root
-    if [[ ! -f package.json ]] ; then
+    repo_root="$(git rev-parse --show-toplevel)"
+    if [[ ! -f "${repo_root}/package.json" ]] ; then
       return
+    else
+      package_dir="$repo_root"
     fi
   fi
-  script=$( jq -r '.scripts' package.json | jq 'keys[]' | sed 's/"//g' | fzf-down --ansi --reverse \
-    --preview 'jq -r ".scripts[\"$(echo {})\"]" package.json | bat -l sh --color always --decorations never')
+  script=$( jq -r '.scripts' "${package_dir}/package.json" | jq 'keys[]' | sed 's/"//g' | package_dir="$package_dir" fzf-down --ansi --reverse \
+    --preview 'jq -r ".scripts[\"$(echo {})\"]" "${package_dir}/package.json" | bat -l sh --color always --decorations never')
   [ -z "$script" ] && return
   npm run $script
-  [[ ! -z "$current_dir" ]] && cd $current_dir || return 0
 }
 
 # GIT heart FZF
