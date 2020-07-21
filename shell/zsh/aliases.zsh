@@ -12,6 +12,8 @@ alias cl="clear"
 # .gitattributes | map dirname
 alias map="xargs -n1"
 
+alias myip="curl -s api.ipify.org"
+
 # Folder managemant
 # alias d='dirs -v'
 # alias 1='pu'
