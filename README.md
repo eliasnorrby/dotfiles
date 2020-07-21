@@ -228,7 +228,8 @@ configured manually.
 3. Download the [Dank Mono font](https://dank.sh)
 4. Enable shortcuts for desktop navigation (Preferences -> Keyboard -> Shortcuts -> Mission Control)
 5. Download Fluid and set up Gmail as a desktop app
-6. ...?
+6. Link the proper scripts to `~/.local/bin`. There's a helper in the `scripts` directory. This could be scripted.
+7. ...?
 
 [travis-badge]: https://img.shields.io/travis/com/eliasnorrby/dotfiles?style=for-the-badge
 [travis-link]: https://travis-ci.com/eliasnorrby/dotfiles
