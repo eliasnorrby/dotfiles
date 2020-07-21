@@ -245,7 +245,7 @@ p() {
   # # Preview with tree
   local TARGET="$(echo -e "$REPOS" |
     sed "s#$HOME##" |
-    fzf --border --no-sort --tac \
+    fzf --border --tac \
     --preview "tree -C -I node_modules -L 3 ${HOME}{}")"
 
   if [[ -n "$TARGET" ]] ; then
