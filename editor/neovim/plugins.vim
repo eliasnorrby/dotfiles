@@ -87,6 +87,9 @@ runtime plugins.d/moll/vim-bbye.vim
 " runtime plugins.d/ycm-core/YouCompleteMe.vim
 runtime plugins.d/neoclide/coc.vim
 
+" " Wiki:
+runtime plugins.d/vimwiki/vimwiki.vim
+runtime plugins.d/junegunn/goyo.vim
 
 call plug#end()
 
