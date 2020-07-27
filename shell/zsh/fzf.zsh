@@ -167,8 +167,8 @@ gt() {
 
 _gitLogLineToHash="echo {} | grep -o '[a-f0-9]\{7\}' | head -1"
 
-# I use go instead of gh because <c-h> is taken by tmux
-go() {
+# I use gg instead of gh because <c-h> is taken by tmux
+gg() {
   is_in_git_repo || return
   git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --graph --color=always |
   fzf-down --ansi --no-sort --reverse --multi \
@@ -187,6 +187,7 @@ gr() {
   cut -d$'\t' -f1
 }
 
+# This won't work, because I've got session switching bound to C-s
 gs() {
   is_in_git_repo || return
   git stash list | fzf-down --reverse -d: --preview 'git show --color=always {1}' |
@@ -208,7 +209,7 @@ bind-git-helper() {
     eval "bindkey '^g^$c' fzf-g$c-widget"
   done
 }
-bind-git-helper f b t r o s
+bind-git-helper f b t r g s
 unset -f bind-git-helper
 
 # More git love
