@@ -118,4 +118,6 @@ mouse:
   hide_when_typing: true
 
 key_bindings:
+  - { key: A,  mods: Alt,           chars: "\x1ba"                       }
   - { key: C,  mods: Alt,           chars: "\x1bc"                       }
+  - { key: D,  mods: Alt,           chars: "\x1bd"                       }
