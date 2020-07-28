@@ -1,3 +1,26 @@
+# [2.2.0](https://github.com/eliasnorrby/dotfiles/compare/v2.1.0...v2.2.0) (2020-07-28)
+
+
+### Bug Fixes
+
+* **base:** update font cask name ([61d4b04](https://github.com/eliasnorrby/dotfiles/commit/61d4b04a5b557c525c4dc6dc2d84d2eb99ec38e3))
+
+
+### Features
+
+* **alacritty:** bind alt-a & alt-d ([bc93fd8](https://github.com/eliasnorrby/dotfiles/commit/bc93fd877b8b0a97959ae1cf21c4cc597711e228))
+* **alacritty:** disable transparency ([235d5de](https://github.com/eliasnorrby/dotfiles/commit/235d5de8a3580cfd70079af1208af2011a3e1979))
+* **fzf:** sort matches in fuzzy project search ([fe2e2bd](https://github.com/eliasnorrby/dotfiles/commit/fe2e2bdc14201cb5d794dce08d6f13d8ba2d80ec))
+* **scripts:** launch quick look from command line ([70c81bb](https://github.com/eliasnorrby/dotfiles/commit/70c81bb3f813163524460efbdb90ea4de8ea8323))
+* **tmux:** make the active pane darker ([56bb7b2](https://github.com/eliasnorrby/dotfiles/commit/56bb7b200b52f8fa8387b4cd256ace1437fc3641))
+* **vim:** add binding for word search in project ([49001b5](https://github.com/eliasnorrby/dotfiles/commit/49001b557065e7a12849ee61c8c66117788839e7))
+* **vim:** add coc-go extension ([816baf5](https://github.com/eliasnorrby/dotfiles/commit/816baf578c7311b98689e3092e46d41214d58111))
+* **vim:** add ctrl-a fzf binding ([3d1b76a](https://github.com/eliasnorrby/dotfiles/commit/3d1b76a88dc203b8450ecc64981700a4509dd5e2))
+* **vim:** add vimwiki and goyo ([e3d7271](https://github.com/eliasnorrby/dotfiles/commit/e3d727181bf3609d3f7235c775f2f76d3766a1e0))
+* **vim:** open qf window on project word search ([9fcecd4](https://github.com/eliasnorrby/dotfiles/commit/9fcecd4ee804964eb359522113765d461a690259))
+* add git-messenger ([2cf02c2](https://github.com/eliasnorrby/dotfiles/commit/2cf02c281e08beab29e6aca3507952806e0051c9))
+* **zsh:** add myip alias to get current ip ([bd6db6f](https://github.com/eliasnorrby/dotfiles/commit/bd6db6f913e6f8a264bc00c0d851802398b54fe8))
+
 # [2.1.0](https://github.com/eliasnorrby/dotfiles/compare/v2.0.1...v2.1.0) (2020-07-01)
 
 
