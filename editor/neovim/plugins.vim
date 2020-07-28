@@ -50,6 +50,7 @@ runtime plugins.d/unblevable/quick-scope.vim
 runtime plugins.d/tpope/vim-fugitive.vim
 Plug 'tpope/vim-rhubarb'
 Plug 'junegunn/gv.vim'
+Plug 'rhysd/git-messenger.vim'
 
 " Text_objects:
 Plug 'wellle/targets.vim'
@@ -87,6 +88,9 @@ runtime plugins.d/moll/vim-bbye.vim
 " runtime plugins.d/ycm-core/YouCompleteMe.vim
 runtime plugins.d/neoclide/coc.vim
 
+" " Wiki:
+runtime plugins.d/vimwiki/vimwiki.vim
+runtime plugins.d/junegunn/goyo.vim
 
 call plug#end()
 

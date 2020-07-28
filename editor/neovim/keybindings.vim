@@ -4,7 +4,8 @@ nnoremap <silent> <leader>tl :set invrelativenumber<CR>
 " toggle all line numbering
 nnoremap <silent> <leader>tL :set invrelativenumber invnumber<CR>
 
-nnoremap <leader>/p :silent grep<space>
+nnoremap <leader>/pp :silent grep<space>
+nnoremap <leader>/pw :silent grep! <C-R><C-W> <bar> cwindow<CR>
 
 xnoremap K :move '<-2<CR>gv-gv
 xnoremap J :move '>+1<CR>gv-gv
