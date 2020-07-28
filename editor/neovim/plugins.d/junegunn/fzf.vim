@@ -53,6 +53,8 @@ endfunction
 
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
+let $FZF_DEFAULT_OPTS .= ' --bind ctrl-a:select-all'
+
 imap <c-x><c-f> <plug>(fzf-complete-path)
 
 nnoremap <silent> <C-P> :Files<CR>
