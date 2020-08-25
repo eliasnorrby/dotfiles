@@ -27,7 +27,7 @@ macos_config:
     - font-hack-nerd-font
     - font-iosevka-nerd-font
     - font-mononoki-nerd-font
-    - font-robotomono-nerd-font
+    - font-roboto-mono-nerd-font
     - font-source-code-pro
     - font-saucecodepro-nerd-font
   mas_apps:
