@@ -38,28 +38,6 @@ end)
 -- Bind the right cmd key
 f16 = hs.hotkey.bind({}, 'F16', enterAppMode, exitAppMode)
 
--- Mess with backspace
-function notifyDisabledBackspace()
-  hs.notify.new({title='❌ Nope', informativeText='You should be more accurate 😉'}):send()
-end
-
-function disableBackspace()
-  hs.notify.new({title='⚔️ Backspace disabled', informativeText='Be brave!'}):send()
-  hs.hotkey.bind({}, 'F17', notifyDisabledBackspace)
-end
-
-function enableBackspace()
-  hs.notify.new({title='🏖 Backspace enabled', informativeText='Enjoy!'}):send()
-  hs.hotkey.bind({}, 'F17', function()
-      keyUpDown({}, 'delete')
-  end)
-end
-
-appMode:bind({}, 'F17', disableBackspace)
-appMode:bind({}, '=', enableBackspace)
-
-enableBackspace()
-
 -- Non-app bindings
 -- vim movement:
 local charactersToKeystrokes = {

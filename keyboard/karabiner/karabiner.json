@@ -61,22 +61,6 @@
                         ]
                     },
                     {
-                        "description": "Disable backspace",
-                        "manipulators": [
-                            {
-                                "from": {
-                                    "key_code": "delete_or_backspace"
-                                },
-                                "to_if_alone": [
-                                    {
-                                        "key_code": "f17"
-                                    }
-                                ],
-                                "type": "basic"
-                            }
-                        ]
-                    },
-                    {
                         "description": "Set fn as a pseudo hyper key for amethyst",
                         "manipulators": [
                             {
