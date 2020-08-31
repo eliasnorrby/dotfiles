@@ -91,6 +91,7 @@ jobs:
       osx_image: xcode11
       install: ./_tests/_setup_tests.sh
       script:
+        - brew update
         - ./_tests/brew_test.sh
         - ./_tests/packages_test.sh
 
