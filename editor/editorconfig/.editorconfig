@@ -14,3 +14,14 @@ indent_size = 4
 
 [*.py]
 indent_size = 4
+
+[*.go]
+indent_style = tab
+
+[*.sh]
+indent_size = 2
+
+# shfmt
+binary_next_line = true
+switch_case_indent = true
+keep_padding = true

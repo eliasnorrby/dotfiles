@@ -19,46 +19,17 @@ appMode:bind({}, 'p', function()
     keyUpDown({ 'cmd', 'alt' }, '\\')
   end)
 
--- tmux
-appMode:bind({}, '1', function()
-  keyUpDown({}, 'F1')
-end)
-appMode:bind({}, '2', function()
-  keyUpDown({}, 'F2')
-end)
-appMode:bind({}, '3', function()
-  keyUpDown({}, 'F3')
-end)
-appMode:bind({}, '4', function()
-  keyUpDown({}, 'F4')
-end)
-appMode:bind({}, '5', function()
-  keyUpDown({}, 'F5')
-end)
--- Bind the right cmd key
-f16 = hs.hotkey.bind({}, 'F16', enterAppMode, exitAppMode)
-
--- Mess with backspace
-function notifyDisabledBackspace()
-  hs.notify.new({title='❌ Nope', informativeText='You should be more accurate 😉'}):send()
-end
-
-function disableBackspace()
-  hs.notify.new({title='⚔️ Backspace disabled', informativeText='Be brave!'}):send()
-  hs.hotkey.bind({}, 'F17', notifyDisabledBackspace)
-end
-
-function enableBackspace()
-  hs.notify.new({title='🏖 Backspace enabled', informativeText='Enjoy!'}):send()
-  hs.hotkey.bind({}, 'F17', function()
-      keyUpDown({}, 'delete')
+-- Select tmux windows using number keys
+-- These bindings must be matched by bindings in tmux.conf, i.e.
+--   bind-key -n F1 select-window -t 1
+for i=1,8 do
+  appMode:bind({}, tostring(i), function()
+    keyUpDown({}, 'F' .. i)
   end)
 end
 
-appMode:bind({}, 'F17', disableBackspace)
-appMode:bind({}, '=', enableBackspace)
-
-enableBackspace()
+-- Bind the right cmd key
+f16 = hs.hotkey.bind({}, 'F16', enterAppMode, exitAppMode)
 
 -- Non-app bindings
 -- vim movement:
