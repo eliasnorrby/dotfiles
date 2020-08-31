@@ -1,3 +1,25 @@
+# [2.3.0](https://github.com/eliasnorrby/dotfiles/compare/v2.2.0...v2.3.0) (2020-08-31)
+
+
+### Bug Fixes
+
+* **deps:** update gh brew dependencies ([ad22525](https://github.com/eliasnorrby/dotfiles/commit/ad22525019bb6c11f81c68aebae3201290d54183))
+* **fonts:** update roboto mono font name ([21bf448](https://github.com/eliasnorrby/dotfiles/commit/21bf4486c7123dfb4be267b924265b809447b3e9))
+* **fonts:** update sauce code pro font name ([c3d9f31](https://github.com/eliasnorrby/dotfiles/commit/c3d9f31915cbaba7a2ee842e7a44e085e58bfd5b))
+
+
+### Features
+
+* **bash:** add shfmt and shellcheck ([832d242](https://github.com/eliasnorrby/dotfiles/commit/832d242c00567c024d7a788f499802a783aef12e))
+* **bash:** add shfmt to editorconfig ([c9a9fd3](https://github.com/eliasnorrby/dotfiles/commit/c9a9fd36bce4061956c2d95a2713b825cf87809e))
+* **editorconfig:** use tabs to indent go ([f6cc328](https://github.com/eliasnorrby/dotfiles/commit/f6cc328d77a2e4298da9bf69a2cb746b30f2d4ef))
+* **keyboard:** add mappings for the GK68XS ([f2d69eb](https://github.com/eliasnorrby/dotfiles/commit/f2d69ebae15950715624a82774977baf6cfc45bb))
+* **keyboard:** add mappings for wireless GK68XS ([72e0c59](https://github.com/eliasnorrby/dotfiles/commit/72e0c592d4193409c8ee1f83c2c03a4efdbb26b4))
+* **keyboard:** extend tmux pane range to 8 ([ec23fdf](https://github.com/eliasnorrby/dotfiles/commit/ec23fdfe5598a698d8e37b7be36bb86bf0f49319))
+* **keyboard:** remove the backspace disable ([3fe3d18](https://github.com/eliasnorrby/dotfiles/commit/3fe3d18481da34901d9d1a404e8f4015a467d4e6))
+* **scripts:** format and solve linting issues ([9839dce](https://github.com/eliasnorrby/dotfiles/commit/9839dce61559e4075e9a318ae7109f0536713710))
+* **vim:** add coc-diagnostic ([5cc41f7](https://github.com/eliasnorrby/dotfiles/commit/5cc41f7c5076411de2598df207eb576fd16a4fe5))
+
 # [2.2.0](https://github.com/eliasnorrby/dotfiles/compare/v2.1.0...v2.2.0) (2020-07-28)
 
 
