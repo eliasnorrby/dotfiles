@@ -3,6 +3,7 @@
     "coc-diagnostic": ">=0.6.0",
     "coc-eslint": ">=1.2.7",
     "coc-explorer": ">=0.7.11",
+    "coc-flutter": ">=1.5.1",
     "coc-go": ">=0.9.2",
     "coc-html": ">=1.2.4",
     "coc-json": ">=1.2.6",
