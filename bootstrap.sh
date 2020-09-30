@@ -58,25 +58,45 @@ _get_repo_snapshot() {
   curl -sL $TARBALL_URL | tar xz
 }
 
+# check if a command is available
+function _is_callable() {
+  for cmd in "$@"; do
+    command -v "$cmd" >/dev/null || return 1
+  done
+}
+
 _msg "Downloading repository snapshot from eliasnorrby/dotfiles@$DOTFILES_VERSION..."
 cd $(mktemp -d)
 _get_repo_snapshot
 cd eliasnorrby-dotfiles*
 
-_msg "Installing python 3..."
-curl "https://www.python.org/ftp/python/3.7.9/python-3.7.9-macosx10.9.pkg" -o "python3.pkg"
-sudo installer -pkg python3.pkg -target /
-export PATH=/Library/Frameworks/Python.framework/Versions/3.7/bin:$PATH
+if ! _is_callable python3; then
+  _msg "Installing python 3..."
+  curl "https://www.python.org/ftp/python/3.7.9/python-3.7.9-macosx10.9.pkg" -o "python3.pkg"
+  sudo installer -pkg python3.pkg -target /
+  export PATH=/Library/Frameworks/Python.framework/Versions/3.7/bin:$PATH
+else
+  _msg "python 3 already installed"
+fi
 
-_msg "Installing pip..."
-curl https://bootstrap.pypa.io/get-pip.py | sudo python3
+if ! _is_callable pip3; then
+  _msg "Installing pip..."
+  curl https://bootstrap.pypa.io/get-pip.py | sudo python3
+else
+  _msg "pip already installed"
+fi
 
-_msg "Installing ansible..."
-sudo -H pip3 install ansible
-
-_msg "Installing playbook requirements..."
 cd _provision
-ansible-galaxy install -r requirements.yml
+
+if ! _is_callable ansible; then
+  _msg "Installing ansible..."
+  sudo -H pip3 install ansible
+
+  _msg "Installing playbook requirements..."
+  ansible-galaxy install -r requirements.yml
+else
+  _msg "ansible already installed"
+fi
 
 _msg "Running the playbook..."
 ansible-playbook playbook.yml --tags "$ANSIBLE_TAGS" "$ANSIBLE_FLAGS"
