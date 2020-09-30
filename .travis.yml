@@ -42,7 +42,7 @@ jobs:
       os: osx
       osx_image: xcode12
 
-      before_install:
+      before_install: &prepare-homebrew
         - cd _provision
 
         # Install role dependencies. Do this here, using newer OpenSSL version and a
@@ -66,6 +66,7 @@ jobs:
         - sudo rm -rf /usr/local/Caskroom
         - sudo rm -rf /usr/local/bin/brew
 
+      install:
         # Install Python 3.
         - curl "https://www.python.org/ftp/python/3.7.9/python-3.7.9-macosx10.9.pkg" -o "python3.pkg"
         - sudo installer -pkg python3.pkg -target /
@@ -73,8 +74,6 @@ jobs:
 
         # Install pip3.
         - curl https://bootstrap.pypa.io/get-pip.py | sudo python3
-
-      install:
         # Install Ansible.
         - sudo -H pip3 install ansible
 
@@ -121,14 +120,8 @@ jobs:
         curl_target: https://raw.githubusercontent.com/eliasnorrby/dotfiles/
         DO_POST_INSTALL: false
         ANSIBLE_TAGS: all,setup_homebrew,do_defaults
-      before_install:
-        # Uninstall existing Homebrew installation.
-        - curl -sLO https://raw.githubusercontent.com/Homebrew/install/master/uninstall
-        - chmod +x ./uninstall
-        - ./uninstall --force
-        - sudo rm -rf /usr/local/Homebrew
-        - sudo rm -rf /usr/local/Caskroom
-        - sudo rm -rf /usr/local/bin/brew
+      before_install: *prepare-homebrew
+
       script:
         - >
           travis_wait 50
