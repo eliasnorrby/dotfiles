@@ -63,11 +63,16 @@ cd $(mktemp -d)
 _get_repo_snapshot
 cd eliasnorrby-dotfiles*
 
+_msg "Installing python 3..."
+curl "https://www.python.org/ftp/python/3.7.9/python-3.7.9-macosx10.9.pkg" -o "python3.pkg"
+sudo installer -pkg python3.pkg -target /
+export PATH=/Library/Frameworks/Python.framework/Versions/3.7/bin:$PATH
+
 _msg "Installing pip..."
-sudo easy_install pip
+curl https://bootstrap.pypa.io/get-pip.py | sudo python3
 
 _msg "Installing ansible..."
-sudo pip install ansible
+sudo -H pip3 install ansible
 
 _msg "Installing playbook requirements..."
 cd _provision
