@@ -23,7 +23,7 @@ jobs:
         - MOLECULE_DISTRO=centos7
       install:
         # Install test dependencies
-        - pip install molecule==2.22 docker
+        - pip install molecule==3.0.8 docker
       before_script:
         - export ROLE_NAME=dotfiles
         - cd _provision/roles/eliasnorrby.$ROLE_NAME
