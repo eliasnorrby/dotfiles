@@ -43,6 +43,8 @@ jobs:
       osx_image: xcode12
 
       before_install:
+        - cd _provision
+
         # Install role dependencies. Do this here, using newer OpenSSL version and a
         # virtualenv because older macOS versions will fail with the system version of
         # OpenSSL and Python if done later.
@@ -63,7 +65,6 @@ jobs:
         - sudo rm -rf /usr/local/Homebrew
         - sudo rm -rf /usr/local/Caskroom
         - sudo rm -rf /usr/local/bin/brew
-        - cd _provision
 
         # Install Python 3.
         - curl "https://www.python.org/ftp/python/3.7.9/python-3.7.9-macosx10.9.pkg" -o "python3.pkg"
