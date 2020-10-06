@@ -70,7 +70,7 @@ function install_ansible_and_roles() {
 
 function run_playbook() {
   _msg "Running the playbook..."
-  ansible-playbook playbook.yml --tags "$ANSIBLE_TAGS" "$ANSIBLE_FLAGS"
+  ansible-playbook playbook.yml --tags "$ANSIBLE_TAGS" $ANSIBLE_FLAGS
 }
 
 function print_duration() {
