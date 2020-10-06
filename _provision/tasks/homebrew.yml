@@ -5,7 +5,7 @@
     state: present
   when: brew_taps | length > 0
 
-- name: install homebrew packages
+- name: install homebrew formulae
   homebrew:
     name: "{{ brew_formulas }}"
     state: present
