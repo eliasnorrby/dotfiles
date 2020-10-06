@@ -103,6 +103,7 @@ jobs:
     ## Make sure all brew/npm/pip dependencies are available
     - stage: packages test
       language: objective-c
+      os: osx
       osx_image: xcode12
       install: ./_tests/_setup_tests.sh
       script:
@@ -112,6 +113,7 @@ jobs:
 
     ## Test bootstrap script (without package installs)
     - stage: bootstrap test
+      if: false
       language: objective-c
       osx_image: xcode12
       git:
