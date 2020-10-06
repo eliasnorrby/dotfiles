@@ -16,3 +16,4 @@
     name: "{{ brew_casks }}"
     state: present
   when: brew_casks | length > 0
+  ignore_errors: true
