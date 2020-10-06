@@ -12,7 +12,7 @@ macos_config:
     - dropbox
     - google-chrome
     - istat-menus
-    - lastpass
+    - 1password
     - slack
     - spotify
     - textexpander
@@ -49,7 +49,5 @@ macos_config:
       name: "Pages"
     - id: 1176895641
       name: "Spark"
-    - id: 926036361
-      name: "LastPass"
     - id: 409203825
       name: "Numbers"
