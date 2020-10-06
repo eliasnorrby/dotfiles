@@ -26,6 +26,7 @@
   tasks:
     - include_tasks: tasks/homebrew.yml
       tags: ["never", "do_homebrew", "bootstrap"]
+      ignore_errors: true
     - include_tasks: tasks/extra-packages.yml
       tags: ["never", "do_packages", "bootstrap"]
     - include_tasks: tasks/osx-defaults.yml
