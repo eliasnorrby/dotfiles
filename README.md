@@ -234,6 +234,17 @@ configured manually.
 - Link the proper scripts to `~/.local/bin`. There's a helper in the `scripts` directory. This could be scripted.
 - ...?
 
+## Troubleshooting
+
+### zsh: compinit complains about insecure directories
+
+It's probably mentioning `/usr/local/share/zsh`. Resolve it by running e.g:
+
+```bash
+sudo chown -R eliasnorrby:admin /usr/local/share/zsh
+sudo chmod -R 755 /usr/local/share/zsh
+```
+
 [travis-badge]: https://img.shields.io/travis/com/eliasnorrby/dotfiles?style=for-the-badge
 [travis-link]: https://travis-ci.com/eliasnorrby/dotfiles
 [semantic-release-badge]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
