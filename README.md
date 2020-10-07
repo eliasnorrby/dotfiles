@@ -222,13 +222,17 @@ The CLI provides a simpler way to edit, view and apply configurations.
 After running the provisioning script, there are a few things that need to be
 configured manually.
 
-1. Set main Alfred hotkey to <kbd>⌥</kbd> + <kbd>SPACE</kbd>
-2. Install the Things 3 helper
-3. Download the [Dank Mono font](https://dank.sh)
-4. Enable shortcuts for desktop navigation (Preferences -> Keyboard -> Shortcuts -> Mission Control)
-5. Download Fluid and set up Gmail as a desktop app
-6. Link the proper scripts to `~/.local/bin`. There's a helper in the `scripts` directory. This could be scripted.
-7. ...?
+- Start all apps and prepare to grant lots of privileges
+  - Start with Karabiner and Hammerspoon to enable app shortcuts
+- Download the [Dank Mono font](https://dank.sh)
+- Set main Alfred hotkey to <kbd>⌥</kbd> + <kbd>SPACE</kbd>
+- Install the Things 3 helper
+- Enable shortcuts for desktop navigation (Preferences -> Keyboard -> Shortcuts -> Mission Control)
+- Download Fluid and set up Gmail as a desktop app
+- Configure Bartender to hide the appropriate icons
+- Import iStatMenus settings from `assets/istatmenus`
+- Link the proper scripts to `~/.local/bin`. There's a helper in the `scripts` directory. This could be scripted.
+- ...?
 
 [travis-badge]: https://img.shields.io/travis/com/eliasnorrby/dotfiles?style=for-the-badge
 [travis-link]: https://travis-ci.com/eliasnorrby/dotfiles
