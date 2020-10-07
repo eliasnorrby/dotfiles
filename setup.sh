@@ -1,15 +1,54 @@
 #!/usr/bin/env bash
 
-# curl -sO https://raw.githubusercontent.com/eliasnorrby/dotfiles/develop/setup.sh
-# chmod +x setup.sh
-# ./setup.sh
-
-# Prerequisites:
+# Theoretically, this script can be ran with curl, i.e.
 #
-# xcode-select --install # Or installing xcode from the app store
-# xcodebuild -license accept
+#   bash <(curl -sL https://raw.githubusercontent.com/eliasnorrby/dotfiles/develop/setup.sh)
+#
+# but it's probably better to download it to take a look first:
+#
+#   curl -sLO https://raw.githubusercontent.com/eliasnorrby/dotfiles/develop/setup.sh
+#   chmod +x setup.sh
+#   ./setup.sh
+#
+# === Configuration ===
+# There are a number of environment variables you can set prior to
+# running this script in order to customize its behaviour.
+#
+# DOTFILES_VERSION=master|develop|... (default: master)
+#   Select which branch to download a snapshot of.
+# DO_MAS=true|false (default: true)
+#   Enable to install Mac App Store apps. Make sure you log into the
+#   App Store app with your Apple ID first.
+# ASK_PASS=true|false (default: true)
+#   Add the -K (--ask-become-pass) flag to ansible-playbook. This may
+#   or may not be needed to properly install homebrew.
+# DO_POST_INSTALL=true|false (default: true)
+#   Choose whether to run the post-install script or not. Mainly used to get
+#   around the time limit for jobs on travis-ci.com.
+#
+# DEBUG=true (default: false)
+#   Make this script more verbose (set -x).
+#
+# Extended example:
+#
+#   DO_MAS=false bash <(curl -s https://raw.githubusercontent.com/eliasnorrby/dotfiles/develop/setup.sh)
+#
+# === Prerequisites ===
+# One may or may not need to install the xcode command line tools before
+# running this script.
+#
+#   xcode-select --install # Or installing xcode from the app store
+#   xcodebuild -license accept
+#
+# but it's possible homebrew will take care of it.
 
 SECONDS=0
+
+# DEFAULTS
+DO_MAS=${DO_MAS:-true}
+ASK_PASS=${ASK_PASS:-true}
+DO_POST_INSTALL=${DO_POST_INSTALL:-true}
+DEBUG=${DEBUG:-false}
 
 if [ -z "$DOTFILES_VERSION" ]; then
   DOTFILES_VERSION=${1:-master}
@@ -27,9 +66,11 @@ if [[ "$ASK_PASS" == true ]]; then
   ANSIBLE_FLAGS="${ANSIBLE_FLAGS} -K"
 fi
 
-DO_POST_INSTALL=${DO_POST_INSTALL:-true}
+if [[ "$DEBUG" == true ]]; then
+  set -x
+fi
 
-set -exo pipefail
+set -eo pipefail
 
 export DOTFILES_REPO="https://github.com/eliasnorrby/dotfiles"
 export TARBALL_URL="$DOTFILES_REPO/tarball/$DOTFILES_VERSION"
@@ -39,7 +80,7 @@ function _msg() { printf "\r\033[2K\033[0;32m[ SETUP ] %s\033[0m\n" "$*"; }
 
 function _prompt() {
   _msg "$1"
-  read -p "Press Enter to continue"
+  read -p "[ ..... ] Press Enter to continue"
 }
 
 function install_homebrew() {
