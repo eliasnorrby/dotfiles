@@ -51,3 +51,24 @@ macos_config:
       name: "Spark"
     - id: 409203825
       name: "Numbers"
+  osx_defaults:
+    - domain: com.apple.dock
+      key: orientation
+      value: left
+      type: string
+      state: present
+    - domain: com.apple.dock
+      key: autohide
+      value: true
+      type: boolean
+      state: present
+    - domain: com.apple.dock
+      key: magnification
+      value: true
+      type: boolean
+      state: present
+    - domain: com.apple.dock
+      key: largesize
+      value: 44
+      type: float
+      state: present
