@@ -5,6 +5,6 @@ cli_config:
   links:
     - .boomrc.js
   npm_packages:
-    - @eliasnorrby/dotfiles-cli
+    - '@eliasnorrby/dotfiles-cli'
   pip_packages:
     - ansible
