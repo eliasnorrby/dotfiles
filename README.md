@@ -234,6 +234,9 @@ configured manually.
 - Configure Bartender to hide the appropriate icons
 - Import iStatMenus settings from `assets/istatmenus`
 - Link the proper scripts to `~/.local/bin`. There's a helper in the `scripts` directory. This could be scripted.
+- Set the computer name
+  - Preferences <kbd>→</kbd> Sharing
+  - `sudo scutil --set HostName <name-you-want>`
 - ...?
 
 ## Troubleshooting
