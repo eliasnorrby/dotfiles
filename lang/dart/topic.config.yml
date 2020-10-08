@@ -1,0 +1,13 @@
+---
+dart_config:
+  path: lang/dart
+  brew_casks:
+    - flutter
+    - android-studio
+  gem_packages:
+    - cocoapods
+  mas_apps:
+    - id: 497799835
+      name: "Xcode"
+
+# https://dev.to/0xdonut/how-to-install-flutter-on-macos-using-homebrew-and-asdf-3loa

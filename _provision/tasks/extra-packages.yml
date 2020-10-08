@@ -27,3 +27,4 @@
     executable: "{{ item.executable | default(omit) }}"
   # when: topics.lang.ruby.state = 'present'
   loop: "{{ gem_packages }}"
+  ignore_errors: true

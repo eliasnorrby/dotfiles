@@ -23,8 +23,8 @@ nvim +'PlugInstall --sync' +qall
 
 # emacs
 _msg "-- doom --"
-_msg "Running doom refresh..."
-doom --yes refresh
+_msg "Running doom sync..."
+doom --yes sync
 
 # vscode
 _msg "-- vscode --"

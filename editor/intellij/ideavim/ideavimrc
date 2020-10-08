@@ -86,6 +86,8 @@ nmap <leader>cv :action IntroduceVariable<CR>
 imap <C-V> <C-O>:action IntroduceVariable<CR>
 
 nmap <leader>im :action ImplementMethods<CR>
+" Shadows CMD+N
+nmap <leader>cg :action Generate<CR>
 
 " === RUN ===
 nmap <leader>rc :action ChooseRunConfiguration<CR>

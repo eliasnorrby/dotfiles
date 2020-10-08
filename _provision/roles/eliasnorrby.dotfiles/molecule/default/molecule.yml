@@ -3,10 +3,10 @@ dependency:
   name: galaxy
 driver:
   name: docker
-lint:
-  name: yamllint
-  options:
-    config-file: molecule/default/yaml-lint.yml
+lint: |
+  yamllint --config-file molecule/default/yaml-lint.yml .
+  ansible-lint .
+  flake8
 platforms:
   # - name: instance
   #   image: centos:7
@@ -19,16 +19,12 @@ platforms:
     pre_build_image: true
 provisioner:
   name: ansible
-  lint:
-    name: ansible-lint
-verifier:
-  name: testinfra
-  lint:
-    name: flake8
+# verifier:
+#   name: testinfra
 scenario:
   name: default
   test_sequence:
-    # - lint
+    - lint
     - destroy
     - dependency
     - syntax

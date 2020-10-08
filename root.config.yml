@@ -73,6 +73,9 @@ topics:
       state: present
       config: "{{ web_config }}"
   lang:
+    - name: dart
+      state: present
+      config: "{{ dart_config }}"
     - name: go
       state: present
       config: "{{ go_config }}"

@@ -27,6 +27,9 @@ echo "$SPACE"
 echo-info "Updating vim-plug plugins..."
 nvim +'PlugInstall --sync' +PlugUpdate +PlugUpgrade +qall | tee $vim_plug_log
 echo-ok "vim-plug updated!"
+echo-info "Updating coc-nvim extensions..."
+nvim +CocUpdateSync +qall
+echo-ok "coc-nvim updated!"
 echo-info "Wrote logs to $vim_plug_log"
 
 # brew

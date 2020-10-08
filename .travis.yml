@@ -23,7 +23,7 @@ jobs:
         - MOLECULE_DISTRO=centos7
       install:
         # Install test dependencies
-        - pip install molecule==2.22 docker
+        - pip install -r _provision/roles/eliasnorrby.dotfiles/requirements.txt
       before_script:
         - export ROLE_NAME=dotfiles
         - cd _provision/roles/eliasnorrby.$ROLE_NAME
@@ -40,9 +40,24 @@ jobs:
       if: branch != master
       language: objective-c
       os: osx
-      osx_image: xcode11
+      osx_image: xcode12
 
-      before_install:
+      before_install: &prepare-homebrew
+        - cd _provision
+
+        # Install role dependencies. Do this here, using newer OpenSSL version and a
+        # virtualenv because older macOS versions will fail with the system version of
+        # OpenSSL and Python if done later.
+        - brew upgrade openssl || brew install openssl || true
+        - brew upgrade python3 || brew install python3 || true
+        - sudo -H pip3 install -U virtualenv
+        - virtualenv --python=/usr/local/bin/python3 .venv
+        - source .venv/bin/activate
+        - pip3 install ansible
+        - python -c "import ssl; print(ssl.OPENSSL_VERSION)"
+        - ansible-galaxy install -r requirements.yml -p ./roles
+        - deactivate
+
         # Uninstall existing Homebrew installation.
         - curl -sLO https://raw.githubusercontent.com/Homebrew/install/master/uninstall
         - chmod +x ./uninstall
@@ -50,23 +65,23 @@ jobs:
         - sudo rm -rf /usr/local/Homebrew
         - sudo rm -rf /usr/local/Caskroom
         - sudo rm -rf /usr/local/bin/brew
-        - cd _provision
 
       install:
-        # Install pip.
-        - sudo easy_install pip
+        # Install Python 3.
+        - curl "https://www.python.org/ftp/python/3.7.9/python-3.7.9-macosx10.9.pkg" -o "python3.pkg"
+        - sudo installer -pkg python3.pkg -target /
+        - export PATH=/Library/Frameworks/Python.framework/Versions/3.7/bin:$PATH
 
+        # Install pip3.
+        - curl https://bootstrap.pypa.io/get-pip.py | sudo python3
         # Install Ansible.
-        - sudo pip install ansible
+        - sudo -H pip3 install ansible
 
         # Profile tasks (but beware of 'tail' used in idempotence test)
         # Profiling adds extra lines to the output, potentially failing the test
         - "echo 'callback_whitelist = profile_tasks' >> ansible.cfg"
 
       script:
-        # Install dependencies.
-        - "ansible-galaxy install -r requirements.yml"
-
         # Check the role/playbook's syntax.
         - "ansible-playbook playbook.yml --syntax-check"
 
@@ -88,7 +103,8 @@ jobs:
     ## Make sure all brew/npm/pip dependencies are available
     - stage: packages test
       language: objective-c
-      osx_image: xcode11
+      os: osx
+      osx_image: xcode12
       install: ./_tests/_setup_tests.sh
       script:
         - brew update
@@ -97,22 +113,17 @@ jobs:
 
     ## Test bootstrap script (without package installs)
     - stage: bootstrap test
+      if: false
       language: objective-c
-      osx_image: xcode11
+      osx_image: xcode12
       git:
         clone: false
       env:
         curl_target: https://raw.githubusercontent.com/eliasnorrby/dotfiles/
         DO_POST_INSTALL: false
         ANSIBLE_TAGS: all,setup_homebrew,do_defaults
-      before_install:
-        # Uninstall existing Homebrew installation.
-        - curl -sLO https://raw.githubusercontent.com/Homebrew/install/master/uninstall
-        - chmod +x ./uninstall
-        - ./uninstall --force
-        - sudo rm -rf /usr/local/Homebrew
-        - sudo rm -rf /usr/local/Caskroom
-        - sudo rm -rf /usr/local/bin/brew
+      before_install: *prepare-homebrew
+
       script:
         - >
           travis_wait 50

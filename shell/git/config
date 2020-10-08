@@ -20,3 +20,5 @@
 	smudge = git-lfs smudge -- %f
 [pull]
 	rebase = true
+[merge]
+	conflictstyle = diff3

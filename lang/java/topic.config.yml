@@ -3,7 +3,7 @@ java_config:
   path: lang/java
   brew_formulas:
     - maven
-  brew_casks:
+    - gradle
     - java
   brew_taps:
     - homebrew/cask-versions
