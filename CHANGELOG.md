@@ -1,3 +1,51 @@
+# [3.0.0](https://github.com/eliasnorrby/dotfiles/compare/v2.3.0...v3.0.0) (2020-10-08)
+
+
+### Bug Fixes
+
+* quote cli dependency ([ce40783](https://github.com/eliasnorrby/dotfiles/commit/ce407836cb9f35027258b2668c8f389cfef775a9))
+* **provision:** unquote ansible flags ([b684825](https://github.com/eliasnorrby/dotfiles/commit/b68482571e5988087373d9df19d19b1b825b49b7))
+* **scripts:** use printf ([6c69ca1](https://github.com/eliasnorrby/dotfiles/commit/6c69ca1ff587a1f58cc7f98fa0e5a23db1eb6fb7))
+
+
+### Features
+
+* **base:** replace lastpass with 1password ([beceea4](https://github.com/eliasnorrby/dotfiles/commit/beceea495b8579b8c2ef4b164caaa2919cb063f7))
+* **bootstrap:** check for executables before install ([af9f0ef](https://github.com/eliasnorrby/dotfiles/commit/af9f0ef4b20b996e6592a0c448c27f69ddae258d))
+* **bootstrap:** use updated ansible install process ([764e052](https://github.com/eliasnorrby/dotfiles/commit/764e0522d453383fbb160cea54d1bbc47a292531))
+* **cli:** add cli and ansible to deps ([848e16f](https://github.com/eliasnorrby/dotfiles/commit/848e16fd66c2d8a23ee0d18ffd74eeb304c97741))
+* **dart:** add lang/dart topic ([f356638](https://github.com/eliasnorrby/dotfiles/commit/f356638fcbebddc96ee7f62cddb294a1a3678172))
+* **doom:** use sync instead of refresh ([e2061d4](https://github.com/eliasnorrby/dotfiles/commit/e2061d49e3422f7976e166c04d2154d74ee362f7))
+* **git:** enable rerere ([8e516fa](https://github.com/eliasnorrby/dotfiles/commit/8e516fad265625e14b869daeeb0076885cfdbb52))
+* **intellij:** add mapping for Generate action ([ec96758](https://github.com/eliasnorrby/dotfiles/commit/ec96758dd3187329060315f77126b149806515ef))
+* **java:** add gradle to deps ([ccf46e8](https://github.com/eliasnorrby/dotfiles/commit/ccf46e8b6b400bfc0831808ba6ade50720163a9a))
+* **java:** bump JDK13 to JDK14 ([baf9b06](https://github.com/eliasnorrby/dotfiles/commit/baf9b06735f6195e3ef126fad13ede49533b64ef))
+* **java:** move java from casks to formulae ([4dd4fa0](https://github.com/eliasnorrby/dotfiles/commit/4dd4fa03951f543e6a4740b36a1a34b7c7c9e6ab))
+* **java:** update Java 14 JDK ([dd36511](https://github.com/eliasnorrby/dotfiles/commit/dd36511a505cdeee1523a0d424090e8b79a365f0))
+* **keyboard:** map ESC to ` on GK68XS ([275a41d](https://github.com/eliasnorrby/dotfiles/commit/275a41d595a4fb98175abcd6122e32b01aeb7b3e))
+* **macos:** customize dock using defaults ([349031d](https://github.com/eliasnorrby/dotfiles/commit/349031d8f53cc5a19b5da707ed7e5f35625ee27c))
+* **provision:** ignore brew errors in playbook ([5815a06](https://github.com/eliasnorrby/dotfiles/commit/5815a065c5ac1ccd4c833f5b382b6fa68b2dc8e5))
+* **provision:** ignore errors on gem install ([76795e6](https://github.com/eliasnorrby/dotfiles/commit/76795e6999fe801b43455233e9dbe43c789121f4))
+* **provision:** only allow brew cask failures ([cfb8a36](https://github.com/eliasnorrby/dotfiles/commit/cfb8a36806d3853765937e4b921ef1a384aab3b0))
+* **ruby:** update gem path ([2972c6c](https://github.com/eliasnorrby/dotfiles/commit/2972c6cff9c615c692fbd336ea2fc286b85035e7))
+* **setup:** add new setup script ([984ad34](https://github.com/eliasnorrby/dotfiles/commit/984ad34d03f4421a30df6aa64ac5a5717ef75839))
+* **setup:** update instructions and defaults ([686a23f](https://github.com/eliasnorrby/dotfiles/commit/686a23f40491a63989ce49e2689e77210619961d))
+* **update:** update coc-nvim extensions ([9ad4a79](https://github.com/eliasnorrby/dotfiles/commit/9ad4a7967858043a1d4d1daf9ff9bf6e5c206bcd))
+* **vim:** add coc-flutter to coc-extensions ([0daf76e](https://github.com/eliasnorrby/dotfiles/commit/0daf76ef9c3fcdc8c5653076fc4fc8a4dde6b771))
+* **vim:** add css & docker language support ([ce42b40](https://github.com/eliasnorrby/dotfiles/commit/ce42b40ed652b46f336a52510fd5ef26ecaae596))
+
+
+* feat!: remove bootstrap.sh ([aace45b](https://github.com/eliasnorrby/dotfiles/commit/aace45b65cb2e41f03596e1461c5c496995dc019))
+
+
+### BREAKING CHANGES
+
+* Remove bootstrap.sh, to be superseded by setup.sh. I'm
+giving up on trying to install homebrew using ansible. setup.sh does all
+the same things, but installs homebrew using the regular install script
+first in order to acquire the versions of python3 and openssl needed to
+properly run ansible-galaxy.
+
 # [2.3.0](https://github.com/eliasnorrby/dotfiles/compare/v2.2.0...v2.3.0) (2020-08-31)
 
 
