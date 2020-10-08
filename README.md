@@ -8,32 +8,33 @@ Declarative dotfiles for development on MacOS.
 
 ## Bootstrap
 
-To provision a new workstation from scratch, use the `bootstrap.sh` script.
-
-> :warning: **Warning** :warning:
-> This script has only been tested in CI. I have yet to try this on an actual
-> machine myself.
+To provision a new workstation from scratch, use the `setup.sh` script.
 
 Run
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/eliasnorrby/dotfiles/develop/bootstrap.sh)
+bash <(curl -sL https://raw.githubusercontent.com/eliasnorrby/dotfiles/develop/setup.sh)
 ```
+
+Prepare to input your password a couple of times.
 
 This setup script will:
 
+- Install homebrew
+- Install `python3` and `openssl` (using `brew`)
 - Download a snapshot version of this repo
-- Install `pip` (using `easy_install`)
 - Install `ansible` (using `pip`)
+- Install `ansible` role dependencies
 - Run the downloaded playbook (`_provision/playbook.yml`), wherein:
   - This repo is cloned to `~/.dotfiles`
   - Symlinks are created
-  - xcode command line tools are installed
+  - xcode command line tools are installed (or verified to have been installed)
   - Dependencies are downloaded (using `homebrew`, `pip`, `ruby` and `npm`)
 - Run the post-install script, wherein:
 
   - `zsh` plugins are installed
   - `vim` plugins are installed
+  - `coc-nvim` extensions are installed
   - `vscode` plugins are installed
   - `doom-emacs` packages are installed
 
@@ -128,7 +129,7 @@ _Minimal example of a topic directory layout_
        ├── prompt.zsh
        ├── remote.zsh
        ├── utilities.zsh
-       └── topic.config.yml
+       ├── topic.config.yml
        └── topic.tasks.yml
 ```
 
@@ -159,6 +160,7 @@ Possible fields in `topic.config.yml`:
 - `npm_packages`
 - `pip_packages`
 - `gem_packages`
+- `mas_apps`
 
 :bangbang: **TODO**: Describe topic config api in detail.
 
@@ -227,7 +229,7 @@ configured manually.
 - Download the [Dank Mono font](https://dank.sh)
 - Set main Alfred hotkey to <kbd>⌥</kbd> + <kbd>SPACE</kbd>
 - Install the Things 3 helper
-- Enable shortcuts for desktop navigation (Preferences -> Keyboard -> Shortcuts -> Mission Control)
+- Enable shortcuts for desktop navigation (Preferences <kbd>→</kbd> Keyboard <kbd>→</kbd> Shortcuts <kbd>→</kbd> Mission Control)
 - Download Fluid and set up Gmail as a desktop app
 - Configure Bartender to hide the appropriate icons
 - Import iStatMenus settings from `assets/istatmenus`
