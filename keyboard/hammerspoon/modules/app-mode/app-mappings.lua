@@ -13,7 +13,7 @@ return {
   { 'q', 'MySQLWorkbench'},        -- "Q" for "sQl"
   { 'n', 'Postman'},
   -- { 'w', 'MacVim'},                -- "W" for "Wiki"
-  { 'i', 'IntelliJ IDEA CE'},      -- "I" for "IntelliJ"
+  { 'i', 'IntelliJ IDEA'},         -- "I" for "IntelliJ"
   { 'u', 'Spotify' },              -- "U" for some reason
   { 'x', 'Firefox Developer Edition' },
   { 'w', 'Microsoft PowerPoint' },

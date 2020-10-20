@@ -2,9 +2,9 @@
 intellij_config:
   path: editor/intellij
   brew_casks:
-    - intellij-idea-ce
+    - intellij-idea
   osx_defaults:
-    - domain: com.jetbrains.intellij.ce
+    - domain: com.jetbrains.intellij
       key: ApplePressAndHoldEnabled
       value: false
       type: bool
