@@ -229,14 +229,17 @@ configured manually.
 - Download the [Dank Mono font](https://dank.sh)
 - Set main Alfred hotkey to <kbd>⌥</kbd> + <kbd>SPACE</kbd>
 - Install the Things 3 helper
+- Add additional desktops
 - Enable shortcuts for desktop navigation (Preferences <kbd>→</kbd> Keyboard <kbd>→</kbd> Shortcuts <kbd>→</kbd> Mission Control)
+- Set desktop backgrounds (assets available in Dropbox)
 - Download Fluid and set up Gmail as a desktop app
-- Configure Bartender to hide the appropriate icons
-- Import iStatMenus settings from `assets/istatmenus`
+- Configure Bartender to hide the appropriate icons, supply license
+- Import iStatMenus settings from `assets/istatmenus`, supply license
 - Link the proper scripts to `~/.local/bin`. There's a helper in the `scripts` directory. This could be scripted.
 - Set the computer name
   - Preferences <kbd>→</kbd> Sharing
   - `sudo scutil --set HostName <name-you-want>`
+
 - ...?
 
 ## Troubleshooting
