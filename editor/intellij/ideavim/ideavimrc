@@ -1,4 +1,4 @@
-" GUI stuff
+" SETTINGS:
 set nonumber
 set norelativenumber
 set clipboard+=unnamed
@@ -8,14 +8,15 @@ set commentary
 
 let mapleader = " "
 
-" === completion ===
+" MAPPINGS:
+" Completion:
 imap <C-N> <C-O>:action HippieBackwardCompletion<CR>
 imap <C-P> <C-O>:action HippieCompletion<CR>
 
-" === new ===
+" Creation:
 nmap <leader>nc :action NewClass<CR>
 
-" === easymotion ===
+" EasyMotion:
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 set easymotion
 nmap gsj <Plug>(easymotion-j)
@@ -24,7 +25,7 @@ nmap gs<space> <Plug>(easymotion-s)
 
 nmap gsw <Plug>(easymotion-wl)
 
-" === WINDOWS & TABS ===
+" Windows:
 " splits
 nmap <leader>wv <C-W>v
 nmap <leader>ws <C-W>s
@@ -35,7 +36,6 @@ nmap <leader>wj <C-W>j
 nmap <leader>wk <C-W>k
 nmap <leader>wl <C-W>l
 
-" shifting focus
 nmap <C-h> <C-W>h
 nmap <C-j> <C-W>j
 nmap <C-k> <C-W>k
@@ -49,45 +49,55 @@ nmap <leader>wL :action TabShiftActions.ShiftRight<CR>
 
 nmap <leader>w} :action ChangeSplitOrientation<CR>
 
-" close windows
+" closing windows
 nmap <leader>wc <C-W>c
-" nmap <leader>wC :action HideSideWindows<CR>
-nmap <leader>wC :action HideAllWindows<CR>
 nmap <leader>ww :action HideAllWindows<CR>
-nmap <leader>wz :action TabShiftActions.ToggleMaximizeRestore<CR>
 nmap <leader>wo <C-W>o
 nmap <leader>w<space> <leader>ww<leader>wo
 
 nmap <leader>td :action ToggleDistractionFreeMode<CR>
 
-" switch windows menu
-nmap <leader>s :action Switcher<CR>
+nmap <leader>wz :action TabShiftActions.ToggleMaximizeRestore<CR>
 
-" === PROJECTS ===
+" minimal
+nmap <leader>mm :action EditorBreadcrumbsHideBoth<CR>:action ViewNavigationBar<CR>
+" maximal
+nmap <leader>MM :action EditorBreadcrumbsShowBelow<CR>:action ViewNavigationBar<CR>
+
+" line numbers
+nmap <leader>tlr :set number relativenumber<CR>
+nmap <leader>tll :set norelativenumber number<CR>
+nmap <leader>tln :set norelativenumber nonumber<CR>
+
+" Projects:
 nmap <leader><tab>. :action OpenProjectWindows<CR>
 nmap <leader><tab>d :action CloseProject<CR>
 nmap <leader>pp :action RecentProjectListGroup<CR>
 " ManageRecentProjects?
 
-" === MISC ===
+" Miscellaneous:
 nmap <leader>Nc :action CloseFirstNotification<CR>
-
-" reload configuration
 nmap <leader>vr :source ~/.config/ideavim/ideavimrc<CR>
 
-" === BUFFERS & FILES ===
+" insert empty lines above or below
+nmap ]<space> o<ESC>k
+nmap [<space> O<ESC>j
+
+nmap ]e :action MoveStatementDown<CR>
+nmap [e :action MoveStatementUp<CR>
+
+imap <C-;> <C-o>A;
+
+" Files:
 nmap <leader>bk :action CloseEditor<CR>
-" nmap <leader>bk :action CloseActiveTab<CR>
 nmap <leader>fs :w<CR>
 nmap <leader>fl :action SelectInProjectView<CR>
 
-" formatting
+" Formatting:
 nmap <leader>ff :action ReformatCode<CR>
 nmap <leader>oo :action OptimizeImports<CR>
-" not sure about this one yet
-nmap <leader>gq :action FillParagraph<CR>
 
-" refactoring
+" Refactoring:
 nmap <leader>fR :action RenameFile<CR>
 nmap <leader>cr :action RenameElement<CR>
 nmap <leader>cc :action Refactorings.QuickListPopupAction<CR>
@@ -97,22 +107,22 @@ nmap <leader>cv :action IntroduceVariable<CR>
 imap <C-V> <C-O>:action IntroduceVariable<CR>
 
 nmap <leader>im :action ImplementMethods<CR>
-" Shadows CMD+N
+" Shadows CMD+N (and <C-CR>?)
 nmap <leader>cg :action Generate<CR>
 
-" === RUN ===
+" Running:
 nmap <leader>rc :action ChooseRunConfiguration<CR>
 " nmap <leader>rr :action RunConfiguration<CR>
 nmap <leader>rr :action Run<CR>
 nmap <leader>rR :action Rerun<CR>
 nmap <leader>rs :action Stop<CR>
 
-" === DEBUG ===
+" Debugging:
 nmap <leader>dc :action ChooseDebugConfiguration<CR>
 nmap <leader>dd :action Debug<CR>
 nmap <leader>ds :action Stop<CR>
 
-" Breakpoints
+" Breakpoints:
 nmap <leader>dbl :action ToggleLineBreakpoint<CR>
 nmap <leader>dbm :action ToggleMethodBreakpoint<CR>
 nmap <leader>dbf :action ToggleFieldBreakpoint<CR>
@@ -121,8 +131,8 @@ nmap <leader>dbt :action ToggleBreakpointEnabled<CR>
 
 nmap <leader>dbc :action Debugger.RemoveAllBreakpoints<CR>
 
-" === NAVIGATION ===
-" SearchEverywhere is on double shift
+" Navigation:
+nmap <leader>s :action Switcher<CR>
 nmap <leader><leader> :action GotoFile<CR>
 nmap <leader>, :action RecentFiles<CR>
 nmap <leader>: :action GotoAction<CR>
@@ -131,11 +141,6 @@ nmap <leader>gc :action GotoClass<CR>
 nmap <leader>gs :action GotoSymbol<CR>
 nmap <leader>tw :action ToolWindowsGroup<CR>
 nmap go :action FileStructurePopup<CR>
-
-" popup with list of methods in file
-nmap <leader>fn :action FileStructurePopup<CR>
-
-nmap gh :action ShowErrorDescription<cr>
 
 nmap <C-o> :action Back<CR>
 nmap <C-i> :action Forward<CR>
@@ -147,32 +152,12 @@ nmap gs :action GotoSuperMethod<CR>
 nmap gu :action ShowUsages<CR>
 nmap gf :action QuickActionPopup<CR>
 
-nmap ]<space> o<ESC>k
-nmap [<space> O<ESC>j
-
 nmap ]d :action GotoNextError<CR>
 nmap [d :action GotoPreviousError<CR>
+nmap gh :action ShowErrorDescription<cr>
 
-nmap ]e :action MoveStatementDown<CR>
-nmap [e :action MoveStatementUp<CR>
-
-" git stuff
+" Git:
 nmap <leader>gb :action Annotate<CR>
-
-" minimal
-nmap <leader>mm :action EditorBreadcrumbsHideBoth<CR>:action ViewNavigationBar<CR>
-" maximal
-nmap <leader>MM :action EditorBreadcrumbsShowBelow<CR>:action ViewNavigationBar<CR>
-
-" settings I can get at with actions:
-" - Tab placement
-" - Show tool window bars
-
-nmap <leader>tlr :set number relativenumber<CR>
-nmap <leader>tll :set norelativenumber number<CR>
-nmap <leader>tln :set norelativenumber nonumber<CR>
-
-imap <C-;> <C-o>A;
 
 " Interesting actions
 " ShowPopupMenu
