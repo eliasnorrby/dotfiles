@@ -134,6 +134,9 @@ nmap gs :action GotoSuperMethod<CR>
 nmap gu :action ShowUsages<CR>
 nmap gf :action QuickActionPopup<CR>
 
+nmap ]<space> o<ESC>k
+nmap [<space> O<ESC>j
+
 nmap ]d :action GotoNextError<CR>
 nmap [d :action GotoPreviousError<CR>
 
