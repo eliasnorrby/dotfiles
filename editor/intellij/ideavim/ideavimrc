@@ -9,14 +9,14 @@ set commentary
 let mapleader = " "
 
 " MAPPINGS:
-" Completion:
+" Completion: {{{1
 imap <C-N> <C-O>:action HippieBackwardCompletion<CR>
 imap <C-P> <C-O>:action HippieCompletion<CR>
 
-" Creation:
+" Creation: {{{1
 nmap <leader>nc :action NewClass<CR>
 
-" Debugging:
+" Debugging: {{{1
 nmap <leader>dc :action ChooseDebugConfiguration<CR>
 nmap <leader>dd :action Debug<CR>
 nmap <leader>ds :action Stop<CR>
@@ -30,19 +30,19 @@ nmap <leader>dbt :action ToggleBreakpointEnabled<CR>
 
 nmap <leader>dbc :action Debugger.RemoveAllBreakpoints<CR>
 
-" Files:
+" Files: {{{1
 nmap <leader>bk :action CloseEditor<CR>
 nmap <leader>fs :w<CR>
 nmap <leader>fl :action SelectInProjectView<CR>
 
-" Formatting:
+" Formatting: {{{1
 nmap <leader>ff :action ReformatCode<CR>
 nmap <leader>oo :action OptimizeImports<CR>
 
-" Git:
+" Git: {{{1
 nmap <leader>gb :action Annotate<CR>
 
-" Miscellaneous:
+" Miscellaneous: {{{1
 nmap <leader>Nc :action CloseFirstNotification<CR>
 nmap <leader>vr :source ~/.config/ideavim/ideavimrc<CR>
 
@@ -55,7 +55,7 @@ nmap [e :action MoveStatementUp<CR>
 
 imap <C-;> <C-o>A;
 
-" Navigation:
+" Navigation: {{{1
 nmap <leader>s :action Switcher<CR>
 nmap <leader><leader> :action GotoFile<CR>
 nmap <leader>, :action RecentFiles<CR>
@@ -80,7 +80,7 @@ nmap ]d :action GotoNextError<CR>
 nmap [d :action GotoPreviousError<CR>
 nmap gh :action ShowErrorDescription<cr>
 
-" Plugins:
+" Plugins: {{{1
 " EasyMotion
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 set easymotion
@@ -90,13 +90,13 @@ nmap gs<space> <Plug>(easymotion-s)
 
 nmap gsw <Plug>(easymotion-wl)
 
-" Projects:
+" Projects: {{{1
 nmap <leader><tab>. :action OpenProjectWindows<CR>
 nmap <leader><tab>d :action CloseProject<CR>
 nmap <leader>pp :action RecentProjectListGroup<CR>
 " ManageRecentProjects?
 
-" Refactoring:
+" Refactoring: {{{1
 nmap <leader>fR :action RenameFile<CR>
 nmap <leader>cr :action RenameElement<CR>
 nmap <leader>cc :action Refactorings.QuickListPopupAction<CR>
@@ -109,14 +109,14 @@ nmap <leader>im :action ImplementMethods<CR>
 " Shadows CMD+N (and <C-CR>?)
 nmap <leader>cg :action Generate<CR>
 
-" Running:
+" Running: {{{1
 nmap <leader>rc :action ChooseRunConfiguration<CR>
 " nmap <leader>rr :action RunConfiguration<CR>
 nmap <leader>rr :action Run<CR>
 nmap <leader>rR :action Rerun<CR>
 nmap <leader>rs :action Stop<CR>
 
-" Windows:
+" Windows: {{{1
 " splits
 nmap <leader>wv <C-W>v
 nmap <leader>ws <C-W>s
@@ -167,3 +167,5 @@ nmap <leader>tln :set norelativenumber nonumber<CR>
 " List
 " https://centic9.github.io/IntelliJ-Action-IDs/
 " Also, :actionlist <pattern>
+
+" vim:foldmethod=marker:foldlevel=20
