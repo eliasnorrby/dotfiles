@@ -1,6 +1,6 @@
 " GUI stuff
-set number
-set relativenumber
+set nonumber
+set norelativenumber
 set clipboard+=unnamed
 
 set surround
