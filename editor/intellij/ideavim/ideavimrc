@@ -111,7 +111,8 @@ nmap <leader>dbt :action ToggleBreakpointEnabled<CR>
 nmap <leader>dbc :action Debugger.RemoveAllBreakpoints<CR>
 
 " === NAVIGATION ===
-nmap <leader><leader> :action SearchEverywhere<CR>
+" SearchEverywhere is on double shift
+nmap <leader><leader> :action GotoFile<CR>
 nmap <leader>, :action RecentFiles<CR>
 nmap <leader>: :action GotoAction<CR>
 nmap <leader>gf :action GotoFile<CR>
