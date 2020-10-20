@@ -51,7 +51,14 @@ nmap <leader>w} :action ChangeSplitOrientation<CR>
 
 " close windows
 nmap <leader>wc <C-W>c
-nmap <leader>wC :action HideSideWindows<CR>
+" nmap <leader>wC :action HideSideWindows<CR>
+nmap <leader>wC :action HideAllWindows<CR>
+nmap <leader>ww :action HideAllWindows<CR>
+nmap <leader>wz :action TabShiftActions.ToggleMaximizeRestore<CR>
+nmap <leader>wo <C-W>o
+nmap <leader>w<space> <leader>ww<leader>wo
+
+nmap <leader>td :action ToggleDistractionFreeMode<CR>
 
 " switch windows menu
 nmap <leader>s :action Switcher<CR>
@@ -73,9 +80,6 @@ nmap <leader>bk :action CloseEditor<CR>
 " nmap <leader>bk :action CloseActiveTab<CR>
 nmap <leader>fs :w<CR>
 nmap <leader>fl :action SelectInProjectView<CR>
-
-nmap <leader>wo :action TabShiftActions.ToggleMaximizeRestore<CR>
-nmap <leader>wO :action CloseAllEditorsButActive<CR>
 
 " formatting
 nmap <leader>ff :action ReformatCode<CR>
