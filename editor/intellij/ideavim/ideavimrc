@@ -8,6 +8,10 @@ set commentary
 
 let mapleader = " "
 
+" === completion ===
+imap <C-N> <C-O>:action HippieBackwardCompletion<CR>
+imap <C-P> <C-O>:action HippieCompletion<CR>
+
 " === new ===
 nmap <leader>nc :action NewClass<CR>
 
