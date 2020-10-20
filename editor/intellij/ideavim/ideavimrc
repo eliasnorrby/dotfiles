@@ -8,6 +8,9 @@ set commentary
 
 let mapleader = " "
 
+" === new ===
+nmap <leader>nc :action NewClass<CR>
+
 " === easymotion ===
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 set easymotion
@@ -56,7 +59,7 @@ nmap <leader>pp :action RecentProjectListGroup<CR>
 " ManageRecentProjects?
 
 " === MISC ===
-nmap <leader>nc :action CloseFirstNotification<CR>
+nmap <leader>Nc :action CloseFirstNotification<CR>
 
 " reload configuration
 nmap <leader>vr :source ~/.config/ideavim/ideavimrc<CR>
