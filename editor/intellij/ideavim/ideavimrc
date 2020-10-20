@@ -161,6 +161,8 @@ nmap <leader>tlr :set number relativenumber<CR>
 nmap <leader>tll :set norelativenumber number<CR>
 nmap <leader>tln :set norelativenumber nonumber<CR>
 
+imap <C-;> <C-o>A;
+
 " Interesting actions
 " ShowPopupMenu
 " QuickFixes?
