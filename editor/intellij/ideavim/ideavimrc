@@ -134,11 +134,11 @@ nmap gs :action GotoSuperMethod<CR>
 nmap gu :action ShowUsages<CR>
 nmap gf :action QuickActionPopup<CR>
 
-nmap ]e :action GotoNextError<CR>
-nmap [e :action GotoPreviousError<CR>
+nmap ]d :action GotoNextError<CR>
+nmap [d :action GotoPreviousError<CR>
 
-nmap ]s :action MoveStatementDown<CR>
-nmap [s :action MoveStatementUp<CR>
+nmap ]e :action MoveStatementDown<CR>
+nmap [e :action MoveStatementUp<CR>
 
 " git stuff
 nmap <leader>gb :action Annotate<CR>
