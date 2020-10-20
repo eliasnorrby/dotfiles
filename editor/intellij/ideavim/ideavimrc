@@ -16,7 +16,72 @@ imap <C-P> <C-O>:action HippieCompletion<CR>
 " Creation:
 nmap <leader>nc :action NewClass<CR>
 
-" EasyMotion:
+" Debugging:
+nmap <leader>dc :action ChooseDebugConfiguration<CR>
+nmap <leader>dd :action Debug<CR>
+nmap <leader>ds :action Stop<CR>
+
+" breakpoints
+nmap <leader>dbl :action ToggleLineBreakpoint<CR>
+nmap <leader>dbm :action ToggleMethodBreakpoint<CR>
+nmap <leader>dbf :action ToggleFieldBreakpoint<CR>
+
+nmap <leader>dbt :action ToggleBreakpointEnabled<CR>
+
+nmap <leader>dbc :action Debugger.RemoveAllBreakpoints<CR>
+
+" Files:
+nmap <leader>bk :action CloseEditor<CR>
+nmap <leader>fs :w<CR>
+nmap <leader>fl :action SelectInProjectView<CR>
+
+" Formatting:
+nmap <leader>ff :action ReformatCode<CR>
+nmap <leader>oo :action OptimizeImports<CR>
+
+" Git:
+nmap <leader>gb :action Annotate<CR>
+
+" Miscellaneous:
+nmap <leader>Nc :action CloseFirstNotification<CR>
+nmap <leader>vr :source ~/.config/ideavim/ideavimrc<CR>
+
+" insert empty lines above or below
+nmap ]<space> o<ESC>k
+nmap [<space> O<ESC>j
+
+nmap ]e :action MoveStatementDown<CR>
+nmap [e :action MoveStatementUp<CR>
+
+imap <C-;> <C-o>A;
+
+" Navigation:
+nmap <leader>s :action Switcher<CR>
+nmap <leader><leader> :action GotoFile<CR>
+nmap <leader>, :action RecentFiles<CR>
+nmap <leader>: :action GotoAction<CR>
+nmap <leader>gf :action GotoFile<CR>
+nmap <leader>gc :action GotoClass<CR>
+nmap <leader>gs :action GotoSymbol<CR>
+nmap <leader>tw :action ToolWindowsGroup<CR>
+nmap go :action FileStructurePopup<CR>
+
+nmap <C-o> :action Back<CR>
+nmap <C-i> :action Forward<CR>
+
+" lang stuff
+nmap gd :action GotoDeclaration<CR>
+nmap gi :action GotoImplementation<CR>
+nmap gs :action GotoSuperMethod<CR>
+nmap gu :action ShowUsages<CR>
+nmap gf :action QuickActionPopup<CR>
+
+nmap ]d :action GotoNextError<CR>
+nmap [d :action GotoPreviousError<CR>
+nmap gh :action ShowErrorDescription<cr>
+
+" Plugins:
+" EasyMotion
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 set easymotion
 nmap gsj <Plug>(easymotion-j)
@@ -24,6 +89,32 @@ nmap gsk <Plug>(easymotion-k)
 nmap gs<space> <Plug>(easymotion-s)
 
 nmap gsw <Plug>(easymotion-wl)
+
+" Projects:
+nmap <leader><tab>. :action OpenProjectWindows<CR>
+nmap <leader><tab>d :action CloseProject<CR>
+nmap <leader>pp :action RecentProjectListGroup<CR>
+" ManageRecentProjects?
+
+" Refactoring:
+nmap <leader>fR :action RenameFile<CR>
+nmap <leader>cr :action RenameElement<CR>
+nmap <leader>cc :action Refactorings.QuickListPopupAction<CR>
+nmap <leader>cR :action RefactoringMenu<CR>
+
+nmap <leader>cv :action IntroduceVariable<CR>
+imap <C-V> <C-O>:action IntroduceVariable<CR>
+
+nmap <leader>im :action ImplementMethods<CR>
+" Shadows CMD+N (and <C-CR>?)
+nmap <leader>cg :action Generate<CR>
+
+" Running:
+nmap <leader>rc :action ChooseRunConfiguration<CR>
+" nmap <leader>rr :action RunConfiguration<CR>
+nmap <leader>rr :action Run<CR>
+nmap <leader>rR :action Rerun<CR>
+nmap <leader>rs :action Stop<CR>
 
 " Windows:
 " splits
@@ -69,96 +160,6 @@ nmap <leader>tlr :set number relativenumber<CR>
 nmap <leader>tll :set norelativenumber number<CR>
 nmap <leader>tln :set norelativenumber nonumber<CR>
 
-" Projects:
-nmap <leader><tab>. :action OpenProjectWindows<CR>
-nmap <leader><tab>d :action CloseProject<CR>
-nmap <leader>pp :action RecentProjectListGroup<CR>
-" ManageRecentProjects?
-
-" Miscellaneous:
-nmap <leader>Nc :action CloseFirstNotification<CR>
-nmap <leader>vr :source ~/.config/ideavim/ideavimrc<CR>
-
-" insert empty lines above or below
-nmap ]<space> o<ESC>k
-nmap [<space> O<ESC>j
-
-nmap ]e :action MoveStatementDown<CR>
-nmap [e :action MoveStatementUp<CR>
-
-imap <C-;> <C-o>A;
-
-" Files:
-nmap <leader>bk :action CloseEditor<CR>
-nmap <leader>fs :w<CR>
-nmap <leader>fl :action SelectInProjectView<CR>
-
-" Formatting:
-nmap <leader>ff :action ReformatCode<CR>
-nmap <leader>oo :action OptimizeImports<CR>
-
-" Refactoring:
-nmap <leader>fR :action RenameFile<CR>
-nmap <leader>cr :action RenameElement<CR>
-nmap <leader>cc :action Refactorings.QuickListPopupAction<CR>
-nmap <leader>cR :action RefactoringMenu<CR>
-
-nmap <leader>cv :action IntroduceVariable<CR>
-imap <C-V> <C-O>:action IntroduceVariable<CR>
-
-nmap <leader>im :action ImplementMethods<CR>
-" Shadows CMD+N (and <C-CR>?)
-nmap <leader>cg :action Generate<CR>
-
-" Running:
-nmap <leader>rc :action ChooseRunConfiguration<CR>
-" nmap <leader>rr :action RunConfiguration<CR>
-nmap <leader>rr :action Run<CR>
-nmap <leader>rR :action Rerun<CR>
-nmap <leader>rs :action Stop<CR>
-
-" Debugging:
-nmap <leader>dc :action ChooseDebugConfiguration<CR>
-nmap <leader>dd :action Debug<CR>
-nmap <leader>ds :action Stop<CR>
-
-" Breakpoints:
-nmap <leader>dbl :action ToggleLineBreakpoint<CR>
-nmap <leader>dbm :action ToggleMethodBreakpoint<CR>
-nmap <leader>dbf :action ToggleFieldBreakpoint<CR>
-
-nmap <leader>dbt :action ToggleBreakpointEnabled<CR>
-
-nmap <leader>dbc :action Debugger.RemoveAllBreakpoints<CR>
-
-" Navigation:
-nmap <leader>s :action Switcher<CR>
-nmap <leader><leader> :action GotoFile<CR>
-nmap <leader>, :action RecentFiles<CR>
-nmap <leader>: :action GotoAction<CR>
-nmap <leader>gf :action GotoFile<CR>
-nmap <leader>gc :action GotoClass<CR>
-nmap <leader>gs :action GotoSymbol<CR>
-nmap <leader>tw :action ToolWindowsGroup<CR>
-nmap go :action FileStructurePopup<CR>
-
-nmap <C-o> :action Back<CR>
-nmap <C-i> :action Forward<CR>
-
-" lang stuff
-nmap gd :action GotoDeclaration<CR>
-nmap gi :action GotoImplementation<CR>
-nmap gs :action GotoSuperMethod<CR>
-nmap gu :action ShowUsages<CR>
-nmap gf :action QuickActionPopup<CR>
-
-nmap ]d :action GotoNextError<CR>
-nmap [d :action GotoPreviousError<CR>
-nmap gh :action ShowErrorDescription<cr>
-
-" Git:
-nmap <leader>gb :action Annotate<CR>
-
 " Interesting actions
 " ShowPopupMenu
 " QuickFixes?
@@ -166,4 +167,3 @@ nmap <leader>gb :action Annotate<CR>
 " List
 " https://centic9.github.io/IntelliJ-Action-IDs/
 " Also, :actionlist <pattern>
-
