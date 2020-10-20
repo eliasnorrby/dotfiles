@@ -119,6 +119,7 @@ nmap <leader>gf :action GotoFile<CR>
 nmap <leader>gc :action GotoClass<CR>
 nmap <leader>gs :action GotoSymbol<CR>
 nmap <leader>tw :action ToolWindowsGroup<CR>
+nmap go :action FileStructurePopup<CR>
 
 " popup with list of methods in file
 nmap <leader>fn :action FileStructurePopup<CR>
