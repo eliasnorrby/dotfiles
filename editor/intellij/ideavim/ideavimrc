@@ -152,9 +152,9 @@ nmap <leader>MM :action EditorBreadcrumbsShowBelow<CR>:action ViewNavigationBar<
 " - Tab placement
 " - Show tool window bars
 
-nmap <leader>tlr :set invrelativenumber<CR>
-nmap <leader>tll :action EditorToggleShowLineNumbers<CR>
-nmap <leader>tlL :action EditorGutterToggleGlobalLineNumbers<CR>
+nmap <leader>tlr :set number relativenumber<CR>
+nmap <leader>tll :set norelativenumber number<CR>
+nmap <leader>tln :set norelativenumber nonumber<CR>
 
 " Interesting actions
 " ShowPopupMenu
