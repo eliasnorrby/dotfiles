@@ -9,27 +9,33 @@ source "$DIR"/env
 _msg() { printf "\r\033[2K\033[0;32m[ .. ] %s\033[0m\n" "$*"; }
 
 # zplug
-_msg "-- zplug --"
-_msg "Sourcing plugins..."
-_load shell/zsh/plugins.zsh
-
-_msg "Running zplug install..."
-zplug install
+if _is_callable zplug ; then
+  _msg "-- zplug --"
+  _msg "Sourcing plugins..."
+  _load shell/zsh/plugins.zsh
+  _msg "Running zplug install..."
+  zplug install
+fi
 
 # vim-plug
-_msg "-- vim-plug --"
-_msg "Running PlugInstall..."
-nvim +'PlugInstall --sync' +qall
+if _is_callable nvim ; then
+  _msg "-- vim-plug --"
+  _msg "Running PlugInstall..."
+  nvim +'PlugInstall --sync' +qall
+fi
 
 # emacs
-_msg "-- doom --"
-_msg "Running doom sync..."
-doom --yes sync
+if _is_callable doom ; then
+  _msg "-- doom --"
+  _msg "Running doom sync..."
+  doom --yes sync
+fi
 
 # vscode
-_msg "-- vscode --"
-_msg "Installing extensions..."
-"$DIR/editor/vscode/install-extensions.zsh"
-
+if _is_callable code ; then
+  _msg "-- vscode --"
+  _msg "Installing extensions..."
+  "$DIR/editor/vscode/install-extensions.zsh"
+fi
 
 _msg "Done!"
