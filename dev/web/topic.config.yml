@@ -3,6 +3,8 @@ web_config:
   path: dev/web
   brew_formulas:
     - httpie
+  pacman_packages:
+    - httpie
   npm_packages:
     - firebase-tools
     - gatsby-cli

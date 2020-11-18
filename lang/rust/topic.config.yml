@@ -3,3 +3,5 @@ rust_config:
   path: lang/rust
   brew_formulas:
     - rustup
+  pacman_packages:
+    - rust

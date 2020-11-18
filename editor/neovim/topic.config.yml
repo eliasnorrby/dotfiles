@@ -7,6 +7,11 @@ neovim_config:
     - fzf
     - bat
     - python
+  pacman_packages:
+    - neovim
+    - fzf
+    - bat
+    - python
   pip_packages:
     - pynvim
   links:

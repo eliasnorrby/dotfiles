@@ -9,6 +9,14 @@ git_config:
     - tig
     - hub
     - gh
-    - grip
     - diff-so-fancy
     # git-flow-avh
+  pacman_packages:
+    - git
+    - tig
+    - hub
+    - github-cli
+    - diff-so-fancy
+  pip_packages:
+    - grip
+

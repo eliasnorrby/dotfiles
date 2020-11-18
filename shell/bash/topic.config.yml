@@ -5,3 +5,6 @@ bash_config:
     - bash
     - shfmt
     - shellcheck
+  pacman_packages:
+    - shfmt
+    - shellcheck

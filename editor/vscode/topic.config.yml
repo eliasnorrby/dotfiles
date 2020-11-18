@@ -3,6 +3,8 @@ vscode_config:
   path: editor/vscode
   brew_casks:
     - visual-studio-code
+  pacman_packages:
+    - code
   links:
     - src: settings.json
       dest: "{{ vscode_home }}/"
@@ -22,7 +24,8 @@ vscode_config:
       type: bool
       state: present
 
-vscode_home: "~/Library/Application Support/Code/User"
+# vscode_home: "~/Library/Application Support/Code/User"
+vscode_home: "~/.config/Code/User"
 
 vscode_plugins:
   - burkeholland.simple-react-snippets

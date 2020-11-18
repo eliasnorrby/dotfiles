@@ -11,6 +11,9 @@ emacs_config:
     #   install_options: without-spacemacs-icon
     - emacs-plus
     - gnupg # Used by forge
+  pacman_packages:
+    - emacs
+    - gnupg
   npm_packages:
     - typescript-language-server
     - typescript

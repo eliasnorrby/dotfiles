@@ -8,3 +8,8 @@ java_config:
   brew_taps:
     - homebrew/cask-versions
     - adoptopenjdk/openjdk
+  pacman_packages:
+    - jdk-openjdk
+    - jre-openjdk
+    - maven
+    - gradle

@@ -5,3 +5,5 @@ alacritty_config:
     - alacritty.yml
   brew_casks:
     - alacritty
+  pacman_packages:
+    - alacritty

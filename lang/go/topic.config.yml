@@ -3,3 +3,5 @@ go_config:
   path: lang/go
   brew_formulas:
     - golang
+  pacman_packages:
+    - go

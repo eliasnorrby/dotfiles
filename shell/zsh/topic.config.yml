@@ -19,6 +19,17 @@ zsh_config:
     - pandoc
     # misc
     - neofetch
+  pacman_packages:
+    - zsh
+    - fzf
+    - bat
+    - ripgrep
+    - tree
+    - mosh
+    - jq
+    - yq
+    - pandoc
+    - neofetch
   links:
     - .zshrc
     - .zshenv

@@ -5,3 +5,6 @@ kubernetes_config:
     - minikube
     - kubectl
     # - docker-machine-driver-hyperkit
+  pacman_packages:
+    - minikube
+    - kubectl
