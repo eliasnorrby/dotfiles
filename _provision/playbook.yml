@@ -1,5 +1,5 @@
 ---
-- hosts: mac
+- hosts: machine
 
   ## Incorrectly triggered during CI, log in using GUI instead
   # vars_prompt:
