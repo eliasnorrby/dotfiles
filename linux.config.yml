@@ -1,0 +1,102 @@
+---
+topics:
+  dotfiles:
+    - name: cli
+      state: present
+      config: "{{ cli_config }}"
+  base:
+    - name: macos
+      state: absent
+      config: "{{ macos_config }}"
+  editor:
+    - name: vim
+      state: disabled
+      config: "{{ vim_config }}"
+    - name: neovim
+      state: present
+      config: "{{ neovim_config }}"
+    - name: emacs
+      state: absent
+      config: "{{ emacs_config }}"
+    - name: editorconfig
+      state: present
+      config: "{{ editorconfig_config }}"
+    - name: vscode
+      state: absent
+      config: "{{ vscode_config }}"
+    - name: intellij
+      state: absent
+      config: "{{ intellij_config }}"
+  keyboard:
+    - name: fasterkeys
+      state: absent
+      config: "{{ fasterkeys_config }}"
+    - name: hammerspoon
+      state: absent
+      config: "{{ hammerspoon_config }}"
+    - name: karabiner
+      state: absent
+      config: "{{ karabiner_config }}"
+  shell:
+    - name: alacritty
+      state: present
+      config: "{{ alacritty_config }}"
+    - name: bash
+      state: present
+      config: "{{ bash_config }}"
+    - name: git
+      state: present
+      config: "{{ git_config }}"
+    - name: tmux
+      state: present
+      config: "{{ tmux_config }}"
+    - name: zsh
+      state: present
+      config: "{{ zsh_config }}"
+  dev:
+    - name: ansible
+      state: present
+      config: "{{ ansible_config }}"
+    - name: cicd
+      state: present
+      config: "{{ cicd_config }}"
+    - name: docker
+      state: present
+      config: "{{ docker_config }}"
+    - name: vagrant
+      state: absent
+      config: "{{ vagrant_config }}"
+    - name: kubernetes
+      state: absent
+      config: "{{ kubernetes_config }}"
+    - name: web
+      state: present
+      config: "{{ web_config }}"
+  lang:
+    - name: dart
+      state: absent
+      config: "{{ dart_config }}"
+    - name: dotnet
+      state: absent
+      config: "{{ dotnet_config }}"
+    - name: go
+      state: present
+      config: "{{ go_config }}"
+    - name: java
+      state: present
+      config: "{{ java_config }}"
+    - name: kafka
+      state: absent
+      config: "{{ kafka_config }}"
+    - name: node
+      state: present
+      config: "{{ node_config }}"
+    - name: python
+      state: present
+      config: "{{ python_config }}"
+    - name: ruby
+      state: present
+      config: "{{ ruby_config }}"
+    - name: rust
+      state: present
+      config: "{{ rust_config }}"
