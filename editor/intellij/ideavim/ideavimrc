@@ -119,6 +119,9 @@ nmap <leader>rr :action Run<CR>
 nmap <leader>rR :action Rerun<CR>
 nmap <leader>rs :action Stop<CR>
 
+" Testing: {{{1
+nmap <leader>tc :action HideCoverage<CR>
+
 " Windows: {{{1
 " splits
 nmap <leader>wv <C-W>v
