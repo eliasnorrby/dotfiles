@@ -46,6 +46,9 @@ bars
 ### Disable the annoying git popup
 * File -> New Project Settings -> Version Control -> Confirmation -> When files are created/deleted : Do not add/remove
 
+### Always enable annotation processing (for lombok)
+* File -> New Project Settings -> Build, Execution, Deployment -> Compiler -> Annotation Processors : Enable annotation processing
+
 ## KEYMAPS
 
 ### Toggle VIM mode
