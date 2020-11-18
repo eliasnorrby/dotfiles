@@ -47,6 +47,10 @@ topics:
     - name: polybar
       state: present
       config: "{{ polybar_config }}"
+  wm:
+    - name: bspwm
+      state: present
+      config: "{{ bspwm_config }}"
   shell:
     - name: alacritty
       state: present

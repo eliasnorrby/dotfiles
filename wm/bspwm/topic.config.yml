@@ -1,0 +1,7 @@
+---
+bspwm_config:
+  path: wm/bspwm
+  links:
+    - bspwmrc
+  pacman_packages:
+    - bspwm
