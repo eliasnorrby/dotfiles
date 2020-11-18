@@ -1,0 +1,16 @@
+---
+dotnet_config:
+  path: lang/dotnet
+  # I wish this would work, but I connot make it
+  # Just download the official installer instead:
+  #   https://dotnet.microsoft.com/download
+  # brew_formulas:
+  #   - dotnet
+  brew_casks:
+    - rider
+  osx_defaults:
+    - domain: com.jetbrains.rider
+      key: ApplePressAndHoldEnabled
+      value: false
+      type: bool
+      state: present

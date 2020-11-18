@@ -76,6 +76,9 @@ topics:
     - name: dart
       state: present
       config: "{{ dart_config }}"
+    - name: dotnet
+      state: present
+      config: "{{ dotnet_config }}"
     - name: go
       state: present
       config: "{{ go_config }}"
