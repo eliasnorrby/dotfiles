@@ -7,4 +7,5 @@ node_config:
     - yarn
   pacman_packages:
     - nodejs
+    - npm
     - yarn
