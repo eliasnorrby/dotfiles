@@ -9,6 +9,9 @@ set commentary
 let mapleader = " "
 
 " MAPPINGS:
+" Building: {{{1
+nmap <leader>bp :action CompileProject<CR>
+
 " Completion: {{{1
 imap <C-N> <C-O>:action HippieBackwardCompletion<CR>
 imap <C-P> <C-O>:action HippieCompletion<CR>
