@@ -12,7 +12,7 @@ if [ -z "$DOTFILES_VERSION" ]; then
   DOTFILES_VERSION=${1:-master}
 fi
 
-ANSIBLE_TAGS=${ANSIBLE_TAGS:-all,do_pacman,do_packages,do_defaults}
+ANSIBLE_TAGS=${ANSIBLE_TAGS:-all,do_pacman,do_packages}
 ANSIBLE_FLAGS=-v
 
 if [[ "$DO_MAS" == true ]]; then
