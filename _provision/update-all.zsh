@@ -44,7 +44,7 @@ echo-info "Wrote logs to $brew_log"
 brew_cask_log=$(mktemp)
 echo "$SPACE"
 echo-info "Updating brew casks..."
-brew cask upgrade | tee $brew_cask_log
+brew upgrade --cask | tee $brew_cask_log
 echo-ok "brew casks updated!"
 echo-info "Wrote logs to $brew_cask_log"
 
