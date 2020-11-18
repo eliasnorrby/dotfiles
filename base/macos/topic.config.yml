@@ -17,6 +17,7 @@ macos_config:
     - spotify
     - textexpander
     - amethyst
+    - balenaetcher
     # dev
     - firefox-developer-edition
     - postman
