@@ -14,6 +14,7 @@ return {
   { 'n', 'Postman'},
   -- { 'w', 'MacVim'},                -- "W" for "Wiki"
   { 'i', 'IntelliJ IDEA'},         -- "I" for "IntelliJ"
+  { 'r', 'Rider' },
   { 'u', 'Spotify' },              -- "U" for some reason
   { 'x', 'Firefox Developer Edition' },
   { 'w', 'Microsoft PowerPoint' },
