@@ -130,7 +130,7 @@ install_python_and_openssl
 
 _prompt "Next step: downloading repo"
 
-cd "$(mktmp -d)"
+cd "$(mktemp -d)"
 
 get_repo_snapshot
 
