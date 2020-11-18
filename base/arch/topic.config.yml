@@ -1,0 +1,7 @@
+---
+arch_config:
+  path: base/arch
+  links:
+    - remap-caps-lock.sh
+  pacman_packages:
+    - xcape

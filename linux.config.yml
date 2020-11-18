@@ -5,6 +5,9 @@ topics:
       state: present
       config: "{{ cli_config }}"
   base:
+    - name: arch
+      state: present
+      config: "{{ arch_config }}"
     - name: macos
       state: absent
       config: "{{ macos_config }}"
