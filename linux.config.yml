@@ -40,6 +40,9 @@ topics:
     - name: karabiner
       state: absent
       config: "{{ karabiner_config }}"
+    - name: sxhkd
+      state: present
+      config: "{{ sxhkd_config }}"
   shell:
     - name: alacritty
       state: present

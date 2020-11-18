@@ -1,0 +1,7 @@
+---
+sxhkd_config:
+  path: keyboard/sxhkd
+  links:
+    - sxhkdrc
+  pacman_packages:
+    - sxhkd
