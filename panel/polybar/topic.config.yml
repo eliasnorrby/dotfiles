@@ -1,0 +1,8 @@
+---
+polybar_config:
+  path: panel/polybar
+  links:
+    - config
+    - launch.sh
+  pacman_packages:
+    - polybar

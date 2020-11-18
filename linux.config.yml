@@ -43,6 +43,10 @@ topics:
     - name: sxhkd
       state: present
       config: "{{ sxhkd_config }}"
+  panel:
+    - name: polybar
+      state: present
+      config: "{{ polybar_config }}"
   shell:
     - name: alacritty
       state: present
