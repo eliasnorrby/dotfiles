@@ -127,6 +127,21 @@ npm-widget() {
 zle -N npm-widget
 bindkey '^N' npm-widget
 
+fartii() {
+  local string fonts art
+  string="$@"
+  if ! _is_callable artii ; then
+    echo "'artii' not found"
+    return
+  fi
+  fonts=$(artii -l | sed -e '1,5d' -e '/^$/,$d')
+  font=$(echo "$fonts" | fzf --border --ansi --reverse --preview-window=down:80% --preview "artii -f {} $string")
+  if [ -n "$font" ] ; then
+    artii -f "$font" "$string" | pbcopy
+    echo "Copied to clipboard"
+  fi
+}
+
 # GIT heart FZF
 # Copied from junegunn's dotfiles and/or this post:
 # https://junegunn.kr/2016/07/fzf-git
