@@ -1,1 +1,3 @@
-export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+if [[ "$(_os)" == "macos" ]]; then
+  path=( /usr/local/opt/python/libexec/bin $path )
+fi
