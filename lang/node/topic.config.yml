@@ -9,3 +9,5 @@ node_config:
     - nodejs
     - npm
     - yarn
+
+npm_global_packages_dir: "{{ xdg_cache_home }}/npm-global"

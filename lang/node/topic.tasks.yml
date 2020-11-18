@@ -1,0 +1,10 @@
+---
+- name: create dir for global packages
+  file:
+    state: directory
+    path: "{{ npm_global_packages_dir }}"
+
+- name: add prefix config to npm
+  command:
+    cmd: npm config set prefix "{{ npm_global_packages_dir}}"
+    creates: ~/.npmrc
