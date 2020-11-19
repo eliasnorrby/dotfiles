@@ -6,6 +6,9 @@
 super + Return
 	alacritty
 
+super + shift + Return
+	konsole
+
 # program launcher
 super + @space
 	dmenu_run
