@@ -5,3 +5,4 @@ arch_config:
     - remap-caps-lock.sh
   pacman_packages:
     - xcape
+    - unzip
