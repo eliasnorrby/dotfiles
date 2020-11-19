@@ -37,7 +37,7 @@ fi
 
 _load_all aliases.zsh
 
-if [ -z "$TMUX" ] ; then
+if [[ "$(_os)" == "macos" ]] && [ -z "$TMUX" ] ; then
   tmux attach -t default || tmux new -s default
 fi
 
