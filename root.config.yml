@@ -51,6 +51,9 @@ topics:
     - name: bspwm
       state: absent
       config: "{{ bspwm_config }}"
+    - name: picom
+      state: present
+      config: "{{ picom_config }}"
   shell:
     - name: alacritty
       state: present

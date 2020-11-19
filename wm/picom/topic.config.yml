@@ -1,0 +1,7 @@
+---
+picom_config:
+  path: wm/picom
+  links:
+    - picom.conf
+  pacman_packages:
+    - picom
