@@ -1,0 +1,7 @@
+---
+rofi_config:
+  path: wm/rofi
+  links:
+    - config
+  pacman_packages:
+    - rofi

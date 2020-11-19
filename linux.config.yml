@@ -54,6 +54,9 @@ topics:
     - name: picom
       state: present
       config: "{{ picom_config }}"
+    - name: rofi
+      state: present
+      config: "{{ rofi_config }}"
   shell:
     - name: alacritty
       state: present

@@ -52,8 +52,11 @@ topics:
       state: absent
       config: "{{ bspwm_config }}"
     - name: picom
-      state: present
+      state: absent
       config: "{{ picom_config }}"
+    - name: rofi
+      state: absent
+      config: "{{ rofi_config }}"
   shell:
     - name: alacritty
       state: present
