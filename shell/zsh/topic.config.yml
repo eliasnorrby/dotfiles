@@ -21,6 +21,7 @@ zsh_config:
     - neofetch
   pacman_packages:
     - zsh
+    - xclip
     - fzf
     - bat
     - ripgrep
