@@ -12,8 +12,10 @@ fi
 # ------------
 if [[ "$(_os)" == "macos" ]] ; then
   source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+  source "/usr/local/opt/fzf/shell/completion.zsh"
 else
   source "/usr/share/fzf/key-bindings.zsh"
+  source "/usr/share/fzf/completion.zsh"
 fi
 
 # Customization
