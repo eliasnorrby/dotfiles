@@ -1,5 +1,9 @@
-# Enable ls colors by aliasing gnu coreutils ls – not needed when included in PATH
-alias ls="gls --color=auto -h --group-directories-first"
+if [[ "$(_os)" == "macos" ]] ; then
+  # Enable ls colors by aliasing gnu coreutils ls – not needed when included in PATH
+  alias ls="gls --color=auto -h --group-directories-first"
+else
+  alias ls="ls --color=auto -h --group-directories-first"
+fi
 
 # Overrides l= "ls -lah"
 alias l="ls -1"
