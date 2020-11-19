@@ -10,7 +10,11 @@ fi
 
 # Key bindings
 # ------------
-source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+if [[ "$(_os)" == "macos" ]] ; then
+  source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+else
+  source "/usr/share/fzf/key-bindings.zsh"
+fi
 
 # Customization
 # -------------
