@@ -6,3 +6,4 @@ arch_config:
   pacman_packages:
     - xcape
     - unzip
+    - chromium
