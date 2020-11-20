@@ -10,4 +10,4 @@ arch_config:
     - xcape
     - unzip
     - chromium
-    - xinput
+    - xorg-xinput
