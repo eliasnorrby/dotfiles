@@ -34,9 +34,12 @@ zsh_config:
     - pandoc
     - neofetch
   links:
-    - .zshrc
-    - .zshenv
-    - src: .zshenv
-      dest: ~/.zshenv
+    - src: zshrc
+      rename: .zshrc
+    - src: zshenv
+      rename: .zshenv
+    - src: zshenv
+      dest: ~/
+      rename: .zshenv
 
 zplug_home: "{{ xdg_cache_home }}/zplug"
