@@ -5,9 +5,6 @@ topics:
       state: present
       config: "{{ cli_config }}"
   base:
-    - name: arch
-      state: absent
-      config: "{{ arch_config }}"
     - name: macos
       state: present
       config: "{{ macos_config }}"
@@ -47,16 +44,6 @@ topics:
     - name: polybar
       state: absent
       config: "{{ polybar_config }}"
-  wm:
-    - name: bspwm
-      state: absent
-      config: "{{ bspwm_config }}"
-    - name: picom
-      state: absent
-      config: "{{ picom_config }}"
-    - name: rofi
-      state: absent
-      config: "{{ rofi_config }}"
   shell:
     - name: alacritty
       state: present

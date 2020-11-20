@@ -8,9 +8,6 @@ topics:
     - name: arch
       state: present
       config: "{{ arch_config }}"
-    - name: macos
-      state: absent
-      config: "{{ macos_config }}"
   editor:
     - name: vim
       state: disabled
@@ -31,15 +28,6 @@ topics:
       state: absent
       config: "{{ intellij_config }}"
   keyboard:
-    - name: fasterkeys
-      state: absent
-      config: "{{ fasterkeys_config }}"
-    - name: hammerspoon
-      state: absent
-      config: "{{ hammerspoon_config }}"
-    - name: karabiner
-      state: absent
-      config: "{{ karabiner_config }}"
     - name: sxhkd
       state: present
       config: "{{ sxhkd_config }}"
