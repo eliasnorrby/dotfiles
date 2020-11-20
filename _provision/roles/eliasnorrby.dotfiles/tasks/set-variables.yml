@@ -50,23 +50,7 @@
     osx_defaults: "{{ present_topics | selectattr('config.osx_defaults', 'defined') | map(attribute='config.osx_defaults') | list | flatten | unique }}"
 
 - debug:
-    var: homebrew_installed_packages
-    verbosity: 1
-- debug:
-    var: homebrew_uninstalled_packages
-    verbosity: 1
-- debug:
-    var: homebrew_taps
-    verbosity: 1
-- debug:
-    var: homebrew_cask_apps
-    verbosity: 1
-- debug:
-    var: homebrew_cask_uninstalled_apps
-    verbosity: 1
-
-- debug:
-    var: mas_apps
+    var: mas_installed_apps
     verbosity: 1
 
 - debug:

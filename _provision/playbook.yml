@@ -13,7 +13,7 @@
   #     tags: ["never", "do_mas", "bootstrap"]
 
   vars_files:
-    - default.config.yml
+    - vars.yml
 
   roles:
     - role: eliasnorrby.dotfiles
