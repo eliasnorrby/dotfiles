@@ -9,6 +9,7 @@ dotfiles_data: "{{ xdg_data_home }}/dotfiles"
 
 is_macos: "{{ ansible_distribution == 'MacOSX' }}"
 is_arch: "{{ ansible_distribution == 'Archlinux' }}"
+is_interactive: true
 
 brew_formulas: []
 brew_taps: []

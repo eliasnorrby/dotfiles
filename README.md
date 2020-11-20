@@ -153,9 +153,11 @@ Possible fields in `topic.config.yml`:
 
 - `path` (required)
 - `links`
+- `become`
 - `brew_formulas`
 - `brew_casks`
 - `brew_taps`
+- `pacman_packages`
 - `osx_defaults`
 - `npm_packages`
 - `pip_packages`
