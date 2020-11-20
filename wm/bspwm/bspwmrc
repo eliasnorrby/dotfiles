@@ -47,6 +47,11 @@ if _is_callable xcape ; then
   [ -f $HOME/.config/arch/remap-caps-lock.sh ] && $HOME/.config/arch/remap-caps-lock.sh
 fi
 
+# Xinput
+if _is_callable xinput ; then
+  [ -f $HOME/.config/arch/xinput.sh ] && $HOME/.config/arch/xinput.sh
+fi
+
 if _is_callable picom ; then
   pgrep -x picom > /dev/null || picom &
 fi
