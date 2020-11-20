@@ -2,5 +2,5 @@
 editorconfig_config:
   path: editor/editorconfig
   links:
-    - src: .editorconfig
+    - src: editorconfig
       dest: ~/.editorconfig
