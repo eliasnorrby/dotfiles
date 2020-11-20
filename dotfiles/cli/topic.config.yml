@@ -3,7 +3,12 @@ cli_config:
   path: dotfiles/cli
   dirname: boom
   links:
-    - .boomrc.js
+    - src: boomrc.macos.js
+      rename: boomrc.js
+      condition: "{{ is_macos }}"
+    - src: boomrc.arch.js
+      rename: boomrc.js
+      condition: "{{ is_arch }}"
   npm_packages:
     - '@eliasnorrby/dotfiles-cli'
   pip_packages:
