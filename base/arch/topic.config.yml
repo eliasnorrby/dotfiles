@@ -1,9 +1,13 @@
 ---
 arch_config:
   path: base/arch
+  become: yes
   links:
     - remap-caps-lock.sh
+    - src: 99-libinput-custom-config.conf
+      dest: /etc/X11/xorg.conf.d/
   pacman_packages:
     - xcape
     - unzip
     - chromium
+    - xinput
