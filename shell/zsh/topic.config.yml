@@ -5,6 +5,7 @@ zsh_config:
     # essentials
     - zsh
     - fzf
+    - fd
     - bat
     - less
     - ripgrep
@@ -23,6 +24,7 @@ zsh_config:
     - zsh
     - xclip
     - fzf
+    - fd
     - bat
     - ripgrep
     - tree
