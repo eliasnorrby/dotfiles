@@ -42,4 +42,11 @@ if _is_callable code ; then
   "$DIR/editor/vscode/install-extensions.zsh"
 fi
 
+# ansible
+_msg "-- ansible --"
+_msg "Installing playbook roles..."
+cd "$DOTFILES"
+ansible-galaxy install -r requirements.yml -p ./roles
+cd -
+
 _msg "Done!"
