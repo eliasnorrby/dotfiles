@@ -14,7 +14,7 @@
 
 - name: source topic configs
   block:
-    # Recursively search for 'config.yml's in dotfiles repository
+    # Recursively search for 'topic.config.yml's in dotfiles repository
     - find:
         path: "{{ playbook_dir }}/.."
         patterns: "topic.config.yml"
