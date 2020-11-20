@@ -27,15 +27,32 @@
         file: "{{ item }}"
       loop: "{{ topic_configs }}"
 
-- name: source root config
+- name: source macos config
   include_vars: "{{ item }}"
   with_fileglob:
-    - "{{ playbook_dir }}/../root.config.yml"
+    - "{{ playbook_dir }}/../macos.config.yml"
+  when: is_macos
 
-- name: allow local overrides
+- name: source arch config
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - "{{ playbook_dir }}/../arch.config.yml"
+  when: is_arch
+
+- name: source local config overrides
   include_vars: "{{ item }}"
   with_fileglob:
     - "{{ playbook_dir }}/../root.config.local.yml"
+
+- name: source temporary config overrides
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - "{{ playbook_dir }}/../root.config.temp.yml"
+
+- name: make sure topic configs are loaded
+  fail:
+    msg: "No root config could be found"
+  when: topics is undefined or topics | length < 1
 
 - name: map configs to variables
   import_tasks: set-variables.yml

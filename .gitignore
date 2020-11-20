@@ -8,4 +8,5 @@
 #!/_provision/roles/eliasnorrby*
 
 /root.config.local.yml
+/root.config.temp.yml
 /node_modules
