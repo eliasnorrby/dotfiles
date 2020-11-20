@@ -37,7 +37,7 @@ jobs:
 
     ## Makes sure the playbook runs with a minimal config
     - stage: playbook
-      if: branch != master
+      if: false
       language: objective-c
       os: osx
       osx_image: xcode12
@@ -102,6 +102,7 @@ jobs:
 
     ## Make sure all brew/npm/pip dependencies are available
     - stage: packages test
+      if: false
       language: objective-c
       os: osx
       osx_image: xcode12
