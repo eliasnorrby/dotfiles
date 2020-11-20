@@ -36,8 +36,9 @@
         link_src: "{{ (item.absolute is defined and item.absolute) | ternary('',topic_data_path + '/') + (item.src | default(item)) }}"
         link_path: "{{ (item.dest | default(xdg_config_home + '/' + topic_config_dirname + '/')) | regex_replace('/$', '/' + (item.rename | default(item.src | default(item)))) }}"
         should_become: "{{ topic.config.become is defined and topic.config.become }}"
+        become_flags: "--preserve-env {{ is_interactive | ternary('', '--non-interactive') }}"
       become: "{{ should_become }}"
-      become_flags: "--preserve-env {{ is_interactive | ternary('', '--non-interactive') }}"
+      become_flags: "{{ become_flags }}"
       ignore_errors: "{{ should_become }}"
       when:
         - topic.config.links is defined
