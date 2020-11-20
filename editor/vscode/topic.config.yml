@@ -24,8 +24,9 @@ vscode_config:
       type: bool
       state: present
 
-# vscode_home: "~/Library/Application Support/Code/User"
-vscode_home: "~/.config/Code/User"
+vscode_home_macos: "~/Library/Application Support/Code/User"
+vscode_home_arch: "~/.config/Code/User"
+vscode_home: "{{ vscode_home_macos if is_macos else vscode_home_arch }}"
 
 vscode_plugins:
   - burkeholland.simple-react-snippets
