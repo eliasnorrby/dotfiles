@@ -9,3 +9,5 @@ arch_config:
     - unzip
     - chromium
     - xorg-xinput
+    - ttf-font-awesome
+    - gucharmap
