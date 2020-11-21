@@ -277,5 +277,5 @@ p() {
 
 if [[ "$(_os)" == "arch" ]] ; then
   # FZF Pacman search
-  alias pf="pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
+  alias pf="pacman -Slq | fzf --multi --preview-window=right:70% --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
 fi
