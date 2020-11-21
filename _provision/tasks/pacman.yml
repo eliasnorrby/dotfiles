@@ -4,4 +4,3 @@
     name: "{{ pacman_packages }}"
     state: present
   when: pacman_packages | length > 0
-  become: yes
