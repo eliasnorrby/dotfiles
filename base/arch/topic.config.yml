@@ -4,6 +4,8 @@ arch_config:
   links:
     - remap-caps-lock.sh
     - xinput.sh
+    - src: Xresources
+      dest: ~/.Xresources
   pacman_packages:
     - xcape
     - unzip
