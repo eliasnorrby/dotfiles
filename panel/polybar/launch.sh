@@ -6,5 +6,5 @@ killall -q polybar
 #polybar mybar >> /tmp/polybar.log 2>&1 & disown
 
 for m in $(polybar --list-monitors | cut -d":" -f1); do
-  MONITOR=$m polybar --reload mybar &
+  MONITOR=$m polybar --reload main &
 done
