@@ -7,7 +7,7 @@ set inccommand=nosplit
 
 set hidden
 set updatetime=300
-set clipboard=unnamed
+set clipboard=unnamedplus
 set smartcase ignorecase
 set ttimeoutlen=10
 
