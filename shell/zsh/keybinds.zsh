@@ -16,7 +16,6 @@ bindkey -a cs change-surround
 bindkey -a ds delete-surround
 bindkey -a ys add-surround
 
-# Autosuggestion key-bind
 bindkey '^w' backward-kill-word
 bindkey ',q' push-line
 bindkey -M viins ',.' insert-last-word
