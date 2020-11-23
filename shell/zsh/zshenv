@@ -29,6 +29,8 @@ export CLICOLOR=1
 # I think this solves an issue with tmux colors
 export TERM="xterm-256color"
 
+export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+
 if [[ "$(_os)" == "macos" ]]; then
 
   # For using GNU coreutils with default names
