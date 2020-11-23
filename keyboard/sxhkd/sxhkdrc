@@ -6,6 +6,9 @@
 super + Return
 	alacritty
 
+hyper + c
+  focus_or_run chromium
+
 super + shift + Return
 	konsole
 
