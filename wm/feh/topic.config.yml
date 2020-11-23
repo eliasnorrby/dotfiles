@@ -1,0 +1,7 @@
+---
+feh_config:
+  path: wm/feh
+  links:
+    - set-background.sh
+  pacman_packages:
+    - feh

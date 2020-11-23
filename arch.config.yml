@@ -45,6 +45,9 @@ topics:
     - name: dunst
       state: present
       config: "{{ dunst_config }}"
+    - name: feh
+      state: present
+      config: "{{ feh_config }}"
     - name: picom
       state: present
       config: "{{ picom_config }}"

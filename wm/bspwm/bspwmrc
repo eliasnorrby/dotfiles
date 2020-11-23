@@ -33,7 +33,7 @@ bspc rule -a Screenkey manage=off
 # Mine
 # Background
 if _is_callable feh ; then
-  feh --bg-scale ~/Pictures/wallpapers/firewatch-orange-blue.png
+  [ -f $HOME/.config/feh/set-background.sh ] && $HOME/.config/feh/set-background.sh
 fi
 
 # Polybar
