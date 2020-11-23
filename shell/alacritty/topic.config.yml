@@ -3,6 +3,9 @@ alacritty_config:
   path: shell/alacritty
   links:
     - alacritty.yml
+    - src: tmux_alacritty.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: tmux_alacritty
   brew_casks:
     - alacritty
   pacman_packages:
