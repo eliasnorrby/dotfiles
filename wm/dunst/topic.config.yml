@@ -1,0 +1,7 @@
+---
+dunst_config:
+  path: wm/dunst
+  links:
+    - dunstrc
+  pacman_packages:
+    - dunst

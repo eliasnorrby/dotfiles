@@ -39,6 +39,9 @@ topics:
     - name: bspwm
       state: present
       config: "{{ bspwm_config }}"
+    - name: dunst
+      state: present
+      config: "{{ dunst_config }}"
     - name: picom
       state: present
       config: "{{ picom_config }}"
