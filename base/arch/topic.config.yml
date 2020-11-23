@@ -5,9 +5,13 @@ arch_config:
     - xinput.sh
     - src: Xresources
       dest: ~/.Xresources
+    - src: focus_or_run.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: focus_or_run
   pacman_packages:
     - unzip
     - chromium
+    - xdotool
     - xorg-xinput
     - xorg-xev
     - ttf-font-awesome
