@@ -9,6 +9,12 @@ super + Return
 hyper + c
   focus_or_run chromium
 
+hyper + t
+  focus_or_run tmux_alacritty TmuxAlacritty
+
+hyper + shift + t
+  focus_or_run alacritty
+
 super + shift + Return
 	konsole
 
