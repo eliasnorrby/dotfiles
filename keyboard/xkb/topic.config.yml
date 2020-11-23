@@ -1,5 +1,8 @@
 ---
 xkb_config:
   path: keyboard/xkb
+  links:
+    - symbols
+    - setup-keybindings.sh
   pacman_packages:
     - xcape

@@ -1,0 +1,13 @@
+default  partial modifier_keys
+xkb_symbols "superhyper" {
+
+    // Move Alt_R from mod1 to mod3. Alt_r (keycode 108)
+    // is remapped to Hyper_L (0x6c) with xmodmap.
+    key <RALT> {    [ NoSymbol, Alt_R ]   };
+    modifier_map Mod3 { <RALT> };
+    modifier_map Mod3 { Alt_R };
+
+    // Move Hyper_L (0xcf) from mod4 to mod3.
+    key <HYPR> {    [ NoSymbol, Hyper_L ]   };
+    modifier_map Mod3   { <HYPR> };
+};

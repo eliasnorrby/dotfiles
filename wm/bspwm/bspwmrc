@@ -11,7 +11,6 @@ if ! _is_callable sxhkd ; then
 fi
 
 # Defaults: look them up!
-pgrep -x sxhkd > /dev/null || sxhkd &
 
 # bspc monitor -d I II III IV V VI VII VIII IX X
 bspc monitor DVI-D-0 -d I II III IV V
@@ -44,7 +43,7 @@ fi
 
 # Remapping caps lock
 if _is_callable xcape ; then
-  [ -f $HOME/.config/arch/remap-caps-lock.sh ] && $HOME/.config/arch/remap-caps-lock.sh
+  [ -f $HOME/.config/xkb/setup-keybindings.sh ] && $HOME/.config/xkb/setup-keybindings.sh
 fi
 
 # Xinput
@@ -55,3 +54,11 @@ fi
 if _is_callable picom ; then
   pgrep -x picom > /dev/null || picom &
 fi
+
+# sxhkd must be started after keybindings are set up.
+# Config could be reloaded instead of forcing a restart, but it appears to be
+# causing some inconsistent behaviour.
+
+# pgrep -x sxhkd > /dev/null && pkill -USR1 -x sxhkd || sxhkd &
+killall -q sxhkd
+sxhkd &

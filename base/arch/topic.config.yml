@@ -2,7 +2,6 @@
 arch_config:
   path: base/arch
   links:
-    - remap-caps-lock.sh
     - xinput.sh
     - src: Xresources
       dest: ~/.Xresources
@@ -10,5 +9,7 @@ arch_config:
     - unzip
     - chromium
     - xorg-xinput
+    - xorg-xev
     - ttf-font-awesome
     - gucharmap
+    - yay
