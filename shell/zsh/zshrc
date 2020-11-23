@@ -31,7 +31,7 @@ _load shell/zsh/fzf.zsh
 
 if _remote ; then
   _load shell/zsh/remote.zsh
-else
+elif [[ "$(_os)" == "macos" ]] ; then
   _load shell/zsh/macos.zsh
 fi
 
