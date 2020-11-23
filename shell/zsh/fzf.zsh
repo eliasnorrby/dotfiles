@@ -291,7 +291,7 @@ function chrome() {
     google_history="$HOME/Library/Application Support/Google/Chrome/Default/History"
     open=open
   else
-    google_history="$HOME/.config/google-chrome/Default/History"
+    google_history="$HOME/.config/chromium/Default/History"
     open=xdg-open
   fi
   cp -f "$google_history" /tmp/h
