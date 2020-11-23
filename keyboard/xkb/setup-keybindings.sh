@@ -1,3 +1,5 @@
+#!/bin/sh
+
 setxkbmap -layout 'us,se' -option 'grp:shifts_toggle'
 
 # Swap left alt and left super (to mimic Apple keyboard layouts)
@@ -13,7 +15,7 @@ xcape -e 'Caps_Lock=Escape'
 # https://askubuntu.com/a/794087
 setxkbmap -print | \
   sed -e '/xkb_symbols/s/"[[:space:]]/+local&/' | \
-  xkbcomp -I${HOME}/.config/xkb - ${DISPLAY}
+  xkbcomp -I"${HOME}/.config/xkb" - "${DISPLAY}"
 
 # Map right alt to hyper
 xmodmap -e "keycode 108 = Hyper_L"
