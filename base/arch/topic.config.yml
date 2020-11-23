@@ -7,7 +7,6 @@ arch_config:
     - src: Xresources
       dest: ~/.Xresources
   pacman_packages:
-    - xcape
     - unzip
     - chromium
     - xorg-xinput

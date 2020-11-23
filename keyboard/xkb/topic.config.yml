@@ -1,3 +1,5 @@
 ---
 xkb_config:
   path: keyboard/xkb
+  pacman_packages:
+    - xcape
