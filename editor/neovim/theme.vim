@@ -21,6 +21,10 @@ function! JsObjectColors() abort
   highlight! def link jsObjectValue jsObjectProp
 endfunction
 
+function! BlueCursorLine() abort
+  highlight! CursorLine guibg=#303752
+endfunction
+
 function! PalenightSetup() abort
   set background=dark
   if has('nvim')
@@ -33,6 +37,7 @@ augroup PalenightColors
   autocmd ColorSchemePre palenight call PalenightSetup()
   autocmd ColorScheme palenight call TransparentBg()
   autocmd ColorScheme palenight call NoTildes()
+  autocmd ColorScheme palenight call BlueCursorLine()
   if has('nvim')
     autocmd ColorScheme palenight call JsxHtmlItalics()
   endif
