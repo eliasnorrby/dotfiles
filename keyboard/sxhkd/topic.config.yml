@@ -3,5 +3,6 @@ sxhkd_config:
   path: keyboard/sxhkd
   links:
     - sxhkdrc
+    - launch.sh
   pacman_packages:
     - sxhkd

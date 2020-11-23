@@ -1,13 +1,13 @@
 #! /bin/sh
 
-function _is_callable {
+_is_callable () {
   command -v "$1" >/dev/null || return 1
 }
 
 if ! _is_callable sxhkd ; then
   echo "sxhkd not found : exiting"
   bspc quit
-  exit
+  exit 1
 fi
 
 # Defaults: look them up!
@@ -30,41 +30,19 @@ bspc rule -a mplayer2 state=floating
 bspc rule -a Kupfer.py focus=on
 bspc rule -a Screenkey manage=off
 
-# Mine
-# Background
-if _is_callable feh ; then
-  [ -f $HOME/.config/feh/set-background.sh ] && $HOME/.config/feh/set-background.sh
-fi
+_run_if_present () {
+  case $1 in
+    "/"*) script="$1" ;;
+    *) script="${HOME}/.config/$1" ;;
+  esac
+  [ -x "$script" ] && "$script"
+}
 
-# Polybar
-if _is_callable polybar ; then
-  $HOME/.config/polybar/launch.sh
-fi
+_run_if_present feh/set-background.sh
+_run_if_present polybar/launch.sh
+_run_if_present picom/launch.sh
+_run_if_present dunst/launch.sh
 
-# Remapping caps lock
-if _is_callable xcape ; then
-  [ -f $HOME/.config/xkb/setup-keybindings.sh ] && $HOME/.config/xkb/setup-keybindings.sh
-fi
-
-# Xinput
-if _is_callable xinput ; then
-  [ -f $HOME/.config/arch/xinput.sh ] && $HOME/.config/arch/xinput.sh
-fi
-
-# Picom
-if _is_callable picom ; then
-  pgrep -x picom > /dev/null || picom --experimental-backends &
-fi
-
-# Dunst
-if _is_callable dunst ; then
-  pgrep -x dunst > /dev/null || dunst &
-fi
-
-# sxhkd must be started after keybindings are set up.
-# Config could be reloaded instead of forcing a restart, but it appears to be
-# causing some inconsistent behaviour.
-
-# pgrep -x sxhkd > /dev/null && pkill -USR1 -x sxhkd || sxhkd &
-killall -q sxhkd
-sxhkd &
+_run_if_present xkb/setup-keybindings.sh
+_run_if_present arch/xinput.sh
+_run_if_present sxhkd/launch.sh

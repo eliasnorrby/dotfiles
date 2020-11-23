@@ -3,5 +3,6 @@ picom_config:
   path: wm/picom
   links:
     - picom.conf
+    - launch.sh
   pacman_packages:
     - picom

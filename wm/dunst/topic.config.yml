@@ -3,5 +3,6 @@ dunst_config:
   path: wm/dunst
   links:
     - dunstrc
+    - launch.sh
   pacman_packages:
     - dunst
