@@ -55,6 +55,11 @@ if _is_callable picom ; then
   pgrep -x picom > /dev/null || picom &
 fi
 
+# Dunst
+if _is_callable dunst ; then
+  pgrep -x dunst > /dev/null || dunst &
+fi
+
 # sxhkd must be started after keybindings are set up.
 # Config could be reloaded instead of forcing a restart, but it appears to be
 # causing some inconsistent behaviour.
