@@ -8,6 +8,8 @@ arch_config:
     - src: focus_or_run.sh
       dest: "{{ xdg_bin_home }}/"
       rename: focus_or_run
+    - src: gpg.conf
+      dest: ~/.gnupg/
   pacman_packages:
     - unzip
     - chromium

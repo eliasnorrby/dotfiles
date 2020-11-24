@@ -1,0 +1,5 @@
+---
+- name: create gnupg config dir
+  file:
+    state: directory
+    path: ~/.gnupg
