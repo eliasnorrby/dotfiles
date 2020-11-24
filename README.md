@@ -44,6 +44,7 @@ Dependencies:
 
 - [geerlingguy/homebrew][geerlingguy-homebrew-link]
 - [geerlingguy/git][geerlingguy-git-link]
+- [kewlfft/aur][kewlfft-aur-link]
 
 ## Directory structure
 
@@ -158,6 +159,7 @@ Possible fields in `topic.config.yml`:
 - `brew_casks`
 - `brew_taps`
 - `pacman_packages`
+- `aur_packages`
 - `osx_defaults`
 - `npm_packages`
 - `pip_packages`
@@ -261,5 +263,6 @@ sudo chmod -R 755 /usr/local/share/zsh
 [semantic-release-link]: https://github.com/semantic-release/semantic-release
 [geerlingguy-homebrew-link]: https://homebrewhub.com/geerlingguy/ansible-role-homebrew
 [geerlingguy-git-link]: https://github.com/geerlingguy/ansible-role-git
+[kewlfft-aur-link]: https://github.com/kewlfft/ansible-aur
 [hlissner-dotfiles-link]: https://github.com/hlissner/dotfiles
 [dotfiles-cli-link]: https://github.com/eliasnorrby/dotfiles-cli

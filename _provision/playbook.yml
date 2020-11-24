@@ -22,6 +22,8 @@
       tags: ["never", "setup_homebrew", "bootstrap"]
     - role: geerlingguy.mas
       tags: ["never", "do_mas", "bootstrap"]
+    - role: kewlfft.aur
+      tags: ["never", "do_pacman", "bootstrap"]
 
   tasks:
     - include_tasks: tasks/pacman.yml

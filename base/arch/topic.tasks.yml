@@ -3,3 +3,18 @@
   file:
     state: directory
     path: ~/.gnupg
+  tags: ["never", "do_pacman"]
+
+- user:
+    name: "{{ aur_builder_user_name }}"
+    group: wheel
+  become: yes
+  tags: ["never", "do_pacman"]
+
+- lineinfile:
+    path: /etc/sudoers.d/11-install-aur_builder
+    line: '{{ aur_builder_user_name }} ALL=(ALL) NOPASSWD: /usr/bin/pacman'
+    create: yes
+    validate: 'visudo -cf %s'
+  become: yes
+  tags: ["never", "do_pacman"]

@@ -5,6 +5,7 @@
 # The reverse pattern breaks counsel-find-file
 /_provision/roles/geerlingguy*
 /_provision/roles/elliotweiser*
+/_provision/roles/kewlfft*
 #!/_provision/roles/eliasnorrby*
 
 /root.config.local.yml

@@ -19,3 +19,7 @@ arch_config:
     - ttf-font-awesome
     - gucharmap
     - yay
+  aur_packages:
+    - spotify
+
+aur_builder_user_name: aur_builder

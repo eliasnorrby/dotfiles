@@ -5,3 +5,9 @@
     state: present
   when: pacman_packages | length > 0
   become: yes
+
+- name: install packages from the AUR
+  aur:
+    name: "{{ aur_packages }}"
+    use: yay
+  become_user: "{{ aur_builder_user_name }}"
