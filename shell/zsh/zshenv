@@ -9,6 +9,9 @@ export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export ZPLUG_HOME="$XDG_CACHE_HOME/zplug"
 export ZSH_CACHE="$XDG_CACHE_HOME/zsh"
 
+export BAT_THEME=base16
+export BAT_STYLE=plain
+
 # paths
 # Remove duplicates from $PATH (produced by refreshing config)
 typeset -aU path
