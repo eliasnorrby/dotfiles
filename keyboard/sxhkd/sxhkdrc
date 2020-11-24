@@ -15,6 +15,9 @@ hyper + t
 hyper + shift + t
   focus_or_run alacritty
 
+hyper + u
+  focus_or_run spotify
+
 hyper + {1-9}
   tmux select-window -t {1-9}
 
