@@ -31,7 +31,7 @@ if _is_callable fd ; then
   export FZF_CTRL_T_COMMAND='fd --type f --hidden --follow --exclude .git'
 fi
 
-_is_callable bat && export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always {}'"
+_is_callable bat && export FZF_CTRL_T_OPTS="--preview 'bat --color=always {}'"
 _is_callable tree && export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 
 export FZF_DEFAULT_OPTS='
