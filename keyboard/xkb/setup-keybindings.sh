@@ -8,6 +8,7 @@ setxkbmap -option 'altwin:swap_lalt_lwin'
 # Caps lock works as ctrl when held down
 setxkbmap -option 'caps:ctrl_modifier'
 # Caps lock is Escape
+killall -q xcape
 xcape -e 'Caps_Lock=Escape'
 # So, hold caps lock for ctrl, tap for escape
 
