@@ -47,3 +47,5 @@ _run_if_present dunst/launch.sh
 _run_if_present xkb/setup-keybindings.sh
 _run_if_present arch/xinput.sh
 _run_if_present sxhkd/launch.sh
+
+_run_if_present arch/autostart.sh
