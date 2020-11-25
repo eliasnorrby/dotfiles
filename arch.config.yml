@@ -64,6 +64,9 @@ topics:
     - name: git
       state: present
       config: "{{ git_config }}"
+    - name: ssh
+      state: present
+      config: "{{ ssh_config }}"
     - name: tmux
       state: present
       config: "{{ tmux_config }}"

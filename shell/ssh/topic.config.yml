@@ -1,0 +1,6 @@
+---
+ssh_config:
+  path: shell/ssh
+  links:
+    - src: config
+      dest: "~/.ssh/"
