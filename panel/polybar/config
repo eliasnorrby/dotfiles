@@ -16,6 +16,8 @@
 ;
 ;==========================================================
 
+; check the example config at /usr/share/doc/polybar/config for more details
+
 [colors]
 background = ${xrdb:background:#222}
 background-alt = #444
@@ -62,7 +64,7 @@ font-3 = Font Awesome 5 Brands,Font Awesome 5 Brands Regular:style=Regular:size=
 
 modules-left = bspwm
 modules-center =
-modules-right = filesystem xkeyboard memory cpu wlan eth temperature date powermenu
+modules-right = filesystem xkeyboard memory cpu wlan eth temperature date powermenu padding
 
 tray-position = right
 tray-padding = 2
@@ -77,6 +79,10 @@ wm-restack = bspwm
 
 cursor-click = pointer
 cursor-scroll = ns-resize
+
+[module/padding]
+type = custom/text
+content = " "
 
 [module/xkeyboard]
 type = internal/xkeyboard
