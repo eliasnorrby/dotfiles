@@ -100,7 +100,7 @@ ramp-volume-1 = 
 
 [module/xkeyboard]
 type = internal/xkeyboard
-; blacklist-0 = num lock
+blacklist-0 = num lock
 
 format-prefix = " "
 format-prefix-foreground = ${colors.foreground-alt}
