@@ -278,7 +278,7 @@ p() {
 if [[ "$(_os)" == "arch" ]] ; then
   # FZF Pacman search
   alias pf="pacman -Slq | fzf --multi --preview-window=right:70% --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"
-  alias yf="yay -Slq | fzf --multi --preview-window=right:70% --preview 'yay -Si {1}' | xargs -ro sudo yay -S"
+  alias yf="yay -Slq | fzf --multi --preview-window=right:70% --preview 'yay -Si {1}' | xargs -ro yay -S"
 fi
 
 # Fuzzy chrome history
