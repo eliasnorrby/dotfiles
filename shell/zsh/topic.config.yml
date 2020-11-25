@@ -12,8 +12,6 @@ zsh_config:
     - coreutils
     - watch
     - tree
-    - mosh
-    - ssh-copy-id
     # extras
     - jq
     - yq
@@ -28,7 +26,6 @@ zsh_config:
     - bat
     - ripgrep
     - tree
-    - mosh
     - jq
     - yq
     - pandoc

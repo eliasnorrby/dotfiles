@@ -4,3 +4,8 @@ ssh_config:
   links:
     - src: config
       dest: "~/.ssh/"
+  brew_formulas:
+    - ssh-copy-id
+    - mosh
+  pacman_packages:
+    - mosh
