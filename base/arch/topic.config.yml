@@ -19,6 +19,7 @@ arch_config:
     - xorg-xev
     - ttf-font-awesome
     - gucharmap
+    - base-devel
     - yay
   aur_packages:
     - spotify
