@@ -5,20 +5,20 @@
     path: ~/.gnupg
   tags: ["never", "do_pacman"]
 
-- name: add aur builder user
-  user:
-    name: "{{ aur_builder_user_name }}"
-    group: wheel
-    system: yes
-    create_home: no
-  become: yes
-  tags: ["never", "do_pacman"]
-
-- name: set aur builder sudo rights
-  lineinfile:
-    path: /etc/sudoers.d/11-install-aur_builder
-    line: "{{ aur_builder_user_name }} ALL=(ALL) NOPASSWD: /usr/bin/pacman"
-    create: yes
-    validate: "visudo -cf %s"
-  become: yes
+- name: setup aur builder
+  block:
+    - name: add aur builder user
+      user:
+        name: "{{ aur_builder_user_name }}"
+        group: wheel
+        system: yes
+        create_home: no
+      become: yes
+    - name: set aur builder sudo rights
+      lineinfile:
+        path: /etc/sudoers.d/11-install-aur_builder
+        line: "{{ aur_builder_user_name }} ALL=(ALL) NOPASSWD: /usr/bin/pacman"
+        create: yes
+        validate: "visudo -cf %s"
+      become: yes
   tags: ["never", "do_pacman"]
