@@ -10,8 +10,6 @@ if ! _is_callable sxhkd ; then
   exit 1
 fi
 
-# Defaults: look them up!
-
 # bspc monitor -d I II III IV V VI VII VIII IX X
 bspc monitor DVI-D-0 -d I II III IV V
 bspc monitor DVI-I-1 -d VI VII VIII IX X
@@ -20,9 +18,9 @@ bspc config border_width         2
 bspc config window_gap          10
 bspc config focused_border_color "#89ddff"
 
-bspc config split_ratio          0.52
-bspc config borderless_monocle   true
-bspc config gapless_monocle      true
+bspc config split_ratio          0.50
+bspc config borderless_monocle   false
+bspc config gapless_monocle      false
 
 bspc rule -a Emacs desktop='^4' state=fullscreen follow=on
 bspc rule -a Chromium desktop='^6'
