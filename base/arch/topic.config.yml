@@ -25,5 +25,11 @@ arch_config:
   aur_packages:
     - spotify
     - dropbox
+    - nerd-fonts-fira-code
+    - nerd-fonts-hack
+    - nerd-fonts-iosevka
+    - nerd-fonts-meslo
+    - nerd-fonts-mononoki
+    - nerd-fonts-source-code-pro
 
 aur_builder_user_name: aur_builder
