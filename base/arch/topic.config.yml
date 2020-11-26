@@ -17,6 +17,7 @@ arch_config:
   pacman_packages:
     - unzip
     - chromium
+    - discord
     - xdotool
     - xorg-xinput
     - xorg-xev
