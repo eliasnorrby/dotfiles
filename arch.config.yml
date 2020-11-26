@@ -16,7 +16,7 @@ topics:
       state: present
       config: "{{ neovim_config }}"
     - name: emacs
-      state: absent
+      state: present
       config: "{{ emacs_config }}"
     - name: editorconfig
       state: present
