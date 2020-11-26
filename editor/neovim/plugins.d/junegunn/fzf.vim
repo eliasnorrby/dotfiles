@@ -62,7 +62,7 @@ nnoremap <silent> <leader>P :Files! %:p:h<CR>
 nnoremap <silent> <leader>bb :Buffers<CR>
 nnoremap <silent> <leader>bn :bnext<CR>
 nnoremap <silent> <leader>bp :bprevious<CR>
-nnoremap <silent> <leader>, :Buffers<CR>
+nnoremap <silent> <leader>, :History<CR>
 nnoremap <silent> <leader>h :Helptags<CR>
 nnoremap <silent> <leader>/b :BLines<CR>
 nnoremap <silent> <leader>/d :Lines<CR>
