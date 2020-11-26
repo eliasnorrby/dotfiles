@@ -10,4 +10,5 @@
   aur:
     name: "{{ aur_packages }}"
     use: yay
+  when: aur_packages | length > 0
   become_user: "{{ aur_builder_user_name }}"
