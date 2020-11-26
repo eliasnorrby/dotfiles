@@ -16,7 +16,7 @@ hyper + shift + t
   focus_or_run alacritty
 
 hyper + u
-  focus_or_run spotify
+  focus_or_run run_spotify spotify
 
 hyper + s
   focus_or_run emacs

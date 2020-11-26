@@ -28,6 +28,11 @@ bspc rule -a Emacs desktop='^4' state=fullscreen follow=on
 bspc rule -a Chromium desktop='^6'
 bspc rule -a TmuxAlacritty desktop='^5' follow=on
 
+# This won't work - see:
+# https://github.com/baskerville/bspwm/issues/291#issuecomment-145329416
+bspc rule -a spotify desktop='^7'
+# Check base/arch/run_spotify.sh for a workaround
+
 _run_if_present () {
   case $1 in
     "/"*) script="$1" ;;
