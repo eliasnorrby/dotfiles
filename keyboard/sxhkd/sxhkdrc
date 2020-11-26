@@ -10,13 +10,16 @@ hyper + c
   focus_or_run chromium
 
 hyper + t
-  focus_or_run tmux_alacritty TmuxAlacritty
+  focus_or_run TmuxAlacritty tmux_alacritty
 
 hyper + shift + t
   focus_or_run alacritty
 
 hyper + u
-  focus_or_run run_spotify spotify
+  focus_or_run spotify launch_on_desktop 7 spotify
+
+hyper + d
+  focus_or_run discord launch_on_desktop 8 discord
 
 hyper + s
   focus_or_run emacs

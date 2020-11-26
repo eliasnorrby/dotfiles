@@ -11,8 +11,12 @@ _is_callable()  {
 }
 
 _focus_or_run()  {
-  CLASS=${2:-$1}
-  PROGRAM=$1
+  PROGRAM=${2:-$1}
+  CLASS=$1
+
+  if [ -n "$3" ]; then
+    HAS_ARGS=true
+  fi
 
   WINDOWS=$(xdotool search --class "$CLASS")
 
@@ -22,7 +26,12 @@ _focus_or_run()  {
       _try_harder "$WINDOWS"
     fi
   elif _is_callable "$PROGRAM"; then
-    exec "$PROGRAM"
+    if [ "$HAS_ARGS" = "true" ]; then
+      shift 2
+      exec "$PROGRAM" "$@"
+    else
+      exec "$PROGRAM"
+    fi
   else
     echo "Could not focus or run: $PROGRAM"
   fi

@@ -3,5 +3,8 @@ bspwm_config:
   path: wm/bspwm
   links:
     - bspwmrc
+    - src: launch_on_desktop.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: launch_on_desktop
   pacman_packages:
     - bspwm
