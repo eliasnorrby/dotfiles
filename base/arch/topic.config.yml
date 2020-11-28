@@ -12,6 +12,7 @@ arch_config:
       dest: ~/.gnupg/
     - autostart.sh
   pacman_packages:
+    - ranger
     - unzip
     - chromium
     - discord
