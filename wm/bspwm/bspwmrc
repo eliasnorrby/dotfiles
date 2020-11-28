@@ -11,8 +11,9 @@ if ! _is_callable sxhkd ; then
 fi
 
 # bspc monitor -d I II III IV V VI VII VIII IX X
-bspc monitor DVI-D-0 -d I II III IV V
-bspc monitor DVI-I-1 -d VI VII VIII IX X
+bspc monitor DVI-I-1 -d 1
+bspc monitor DP-1 -d 2 3 4 5 6
+bspc monitor DVI-D-0 -d 7 8 9 10
 
 bspc config border_width         2
 bspc config window_gap          10
