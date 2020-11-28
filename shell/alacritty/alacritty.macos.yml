@@ -1,0 +1,12 @@
+# macos
+window:
+  padding:
+    x: 3
+    y: 1
+  # full | none | transparent | buttonless
+  #
+  # none gets rid of the rounded corners, but at buttonless allows for
+  # maximization with APP+CR
+  decorations: buttonless
+
+background_opacity: 0.92

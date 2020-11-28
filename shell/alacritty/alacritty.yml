@@ -1,14 +1,9 @@
-window:
-  padding:
-    x: 3
-    y: 1
-  dynamic_padding: true
+# TODO: update this line to use ~ when alacritty 0.7.0 is released
+import:
+  - /home/elias/.config/alacritty/alacritty.local.yml
 
-  # full | none | transparent | buttonless
-  #
-  # none gets rid of the rounded corners, but at buttonless allows for
-  # maximization with APP+CR
-  decorations: buttonless
+window:
+  dynamic_padding: true
 
 fonts:
   dankmono: &dankmono
@@ -111,8 +106,6 @@ schemes:
       white: '#FFFFFF'
 
 colors: *palenight
-
-background_opacity: 0.92
 
 mouse:
   hide_when_typing: true

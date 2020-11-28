@@ -3,6 +3,12 @@ alacritty_config:
   path: shell/alacritty
   links:
     - alacritty.yml
+    - src: alacritty.arch.yml
+      rename: alacritty.local.yml
+      condition: "{{ is_arch }}"
+    - src: alacritty.macos.yml
+      rename: alacritty.local.yml
+      condition: "{{ is_macos }}"
     - src: tmux_alacritty.sh
       dest: "{{ xdg_bin_home }}/"
       rename: tmux_alacritty
