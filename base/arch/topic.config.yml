@@ -26,6 +26,7 @@ arch_config:
   aur_packages:
     - spotify
     - dropbox
+    - 1password
     - nerd-fonts-fira-code
     - nerd-fonts-hack
     - nerd-fonts-iosevka
