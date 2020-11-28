@@ -1,8 +1,11 @@
 alias alac="vim $XDG_CONFIG_HOME/alacritty/alacritty.yml"
 
+if [[ "$(_os)" == "macos" ]]; then
+  sed_bak_str=\'\'
+fi
 function theme() {
   local theme=${1:-${VIM_COLOR:-${DEFAULT_THEME}}}
-  sed -i '' "s/^colors: \*.*/colors: \*$theme/" "$DOTFILES/shell/alacritty/alacritty.yml"
+  sed -i $sed_bak_str "s/^colors: \*.*/colors: \*$theme/" "$DOTFILES/shell/alacritty/alacritty.yml"
 }
 
 alias ayu="theme ayu"
