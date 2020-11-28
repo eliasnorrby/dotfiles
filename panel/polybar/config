@@ -64,9 +64,9 @@ font-3 = Font Awesome 5 Brands,Font Awesome 5 Brands Regular:style=Regular:size=
 
 modules-left = bspwm
 modules-center =
-modules-right = filesystem xkeyboard alsa memory cpu wlan eth temperature date powermenu padding
+modules-right = filesystem xkeyboard alsa memory cpu wlan eth temperature date powermenu
 
-tray-position = right
+tray-position = none
 tray-padding = 2
 ;tray-background = #0063ff
 
