@@ -243,6 +243,9 @@ configured manually.
 - Set the computer name
   - Preferences <kbd>→</kbd> Sharing
   - `sudo scutil --set HostName <name-you-want>`
+- Generate ssh keys
+  - [Generate][ssh-github-generate]
+  - [Add][ssh-github-add]
 
 - ...?
 
@@ -266,3 +269,5 @@ sudo chmod -R 755 /usr/local/share/zsh
 [kewlfft-aur-link]: https://github.com/kewlfft/ansible-aur
 [hlissner-dotfiles-link]: https://github.com/hlissner/dotfiles
 [dotfiles-cli-link]: https://github.com/eliasnorrby/dotfiles-cli
+[ssh-github-generate]: https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+[ssh-github-add]: https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account
