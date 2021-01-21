@@ -3,10 +3,11 @@
 ## PLUGINS
 Listing them here because I don't have anywhere better to put them
 - IdeaVim
-- Tab Shifter
-- IdeaVim-EasyMotion
 - AceJump
+- IdeaVim-EasyMotion
+- Tab Shifter
 - Material Theme UI
+- Atom Material Icons
 - Lombok
 - Google Java Format
 
