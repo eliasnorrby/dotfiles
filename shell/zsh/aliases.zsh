@@ -51,3 +51,7 @@ alias fgc="find-git-changes"
 alias zshc="vim $ZDOTDIR/.zshrc"
 
 alias cdsz="cd $DOTFILES/shell/zsh"
+
+if [[ "$(_os)" == "macos" ]] ; then
+  alias sudoedit="sudo -e"
+fi
