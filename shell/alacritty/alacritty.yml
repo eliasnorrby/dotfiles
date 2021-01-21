@@ -1,6 +1,5 @@
-# TODO: update this line to use ~ when alacritty 0.7.0 is released
 import:
-  - /home/elias/.config/alacritty/alacritty.local.yml
+  - ~/.config/alacritty/alacritty.local.yml
 
 window:
   dynamic_padding: true
