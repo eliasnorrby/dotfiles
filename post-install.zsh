@@ -24,7 +24,7 @@ if _is_callable nvim ; then
   nvim +'PlugInstall --sync' +qall
   _msg "Installing coc-nvim extensions..."
   cd ~/.config/coc/extensions
-  npm install
+  npm install --ignore-scripts --no-lockfile --production --legacy-peer-deps
   cd -
 fi
 
@@ -45,7 +45,7 @@ fi
 # ansible
 _msg "-- ansible --"
 _msg "Installing playbook roles..."
-cd "$DOTFILES"
+cd "$DOTFILES/_provision"
 ansible-galaxy install -r requirements.yml -p ./roles
 cd -
 
