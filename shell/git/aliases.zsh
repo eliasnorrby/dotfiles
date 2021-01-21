@@ -15,6 +15,7 @@ alias glog="git log --oneline --decorate --graph"
 alias glogb="glog --branches"
 alias gp="git push"
 alias gst="git status"
+alias grv="git remote -v"
 
 alias grprune="git remote prune origin"
 alias gbpurge='git branch --merged | grep -Ev "(\*|master|develop|staging)" | xargs -n 1 git branch -d'
