@@ -5,7 +5,7 @@
   "suggest.noselect": false,
   // diagnostics
   "diagnostic.enable": false,
-  "eslint.filetypes": [
+  "eslint.validate": [
     "javascript",
     "javascriptreact",
     "typescript",
