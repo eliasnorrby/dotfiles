@@ -18,6 +18,7 @@ macos_config:
     - textexpander
     - amethyst
     - balenaetcher
+    - fantastical
     # dev
     - firefox-developer-edition
     - postman
