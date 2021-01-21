@@ -1,0 +1,10 @@
+---
+- name: create ssh config dir
+  file:
+    state: directory
+    path: "~/.ssh"
+
+- name: create ssh config subdir
+  file:
+    state: directory
+    path: "~/.ssh/config.d"
