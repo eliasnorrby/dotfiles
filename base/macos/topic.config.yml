@@ -2,7 +2,7 @@
 macos_config:
   path: base/macos
   brew_taps:
-    - homebrew/cask-versions
+    - homebrew/cask-versions # for firefox-developer-edition
     - homebrew/cask-fonts
   brew_casks:
     # essential
