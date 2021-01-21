@@ -37,13 +37,6 @@ topics:
     - name: karabiner
       state: present
       config: "{{ karabiner_config }}"
-    - name: sxhkd
-      state: absent
-      config: "{{ sxhkd_config }}"
-  panel:
-    - name: polybar
-      state: absent
-      config: "{{ polybar_config }}"
   shell:
     - name: alacritty
       state: present
