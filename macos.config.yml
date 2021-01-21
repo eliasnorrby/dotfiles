@@ -67,7 +67,7 @@ topics:
       state: present
       config: "{{ docker_config }}"
     - name: vagrant
-      state: present
+      state: absent
       config: "{{ vagrant_config }}"
     - name: kubernetes
       state: disabled
@@ -77,13 +77,13 @@ topics:
       config: "{{ web_config }}"
   lang:
     - name: dart
-      state: present
+      state: absent
       config: "{{ dart_config }}"
     - name: dotnet
-      state: present
+      state: absent
       config: "{{ dotnet_config }}"
     - name: go
-      state: present
+      state: absent
       config: "{{ go_config }}"
     - name: java
       state: present
@@ -101,5 +101,5 @@ topics:
       state: present
       config: "{{ ruby_config }}"
     - name: rust
-      state: present
+      state: absent
       config: "{{ rust_config }}"
