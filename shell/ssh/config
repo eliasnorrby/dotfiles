@@ -1,3 +1,5 @@
+Include config.d/*
+
 # Put last - first match wins
 Host *
   AddKeysToAgent yes
