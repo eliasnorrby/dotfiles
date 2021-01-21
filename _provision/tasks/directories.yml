@@ -1,0 +1,6 @@
+---
+- name: ensure directories are created
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop: "{{ dirs_to_create }}"

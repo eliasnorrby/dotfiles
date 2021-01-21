@@ -7,6 +7,16 @@ xdg_bin_home: "~/.local/bin"
 dotfiles: "~/.dotfiles"
 dotfiles_data: "{{ xdg_data_home }}/dotfiles"
 
+dirs_to_create:
+  - "~/dev"
+  - "~/learn"
+  - "~/work"
+  - "~/tmp"
+  - "{{ xdg_config_home }}"
+  - "{{ xdg_cache_home }}"
+  - "{{ xdg_data_home }}"
+  - "{{ xdg_bin_home }}"
+
 is_macos: "{{ ansible_distribution == 'MacOSX' }}"
 is_arch: "{{ ansible_distribution == 'Archlinux' }}"
 is_interactive: true

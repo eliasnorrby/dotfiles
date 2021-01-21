@@ -26,6 +26,7 @@
       tags: ["never", "do_pacman", "bootstrap"]
 
   tasks:
+    - include_tasks: tasks/directories.yml
     - include_tasks: tasks/pacman.yml
       tags: ["never", "do_pacman", "bootstrap"]
     - include_tasks: tasks/homebrew.yml
