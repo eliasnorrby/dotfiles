@@ -1,4 +1,9 @@
 ---
+- name: add prefix config to npm
+  command:
+    cmd: npm config set prefix "{{ npm_global_packages_dir}}"
+    creates: ~/.npmrc
+
 - name: install global npm packages
   npm:
     name: "{{ item.name | default(item) }}"
