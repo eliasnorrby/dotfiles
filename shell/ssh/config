@@ -1,1 +1,6 @@
-AddKeysToAgent yes
+# Put last - first match wins
+Host *
+  AddKeysToAgent yes
+  # MacOS specific?
+  UseKeychain yes
+  IdentityFile ~/.ssh/id_ed25519
