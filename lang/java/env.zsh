@@ -1,7 +1,7 @@
 if [[ "$(_os)" == "macos" ]]; then
   # subshell-elimination: uncomment in case of issues with the static locations
   # export JAVA_8_HOME="$(/usr/libexec/java_home -v 1.8)"
-  export JAVA_8_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home"
+  export JAVA_8_HOME="/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home"
   # export JAVA_14_HOME="$(/usr/libexec/java_home -v 14)"
   export JAVA_LATEST_HOME="/Library/Java/JavaVirtualMachines/openjdk.jdk/Contents/Home"
 fi

@@ -5,6 +5,8 @@ java_config:
     - maven
     - gradle
     - java
+  brew_casks:
+    - adoptopenjdk/openjdk/adoptopenjdk8
   brew_taps:
     - homebrew/cask-versions
     - adoptopenjdk/openjdk
