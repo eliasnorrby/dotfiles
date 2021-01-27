@@ -51,7 +51,11 @@ function! RipgrepFzf(query, fullscreen)
   call fzf#vim#grep(initial_command, 1, options, a:fullscreen)
 endfunction
 
-command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+command! -nargs=* -bang RgWithRgReload call RipgrepFzf(<q-args>, <bang>0)
+
+command! -nargs=* -bang RgNoMatchFilenames call fzf#vim#grep(
+  \ "rg --column --line-number --no-heading --color=always --smart-case -- ".shellescape(<q-args>), 1,
+  \ fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
 
 let $FZF_DEFAULT_OPTS .= ' --bind ctrl-a:select-all'
 
@@ -66,7 +70,9 @@ nnoremap <silent> <leader>, :History<CR>
 nnoremap <silent> <leader>h :Helptags<CR>
 nnoremap <silent> <leader>/b :BLines<CR>
 nnoremap <silent> <leader>/d :Lines<CR>
-nnoremap <silent> <leader>// :Rg<CR>
+nnoremap <silent> <leader>// :RgNoMatchFilenames<CR>
+nnoremap <silent> <leader>/? :RgWithRgReload<CR>
+nnoremap <silent> <leader>/f :Rg<CR>
 
 nnoremap <leader>;m :Marks<CR>
 nnoremap <leader>;sh :History/<CR>
