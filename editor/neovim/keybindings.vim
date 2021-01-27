@@ -49,3 +49,14 @@ nnoremap <silent> <leader>LL :ll<CR>
 nnoremap <silent> <leader>CC :cc<CR>
 
 xnoremap <silent> <leader>x d<C-W><C-W>Gp<C-W><C-W>
+
+" diff two buffers
+function! ToggleDiff()
+  if (&diff == 0)
+    windo diffthis
+  else
+    windo diffoff
+  endif
+endfunction
+
+nnoremap <silent> <leader>wd :call ToggleDiff()<CR>
