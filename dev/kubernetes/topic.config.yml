@@ -4,7 +4,10 @@ kubernetes_config:
   brew_formulas:
     - minikube
     - kubectl
+    - kind
     # - docker-machine-driver-hyperkit
   pacman_packages:
     - minikube
     - kubectl
+  aur_packages:
+    - kind
