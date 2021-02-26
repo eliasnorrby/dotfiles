@@ -23,6 +23,7 @@ endfunction
 
 function! BlueCursorLine() abort
   highlight! CursorLine guibg=#303752
+  highlight! CursorColumn guibg=#303752
 endfunction
 
 function! PalenightSetup() abort
