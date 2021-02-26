@@ -60,3 +60,14 @@ function! ToggleDiff()
 endfunction
 
 nnoremap <silent> <leader>wd :call ToggleDiff()<CR>
+
+" toggle scrollbind
+function! ToggleScrollbind()
+  if (&scrollbind == 0)
+    windo set scrollbind
+  else
+    windo set noscrollbind
+  endif
+endfunction
+
+nnoremap <silent> <leader>tb :call ToggleScrollbind()<CR>
