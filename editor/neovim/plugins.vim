@@ -18,6 +18,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-abolish'
+Plug 'godlygeek/tabular'
 runtime plugins.d/mattn/emmet-vim.vim
 runtime plugins.d/raimondi/delimitmate.vim
 
