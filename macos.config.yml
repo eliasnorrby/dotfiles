@@ -66,6 +66,9 @@ topics:
     - name: docker
       state: present
       config: "{{ docker_config }}"
+    - name: gcloud
+      state: present
+      config: "{{ gcloud_config }}"
     - name: vagrant
       state: absent
       config: "{{ vagrant_config }}"
