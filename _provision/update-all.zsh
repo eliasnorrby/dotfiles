@@ -32,39 +32,45 @@ nvim +CocUpdateSync +qall
 echo-ok "coc-nvim updated!"
 echo-info "Wrote logs to $vim_plug_log"
 
-# brew
-brew_log=$(mktemp)
-echo "$SPACE"
-echo-info "Updating brew formulas..."
-brew update && brew upgrade && brew cleanup | tee $brew_log
-echo-ok "brew updated!"
-echo-info "Wrote logs to $brew_log"
+if [[ "$(_os)" == "macos" ]]; then
+  # brew
+  brew_log=$(mktemp)
+  echo "$SPACE"
+  echo-info "Updating brew formulas..."
+  brew update && brew upgrade && brew cleanup | tee $brew_log
+  echo-ok "brew updated!"
+  echo-info "Wrote logs to $brew_log"
 
-# brew casks
-brew_cask_log=$(mktemp)
-echo "$SPACE"
-echo-info "Updating brew casks..."
-brew upgrade --cask | tee $brew_cask_log
-echo-ok "brew casks updated!"
-echo-info "Wrote logs to $brew_cask_log"
+  # brew casks
+  brew_cask_log=$(mktemp)
+  echo "$SPACE"
+  echo-info "Updating brew casks..."
+  brew upgrade --cask | tee $brew_cask_log
+  echo-ok "brew casks updated!"
+  echo-info "Wrote logs to $brew_cask_log"
+fi
 
 # emacs
-doom_log=$(mktemp)
-echo "$SPACE"
-echo-info "Upgrading doom..."
-doom --yes upgrade | tee $doom_log
-echo-ok "doom upgraded!"
-echo-info "Wrote logs to $doom_log"
-echo "$SPACE"
+if _is_callable doom ; then
+  doom_log=$(mktemp)
+  echo "$SPACE"
+  echo-info "Upgrading doom..."
+  doom --yes upgrade | tee $doom_log
+  echo-ok "doom upgraded!"
+  echo-info "Wrote logs to $doom_log"
+  echo "$SPACE"
+fi
 
 # npm
-npm_log=$(mktemp)
-echo "$SPACE"
-echo-info "Upgrading global npm packages..."
-npm upgrade -g | tee $npm_log
-echo-ok "npm packages upgraded!"
-echo-info "Wrote logs to $npm_log"
-echo "$SPACE"
+if _is_callable npm ; then
+  npm_log=$(mktemp)
+  echo "$SPACE"
+  echo-info "Upgrading global npm packages..."
+  npm upgrade -g | tee $npm_log
+  echo-ok "npm packages upgraded!"
+  echo-info "Wrote logs to $npm_log"
+  echo "$SPACE"
+fi
 
 # TODO: global gem/pip packages
 # TODO: grep logs to find number of packages updated
