@@ -1,8 +1,12 @@
 -- A global variable for the App Mode
 appMode = hs.hotkey.modal.new()
 appModeStatusMessage = message.new('App Mode')
+appModeBlocked = false
 
 function enterAppMode()
+  if (appModeBlocked) then
+    return
+  end
   appModeStatusMessage:show()
   appMode:enter()
 end
@@ -30,6 +34,47 @@ end
 
 -- Bind the right cmd key
 f16 = hs.hotkey.bind({}, 'F16', enterAppMode, exitAppMode)
+
+-- Swedish bindings
+-- 33 = [ = å
+-- 41 = ; = ö
+-- 39 = ' = ä
+local keysToMirror = {
+  33,
+  41,
+  39
+}
+
+local modifiersToEnable = {
+  '',
+  'shift'
+}
+
+hs.fnutils.each(keysToMirror, function(k)
+  local swedishMap = "Swedish - Pro"
+  local usMap = "U.S."
+  local delay = 0.008
+  hs.fnutils.each(modifiersToEnable, function(m)
+    appMode:bind(m, k, function()
+      exitAppMode()
+      appModeBlocked = true
+
+      hs.timer.doAfter(0*delay, function()
+        hs.keycodes.setLayout(swedishMap)
+      end)
+
+      hs.timer.doAfter(1*delay, function()
+        keyUpDown(m, k)
+        appModeBlocked = false
+      end)
+
+      hs.timer.doAfter(2*delay, function()
+        hs.keycodes.setLayout(usMap)
+        enterAppMode()
+      end)
+    end)
+  end)
+end)
 
 -- Non-app bindings
 -- vim movement:
