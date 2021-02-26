@@ -10,6 +10,8 @@ if ! _is_callable sxhkd ; then
   exit 1
 fi
 
+xrandr --output DP-1 --auto --primary --output DVI-D-0 --auto --right-of DP-1 --output DVI-I-1 --auto --left-of DP-1
+
 # bspc monitor -d I II III IV V VI VII VIII IX X
 bspc monitor DVI-I-1 -d 1
 bspc monitor DP-1 -d 2 3 4 5 6
