@@ -14,6 +14,8 @@ neovim_config:
     - python
   pip_packages:
     - pynvim
+    - pylint
+    - black
   links:
     - init.vim
     - plugins.vim
