@@ -73,7 +73,7 @@ topics:
       state: absent
       config: "{{ vagrant_config }}"
     - name: kubernetes
-      state: disabled
+      state: present
       config: "{{ kubernetes_config }}"
     - name: web
       state: present
