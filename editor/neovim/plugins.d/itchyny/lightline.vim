@@ -28,9 +28,6 @@ let g:lightline = {
   \   'modified': 'LightlineModified',
   \   'cocstatus': 'StatusDiagnostic'
   \ },
-  \ 'tab_component_function': {
-  \   'filename': 'LightlineTabname'
-  \ },
   \ }
 
 function! StatusDiagnostic() abort
