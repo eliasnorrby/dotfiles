@@ -27,6 +27,9 @@ hyper + s
 hyper + r
   alacritty -e ranger
 
+hyper + z
+  focus_or_run slack
+
 hyper + {1-9}
   tmux select-window -t {1-9}
 
