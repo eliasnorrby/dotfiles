@@ -27,9 +27,10 @@ zsh_config:
     - ripgrep
     - tree
     - jq
-    - yq
     - pandoc
     - neofetch
+  aur_packages:
+    - go-yq
   links:
     - src: zshrc
       rename: .zshrc
