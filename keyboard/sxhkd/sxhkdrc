@@ -33,6 +33,9 @@ hyper + z
 hyper + i
   focus_or_run idea
 
+hyper + p
+  focus_or_run 1password
+
 hyper + {1-9}
   tmux select-window -t {1-9}
 
