@@ -24,8 +24,7 @@ fonts:
     family: SauceCodePro Nerd Font
 
 font:
-  normal: *dankmono
-  size: 14.0
+  normal: *mononoki
 
 schemes:
   palenight: &palenight

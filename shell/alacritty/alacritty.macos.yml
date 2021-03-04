@@ -10,3 +10,6 @@ window:
   decorations: buttonless
 
 background_opacity: 0.92
+
+font:
+  size: 14

@@ -1,3 +1,6 @@
 # arch
 window:
   decorations: none
+
+font:
+  size: 12.0
