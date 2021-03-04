@@ -44,7 +44,8 @@ schemes:
       cyan: "#89ddff"
       white: "#c0c0c0"
     bright:
-      black: "#636778"
+      # black: "#636778"
+      black: "#757990"
       red: "#ff8b92"
       green: "#ddffa7"
       yellow: "#ffe585"
