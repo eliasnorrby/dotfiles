@@ -14,5 +14,9 @@ java_config:
   pacman_packages:
     - jdk-openjdk
     - jre-openjdk
+    - jdk11-openjdk
+    - jre11-openjdk
+    - jdk8-openjdk
+    - jre8-openjdk
     - maven
     - gradle
