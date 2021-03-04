@@ -5,9 +5,11 @@ kubernetes_config:
     - minikube
     - kubectl
     - kind
+    - kubeseal
     # - docker-machine-driver-hyperkit
   pacman_packages:
     - minikube
     - kubectl
+    - kubeseal
   aur_packages:
     - kind
