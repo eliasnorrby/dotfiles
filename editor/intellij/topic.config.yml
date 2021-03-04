@@ -3,6 +3,8 @@ intellij_config:
   path: editor/intellij
   brew_casks:
     - intellij-idea
+  pacman_packages:
+    - intellij-idea-community-edition
   osx_defaults:
     - domain: com.jetbrains.intellij
       key: ApplePressAndHoldEnabled
