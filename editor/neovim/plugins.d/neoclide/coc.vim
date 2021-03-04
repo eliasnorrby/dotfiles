@@ -1,7 +1,7 @@
 " Plug 'neoclide/coc.nvim', { 'branch': 'release', 'for': 'typescript,javascript,javascriptreact,typescriptreact,json,yaml,python' }
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 
-set cmdheight=2
+" set cmdheight=2
 set shortmess+=c
 
 " Use tab for trigger completion with characters ahead and navigate.
