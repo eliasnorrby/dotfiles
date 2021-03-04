@@ -114,3 +114,4 @@ key_bindings:
   - { key: A,  mods: Alt,           chars: "\x1ba"                       }
   - { key: C,  mods: Alt,           chars: "\x1bc"                       }
   - { key: D,  mods: Alt,           chars: "\x1bd"                       }
+  - { key: Paste,                                       action: Paste    }
