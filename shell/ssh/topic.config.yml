@@ -4,6 +4,9 @@ ssh_config:
   links:
     - src: config
       dest: "~/.ssh/"
+    - src: macos.config
+      dest: "~/.ssh/config.d/"
+      condition: "{{ is_macos }}"
   brew_formulas:
     - ssh-copy-id
     - mosh
