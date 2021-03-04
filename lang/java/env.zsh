@@ -8,7 +8,9 @@ if [[ "$(_os)" == "macos" ]]; then
   alias java8='export JAVA_HOME=$JAVA_8_HOME'
   alias java11='export JAVA_HOME=$JAVA_11_HOME'
   alias javalatest='export JAVA_HOME=$JAVA_LATEST_HOME'
+fi
 
+if [[ "$(_os)" == "macos" ]]; then
   # default to latest
   javalatest
   # java8
