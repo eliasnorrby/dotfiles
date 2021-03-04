@@ -60,7 +60,7 @@ super + alt + {q,r}
 
 # close and kill
 super + {_,shift + }q
-	bspc node -{c,k}
+	bspc node --{close,kill}
 
 # alternate between the tiled and monocle layout
 super + m
@@ -72,7 +72,7 @@ super + y
 
 # swap the current node and the biggest window
 super + g
-	bspc node -s biggest.window
+	bspc node --swap biggest.local
 
 #
 # state/flags
@@ -121,7 +121,7 @@ super + {o,i}
 
 # focus or send to the given desktop
 super + {_,shift + }{1-9,0}
-	bspc {desktop -f,node -d} '^{1-9,10}'
+	bspc {desktop --focus,node --to-desktop} '^{1-9,10}' {,--follow}
 
 #
 # preselect
