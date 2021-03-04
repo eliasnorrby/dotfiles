@@ -85,13 +85,13 @@ nmap gh :action ShowErrorDescription<cr>
 
 " Plugins: {{{1
 " EasyMotion
-let g:EasyMotion_do_mapping = 0 " Disable default mappings
-set easymotion
-nmap gsj <Plug>(easymotion-j)
-nmap gsk <Plug>(easymotion-k)
-nmap gs<space> <Plug>(easymotion-s)
+" let g:EasyMotion_do_mapping = 0 " Disable default mappings
+" set easymotion
+" nmap gsj <Plug>(easymotion-j)
+" nmap gsk <Plug>(easymotion-k)
+" nmap gs<space> <Plug>(easymotion-s)
 
-nmap gsw <Plug>(easymotion-wl)
+" nmap gsw <Plug>(easymotion-wl)
 
 " Projects: {{{1
 nmap <leader><tab>. :action OpenProjectWindows<CR>
