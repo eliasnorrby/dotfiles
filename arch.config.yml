@@ -25,7 +25,7 @@ topics:
       state: absent
       config: "{{ vscode_config }}"
     - name: intellij
-      state: absent
+      state: present
       config: "{{ intellij_config }}"
   keyboard:
     - name: sxhkd
