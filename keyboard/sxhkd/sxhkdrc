@@ -30,6 +30,9 @@ hyper + r
 hyper + z
   focus_or_run slack
 
+hyper + i
+  focus_or_run idea
+
 hyper + {1-9}
   tmux select-window -t {1-9}
 
