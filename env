@@ -95,11 +95,11 @@ function _ensure_repo {
 #
 function _os {
   case $OSTYPE in
-    linux*) if   [[ -f /etc/arch-release   ]]; then echo arch
-            elif [[ -f /etc/debian_version ]]; then echo debian
+    linux*) if   [[ -f /etc/arch-release   ]]; then echo -n arch
+            elif [[ -f /etc/debian_version ]]; then echo -n debian
             fi ;;
-    darwin*) echo macos ;;
-    cygwin*) echo cygwin ;;
+    darwin*) echo -n macos ;;
+    cygwin*) echo -n cygwin ;;
   esac
 }
 
