@@ -4,12 +4,12 @@ if [[ "$(_os)" == "macos" ]]; then
   export JAVA_8_HOME="/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home"
   export JAVA_11_HOME="/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home"
   export JAVA_LATEST_HOME="/Library/Java/JavaVirtualMachines/openjdk.jdk/Contents/Home"
+
+  alias java8='export JAVA_HOME=$JAVA_8_HOME'
+  alias java11='export JAVA_HOME=$JAVA_11_HOME'
+  alias javalatest='export JAVA_HOME=$JAVA_LATEST_HOME'
+
+  # default to latest
+  javalatest
+  # java8
 fi
-
-alias java8='export JAVA_HOME=$JAVA_8_HOME'
-alias java11='export JAVA_HOME=$JAVA_11_HOME'
-alias javalatest='export JAVA_HOME=$JAVA_LATEST_HOME'
-
-# default to Java 14
-javalatest
-# java8
