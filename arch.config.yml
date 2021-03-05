@@ -8,6 +8,9 @@ topics:
     - name: arch
       state: present
       config: "{{ arch_config }}"
+    - name: work
+      state: present
+      config: "{{ work_config }}"
   editor:
     - name: vim
       state: disabled

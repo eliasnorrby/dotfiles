@@ -8,6 +8,9 @@ topics:
     - name: macos
       state: present
       config: "{{ macos_config }}"
+    - name: work
+      state: present
+      config: "{{ work_config }}"
   editor:
     - name: vim
       state: disabled

@@ -1,0 +1,8 @@
+---
+work_config:
+  path: base/work
+  brew_formulas:
+    - openfortivpn
+  pacman_packages:
+    - openfortivpn
+
