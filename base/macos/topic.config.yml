@@ -13,6 +13,7 @@ macos_config:
     - google-chrome
     - istat-menus
     - 1password
+    - 1password-cli
     - slack
     - spotify
     - textexpander

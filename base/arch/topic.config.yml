@@ -27,6 +27,7 @@ arch_config:
     - spotify
     - dropbox
     - 1password
+    - 1password-cli
     - slack-desktop
     - nerd-fonts-fira-code
     - nerd-fonts-hack
