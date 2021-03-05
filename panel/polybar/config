@@ -235,17 +235,19 @@ expand-right = true
 
 format-spacing = 1
 
-label-open = 
+label-open = " "
 label-open-foreground = ${colors.foreground}
 label-close =  cancel
 label-close-foreground = ${colors.secondary}
 label-separator = |
 label-separator-foreground = ${colors.foreground-alt}
 
-menu-0-0 = reboot
-menu-0-0-exec = reboot
-menu-0-1 = power off
-menu-0-1-exec = poweroff
+menu-0-0 = suspend
+menu-0-0-exec = systemctl suspend
+menu-0-1 = reboot
+menu-0-1-exec = reboot
+menu-0-2 = power off
+menu-0-2-exec = poweroff
 
 [settings]
 screenchange-reload = true
