@@ -1,6 +1,17 @@
 ---
 work_config:
   path: base/work
+  links:
+    - src: vpn_connect.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: vpn_connect
+    - src: tmux_vpn_connect.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: tmux_vpn_connect
+    - src: alacritty_tmux_vpn_connect.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: alacritty_tmux_vpn_connect
+      condition: "{{ is_arch }}"
   brew_formulas:
     - openfortivpn
   pacman_packages:

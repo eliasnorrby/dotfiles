@@ -31,6 +31,7 @@ bspc rule -a Chromium desktop='^6'
 bspc rule -a TmuxAlacritty desktop='^5' follow=on
 bspc rule -a Slack desktop='^9' follow=on
 bspc rule -a 1Password desktop='^10' follow=on
+bspc rule -a VpnSession state=floating
 
 # Rules don't work for electron apps - see:
 # https://github.com/baskerville/bspwm/issues/291#issuecomment-145329416

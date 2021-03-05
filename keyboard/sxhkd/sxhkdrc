@@ -39,6 +39,9 @@ hyper + p
 hyper + {1-9}
   tmux select-window -t {1-9}
 
+hyper + shift + v
+   alacritty_tmux_vpn_connect
+
 hyper + shift + w
   ~/.config/feh/set-background.sh
 
