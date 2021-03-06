@@ -1,0 +1,39 @@
+---
+- block:
+    - name: add vpn_disconnect script
+      copy:
+        src: files/vpn_disconnect.sh
+        dest: "{{ vpn_disconnect_path }}"
+        mode: '0755'
+        owner: root
+        group: root
+    - name: add vpn group
+      group:
+        name: "{{ vpn_group_name }}"
+        state: present
+    - name: add user to vpn group
+      user:
+        name: "{{ ansible_user_id }}"
+        groups: "{{ vpn_group_name }}"
+        append: yes
+    - name: enable passwordless sudo
+      blockinfile:
+        path: /etc/sudoers.d/12-vpn-control
+        block: |
+          Cmnd_Alias    OPENFORTIVPN = /usr/bin/openfortivpn, {{ vpn_disconnect_path }}
+
+          %{{ vpn_group_name }} ALL=(ALL) NOPASSWD: OPENFORTIVPN
+        create: yes
+        validate: "visudo -cf %s"
+  become: yes
+  tags: ["never", "sudo_enabled"]
+
+- name: notice about sudo
+  debug:
+    msg: |
+      The tasks for VPN require sudo and have been skipped.
+
+      Please pass the 'sudo_enabled' tag (use the --become flag for the CLI)
+      to run them.
+  when: "'sudo_enabled' not in ansible_run_tags"
+  tags: ["always"]

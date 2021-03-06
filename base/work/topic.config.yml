@@ -17,3 +17,5 @@ work_config:
   pacman_packages:
     - openfortivpn
 
+vpn_group_name: openfortivpn
+vpn_disconnect_path: /usr/local/bin/vpn_disconnect
