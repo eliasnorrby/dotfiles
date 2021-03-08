@@ -192,7 +192,7 @@ for dir in "${DIR_LIST[@]}"; do
   # Need bash v.4
   # readarray -t REPOS < <(find ${dir} -name ".git" -type d -maxdepth 3)
 
-  REPOS=$(find "${dir}" -name ".git" -type d -maxdepth 3 | sed 's/\/.git$//')
+  REPOS=$(find "${dir}" -maxdepth 3 -name ".git" -type d | sed 's/\/.git$//')
   echo
   for repo in $REPOS; do
 
