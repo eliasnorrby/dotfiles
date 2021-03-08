@@ -6,7 +6,7 @@
         dest: "{{ vpn_disconnect_path }}"
         mode: '0755'
         owner: root
-        group: root
+        group: "{{ is_macos | ternary('wheel','root')}}"
     - name: add vpn group
       group:
         name: "{{ vpn_group_name }}"
@@ -20,7 +20,7 @@
       blockinfile:
         path: /etc/sudoers.d/12-vpn-control
         block: |
-          Cmnd_Alias    OPENFORTIVPN = /usr/bin/openfortivpn, {{ vpn_disconnect_path }}
+          Cmnd_Alias    OPENFORTIVPN = {{ openfortivpn_bin_path }}, {{ vpn_disconnect_path }}
 
           %{{ vpn_group_name }} ALL=(ALL) NOPASSWD: OPENFORTIVPN
         create: yes
