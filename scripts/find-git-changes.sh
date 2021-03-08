@@ -80,6 +80,7 @@ DIR_LIST=(
   "${HOME}/dev"
   "${HOME}/learn"
   "${HOME}/.dotfiles"
+  "${HOME}/work"
 )
 
 function warn_if_nonzero() {
