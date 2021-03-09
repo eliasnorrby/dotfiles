@@ -3,7 +3,7 @@
 [global]
     ### Display ###
     monitor = 0
-    follow = mouse
+    follow = none
     geometry = "500x5-30+65"
     indicate_hidden = yes
     shrink = no
