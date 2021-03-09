@@ -20,7 +20,7 @@ alias gst="git status"
 alias grv="git remote -v"
 
 alias grprune="git remote prune origin"
-alias gbpurge='git branch --merged | grep -Ev "(\*|master|develop|staging)" | xargs -n 1 git branch -d'
+alias gbpurge='git branch --merged | grep -Ev "(\*|master|main|develop|staging)" | xargs -n 1 git branch -d'
 
 function gprd() {
   local pr_branch=$(git rev-parse --abbrev-ref HEAD)
