@@ -14,18 +14,15 @@ _focus_or_run()  {
   PROGRAM=${2:-$1}
   CLASS=$1
 
+  if _focus "$CLASS"; then
+    exit
+  fi
+
   if [ -n "$3" ]; then
     HAS_ARGS=true
   fi
 
-  WINDOWS=$(xdotool search --class "$CLASS")
-
-  if [ -n "$WINDOWS" ]; then
-    RESULT=$(xdotool windowactivate "$WINDOWS" 2>&1 >/dev/null)
-    if echo "$RESULT" | grep failed >/dev/null; then
-      _try_harder "$WINDOWS"
-    fi
-  elif _is_callable "$PROGRAM"; then
+  if _is_callable "$PROGRAM"; then
     if [ "$HAS_ARGS" = "true" ]; then
       shift 2
       exec "$PROGRAM" "$@"
@@ -35,6 +32,21 @@ _focus_or_run()  {
   else
     echo "Could not focus or run: $PROGRAM"
   fi
+}
+
+_focus() {
+  WINDOWS=$(xdotool search --class "$1")
+
+  for wid in $WINDOWS; do
+    if _specifies_desktop "$wid"; then
+      xdotool windowactivate "$wid"
+      if _is_withdrawn "$wid"; then
+        return 1
+      fi
+      return
+    fi
+  done
+  return 1
 }
 
 # There will be multiple matches for some calls, e.g:
@@ -50,19 +62,12 @@ _focus_or_run()  {
 #   _NET_WM_DESKTOP(CARDINAL) = <number>
 
 # We grep this string for '=' to find our ID.
-_try_harder() {
-  while read -r wid; do
-    if _specifies_desktop "$wid"; then
-      xdotool windowactivate "$wid"
-      exit
-    fi
-  done <<EOF
-$1
-EOF
-}
-
 _specifies_desktop()  {
   xprop -id "$1" _NET_WM_DESKTOP | grep '=' >/dev/null
+}
+
+_is_withdrawn() {
+  xprop -id "$1" WM_STATE | grep 'window state: Withdrawn' >/dev/null
 }
 
 _focus_or_run "$@"
