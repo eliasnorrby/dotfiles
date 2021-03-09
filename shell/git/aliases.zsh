@@ -14,6 +14,8 @@ alias gd="git diff"
 alias glog="git log --oneline --decorate --graph"
 alias glogb="glog --branches"
 alias gp="git push"
+alias gl="git pull"
+alias glnr="git pull --no-rebase"
 alias gst="git status"
 alias grv="git remote -v"
 
