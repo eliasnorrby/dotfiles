@@ -55,3 +55,10 @@ alias cdsz="cd $DOTFILES/shell/zsh"
 if [[ "$(_os)" == "macos" ]] ; then
   alias sudoedit="sudo -e"
 fi
+
+alias chx="chmod +x"
+
+function ns() {
+  touch "$1"
+  chmod +x "$1"
+}
