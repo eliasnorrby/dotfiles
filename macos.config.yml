@@ -78,6 +78,9 @@ topics:
     - name: kubernetes
       state: present
       config: "{{ kubernetes_config }}"
+    - name: kafka
+      state: absent
+      config: "{{ kafka_config }}"
     - name: web
       state: present
       config: "{{ web_config }}"
@@ -94,9 +97,6 @@ topics:
     - name: java
       state: present
       config: "{{ java_config }}"
-    - name: kafka
-      state: absent
-      config: "{{ kafka_config }}"
     - name: node
       state: present
       config: "{{ node_config }}"
