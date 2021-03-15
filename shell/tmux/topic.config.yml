@@ -10,3 +10,6 @@ tmux_config:
     - tmux.remote.conf
     - tmux.theme.conf
     - scripts
+    - src: tmux_switch_session.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: tmux_switch_session

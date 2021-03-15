@@ -39,6 +39,9 @@ hyper + p
 hyper + {1-9}
   tmux select-window -t {1-9}
 
+hyper + shift + {1-9}
+  tmux_switch_session {1-9}
+
 hyper + shift + v
    alacritty_tmux_vpn_connect
 
