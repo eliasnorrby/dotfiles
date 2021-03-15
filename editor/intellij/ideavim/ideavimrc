@@ -81,7 +81,9 @@ nmap gf :action QuickActionPopup<CR>
 
 nmap ]d :action GotoNextError<CR>
 nmap [d :action GotoPreviousError<CR>
-nmap gh :action ShowErrorDescription<cr>
+nmap gh :action ShowErrorDescription<CR>
+nmap ]c :action VcsShowNextChangeMarker<CR>
+nmap [c :action VcsShowPrevChangeMarker<CR>
 
 " Plugins: {{{1
 " EasyMotion
