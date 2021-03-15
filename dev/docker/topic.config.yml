@@ -5,3 +5,4 @@ docker_config:
     - docker
   pacman_packages:
     - docker
+    - docker-compose
