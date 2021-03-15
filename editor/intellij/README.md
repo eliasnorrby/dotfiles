@@ -10,8 +10,12 @@ Listing them here because I don't have anywhere better to put them
 - Atom Material Icons
 - Lombok
 - Google Java Format
+- macOS For All
 
 ## SETTINGS
+
+### Keymap
+* Preferences -> Keymap -> macOS For All
 
 ### To enable Spring Auto Rebuild
 * Preferences -> Build, Execution, Deployment -> Compiler -> Build project
@@ -27,6 +31,10 @@ automatically
 #### To hide tool window bars
 * Preferences -> Apperance & Behaviour -> Appearance -> Show tool window
 bars
+* Also easily reachable via Actions
+
+#### To hide line numbers
+* Preferences -> Editor -> General -> Appearance -> Show line numbers
 * Also easily reachable via Actions
 
 ### Material UI Theme
