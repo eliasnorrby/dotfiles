@@ -96,7 +96,7 @@ topics:
       state: present
       config: "{{ kubernetes_config }}"
     - name: kafka
-      state: absent
+      state: present
       config: "{{ kafka_config }}"
     - name: web
       state: present
