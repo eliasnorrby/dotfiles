@@ -7,6 +7,7 @@ module.exports = {
     ["@semantic-release/git", {
       "assets": ["CHANGELOG.md"]
     }]
-  ]
+  ],
+  branches: ["develop"]
   // Add rules here
 };
