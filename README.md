@@ -2,6 +2,7 @@
 
 [![github-actions][github-actions-badge]][github-actions-link]
 [![semantic-release][semantic-release-badge]][semantic-release-link]
+[![Conventional Commits][conventional-commits-badge]][conventional-commits-link]
 
 Declarative dotfiles for development on MacOS and Manjaro.
 
@@ -263,6 +264,8 @@ sudo chmod -R 755 /usr/local/share/zsh
 [github-actions-link]: https://github.com/eliasnorrby/dotfiles/actions/workflows/ci.yml
 [semantic-release-badge]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
 [semantic-release-link]: https://github.com/semantic-release/semantic-release
+[conventional-commits-badge]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg
+[conventional-commits-link]: https://conventionalcommits.org
 [geerlingguy-homebrew-link]: https://homebrewhub.com/geerlingguy/ansible-role-homebrew
 [geerlingguy-git-link]: https://github.com/geerlingguy/ansible-role-git
 [kewlfft-aur-link]: https://github.com/kewlfft/ansible-aur
