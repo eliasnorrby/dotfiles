@@ -1,0 +1,23 @@
+name: e2e
+
+on:
+  schedule: '0 9 15 * *'
+
+jobs:
+  molecule:
+    name: molecule
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install requirements
+        run: pip install -r _provision/roles/eliasnorrby.dotfiles/requirements.txt
+
+      - name: Molecule test
+        run:
+          - cd _provision/roles/eliasnorrby.dotfiles
+          - molecule test
+        env:
+          MOLECULE_DISTRO: ubuntu1804
