@@ -53,7 +53,7 @@ echo "> Checking brew casks.."
 if ! [ -z "$brew_casks" ] ; then
   echo "$brew_casks" | tr ' ' '\n'
   echo
-  brew cask info $brew_casks > /dev/null
+  brew info --cask $brew_casks > /dev/null
   [ $? -eq 0 ] && printf " OK \n" || should_fail=true
 else
   echo "None found"
