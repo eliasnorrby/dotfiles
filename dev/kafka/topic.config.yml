@@ -4,6 +4,7 @@ kafka_config:
   path: dev/kafka
   brew_formulas:
     - kafka
+    - kafkacat
   aur_packages:
     - kafka
     - kafkacat
