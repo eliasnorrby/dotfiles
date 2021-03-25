@@ -25,12 +25,6 @@ fi
 echo
 
 echo "> Checking brew formulae..."
-# for formula in ${brew_formulae[@]}; do
-#   printf "Checking ${formula}..."
-#   brew info $formula > /dev/null
-#   # echo "works" > /dev/null
-#   [ $? -eq 0 ] && printf " OK \n" || should_fail=true
-# done
 
 if ! [ -z "$brew_formulae" ] ; then
   echo "$brew_formulae" | tr ' ' '\n'
@@ -43,12 +37,6 @@ fi
 echo
 
 echo "> Checking brew casks.."
-# for cask in ${brew_casks[@]}; do
-#   printf "Checking ${cask}..."
-#   brew cask info $cask > /dev/null
-#   # echo "broken" && false > /dev/null
-#   [ $? -eq 0 ] && printf " OK \n" || should_fail=true
-# done
 
 if ! [ -z "$brew_casks" ] ; then
   echo "$brew_casks" | tr ' ' '\n'
