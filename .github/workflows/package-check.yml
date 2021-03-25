@@ -1,6 +1,7 @@
 name: package-check
 
 on:
+  push:
   schedule:
     - cron: '0 9 2 * *'
   workflow_dispatch:
