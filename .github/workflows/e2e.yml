@@ -1,7 +1,8 @@
 name: e2e
 
 on:
-  schedule: '0 9 15 * *'
+  schedule:
+    - cron: '0 9 15 * *'
 
 jobs:
   molecule:
