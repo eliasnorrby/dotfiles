@@ -1,14 +1,13 @@
 # .DOTFILES
 
-[![Travis][travis-badge]][travis-link]
-
+[![github-actions][github-actions-badge]][github-actions-link]
 [![semantic-release][semantic-release-badge]][semantic-release-link]
 
-Declarative dotfiles for development on MacOS.
+Declarative dotfiles for development on MacOS and Manjaro.
 
 ## Bootstrap
 
-To provision a new workstation from scratch, use the `setup.sh` script.
+To provision a new workstation from scratch, use the `setup.sh` (or `setup-linux.sh`) script.
 
 Run
 
@@ -260,8 +259,8 @@ sudo chown -R eliasnorrby:admin /usr/local/share/zsh
 sudo chmod -R 755 /usr/local/share/zsh
 ```
 
-[travis-badge]: https://img.shields.io/travis/com/eliasnorrby/dotfiles?style=for-the-badge
-[travis-link]: https://travis-ci.com/eliasnorrby/dotfiles
+[github-actions-badge]: https://github.com/github/docs/actions/workflows/main.yml/badge.svg
+[github-actions-link]: https://github.com/eliasnorrby/dotfiles/actions/workflows/ci.yml
 [semantic-release-badge]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
 [semantic-release-link]: https://github.com/semantic-release/semantic-release
 [geerlingguy-homebrew-link]: https://homebrewhub.com/geerlingguy/ansible-role-homebrew
