@@ -7,10 +7,6 @@ brew_taps=(
 )
 
 brew_formulae=(
-  zsh
-  python
-  vim
-  jq
   yq
 )
 
