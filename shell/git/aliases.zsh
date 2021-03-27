@@ -27,3 +27,8 @@ function gprd() {
   git checkout -
   git branch -D "$pr_branch"
 }
+
+function glogr() {
+  local remote_branch="origin/$(git rev-parse --abbrev-ref HEAD)"
+  git lg .."$remote_branch"
+}
