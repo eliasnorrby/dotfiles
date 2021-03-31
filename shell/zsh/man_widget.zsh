@@ -2,35 +2,35 @@ PREVIEW_SCRIPT=preview_flag_docs
 
 man-widget() {
   local mode="complete"
-  local command=$(get-command-from-buffer)
+  local command=($(get-command-from-buffer | xargs))
 
   if [ -z "$command" ]; then
-    command=$(select-command)
+    command=($(select-command | xargs))
     mode="lookup"
   fi
 
   [ -z "$command" ] && return
 
-  if ! command -v "$command" >/dev/null 2>&1; then
+  if ! is-callable-or-has-callable-base "$command"; then
     return
   fi
 
-  local flag=$(select-flag "$command")
+  local flag=$(select-flag ${command[@]})
 
   [ -z "$flag" ] && return
 
   case $mode in
     lookup)
       echo
-      # "${PREVIEW_SCRIPT} "$command" "$flag"
-      go-to-docs "$command" "$flag"
+      # "${PREVIEW_SCRIPT}" "$flag" ${command[@]}
+      go-to-docs "$flag" ${command[@]}
       ;;
     complete)
       add-flag "$flag"
       ;;
   esac
 
-  zle reset-prompt
+  # zle reset-prompt
 }
 
 zle -N man-widget
@@ -40,7 +40,10 @@ get-command-from-buffer() {
   [ -z "$BUFFER" ] && return
   local without_pipes="${LBUFFER##*|}"
   local without_subshell="${without_pipes##*\(}"
-  sed 's/^[[:blank:]]*//'<<<"${without_subshell}" | cut -d ' ' -f1
+  local trimmed=$(xargs <<<"${without_subshell}")
+  local without_flags="${trimmed%%-*}"
+
+  echo -n "$without_flags"
 }
 
 select-command() {
@@ -48,17 +51,18 @@ select-command() {
 }
 
 select-flag() {
+  local command=("$@")
   local preview
   local window
   if command -v "${PREVIEW_SCRIPT}" >/dev/null 2>&1; then
-    preview="${PREVIEW_SCRIPT} ${1} {}"
+    preview="${PREVIEW_SCRIPT} {} ${command[*]}"
     window='down:70%'
   else
     preview="echo 'Could not find preview script'"
     window='down:10%'
   fi
 
-  man-or-help $1 \
+  man-or-help ${command[@]} \
     | grep '^[[:blank:]]*-[^ ]' \
     | sed 's/^[[:blank:]]*//' \
     | fzf \
@@ -67,12 +71,29 @@ select-flag() {
     | strip-to-only-flag
 }
 
+has-space() {
+  test "${1#* }" != "${1}"
+}
+
+is-callable() {
+  command -v "$1" >/dev/null
+}
+
+is-callable-or-has-callable-base() {
+  if has-space "$1"; then
+    is-callable "${1%% *}"
+  else
+    is-callable "$1"
+  fi
+}
+
 man-or-help() {
-  [ -z "$1" ] && return
-  if has-man "$1"; then
-    man "$1" | col -b
-  elif command -v "$1" >/dev/null 2>&1; then
-    "$1" --help 2>&1
+  local command=("$@")
+  [ -z "${command[*]}" ] && return
+  if ! has-space "${command[*]}" && has-man "${command[1]}"; then
+    man "${command[1]}" | col -b
+  else
+    "${command[@]}" --help 2>&1
   fi
 }
 
@@ -101,8 +122,12 @@ add-flag() {
 }
 
 go-to-docs() {
-  local less_opts="${LESS/-i//}"
-  less_opts="${less_opts/-I//}"
-  man-or-help $1 | LESS="$less_opts" less "+/^[[:blank:]]*${2}"
+  local flag=$1
+  shift
+  local command=("$@")
+  local less_opts="${LESS/-i/}"
+  less_opts="${less_opts/-I/}"
+  less_opts="${less_opts/-F/}"
+  man-or-help ${command[@]} | LESS="$less_opts" less "+/^[[:blank:]]*${flag}"
 }
 
