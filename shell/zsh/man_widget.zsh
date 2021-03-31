@@ -47,7 +47,7 @@ get-command-from-buffer() {
 }
 
 select-command() {
-  compgen -c | fzf
+  compgen -c | fzf --print-query --bind 'alt-enter:print-query' | tail -1
 }
 
 select-flag() {
