@@ -40,10 +40,14 @@ get-command-from-buffer() {
   [ -z "$BUFFER" ] && return
   local without_pipes="${LBUFFER##*|}"
   local without_subshell="${without_pipes##*\(}"
-  local trimmed=$(xargs <<<"${without_subshell}")
-  local without_flags="${trimmed%%-*}"
+  local without_flags="${without_subshell%% -*}"
+  local trimmed=$(xargs <<<"${without_flags}")
 
-  echo -n "$without_flags"
+  if [ "${trimmed%% *}" = "find" ]; then
+    echo -n "find"
+  else
+    echo -n "$trimmed"
+  fi
 }
 
 select-command() {
@@ -64,7 +68,7 @@ select-flag() {
 
   man-or-help ${command[@]} \
     | grep '^[[:blank:]]*-[^ ]' \
-    | sed 's/^[[:blank:]]*//' \
+    | sed -e 's/^[[:blank:]]*//' -e '/^---/d' \
     | fzf \
     --preview "${preview}" \
     --preview-window "${window}" \
