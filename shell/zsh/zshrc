@@ -24,6 +24,8 @@ _load shell/zsh/utilities.zsh
 _load shell/zsh/prompt.zsh
 _load shell/zsh/plugins.zsh
 
+_load shell/zsh/man_widget.zsh
+
 zplug load
 
 # fzf must be sourced after zplug load (or at least the z remap)
