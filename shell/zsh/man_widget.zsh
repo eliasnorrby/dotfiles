@@ -1,12 +1,13 @@
 PREVIEW_SCRIPT=preview_flag_docs
+MODE=""
 
 man-widget() {
-  local mode="complete"
+  MODE="complete"
   local command=($(get-command-from-buffer | xargs))
 
   if [ -z "$command" ]; then
     command=($(select-command | xargs))
-    mode="lookup"
+    MODE="lookup"
   fi
 
   [ -z "$command" ] && return
@@ -19,18 +20,18 @@ man-widget() {
 
   [ -z "$flag" ] && return
 
-  case $mode in
+  case $MODE in
     lookup)
       echo
       # "${PREVIEW_SCRIPT}" "$flag" ${command[@]}
       go-to-docs "$flag" ${command[@]}
       ;;
     complete)
-      add-flag "$flag"
+      add-flags "$flag"
       ;;
   esac
 
-  # zle reset-prompt
+  zle reset-prompt
 }
 
 zle -N man-widget
@@ -58,6 +59,7 @@ select-flag() {
   local command=("$@")
   local preview
   local window
+  local multi
   if command -v "${PREVIEW_SCRIPT}" >/dev/null 2>&1; then
     preview="${PREVIEW_SCRIPT} {} ${command[*]}"
     window='down:70%'
@@ -66,12 +68,18 @@ select-flag() {
     window='down:10%'
   fi
 
+  local fzf_cmd=("fzf")
+  fzf_cmd+=('--preview' "${preview}")
+  fzf_cmd+=('--preview-window' "${window}")
+
+  if [ "$MODE" = "complete" ]; then
+    fzf_cmd+=('--multi')
+  fi
+
   man-or-help ${command[@]} \
     | grep '^[[:blank:]]*-[^ ]' \
     | sed -e 's/^[[:blank:]]*//' -e '/^---/d' \
-    | fzf \
-    --preview "${preview}" \
-    --preview-window "${window}" \
+    | "$fzf_cmd[@]" \
     | strip-to-only-flag
 }
 
@@ -107,6 +115,12 @@ has-man() {
 
 strip-to-only-flag() {
   cut -d ',' -f1 | cut -d ' ' -f1
+}
+
+add-flags() {
+  for flag in ${=1}; do
+    add-flag "$flag"
+  done
 }
 
 add-flag() {
