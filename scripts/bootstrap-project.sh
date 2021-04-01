@@ -35,6 +35,10 @@ set -eo pipefail
 
 REPO_NAME="${PWD##*/}"
 
+if [ "$1" = "--help" ]; then
+  echo "$USAGE" && exit 0
+fi
+
 while getopts r:pfh opt; do
   case $opt in
     r) REPO_NAME=$OPTARG                        ;;

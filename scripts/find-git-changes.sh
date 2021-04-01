@@ -26,6 +26,10 @@ EOF
 
 set -eo pipefail
 
+if [ "$1" = "--help" ]; then
+  echo "$USAGE" && exit 0
+fi
+
 while getopts asSrfblh opt; do
   case $opt in
     a) OPT_LIST_ALL=true                 ;;

@@ -27,6 +27,10 @@ EOF
 
 set -eo pipefail
 
+if [ "$1" = "--help" ]; then
+  echo "$USAGE" && exit 0
+fi
+
 while getopts r:o:s:x:h opt; do
   case $opt in
     r) REPO_NAME=$OPTARG                   ;;
