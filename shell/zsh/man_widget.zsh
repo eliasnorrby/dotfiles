@@ -69,12 +69,13 @@ select-flag() {
   fi
 
   local fzf_cmd=("fzf")
-  fzf_cmd+=('--preview' "${preview}")
-  fzf_cmd+=('--preview-window' "${window}")
 
   if [ "$MODE" = "complete" ]; then
     fzf_cmd+=('--multi')
   fi
+
+  fzf_cmd+=('--preview' "${preview}")
+  fzf_cmd+=('--preview-window' "${window}")
 
   man-or-help ${command[@]} \
     | grep '^[[:blank:]]*-[^ ]' \
