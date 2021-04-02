@@ -72,8 +72,12 @@ select-flag() {
 
   if [ "$MODE" = "complete" ]; then
     fzf_cmd+=('--multi')
+    fzf_cmd+=('--header' 'Select flag(s) to insert')
+  else
+    fzf_cmd+=('--header' 'Select flag to jump to docs')
   fi
 
+  fzf_cmd+=('--bind' 'alt-up:preview-up,alt-down:preview:down')
   fzf_cmd+=('--preview' "${preview}")
   fzf_cmd+=('--preview-window' "${window}")
 
