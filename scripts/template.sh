@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ERROR="Bad usage, see $0 -h"
+ERROR="Bad usage, see ${0##*/} -h"
 
 read -r -d "" USAGE <<EOF
 Short description
@@ -27,3 +27,12 @@ while getopts f:h opt; do
     *) echo "$ERROR" && exit 1             ;;
   esac
 done
+
+POS_ARG=${*:$OPTIND:1}
+
+OTHER_ARGS=${*:$OPTIND+1}
+
+if [ -n "$OTHER_ARGS" ]; then
+  echo "ERROR: Unprocessed positional arguments: $OTHER_ARGS"
+  exit 1
+fi
