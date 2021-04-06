@@ -21,7 +21,7 @@ has-space() {
 }
 
 has-man() {
-  man "$1" >/dev/null 2>&1
+  [ "${1:0:1}" != '.' ] && man "$1" >/dev/null 2>&1
 }
 
 flag=$1
