@@ -3,6 +3,7 @@ git_config:
   path: shell/git
   links:
     - config
+    - config-work
     - ignore
   brew_formulas:
     - git

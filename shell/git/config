@@ -22,3 +22,6 @@
 	rebase = true
 [merge]
 	conflictstyle = diff3
+
+[includeIf "gitdir:work/"]
+  path = config-work
