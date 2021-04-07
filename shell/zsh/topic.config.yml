@@ -16,6 +16,7 @@ zsh_config:
     - jq
     - yq
     - pandoc
+    - mdcat
     # misc
     - neofetch
   pacman_packages:
@@ -29,6 +30,7 @@ zsh_config:
     - jq
     - pandoc
     - neofetch
+    - mdcat
   aur_packages:
     - go-yq
   links:
