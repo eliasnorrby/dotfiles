@@ -107,5 +107,5 @@ topics:
       state: present
       config: "{{ ruby_config }}"
     - name: rust
-      state: absent
+      state: present
       config: "{{ rust_config }}"
