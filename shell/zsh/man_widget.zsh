@@ -52,7 +52,13 @@ get-command-from-buffer() {
 }
 
 select-command() {
-  compgen -c | fzf --print-query --bind 'alt-enter:print-query' | tail -1
+  {
+    if [ "$(_os)" = "macos" ]; then
+      compgen -c
+    else
+      bash -c 'compgen -c'
+    fi
+  } | fzf --print-query --bind 'alt-enter:print-query' | tail -1
 }
 
 select-flag() {
