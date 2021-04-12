@@ -1,6 +1,6 @@
 # Rust
 
-After installing `rustup`, call `rustup-init` to install the `rust` toolchain (`rustc`, `cargo`, `rustup`).
+After installing `rustup`, call `rustup-init` (macOS) or `rustup default stable` (arch) to install the `rust` toolchain (`rustc`, `cargo`, `rustup`).
 
 ## Setting up `coc-rls`
 
