@@ -19,6 +19,7 @@ arch_config:
     - xdotool
     - xorg-xinput
     - xorg-xev
+    - xsel
     - ttf-font-awesome
     - gucharmap
     - base-devel
