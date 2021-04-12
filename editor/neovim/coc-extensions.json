@@ -12,6 +12,7 @@
     "coc-json": ">=1.2.6",
     "coc-prettier": ">=1.1.18",
     "coc-python": ">=1.2.12",
+    "coc-rls": ">=1.1.6",
     "coc-snippets": ">=2.2.3",
     "coc-tsserver": ">=1.6.0",
     "coc-vetur": ">=1.2.1",
