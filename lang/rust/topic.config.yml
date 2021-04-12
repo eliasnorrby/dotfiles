@@ -4,4 +4,4 @@ rust_config:
   brew_formulas:
     - rustup
   pacman_packages:
-    - rust
+    - rustup
