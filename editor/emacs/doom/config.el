@@ -57,7 +57,7 @@
 
 ;; projectile
 ;; Look for projects in these folders
-(setq projectile-project-search-path '("~/dev/" "~/learn/" "~/sandbox/"))
+(setq projectile-project-search-path '("~/dev/" "~/learn/" "~/work/"))
 
 ;; org
 ;; Disable company suggestions in org-mode
