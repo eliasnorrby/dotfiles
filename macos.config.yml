@@ -4,6 +4,10 @@ topics:
     - name: cli
       state: present
       config: "{{ cli_config }}"
+  projects:
+    - name: notes
+      state: present
+      config: "{{ notes_config }}"
   base:
     - name: macos
       state: present

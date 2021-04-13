@@ -1,0 +1,14 @@
+---
+- name: ensure notes repo is cloned
+  block:
+    - name: check if notes dir exists
+      stat:
+        path: "{{ notes_home }}"
+      register: notes
+    - name: clone notes repo
+      git:
+        repo: https://github.com/eliasnorrby/notes
+        dest: "{{ notes_home }}"
+        version: master
+      when: notes.stat.isdir is undefined
+

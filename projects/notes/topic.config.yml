@@ -1,0 +1,21 @@
+---
+notes_config:
+  path: projects/notes
+  brew_formulas:
+    - fzf
+    - mdcat
+    - yq
+  pacman_packages:
+    - fzf
+    - mdcat
+  aur_packages:
+    - go-yq
+  links:
+    - src: notes_global_entry.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: notes_global_entry
+    - src: notes_alacritty.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: notes_alacritty
+
+notes_home: ~/notes

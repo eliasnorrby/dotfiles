@@ -12,6 +12,9 @@ hyper + c
 hyper + t
   focus_or_run TmuxAlacritty tmux_alacritty
 
+hyper + n
+  focus_or_run NotesAlacritty notes_alacritty
+
 hyper + shift + t
   focus_or_run alacritty
 

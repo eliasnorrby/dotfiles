@@ -32,6 +32,7 @@ bspc rule -a TmuxAlacritty desktop='^5' follow=on
 bspc rule -a Slack desktop='^9' follow=on
 bspc rule -a 1Password desktop='^10' follow=on
 bspc rule -a VpnSession state=floating
+bspc rule -a NotesAlacritty state=floating center=true rectangle=1600x1000+0+0
 
 # Rules don't work for electron apps - see:
 # https://github.com/baskerville/bspwm/issues/291#issuecomment-145329416
