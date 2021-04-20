@@ -6,6 +6,7 @@ kubernetes_config:
     - kubectl
     - kind
     - kubeseal
+    - openshift-cli
     # - docker-machine-driver-hyperkit
   pacman_packages:
     - minikube
@@ -13,3 +14,4 @@ kubernetes_config:
     - kubeseal
   aur_packages:
     - kind
+    - origin-client
