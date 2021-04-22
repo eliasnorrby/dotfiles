@@ -7,11 +7,13 @@ kubernetes_config:
     - kind
     - kubeseal
     - openshift-cli
+    - helm
     # - docker-machine-driver-hyperkit
   pacman_packages:
     - minikube
     - kubectl
     - kubeseal
+    - helm
   aur_packages:
     - kind
     - origin-client
