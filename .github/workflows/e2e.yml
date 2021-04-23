@@ -1,6 +1,7 @@
 name: e2e
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '0 9 15 * *'
 
@@ -17,8 +18,8 @@ jobs:
         run: pip install -r _provision/roles/eliasnorrby.dotfiles/requirements.txt
 
       - name: Molecule test
-        run:
-          - cd _provision/roles/eliasnorrby.dotfiles
-          - molecule test
+        run: |
+          cd _provision/roles/eliasnorrby.dotfiles
+          molecule test
         env:
           MOLECULE_DISTRO: ubuntu1804
