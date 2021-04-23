@@ -25,3 +25,6 @@
 
 [includeIf "gitdir:work/"]
   path = config-work
+
+[includeIf "gitdir:~/notes/"]
+  path = config-notes

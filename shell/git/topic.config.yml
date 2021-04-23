@@ -4,6 +4,7 @@ git_config:
   links:
     - config
     - config-work
+    - config-notes
     - ignore
   brew_formulas:
     - git
