@@ -1,3 +1,48 @@
+# [5.0.0](https://github.com/eliasnorrby/dotfiles/compare/v4.0.0...v5.0.0) (2021-04-23)
+
+
+### Bug Fixes
+
+* **macos:** run brew without coreutils ([aabff0c](https://github.com/eliasnorrby/dotfiles/commit/aabff0c9353a76f9e4b14fee9314423105567707))
+* **tmux:** update z binding ([16731bd](https://github.com/eliasnorrby/dotfiles/commit/16731bdb546d3e646c57acce2ee0c6adb2d46df1))
+* **zsh:** add _os conditional around compgen ([67afba8](https://github.com/eliasnorrby/dotfiles/commit/67afba845950bcb5fd381d85b3f0e4944254c5d4))
+* **zsh:** add --multi flag before --preview ([c5b6ab4](https://github.com/eliasnorrby/dotfiles/commit/c5b6ab45a5316930bb54235556ee421f27add711))
+* **zsh:** handle local scripts with man_widget ([612cbcf](https://github.com/eliasnorrby/dotfiles/commit/612cbcfbf7997ec0abdb792cb04c60ae75e41cf5))
+* **zsh:** small improvements to man_widget ([64ae48c](https://github.com/eliasnorrby/dotfiles/commit/64ae48c3e93951a3e45b26b222ff12f2875df945))
+
+
+### deps
+
+* install ansible using brew/pacman ([1d1a509](https://github.com/eliasnorrby/dotfiles/commit/1d1a5093b9c5354966a92b1e610ac21d9091bf8d))
+
+
+### Features
+
+* **emacs:** add ~/work to projects path ([c84923e](https://github.com/eliasnorrby/dotfiles/commit/c84923ec0a0df27e8af20ae2c081733de4f10a05))
+* **git:** add config-notes with githooks path ([b874029](https://github.com/eliasnorrby/dotfiles/commit/b87402908413e759e23ec295b6f0d111f1c59d00))
+* **git:** add config-work ([58ca78d](https://github.com/eliasnorrby/dotfiles/commit/58ca78d302bea8833a84d9cc360bb7662e07a46d))
+* **git:** add glogr alias ([b265132](https://github.com/eliasnorrby/dotfiles/commit/b265132cea3ad94d7ff2e169b26ed6b6f4b1265c))
+* **git:** update git lg alias ([dee3d83](https://github.com/eliasnorrby/dotfiles/commit/dee3d834da22a784841311ff852502ab1cd5065b))
+* **notes:** add notes topic ([878154f](https://github.com/eliasnorrby/dotfiles/commit/878154f7ad794430813ceef481a5f3dcd0eac671))
+* **scripts:** add merge-dependabot-prs.sh ([b032bc8](https://github.com/eliasnorrby/dotfiles/commit/b032bc8f398d8d33ffe88cbc0820b0dd24269858))
+* **scripts:** recognize --help ([4a41d94](https://github.com/eliasnorrby/dotfiles/commit/4a41d942f1ab4738fcdf3e22d6ef3385c4ce7636))
+* **tmux:** add binding for new-window with navigation ([b93fb24](https://github.com/eliasnorrby/dotfiles/commit/b93fb24f5a3a3faaca04c2c5274a19a9e759bc0c))
+* **tmux:** add notes keybind ([a15d950](https://github.com/eliasnorrby/dotfiles/commit/a15d950c6e9ccd833c85bf5d528e8afe2b1438fe))
+* **tmux:** use empty status-left ([1a194ea](https://github.com/eliasnorrby/dotfiles/commit/1a194ea3f3ffbcc02319fbf9ac75b884ca937716))
+* **vim:** add mappings for hunk diff & revert ([6c3b6d0](https://github.com/eliasnorrby/dotfiles/commit/6c3b6d0cd61588e73acbccb1519fd0b1d60e5420))
+* **vim:** disable emmet-vim ([c90d829](https://github.com/eliasnorrby/dotfiles/commit/c90d829864fb3f1776211e8076b60e2a720f2c00))
+* **zsh:** add headers to prompts in man_widget ([1164013](https://github.com/eliasnorrby/dotfiles/commit/1164013b5bf6f72e648e8eb2617288c0b2a114ca))
+* **zsh:** add man_widget ([dd8c46f](https://github.com/eliasnorrby/dotfiles/commit/dd8c46f1901add04e6f86581c0e87c40fe0285bf))
+* **zsh:** allow multi selection in man_widget(complete) ([9eb200e](https://github.com/eliasnorrby/dotfiles/commit/9eb200e7f6d20adb0996f5c27f5a80e589c2be87))
+* **zsh:** support arbitrary input in man_widget ([2d82709](https://github.com/eliasnorrby/dotfiles/commit/2d82709bfb46a45e305a72128474e38299942ef6))
+* **zsh:** support chained commands in man_widget ([cb494da](https://github.com/eliasnorrby/dotfiles/commit/cb494dac4cd60c93ac88fa91a68c4295f316bd74))
+
+
+### BREAKING CHANGES
+
+* Avoid pip, preferring homebrew and pacman when
+installing ansible. Hopefully this does not break the setup scripts.
+
 # [4.0.0](https://github.com/eliasnorrby/dotfiles/compare/v3.0.0...v4.0.0) (2021-03-25)
 
 
