@@ -7,15 +7,17 @@ neovim_config:
     - fzf
     - bat
     - python
+    - pylint
+    - black
   pacman_packages:
     - neovim
     - fzf
     - bat
     - python
+    - python-pylint
+    - python-black
   pip_packages:
     - pynvim
-    - pylint
-    - black
   links:
     - init.vim
     - plugins.vim
