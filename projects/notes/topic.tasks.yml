@@ -11,4 +11,3 @@
         dest: "{{ notes_home }}"
         version: master
       when: notes.stat.isdir is undefined
-
