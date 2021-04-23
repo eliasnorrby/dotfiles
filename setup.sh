@@ -104,7 +104,7 @@ function get_repo_snapshot() {
 
 function install_ansible_and_roles() {
   _msg "Installing ansible and required roles..."
-  pip3 install ansible
+  brew install ansible
   ansible-galaxy install -r requirements.yml -p ./roles
   _msg "Done!"
 }

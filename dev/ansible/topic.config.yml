@@ -1,6 +1,11 @@
 ---
 ansible_config:
   path: dev/ansible
-  pip_packages:
+  brew_formulas:
     - ansible
     - molecule
+    - yamllint
+  pacman_packages:
+    - ansible
+    - molecule
+    - yamllint
