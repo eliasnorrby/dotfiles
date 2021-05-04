@@ -23,7 +23,7 @@ This setup script will:
 - Install homebrew
 - Install `python3` and `openssl` (using `brew`)
 - Download a snapshot version of this repo
-- Install `ansible` (using `pip`)
+- Install `ansible` (using `brew`)
 - Install `ansible` role dependencies
 - Run the downloaded playbook (`_provision/playbook.yml`), wherein:
   - This repo is cloned to `~/.dotfiles`
