@@ -2,7 +2,6 @@ alias g="git"
 alias git="nocorrect git"
 
 alias gcr="git reset --soft HEAD^"
-alias gse="git stash push -u -m"
 
 alias ga="git add"
 alias gaa="git add -A"
@@ -18,17 +17,3 @@ alias gl="git pull"
 alias glnr="git pull --no-rebase"
 alias gst="git status"
 alias grv="git remote -v"
-
-alias grprune="git remote prune origin"
-alias gbpurge='git branch --merged | grep -Ev "(\*|master|main|develop|staging)" | xargs -n 1 git branch -d'
-
-function gprd() {
-  local pr_branch=$(git rev-parse --abbrev-ref HEAD)
-  git checkout -
-  git branch -D "$pr_branch"
-}
-
-function glogr() {
-  local remote_branch="origin/$(git rev-parse --abbrev-ref HEAD)"
-  git lg .."$remote_branch"
-}
