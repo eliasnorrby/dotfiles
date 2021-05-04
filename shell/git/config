@@ -15,6 +15,8 @@
   rb = "!f() { echo \"origin/$(git cb)\"; }; f"
   # 'Merge Tracking Branch'
   mtb = "!f() { git merge $(git rb); }; f"
+  # 'Force Push'
+  fp = "!f() { git push --force-with-lease origin $(git cb); }; f"
   # 'Branch Delete': Delete merged branches
   bdelete = "!f() { git branch --merged | grep -Ev '(\\*|master|main|develop)' | xargs -n 1 git branch -d; }; f"
   # 'Branch Clean'
