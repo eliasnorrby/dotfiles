@@ -64,7 +64,7 @@ font-3 = Font Awesome 5 Brands,Font Awesome 5 Brands Regular:style=Regular:size=
 ; font-2 = siji:pixelsize=10;1
 
 modules-left = bspwm
-modules-center =
+modules-center = github
 modules-right = vpn filesystem xkeyboard alsa memory cpu wlan eth temperature date powermenu
 
 tray-position = none
@@ -254,6 +254,17 @@ menu-0-1 = reboot
 menu-0-1-exec = reboot
 menu-0-2 = power off
 menu-0-2-exec = systemctl poweroff
+
+[module/github]
+type = internal/github
+
+token = ${file:~/.config/polybar/github_access_token}
+user = eliasnorrby
+empty-notifications = false
+interval = 10
+label = %{A1:xdg-open https\://github.com/notifications:} %notifications%%{A}
+
+click-left = xdg-open https://github.com/notifications
 
 [settings]
 screenchange-reload = true
