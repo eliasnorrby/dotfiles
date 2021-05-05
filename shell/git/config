@@ -5,6 +5,11 @@
   pager = diff-so-fancy | less --tabs=4
 [push]
   default = current
+[pull]
+  rebase = true
+[merge]
+  conflictstyle = diff3
+
 [hub]
   protocol = https
 [github]
@@ -14,10 +19,6 @@
   required = true
   clean = git-lfs clean -- %f
   smudge = git-lfs smudge -- %f
-[pull]
-  rebase = true
-[merge]
-  conflictstyle = diff3
 
 [include]
   path = aliases
