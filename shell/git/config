@@ -3,51 +3,6 @@
   name = Elias Norrby
 [core]
   pager = diff-so-fancy | less --tabs=4
-[alias]
-  a = add
-  aa = add -A
-  f = fetch
-  p = push
-  m = merge
-  s = status
-  c = commit -v
-  cr = reset --soft HEAD~
-  b = branch
-  d = diff
-  co = checkout
-  cm = "!f() { git co master 2>&1 | grep -v 'did not match any' || git co main; }; f"
-  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
-  lgb = lg --branches
-  extend = commit --amend --no-edit
-  amend = commit --amend
-  # 'Remote Prune'
-  rp = remote prune origin
-  rv = remote -v
-  # 'Current Branch'
-  cb = branch --show-current
-  # 'Remote Branch'
-  rb = "!f() { echo \"origin/$(git cb)\"; }; f"
-  # 'Merge Tracking branch'
-  mt = "!f() { git merge $(git rb); }; f"
-  # 'Rebase Tracking branch'
-  rt = "!f() { git rebase $(git rb); }; f"
-  # 'Force Push'
-  fp = "!f() { git push --force-with-lease origin $(git cb); }; f"
-  # 'Branch Delete': Delete merged branches
-  bdelete = "!f() { git branch --merged | grep -Ev '(\\*|master|main|develop)' | xargs -n 1 git branch -d; }; f"
-  # 'Branch Clean'
-  bclean = "!git rp && git bdelete"
-  # 'Pull Request Delete': Checkout previous branch, deleting the current one
-  prd = "!f() { branch=$(git cb); git checkout -; git branch -D $branch; }; f"
-  z = stash
-  zp = stash pop
-  za = stash apply
-  # 'Stash Everything'
-  ze = "!f() { git stash push -u -m \"$1\"; }; f"
-  # 'Quick Save': Create a stash and reapply the changes
-  qs = "!f() { git ze \"$1\" && git za; }; f"
-  # 'Log Remote': Compare current branch to tracking branch
-  lr = "!f() { git lg ..$(git rb); }; f"
 [push]
   default = current
 [hub]
@@ -63,6 +18,9 @@
 	rebase = true
 [merge]
 	conflictstyle = diff3
+
+[include]
+  path = aliases
 
 [includeIf "gitdir:work/"]
   path = config-work

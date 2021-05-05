@@ -3,6 +3,7 @@ git_config:
   path: shell/git
   links:
     - config
+    - aliases
     - config-work
     - config-notes
     - ignore
