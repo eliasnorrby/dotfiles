@@ -10,14 +10,14 @@
 [github]
   user = eliasnorrby
 [filter "lfs"]
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
 [pull]
-	rebase = true
+  rebase = true
 [merge]
-	conflictstyle = diff3
+  conflictstyle = diff3
 
 [include]
   path = aliases
