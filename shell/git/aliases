@@ -43,3 +43,5 @@
   qs = "!f() { git ze \"$1\" && git za; }; f"
   # 'Log Remote': Compare current branch to tracking branch
   lr = "!f() { git lg ..$(git rb); }; f"
+
+# vim: ft=gitconfig

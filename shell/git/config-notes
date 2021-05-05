@@ -1,2 +1,4 @@
 [core]
 	hooksPath = .githooks
+
+# vim: ft=gitconfig
