@@ -30,3 +30,4 @@ set showcmd
 set noshowmode
 set signcolumn=yes
 
+set foldlevel=100

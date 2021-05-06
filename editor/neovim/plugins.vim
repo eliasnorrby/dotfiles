@@ -19,6 +19,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-abolish'
 Plug 'godlygeek/tabular'
+Plug 'pedrohdz/vim-yaml-folds'
 " runtime plugins.d/mattn/emmet-vim.vim
 runtime plugins.d/raimondi/delimitmate.vim
 
