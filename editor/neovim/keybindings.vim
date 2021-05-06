@@ -26,11 +26,13 @@ nnoremap <silent> <leader>Q :q!<CR>
 nnoremap <silent> <leader>w <C-W>
 
 " folding
-nnoremap <silent> <leader>fa za<CR>
-nnoremap <silent> <leader>fo zo<CR>
-nnoremap <silent> <leader>fc zc<CR>
-nnoremap <silent> <leader>fO zR<CR>
-nnoremap <silent> <leader>fC zM<CR>
+nnoremap <silent> <leader>z zf
+nnoremap <silent> <leader>fa za
+nnoremap <silent> <leader>fo zo
+nnoremap <silent> <leader>fc zc
+nnoremap <silent> <leader>fO zR
+nnoremap <silent> <leader>fC zM
+nnoremap <silent> <leader>fb $zf%
 
 " move vertically by visual line
 nnoremap <silent> j gj
