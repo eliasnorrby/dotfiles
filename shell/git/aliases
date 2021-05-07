@@ -12,6 +12,7 @@
   co = checkout
   cm = "!f() { git co master 2>&1 | grep -v 'did not match any' || git co main; }; f"
   lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  lgs = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s' --abbrev-commit
   lgb = lg --branches
   extend = commit --amend --no-edit
   amend = commit --amend
