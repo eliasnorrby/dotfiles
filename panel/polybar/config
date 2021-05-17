@@ -262,7 +262,7 @@ token = ${file:~/.config/polybar/github_access_token}
 user = eliasnorrby
 empty-notifications = false
 interval = 10
-label = %{A1:xdg-open https\://github.com/notifications:} %notifications%%{A}
+label = %{A1:xdg-open https\://github.com/notifications:} %notifications%%{A}
 
 click-left = xdg-open https://github.com/notifications
 
