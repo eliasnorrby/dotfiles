@@ -24,9 +24,11 @@ arch_config:
     - xorg-xev
     - xsel
     - ttf-font-awesome
+    - ttf-roboto
     - gucharmap
     - base-devel
     - yay
+    - lxappearance-gtk3
   aur_packages:
     - spotify
     - dropbox
