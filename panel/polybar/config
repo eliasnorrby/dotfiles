@@ -71,7 +71,7 @@ inherit = bar/base
 
 modules-left = bspwm
 modules-center = github
-modules-right = vpn filesystem xkeyboard alsa memory cpu wlan eth temperature date powermenu
+modules-right = spotify vpn filesystem xkeyboard alsa memory cpu wlan eth temperature date powermenu
 
 [bar/secondary]
 inherit = bar/base
