@@ -5,6 +5,9 @@ killall -q polybar
 #echo "---" | tee -a /tmp/polybar.log
 #polybar mybar >> /tmp/polybar.log 2>&1 & disown
 
-for m in $(polybar --list-monitors | cut -d":" -f1); do
-  MONITOR=$m polybar --reload main &
+pm=$(polybar --list-monitors | grep '(primary)' | cut -d":" -f1)
+MONITOR=$pm polybar --reload main &
+
+for m in $(polybar --list-monitors | grep -v '(primary)' | cut -d":" -f1); do
+  MONITOR=$m polybar --reload secondary &
 done
