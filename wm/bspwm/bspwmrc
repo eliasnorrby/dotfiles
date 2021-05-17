@@ -28,6 +28,7 @@ bspc config gapless_monocle      false
 bspc rule -a jetbrains-idea-ce desktop='^3' follow=on
 bspc rule -a Emacs desktop='^4' state=fullscreen follow=on
 bspc rule -a Chromium desktop='^6'
+bspc rule -a firefox desktop='^1'
 bspc rule -a TmuxAlacritty desktop='^5' follow=on
 bspc rule -a Slack desktop='^9' follow=on
 bspc rule -a 1Password desktop='^10' follow=on
