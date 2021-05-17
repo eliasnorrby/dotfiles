@@ -8,6 +8,9 @@ arch_config:
     - src: focus_or_run.sh
       dest: "{{ xdg_bin_home }}/"
       rename: focus_or_run
+    - src: spotifyctl.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: spotifyctl
     - src: gpg.conf
       dest: ~/.gnupg/
     - autostart.sh

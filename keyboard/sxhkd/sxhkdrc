@@ -24,6 +24,12 @@ hyper + shift + t
 hyper + u
   focus_or_run spotify launch_on_desktop 7 spotify
 
+hyper + space
+  spotifyctl PlayPause
+
+hyper + shift + {l,h}
+  spotifyctl {Next,Previous}
+
 hyper + d
   focus_or_run discord launch_on_desktop 8 discord
 
