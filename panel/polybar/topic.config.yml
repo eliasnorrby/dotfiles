@@ -6,3 +6,5 @@ polybar_config:
     - launch.sh
   pacman_packages:
     - polybar
+  aur_packages:
+    - polybar-spotify

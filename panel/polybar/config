@@ -263,7 +263,13 @@ empty-notifications = false
 interval = 10
 label = %{A1:xdg-open https\://github.com/notifications:} %notifications%%{A}
 
-click-left = xdg-open https://github.com/notifications
+[module/spotify]
+type = custom/script
+interval = 1
+format-prefix = " | "
+format = <label>
+exec = /usr/bin/polybar-spotify -f '{artist}: {song}'
+format-underline = #1db954
 
 [settings]
 screenchange-reload = true
