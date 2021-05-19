@@ -1,4 +1,4 @@
 configuration {
-  font: "Dank Mono 13";
+  font: "mononoki Nerd Font 13";
   theme: "/usr/share/rofi/themes/Arc-Dark.rasi";
 }
