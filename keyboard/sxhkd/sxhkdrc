@@ -71,6 +71,9 @@ super + @space
 super + Escape
 	pkill -USR1 -x sxhkd
 
+hyper + shift + p
+  power
+
 #
 # bspwm hotkeys
 #

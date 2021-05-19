@@ -11,6 +11,9 @@ arch_config:
     - src: spotifyctl.sh
       dest: "{{ xdg_bin_home }}/"
       rename: spotifyctl
+    - src: power.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: power
     - src: gpg.conf
       dest: ~/.gnupg/
     - autostart.sh
@@ -29,6 +32,7 @@ arch_config:
     - base-devel
     - yay
     - lxappearance-gtk3
+    - rofi
   aur_packages:
     - spotify
     - dropbox
