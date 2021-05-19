@@ -2,6 +2,6 @@
 rofi_config:
   path: wm/rofi
   links:
-    - config
+    - config.rasi
   pacman_packages:
     - rofi
