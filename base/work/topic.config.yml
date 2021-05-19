@@ -11,6 +11,10 @@ work_config:
     - src: alacritty_tmux_vpn_connect.sh
       dest: "{{ xdg_bin_home }}/"
       rename: alacritty_tmux_vpn_connect
+    - src: jira-browse.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: jira-browse
+      condition: "{{ is_arch }}"
   brew_formulas:
     - openfortivpn
   pacman_packages:
