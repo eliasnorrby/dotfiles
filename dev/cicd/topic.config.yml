@@ -1,11 +1,16 @@
 ---
 cicd_config:
   path: dev/cicd
+  brew_taps:
+    - buildpacks/tap
   brew_formulas:
     - tektoncd-cli
     - terraform
+    - pack
   pacman_packages:
     - tekton-cli
     - terraform
   npm_packages:
     - semantic-release-cli
+  aur_packages:
+    - pack-cli
