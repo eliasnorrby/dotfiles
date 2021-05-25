@@ -3,7 +3,9 @@ cicd_config:
   path: dev/cicd
   brew_formulas:
     - tektoncd-cli
+    - terraform
   pacman_packages:
     - tekton-cli
+    - terraform
   npm_packages:
     - semantic-release-cli
