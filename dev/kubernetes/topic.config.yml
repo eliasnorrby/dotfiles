@@ -8,7 +8,6 @@ kubernetes_config:
     - kubeseal
     - openshift-cli
     - helm
-    # - docker-machine-driver-hyperkit
   pacman_packages:
     - minikube
     - kubectl

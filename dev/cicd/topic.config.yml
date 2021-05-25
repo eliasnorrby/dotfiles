@@ -1,8 +1,6 @@
 ---
 cicd_config:
   path: dev/cicd
-  # gem_packages:
-  #   - travis
   brew_formulas:
     - tektoncd-cli
   pacman_packages:
