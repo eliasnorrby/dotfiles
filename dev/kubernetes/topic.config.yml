@@ -8,14 +8,12 @@ kubernetes_config:
     - kubeseal
     - openshift-cli
     - helm
-    - tektoncd-cli
     # - docker-machine-driver-hyperkit
   pacman_packages:
     - minikube
     - kubectl
     - kubeseal
     - helm
-    - tekton-cli
   aur_packages:
     - kind
     - origin-client
