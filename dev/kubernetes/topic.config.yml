@@ -8,11 +8,13 @@ kubernetes_config:
     - kubeseal
     - openshift-cli
     - helm
+    - kustomize
   pacman_packages:
     - minikube
     - kubectl
     - kubeseal
     - helm
+    - kustomize
   aur_packages:
     - kind
     - origin-client
