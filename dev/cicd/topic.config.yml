@@ -7,9 +7,11 @@ cicd_config:
     - tektoncd-cli
     - terraform
     - pack
+    - argocd
   pacman_packages:
     - tekton-cli
     - terraform
+    - argocd
   npm_packages:
     - semantic-release-cli
   aur_packages:
