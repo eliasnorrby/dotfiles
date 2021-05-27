@@ -9,12 +9,14 @@ kubernetes_config:
     - openshift-cli
     - helm
     - kustomize
+    - k9s
   pacman_packages:
     - minikube
     - kubectl
     - kubeseal
     - helm
     - kustomize
+    - k9s
   aur_packages:
     - kind
     - origin-client
