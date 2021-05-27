@@ -38,5 +38,8 @@
       "command": "shfmt",
       "args": ["-filename", "script.sh"]
     }
+  },
+  "yaml.schemas": {
+    "kubernetes": "*.yaml"
   }
 }
