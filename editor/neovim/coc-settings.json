@@ -28,9 +28,9 @@
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": true,
   "python.formatting.provider": "black",
-  // Vue
+  // vue
   "vetur.validation.template": false,
-  // Shell etc
+  // shell
   "diagnostic-languageserver.filetypes": {
     "sh": "shellcheck"
   },
@@ -43,7 +43,20 @@
       "args": ["-filename", "script.sh"]
     }
   },
+  // yaml
   "yaml.schemas": {
     "kubernetes": "*.yaml"
-  }
+  },
+  "languageserver": {
+    "terraform": {
+      "command": "terraform-ls",
+      "args": ["serve"],
+      "filetypes": [
+        "terraform",
+        "tf"
+      ],
+      "initializationOptions": {},
+      "settings": {}
+    }
+  },
 }
