@@ -6,11 +6,15 @@ cicd_config:
   brew_formulas:
     - tektoncd-cli
     - terraform
+    - terraform-ls
+    - tflint
     - pack
     - argocd
   pacman_packages:
     - tekton-cli
     - terraform
+    - terraform-ls
+    - tflint
     - argocd
   npm_packages:
     - semantic-release-cli
