@@ -5,6 +5,10 @@
   "suggest.noselect": false,
   // diagnostics
   "diagnostic.enable": false,
+  "diagnostic.virtualText": true,
+  "diagnostic.virtualTextCurrentLineOnly": false,
+  "diagnostic.virtualTextPrefix": " | ",
+  "diagnostic.maxWindowHeight": 20,
   "eslint.validate": [
     "javascript",
     "javascriptreact",
