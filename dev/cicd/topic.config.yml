@@ -13,10 +13,10 @@ cicd_config:
   pacman_packages:
     - tekton-cli
     - terraform
-    - terraform-ls
-    - tflint
     - argocd
   npm_packages:
     - semantic-release-cli
   aur_packages:
     - pack-cli
+    - terraform-ls
+    - tflint

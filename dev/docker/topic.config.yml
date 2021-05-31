@@ -8,4 +8,5 @@ docker_config:
   pacman_packages:
     - docker
     - docker-compose
+  aur_packages:
     - hadolint
