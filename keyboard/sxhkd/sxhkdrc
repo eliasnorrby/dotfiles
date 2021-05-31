@@ -67,6 +67,10 @@ super + shift + Return
 super + @space
 	rofi -show run
 
+# screenshot
+super + shift + p
+  maim --select --hidecursor | tee ~/screenshots/$(date +%s).png | xclip -selection clipboard -t image/png
+
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd

@@ -33,6 +33,7 @@ arch_config:
     - yay
     - lxappearance-gtk3
     - rofi
+    - maim
   aur_packages:
     - spotify
     - dropbox
