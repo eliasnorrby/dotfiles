@@ -1,8 +1,11 @@
 ---
 docker_config:
   path: dev/docker
+  brew_formulas:
+    - hadolint
   brew_casks:
     - docker
   pacman_packages:
     - docker
     - docker-compose
+    - hadolint
