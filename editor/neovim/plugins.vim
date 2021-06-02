@@ -22,6 +22,7 @@ Plug 'godlygeek/tabular'
 Plug 'pedrohdz/vim-yaml-folds'
 " runtime plugins.d/mattn/emmet-vim.vim
 runtime plugins.d/raimondi/delimitmate.vim
+Plug 'AndrewRadev/splitjoin.vim'
 
 Plug 'tommcdo/vim-exchange'
 runtime plugins.d/machakann/vim-highlightedyank.vim
