@@ -8,6 +8,7 @@ node_config:
   pacman_packages:
     - nodejs
     - npm
+    - nvm
     - yarn
 
 npm_global_packages_dir: "{{ xdg_cache_home }}/npm-global"
