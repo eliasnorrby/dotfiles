@@ -32,7 +32,7 @@
   "vetur.validation.template": false,
   // shell
   "diagnostic-languageserver.filetypes": {
-    "sh": "shellcheck"
+    "sh": "shellcheck --external-sources"
   },
   "diagnostic-languageserver.formatFiletypes": {
     "sh": "shfmt"
