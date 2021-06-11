@@ -35,6 +35,7 @@ arch_config:
     - rofi
     - maim
   aur_packages:
+    - google-chrome
     - spotify
     - dropbox
     - 1password

@@ -7,7 +7,7 @@ super + Return
 	alacritty
 
 hyper + c
-  focus_or_run chromium
+  focus_or_run google-chrome google-chrome-stable
 
 hyper + x
   focus_or_run firefox
