@@ -47,5 +47,7 @@
   qs = "!f() { git ze \"$1\" && git za; }; f"
   # 'Log Remote': Compare current branch to tracking branch
   lr = "!f() { git lg ..$(git rb); }; f"
+  alias = "!git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /"
+  fa = "!f() { selected=$(git alias | fzf | cut -d '=' -f1); echo git $selected; git $selected; }; f"
 
 # vim: ft=gitconfig
