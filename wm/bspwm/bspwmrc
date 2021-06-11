@@ -41,15 +41,15 @@ bspc rule -a spotify desktop='^7'
 bspc rule -a Discord desktop='^8' follow=on state=fullscreen
 # Check wm/bspwm/launch_on_desktop.sh for a workaround
 
-_run_if_present () {
+_run_if_present() {
   case $1 in
     "/"*) script="$1" ;;
     *) script="${HOME}/.config/$1" ;;
   esac
-  [ -x "$script" ] && "$script"
+  [ -x "$script" ] && shift && "$script" "$@"
 }
 
-_run_if_present feh/set-background.sh
+_run_if_present feh/set-background.sh ~/.wallpaper
 _run_if_present polybar/launch.sh
 _run_if_present picom/launch.sh
 _run_if_present dunst/launch.sh

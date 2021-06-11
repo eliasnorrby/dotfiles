@@ -12,6 +12,8 @@ else
   exit 1
 fi
 
-WALL="$(find "$WALLDIR" -type f | sort -R | tail -1)"
+WALL=$1
+
+[ -f "$WALL" ] || WALL="$(find "$WALLDIR" -type f | sort -R | tail -1)"
 
 [ -n "$WALL" ] && feh --no-fehbg --bg-fill "$WALL"
