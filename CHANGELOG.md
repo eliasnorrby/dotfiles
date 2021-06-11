@@ -1,3 +1,49 @@
+# [5.1.0](https://github.com/eliasnorrby/dotfiles/compare/v5.0.0...v5.1.0) (2021-06-11)
+
+
+### Bug Fixes
+
+* move aur deps to correct dict ([5f37c7b](https://github.com/eliasnorrby/dotfiles/commit/5f37c7b68338053eff0cc1e0ac73819f42ee886d))
+* **git:** remove most global ignore patterns ([1ac881d](https://github.com/eliasnorrby/dotfiles/commit/1ac881da309151354340d5021af63d0f391eb62c)), closes [tektoncd/triggers#1111](https://github.com/tektoncd/triggers/issues/1111)
+* **vim:** add ! to diffsplit binding ([796dea2](https://github.com/eliasnorrby/dotfiles/commit/796dea2a0f500f953a712e6fe8ac48bc70266966))
+* **zsh:** fix alt-down binding in man_widget ([012d73f](https://github.com/eliasnorrby/dotfiles/commit/012d73ff20456abe6f3a4599e264cf19079ebea1))
+
+
+### Features
+
+* **arch:** add maim for screenshots ([d1a25cc](https://github.com/eliasnorrby/dotfiles/commit/d1a25cc54162697f0ecf0107802bd8e6f699fadd))
+* **arch:** add power script with rofi menu ([a732e11](https://github.com/eliasnorrby/dotfiles/commit/a732e111e5c3cb5ae2f0339f7790eae98a3b4ef1))
+* **bspwm:** add rule for firefox ([e41104b](https://github.com/eliasnorrby/dotfiles/commit/e41104bf71a568f863952da29464978001eb2b66))
+* **editorconfig:** use tabs for Makefiles ([ba88398](https://github.com/eliasnorrby/dotfiles/commit/ba8839841a09133e63afeb5b43be0b7399a99195))
+* **git:** add fp alias ([8cc1f74](https://github.com/eliasnorrby/dotfiles/commit/8cc1f74850c979c659bcbe56f7f61becaec1b6c8))
+* **git:** add global attributes file ([ab3f34c](https://github.com/eliasnorrby/dotfiles/commit/ab3f34ca528ff520c93f2eddaff337dfe803523d))
+* **git:** add lgs alias ([3d1d871](https://github.com/eliasnorrby/dotfiles/commit/3d1d8718e743b447cef406197f2bd99c980857b6))
+* **git:** add mtb alias ([b3883c7](https://github.com/eliasnorrby/dotfiles/commit/b3883c7078dc5a2aa648fbfd5dace34b888eba5e))
+* **git:** add rebase aliases ([cc4b966](https://github.com/eliasnorrby/dotfiles/commit/cc4b966384821b148a5d6de5d84bb4783ca98ca9))
+* **go:** add $GOBIN to path ([6284dc1](https://github.com/eliasnorrby/dotfiles/commit/6284dc14f14d99328bd289cf5225bd09b06e8be5))
+* **macos:** export XDG_RUNTIME_DIR ([ee17fba](https://github.com/eliasnorrby/dotfiles/commit/ee17fbac9df6bd7c7638c7ffe7222bb57d2bc5b6))
+* **node:** lazy-load nvm ([872f60f](https://github.com/eliasnorrby/dotfiles/commit/872f60fc9cf24e3f5963361c69f83f6696a90494))
+* **polybar:** add github module ([4b4408f](https://github.com/eliasnorrby/dotfiles/commit/4b4408f46b9c7dc71a51dbe68010293efcd6ca07))
+* **polybar:** add spotify module ([33eca6a](https://github.com/eliasnorrby/dotfiles/commit/33eca6a1e1bd856ae05f0073fa357ed94bc2f6a3))
+* **polybar:** show spotify module ([bd36172](https://github.com/eliasnorrby/dotfiles/commit/bd36172912fe9f6504004ceec402163acd339e35))
+* **polybar:** use another github icon ([1ad7d4a](https://github.com/eliasnorrby/dotfiles/commit/1ad7d4aeb54feaf81f5d41f14f978793ed9ea853))
+* **rofi:** use mononoki font ([8f534fb](https://github.com/eliasnorrby/dotfiles/commit/8f534fb43b855e9d21616c22653ef3427865f52c))
+* **sxhkd:** add spotify controls ([eb96dc8](https://github.com/eliasnorrby/dotfiles/commit/eb96dc8014cca191526a91f890009fc648a0e49d))
+* **sxhkd:** launch firefox with hyper + x ([c6712c3](https://github.com/eliasnorrby/dotfiles/commit/c6712c343a225c758c629587478cd8713be4ecaa))
+* **tmux:** add T binding for new window in tmp ([67079cd](https://github.com/eliasnorrby/dotfiles/commit/67079cd0efeb1598a7d17809cd2d88506427405e))
+* **tmux:** add Z keybind to set window name from pwd ([a0deade](https://github.com/eliasnorrby/dotfiles/commit/a0deade9e8aa2d3c76e9787c26bbfc40ca167ad1))
+* **vim:** add bindings to toggle editorconfig ([602551f](https://github.com/eliasnorrby/dotfiles/commit/602551fcfd898049e7d842d93f082b59b0f74241))
+* **vim:** add keybind to open fugitive in new tab ([b0d7a9e](https://github.com/eliasnorrby/dotfiles/commit/b0d7a9e388f2d9143f9764caa60b0919821cc193))
+* **vim:** add qall! keybind ([f674b29](https://github.com/eliasnorrby/dotfiles/commit/f674b293b85a98ede2fa17a551b0e653f314ef4b))
+* **vim:** add splitjoin.vim ([2e29e63](https://github.com/eliasnorrby/dotfiles/commit/2e29e63870b1a65dc5039efba4cbdafb50dfcc7d))
+* **vim:** add terraform-ls coc settings ([1d7735a](https://github.com/eliasnorrby/dotfiles/commit/1d7735a359cf059821d0c4809fde764e9382895a))
+* **vim:** add vim-yaml-folds ([0aac1f0](https://github.com/eliasnorrby/dotfiles/commit/0aac1f0d2863a2ba28a0976b9282ec2a5b374fad))
+* **vim:** allow external sources for shellcheck ([40e457b](https://github.com/eliasnorrby/dotfiles/commit/40e457b78a0427c12b1c44ecc7d9c486b6db65db))
+* **vim:** try virtualtext for diagnostics ([409db91](https://github.com/eliasnorrby/dotfiles/commit/409db91ec5ec6fe6f773a1a88dbccb4aa9536cb2))
+* **vim:** update fold keybinds ([79832cb](https://github.com/eliasnorrby/dotfiles/commit/79832cb51c8ff51e975c9778b00f7ee9fef1396c))
+* **vim:** use kubernetes yaml schemas ([2146108](https://github.com/eliasnorrby/dotfiles/commit/21461085ab62cbd3750f169a0ff8ce0f26f889ec))
+* **work:** add jira-browse rofi script ([18de678](https://github.com/eliasnorrby/dotfiles/commit/18de678545e19bc19e95b5f69f4c9db2b064c8e5))
+
 # [5.0.0](https://github.com/eliasnorrby/dotfiles/compare/v4.0.0...v5.0.0) (2021-04-23)
 
 
