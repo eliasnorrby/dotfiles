@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Usage: focus_or_run program [class]
+# Usage: focus_or_run [class] program
 
 # Will search windows based on 'class' (defaults to 'program').
 # If a window is found, it is focused, otherwise the program is
