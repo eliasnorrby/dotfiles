@@ -17,6 +17,7 @@ zsh_config:
     - yq
     - pandoc
     - mdcat
+    - entr
     # misc
     - neofetch
   pacman_packages:
@@ -31,6 +32,7 @@ zsh_config:
     - pandoc
     - neofetch
     - mdcat
+    - entr
   aur_packages:
     - yq2-bin
   links:
