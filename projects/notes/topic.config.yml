@@ -9,7 +9,7 @@ notes_config:
     - fzf
     - mdcat
   aur_packages:
-    - go-yq
+    - yq2-bin
   links:
     - src: notes_global_entry.sh
       dest: "{{ xdg_bin_home }}/"

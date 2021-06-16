@@ -32,7 +32,7 @@ zsh_config:
     - neofetch
     - mdcat
   aur_packages:
-    - go-yq
+    - yq2-bin
   links:
     - src: zshrc
       rename: .zshrc
