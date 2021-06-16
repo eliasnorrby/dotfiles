@@ -262,7 +262,7 @@ p() {
   )
 
   for dir in ${DIR_LIST[@]}; do
-    local REPOS="${REPOS}\n$(find ${dir} -name ".git" -type d -maxdepth 3 | sed 's/\/.git$//')"
+    local REPOS="${REPOS}\n$(find ${dir} -maxdepth 3 -name ".git" -type d | sed 's/\/.git$//')"
   done
 
   # # Preview with bat or ls
