@@ -4,7 +4,7 @@
   "signature.target": "echo",
   "suggest.noselect": false,
   // diagnostics
-  "diagnostic.enable": false,
+  "diagnostic.enable": true,
   "diagnostic.virtualText": true,
   "diagnostic.virtualTextCurrentLineOnly": false,
   "diagnostic.virtualTextPrefix": " | ",

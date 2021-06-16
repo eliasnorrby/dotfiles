@@ -86,9 +86,9 @@ function! CocRefresh() abort
   silent CocEnable
 endfunction
 
-" Should match the diagnostic.enabled setting in coc-settings for the best
-" results
-let g:coc_custom_diagnostics_enabled = 0
+" Should match the diagnostic.enabled setting
+" in coc-settings for the best results
+let g:coc_custom_diagnostics_enabled = 1
 function! CocToggleDiagnosticUi() abort
   let l:new_value = g:coc_custom_diagnostics_enabled == 0 ? v:true : v:false
   echo 'Coc Diagnostics: ' . (l:new_value == 0 ? 'disabled' : 'enabled')
@@ -138,7 +138,7 @@ nnoremap <silent> <leader>lr  :<C-u>CocListResume<CR>
 
 " Snippets:
 imap <C-l> <Plug>(coc-snippets-expand)
-imap ;; <Plug>(coc-snippets-expand)
+imap ;e <Plug>(coc-snippets-expand)
 
 let g:coc_snippet_next = ';n'
 let g:coc_snippet_prev = ';N'
