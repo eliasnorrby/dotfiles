@@ -3,7 +3,9 @@ syntax enable " enable syntax processing
 set nohlsearch
 set incsearch
 set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
-set inccommand=nosplit
+set inccommand=split
+
+set cursorline
 
 set hidden
 set updatetime=300
