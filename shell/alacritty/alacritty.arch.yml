@@ -2,7 +2,26 @@
 window:
   decorations: none
 
+fonts:
+  dankmono: &dankmono
+    family: Dank Mono
+  iosevka: &iosevka
+    family: Iosevka Nerd Font
+  mononoki: &mononoki
+    family: mononoki Nerd Font
+  hack: &hack
+    family: Hack Nerd Font
+  fira: &fira
+    family: FiraCode Nerd Font
+    style: Light
+  meslo: &meslo
+    family: MesloLGLDZ Nerd Font
+    style: RegularForPowerline
+  sourcecodepro: &sourcecodepro
+    family: SauceCodePro Nerd Font
+
 font:
+  normal: *iosevka
   size: 12.0
   offset:
     x: 0
