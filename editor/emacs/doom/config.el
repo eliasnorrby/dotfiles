@@ -17,7 +17,7 @@
 ;; (setq doom-font (font-spec :family "Fira Code Retina" :size 14))
 
 (if (string= (shell-command-to-string "_os") "arch")
-  (setq doom-font (font-spec :family "mononoki Nerd Font" :size 18))
+  (setq doom-font (font-spec :family "Iosevka Nerd Font" :size 18))
   (setq doom-font (font-spec :family "Dank Mono" :size 18)))
 
 ;; Set the theme
