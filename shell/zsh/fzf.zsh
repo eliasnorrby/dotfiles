@@ -119,8 +119,6 @@ fnpm() {
   npm run $script
 }
 
-alias n="fnpm"
-
 npm-widget() {
   local repo_root package_dir script
   package_dir="$(pwd)"
