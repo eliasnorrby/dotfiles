@@ -25,7 +25,7 @@ ialias() {
 # functionality
 expand-alias-space() {
   local remove_space
-  if (($baliases[(Ie)${LBUFFER##* }])); then
+  if (($baliases[(Ie)${LBUFFER##* }])) && [[ "$LBUFFER" == "${LBUFFER##* }" ]]; then
     remove_space="yes"
   fi
   if ! (($ialiases[(Ie)${LBUFFER##* }])); then
