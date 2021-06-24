@@ -31,8 +31,8 @@ setopt hist_ignore_space        # Ignore commands that start with space.
 # disable flow control (unbind ^S)
 stty -ixon
 
-# unsetopt BEEP                 # Turn off all beeps
-unsetopt LIST_BEEP              # Turn off autocomplete beeps
+unsetopt BEEP                   # Turn off all beeps
+# unsetopt LIST_BEEP            # Turn off autocomplete beeps
 
 # setup up colors for ls
 dircolors_file=${ZPLUG_HOME}/repos/seebi/dircolors-solarized/dircolors.ansi-dark
