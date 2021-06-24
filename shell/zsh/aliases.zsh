@@ -1,8 +1,62 @@
+alias rl="exec zsh"
+
+# alias expansion: https://blog.sebastian-daschner.com/entries/zsh-aliases
+
+# blank aliases - don't add a space after expanding these
+typeset -ga baliases
+baliases=()
+
+balias() {
+  alias $@
+  args="$@"
+  args=${args%%\=*}
+  baliases+=(${args##* })
+}
+
+# ignored aliases - don't expand these
+typeset -ga ialiases
+export ialiases=()
+
+ialias() {
+  alias $@
+  args="$@"
+  args=${args%%\=*}
+  ialiases+=(${args##* })
+}
+
+# functionality
+expand-alias-space() {
+  local remove_space
+  if [[ $LBUFFER =~ "\<(${(j:|:)baliases})\$" ]]; then
+    remove_space="yes"
+  fi
+  if [[ ! $LBUFFER =~ "\<(${(j:|:)ialiases})\$" ]]; then
+    zle _expand_alias
+  fi
+  zle self-insert
+  if [[ -n "$remove_space" ]]; then
+    zle backward-delete-char
+  fi
+}
+zle -N expand-alias-space
+
+bindkey " " expand-alias-space
+# bindkey -M isearch " " magic-space
+
+balias clh="curl localhost:"
+
+# global aliases
+alias -g G="| grep"
+alias -g X="| xargs"
+alias -g L="| less"
+alias -g Y="| yq"
+alias -g J="| jq"
+
 if [[ "$(_os)" == "macos" ]] ; then
   # Enable ls colors by aliasing gnu coreutils ls – not needed when included in PATH
-  alias ls="gls --color=auto --human-readable --group-directories-first"
+  ialias ls="gls --color=auto --human-readable --group-directories-first"
 else
-  alias ls="ls --color=auto --human-readable --group-directories-first"
+  ialias ls="ls --color=auto --human-readable --group-directories-first"
 fi
 
 # Overrides l= "ls -lah"
