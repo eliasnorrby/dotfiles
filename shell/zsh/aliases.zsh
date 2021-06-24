@@ -91,20 +91,11 @@ alias cdot="cd ~/.dotfiles"
 alias cdd="cd ~/dev"
 alias cdw="cd ~/work"
 alias cdl="cd ~/learn"
-alias cdb="cd ~/boilerplate"
 alias cds="cd ~/sandbox"
-alias cdck="cd ~/dev/code-is-king"
-
-# VSCode
-alias c="code"
 
 # Script aliases
 alias cs="complete-section"
 alias fgc="find-git-changes"
-
-alias zshc="vim $ZDOTDIR/.zshrc"
-
-alias cdsz="cd $DOTFILES/shell/zsh"
 
 if [[ "$(_os)" == "macos" ]] ; then
   alias sudoedit="sudo -e"
