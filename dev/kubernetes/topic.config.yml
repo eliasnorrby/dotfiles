@@ -1,6 +1,9 @@
 ---
 kubernetes_config:
   path: dev/kubernetes
+  links:
+    - src: k9s/skin.yml
+      dest: ~/.k9s/
   brew_formulas:
     - minikube
     - kubectl

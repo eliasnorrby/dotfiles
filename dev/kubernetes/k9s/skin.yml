@@ -1,0 +1,105 @@
+# Palenight presets
+foreground: &foreground "#bdbdbd"
+# background: &background "#292d3e"
+background: &background default
+black: &black "#292d3e"
+blue: &blue "#82aaff"
+green: &green "#c3e88d"
+grey: &grey "#c0c0c0"
+cyan: &cyan "#89ddff"
+purple: &purple "#c792ea"
+red: &red "#f07178"
+yellow: &yellow "#ffcb6b"
+yellow_bright: &yellow_bright "#ffe585"
+
+# Dig through internal/config/styles.go:246 to find missing keys
+k9s:
+  help:
+    fgColor: *foreground
+    bgColor: *background
+    sectionColor: *green
+    keyColor: *blue
+    numKeyColor: *purple
+  body:
+    fgColor: *foreground
+    bgColor: *background
+    logoColor: *green
+  info:
+    fgColor: *grey
+    sectionColor: *green
+  dialog:
+    fgColor: *black
+    bgColor: *background
+    buttonFgColor: *foreground
+    buttonBgColor: *green
+    buttonFocusFgColor: *black
+    buttonFocusBgColor: *blue
+    labelFgColor: *cyan
+    fieldFgColor: *blue
+  frame:
+    border:
+      fgColor: *green
+      focusColor: *green
+    menu:
+      fgColor: *grey
+      keyColor: *yellow
+      numKeyColor: *yellow
+    crumbs:
+      fgColor: *black
+      bgColor: *green
+      activeColor: *yellow
+    status:
+      newColor: *blue
+      modifyColor: *green
+      addColor: *grey
+      pendingColor: *cyan
+      errorColor: *red
+      highlightcolor: *yellow
+      killColor: *purple
+      completedColor: *grey
+    title:
+      fgColor: *blue
+      bgColor: *background
+      highlightColor: *purple
+      counterColor: *foreground
+      filterColor: *blue
+  views:
+    charts:
+      bgColor: *background
+      defaultDialColors:
+        - *green
+        - *red
+      defaultChartColors:
+        - *green
+        - *red
+    table:
+      fgColor: *yellow
+      bgColor: *background
+      cursorFgColor: *black
+      cursorBgColor: *blue
+      markColor: *yellow_bright
+      header:
+        fgColor: *grey
+        bgColor: *background
+        sorterColor: *cyan
+    xray:
+      fgColor: *blue
+      bgColor: *background
+      cursorColor: *foreground
+      graphicColor: *yellow_bright
+      showIcons: false
+    yaml:
+      keyColor: *red
+      colonColor: *grey
+      valueColor: *grey
+    logs:
+      fgColor: *grey
+      bgColor: *background
+      indicator:
+        fgColor: *blue
+        bgColor: *background
+    help:
+      fgColor: *grey
+      bgColor: *background
+      indicator:
+        fgColor: *blue

@@ -1,0 +1,5 @@
+---
+- name: create k9s config dir
+  file:
+    state: directory
+    path: "~/.k9s"
