@@ -84,6 +84,11 @@ schemes:
 
 colors: *palenight
 
+cursor:
+  style:
+    blinking: Always
+  blink_interval: 550
+
 mouse:
   hide_when_typing: true
 
