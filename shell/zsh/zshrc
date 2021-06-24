@@ -23,6 +23,7 @@ _load shell/zsh/keybinds.zsh
 _load shell/zsh/utilities.zsh
 _load shell/zsh/prompt.zsh
 _load shell/zsh/plugins.zsh
+_load shell/zsh/alias_expansion.zsh
 
 _load shell/zsh/man_widget.zsh
 
