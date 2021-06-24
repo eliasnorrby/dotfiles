@@ -107,3 +107,7 @@ function ns() {
   touch "$1"
   chmod +x "$1"
 }
+
+cdt() {
+  cd "$(mktemp -d)"
+}
