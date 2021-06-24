@@ -21,6 +21,7 @@ zsh_config:
     - parallel
     # misc
     - neofetch
+    - terminal-notifier
   pacman_packages:
     - zsh
     - xclip
