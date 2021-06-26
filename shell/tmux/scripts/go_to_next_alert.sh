@@ -11,4 +11,6 @@ fi
 
 tmux switch-client -t "$session_with_alert"
 
-tmux next-window -a
+# If the alert is in the session's active window, next-window -a will fail. But
+# that's okay, because we're already where we want to be.
+tmux next-window -a || :
