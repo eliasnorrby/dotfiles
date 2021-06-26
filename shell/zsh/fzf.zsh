@@ -23,7 +23,7 @@ fi
 # export FZF_DEFAULT_COMMAND="rg --files --hidden --glob '!.git/*'"
 # export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard' --border"
+export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | $(get_copy_cmd))+abort' --header 'Press CTRL-Y to copy command into clipboard' --border"
 
 if _is_callable fd ; then
   export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
@@ -151,7 +151,7 @@ fartii() {
   fonts=$(artii -l | sed -e '1,5d' -e '/^$/,$d')
   font=$(echo "$fonts" | fzf --border --ansi --reverse --preview-window=down:80% --preview "artii -f {} $string")
   if [ -n "$font" ] ; then
-    artii -f "$font" "$string" | pbcopy
+    artii -f "$font" "$string" | copy_cmd
     echo "Copied to clipboard"
   fi
 }
@@ -194,7 +194,7 @@ gt() {
     --preview 'git show --color=always {} | head -200'
 }
 
-_gitLogLineToHash="echo {} | grep -o '[a-f0-9]\{7\}' | head -1"
+_gitLogLineToHash="echo {} | grep -o '[a-f0-9]\{7\}' | head -1 -c -1"
 
 # I use gg instead of gh because <c-h> is taken by tmux
 gg() {
@@ -202,7 +202,7 @@ gg() {
   git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --graph --color=always |
   fzf-down --ansi --no-sort --reverse --multi \
     --bind 'ctrl-n:toggle-sort' \
-    --bind "ctrl-y:execute:$_gitLogLineToHash | pbcopy" \
+    --bind "ctrl-y:execute-silent($_gitLogLineToHash | $(get_copy_cmd))+abort" \
     --header 'Press CTRL-N to toggle sort, CTRL-Y to yank' \
     --preview 'grep -o "[a-f0-9]\{7,\}" <<< {} | xargs git show --color=always | head -200' |
   grep -o "[a-f0-9]\{7,\}"

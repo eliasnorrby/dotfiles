@@ -12,6 +12,14 @@ else
   }
 fi
 
+get_copy_cmd() {
+  if [[ "$(_os)" == "macos" ]] ; then
+    echo "pbcopy"
+  else
+    echo "xclip -selection clipboard"
+  fi
+}
+
 mkd() {
   mkdir -p -- "$1" &&
     cd -P -- "$1"
