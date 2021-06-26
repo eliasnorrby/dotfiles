@@ -1,0 +1,35 @@
+snippet cfeat "feat conventional commit"
+feat${1:(${2:scope}):} ${3:subject}
+
+${4}
+endsnippet
+
+snippet cfix "fix conventional commit"
+fix${1:(${2:scope}):} ${3:subject}
+
+${4}
+endsnippet
+
+snippet cchore "chore conventional commit"
+chore${1:(${2:scope}):} ${3:subject}
+
+${4}
+endsnippet
+
+snippet cbuild "build conventional commit"
+build${1:(${2:scope}):} ${3:subject}
+
+${4}
+endsnippet
+
+snippet cci "ci conventional commit"
+ci${1:(${2:scope}):} ${3:subject}
+
+${4}
+endsnippet
+
+snippet cbreak "breaking conventional commit"
+${1:type}${2:(${3:scope})!:} ${4:subject}
+
+BREAKING CHANGE: ${5}
+endsnippet
