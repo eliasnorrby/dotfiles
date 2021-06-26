@@ -2,6 +2,15 @@
 
 # === Utilities ===
 
+if [[ "$(_os)" == "macos" ]] ; then
+  copy_cmd() {
+    pbcopy
+  }
+else
+  copy_cmd() {
+    xclip -selection clipboard
+  }
+fi
 
 function mkd() {
   mkdir -p -- "$1" &&
