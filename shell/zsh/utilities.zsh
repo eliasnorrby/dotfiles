@@ -2,15 +2,6 @@
 
 # === Utilities ===
 
-# TODO: move to :tmux: functions.zsh
-function tkey() {
-  grep "$1" ~/.dotfiles/tmux/tmux-cheatsheet.md
-}
-
-# TODO: move to :tmux: functions.zsh
-function tkeydocs() {
-  vim ~/.dotfiles/tmux/tmux-cheatsheet.md
-}
 
 function mkd() {
   mkdir -p -- "$1" &&
