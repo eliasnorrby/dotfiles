@@ -1,2 +1,2 @@
 alias g="git"
-alias git="nocorrect git"
+ialias git="nocorrect git"
