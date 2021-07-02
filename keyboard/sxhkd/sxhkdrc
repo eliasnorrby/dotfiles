@@ -78,6 +78,9 @@ super + Escape
 hyper + j
   jira-browse
 
+hyper + shift + c
+  copy_and_update_kubectl_token
+
 hyper + shift + p
   power
 

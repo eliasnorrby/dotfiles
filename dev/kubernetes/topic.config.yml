@@ -4,6 +4,13 @@ kubernetes_config:
   links:
     - src: k9s/skin.yml
       dest: ~/.k9s/
+      rename: skin.yml
+    - src: update_kubectl_token.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: update_kubectl_token
+    - src: copy_and_update_kubectl_token.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: copy_and_update_kubectl_token
   brew_formulas:
     - minikube
     - kubectl
