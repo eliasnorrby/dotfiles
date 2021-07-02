@@ -8,6 +8,11 @@ kubectl_context() {
   is_callable kubectl || return
   context=$(kubectl config current-context)
   format="#[fg=cyan]☸️ $context"
+  namespace=$(kubectl config view -o json \
+    | jq -r '.contexts[] | select(.name == "'"$context"'").context.namespace')
+  if [ -n "$namespace" ] && [ "$namespace" != "null" ]; then
+    format="$format : $namespace"
+  fi
   echo "$format"
 }
 
