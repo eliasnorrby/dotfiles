@@ -34,6 +34,7 @@ arch_config:
     - lxappearance-gtk3
     - rofi
     - maim
+    - udiskie
   aur_packages:
     - google-chrome
     - spotify
