@@ -41,7 +41,6 @@ background = ${colors.background}
 foreground = ${colors.foreground}
 
 line-size = 3
-line-color = #f00
 
 border-size = 0
 border-color = #00000000
@@ -53,11 +52,11 @@ padding-right = 2
 module-margin-left = 1
 module-margin-right = 2
 
-; font-0 = Dank Mono:style=Regular::size=11;0
 font-0 = mononoki Nerd Font:style=Regular::size=11;2
-font-1 = Font Awesome 5 Free,Font Awesome 5 Free Regular:style=Regular:size=11;1
-font-2 = Font Awesome 5 Free,Font Awesome 5 Free Solid:style=Solid:size=11;1
-font-3 = Font Awesome 5 Brands,Font Awesome 5 Brands Regular:style=Regular:size=11;0
+; font-1 = Font Awesome 5 Free,Font Awesome 5 Free Regular:style=Regular:size=11;1
+; font-2 = Font Awesome 5 Free,Font Awesome 5 Free Solid:style=Solid:size=11;1
+; font-3 = Font Awesome 5 Brands,Font Awesome 5 Brands Regular:style=Regular:size=11;0
+; font-4 = Material Icons:style=Regular:size=11;2
 
 tray-position = none
 tray-padding = 2
@@ -72,7 +71,7 @@ inherit = bar/base
 
 modules-left = bspwm task
 modules-center = github
-modules-right = spotify vpn filesystem xkeyboard alsa memory cpu wlan eth temperature date powermenu
+modules-right = spotify vpn xkeyboard filesystem alsa memory cpu temperature date powermenu
 
 [bar/secondary]
 inherit = bar/base
@@ -87,39 +86,28 @@ exec = if pgrep -x openfortivpn >/dev/null; then echo " "; else echo " "; 
 interval = 5
 click-left = if pgrep -x openfortivpn >/dev/null; then sudo /usr/local/bin/vpn_disconnect; else alacritty_tmux_vpn_connect; fi
 
-[module/padding]
-type = custom/text
-content = " "
-
 [module/alsa]
 type = internal/alsa
 format-volume = <ramp-volume> <label-volume>
 label-volume-foreground = ${root.foreground}
 format-volume-foreground = ${colors.foreground-alt}
 
-format-muted-prefix = " "
+format-muted-prefix = "ﱝ "
 format-muted-foreground = ${colors.foreground-alt}
-label-muted = 0%
+label-muted = " 0%"
 
-; ramp-volume-0 = 
 ramp-volume-0 = 
 ramp-volume-1 = 
 
 [module/xkeyboard]
 type = internal/xkeyboard
-blacklist-0 = num lock
+format = <label-layout>
 
-format-prefix = " "
+format-prefix = "  "
 format-prefix-foreground = ${colors.foreground-alt}
-; format-prefix-underline = ${colors.secondary}
+format-underline = ${colors.secondary}
 
-label-layout = %layout%
-; label-layout-underline = ${colors.secondary}
-
-label-indicator-padding = 2
-label-indicator-margin = 1
-label-indicator-background = ${colors.background-alt}
-label-indicator-underline = ${colors.secondary}
+label-layout = %name%
 
 [module/filesystem]
 type = internal/fs
@@ -155,54 +143,28 @@ type = internal/cpu
 interval = 2
 format-prefix = " "
 format-prefix-foreground = ${colors.foreground-alt}
-; format-underline = #f90000
 label = %percentage:2%%
 
 [module/memory]
 type = internal/memory
 interval = 2
-format-prefix = " "
+format-prefix = " "
 format-prefix-foreground = ${colors.foreground-alt}
-; format-underline = #4bffdc
 label = %percentage_used%%
-
-[module/wlan]
-type = internal/network
-interface = net1
-interval = 3.0
-
-format-connected = <ramp-signal> <label-connected>
-format-connected-underline = #9f78e1
-label-connected = %essid%
-
-format-disconnected =
-;format-disconnected = <label-disconnected>
-;format-disconnected-underline = ${self.format-connected-underline}
-;label-disconnected = %ifname% disconnected
-;label-disconnected-foreground = ${colors.foreground-alt}
-
-ramp-signal-0 = 
-ramp-signal-1 = 
-ramp-signal-2 = 
-ramp-signal-3 = 
-ramp-signal-4 = 
-ramp-signal-foreground = ${colors.foreground-alt}
 
 [module/eth]
 type = internal/network
-interface = vboxnet0
+interface = eno1
 interval = 3.0
 
-format-connected-underline = #55aa55
-format-connected-prefix = " "
+format-connected-prefix = " "
 format-connected-prefix-foreground = ${colors.foreground-alt}
-label-connected = %local_ip%
+label-connected = " %downspeed:8%   %upspeed:8%"
 
-format-disconnected =
-;format-disconnected = <label-disconnected>
-;format-disconnected-underline = ${self.format-connected-underline}
-;label-disconnected = %ifname% disconnected
-;label-disconnected-foreground = ${colors.foreground-alt}
+format-disconnected = <label-disconnected>
+format-disconnected-underline = ${colors.alert}
+label-disconnected = %ifname% disconnected
+label-disconnected-foreground = ${colors.foreground-alt}
 
 [module/date]
 type = internal/date
@@ -223,7 +185,6 @@ warn-temperature = 60
 
 format = <ramp> <label>
 format-warn = <ramp> <label-warn>
-; format-underline = #f50a4d
 format-warn-underline = ${colors.alert}
 
 label = %temperature-c%
@@ -243,7 +204,7 @@ format-spacing = 1
 
 label-open = " "
 label-open-foreground = ${colors.foreground}
-label-close =  cancel
+label-close = cancel
 label-close-foreground = ${colors.secondary}
 label-separator = |
 label-separator-foreground = ${colors.foreground-alt}
