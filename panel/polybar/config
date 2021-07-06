@@ -80,6 +80,11 @@ modules-left = bspwm
 modules-center =
 modules-right =
 
+[bar/secondary-stats]
+inherit = bar/secondary
+
+modules-center = memory-bar cpu-bar
+
 [module/vpn]
 type = custom/script
 exec = if pgrep -x openfortivpn >/dev/null; then echo " "; else echo " "; fi
@@ -145,12 +150,48 @@ format-prefix = " "
 format-prefix-foreground = ${colors.foreground-alt}
 label = %percentage:2%%
 
+[module/cpu-bar]
+type = internal/cpu
+interval = 2
+format = <bar-load> <label>
+format-prefix = CPU
+format-prefix-foreground = ${colors.foreground-alt}
+label = %percentage:2%%
+
+bar-load-indicator =
+bar-load-width = 50
+bar-load-foreground-0 = #55aa55
+bar-load-foreground-1 = #557755
+bar-load-foreground-2 = #f5a70a
+bar-load-foreground-3 = #ff5555
+bar-load-fill = ▐
+bar-load-empty = ▐
+bar-load-empty-foreground = #444444
+
 [module/memory]
 type = internal/memory
 interval = 2
 format-prefix = " "
 format-prefix-foreground = ${colors.foreground-alt}
-label = %percentage_used%%
+label = %percentage_used:2%%
+
+[module/memory-bar]
+type = internal/memory
+interval = 2
+format-prefix = RAM
+format = <bar-used> <label>
+format-prefix-foreground = ${colors.foreground-alt}
+label = %percentage_used:2%%
+
+bar-used-indicator =
+bar-used-width = 50
+bar-used-foreground-0 = #55aa55
+bar-used-foreground-1 = #557755
+bar-used-foreground-2 = #f5a70a
+bar-used-foreground-3 = #ff5555
+bar-used-fill = ▐
+bar-used-empty = ▐
+bar-used-empty-foreground = #444444
 
 [module/eth]
 type = internal/network
