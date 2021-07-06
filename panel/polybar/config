@@ -70,7 +70,7 @@ cursor-scroll = ns-resize
 [bar/main]
 inherit = bar/base
 
-modules-left = bspwm
+modules-left = bspwm task
 modules-center = github
 modules-right = spotify vpn filesystem xkeyboard alsa memory cpu wlan eth temperature date powermenu
 
@@ -271,6 +271,12 @@ format-prefix = " | "
 format = <label>
 exec = /usr/bin/polybar-spotify -f '{artist}: {song}'
 format-underline = #1db954
+
+[module/task]
+type = custom/script
+interval = 1
+format-prefix = " "
+exec = task rc.verbose: rc.report.next.columns:description rc.report.next.labels:1 limit:1 next
 
 [settings]
 screenchange-reload = true
