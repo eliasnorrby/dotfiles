@@ -11,7 +11,7 @@ _is_callable()  {
 
 DESKTOP=$1
 PROGRAM=$2
-bspc desktop --focus "^$DESKTOP"
+bspc desktop --focus "$DESKTOP"
 if _is_callable "$PROGRAM"; then
   exec "$PROGRAM"
 else

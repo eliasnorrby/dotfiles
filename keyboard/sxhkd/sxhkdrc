@@ -22,7 +22,7 @@ hyper + shift + t
   focus_or_run alacritty
 
 hyper + u
-  focus_or_run spotify launch_on_desktop 7 spotify
+  focus_or_run spotify launch_on_desktop B2 spotify
 
 hyper + space
   spotifyctl PlayPause
@@ -31,7 +31,7 @@ hyper + shift + {l,h}
   spotifyctl {Next,Previous}
 
 hyper + d
-  focus_or_run discord launch_on_desktop 8 discord
+  focus_or_run discord launch_on_desktop B3 discord
 
 hyper + s
   focus_or_run emacs
@@ -155,7 +155,15 @@ super + {o,i}
 
 # focus or send to the given desktop
 super + {_,shift + }{1-9,0}
-	bspc {desktop --focus,node --to-desktop} '^{1-9,10}' {,--follow}
+	bspc {desktop --focus,node --to-desktop} '{1-9,10}' {,--follow}
+
+# focus
+super + {a,d}; {1-9,0}
+	bspc desktop --focus '{A,B}{1-9,10}'
+
+# send
+super + {a,d}; shift + {1-9,0}
+	bspc node --to-desktop '{A,B}{1-9,10}' --follow
 
 #
 # preselect
