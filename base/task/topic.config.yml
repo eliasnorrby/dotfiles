@@ -1,0 +1,8 @@
+---
+task_config:
+  path: base/task
+  brew_formulas:
+    - task
+  pacman_packages:
+    - task
+    - taskwarrior-tui

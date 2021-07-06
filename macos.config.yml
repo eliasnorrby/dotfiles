@@ -15,6 +15,9 @@ topics:
     - name: work
       state: present
       config: "{{ work_config }}"
+    - name: task
+      state: present
+      config: "{{ task_config }}"
   editor:
     - name: vim
       state: disabled
