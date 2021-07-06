@@ -24,8 +24,9 @@ background-alt = #444
 foreground = ${xrdb:foreground:#dfdfdf}
 foreground-alt = #888
 primary = ${xrdb:color3}
-secondary = ${xrdb:color6}
+secondary = ${xrdb:color5}
 alert = ${xrdb:color1}
+okay = ${xrdb:color2}
 
 [bar/base]
 monitor = ${env:MONITOR:}
