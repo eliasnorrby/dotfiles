@@ -6,6 +6,7 @@ balias clh="curl localhost:"
 alias -g G="| grep"
 alias -g X="| xargs"
 alias -g L="| less"
+alias -g H="-h | less"
 alias -g Y="| yq"
 alias -g J="| jq"
 
