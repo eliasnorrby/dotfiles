@@ -267,10 +267,9 @@ label = %{A1:xdg-open https\://github.com/notifications:} %notifications%%{A}
 [module/spotify]
 type = custom/script
 interval = 1
-format-prefix = " | "
-format = <label>
-exec = /usr/bin/polybar-spotify -f '{artist}: {song}'
-format-underline = #1db954
+format-prefix = "  "
+format-prefix-foreground = #1db954
+exec = /usr/bin/polybar-spotify -f '{play_pause} {artist}: {song}' -p ',契'
 
 [module/task]
 type = custom/script
