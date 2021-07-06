@@ -3,10 +3,14 @@ docker_config:
   path: dev/docker
   brew_formulas:
     - hadolint
+    - podman
+    - skopeo
   brew_casks:
     - docker
   pacman_packages:
     - docker
     - docker-compose
+    - podman
+    - skopeo
   aur_packages:
     - hadolint
