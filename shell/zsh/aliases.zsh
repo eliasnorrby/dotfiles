@@ -1,6 +1,6 @@
 alias rl="exec zsh"
 
-balias clh="curl localhost:"
+balias clh="curl -sS localhost:"
 
 # global aliases
 alias -g G="| grep"
