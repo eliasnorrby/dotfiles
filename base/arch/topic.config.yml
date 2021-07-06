@@ -27,6 +27,7 @@ arch_config:
     - xorg-xev
     - xsel
     - ttf-font-awesome
+    - ttf-material-design-icons-webfont
     - ttf-roboto
     - gucharmap
     - base-devel
