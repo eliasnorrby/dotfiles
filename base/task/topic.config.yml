@@ -5,6 +5,9 @@ task_config:
     - src: task_alacritty.sh
       dest: "{{ xdg_bin_home }}/"
       rename: task_alacritty
+    - src: task_module.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: task_module
   brew_formulas:
     - task
   pacman_packages:

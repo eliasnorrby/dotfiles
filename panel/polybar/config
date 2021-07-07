@@ -306,8 +306,7 @@ exec = /usr/bin/polybar-spotify -f '{play_pause} {artist}: {song}' -p ',契'
 [module/task]
 type = custom/script
 interval = 1
-format-prefix = " "
-exec = task rc.verbose: rc.report.next.columns:description rc.report.next.labels:1 limit:1 next
+exec = task_module
 
 [settings]
 screenchange-reload = true
