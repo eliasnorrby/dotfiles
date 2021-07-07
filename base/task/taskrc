@@ -1,0 +1,13 @@
+# Files
+data.location=~/.task
+
+# Color theme (uncomment one to use)
+# TODO: fix dynamic path for MacOS / Arch
+include /usr/share/doc/task/rc/dark-16.theme
+
+default.project=inbox
+verbose=blank,header,footnote,label,new-id,affected,edit,special,sync,unwait,override,recur #project removed
+weekstart=monday
+
+alias.@=context
+context.work=project:work
