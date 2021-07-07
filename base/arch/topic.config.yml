@@ -49,5 +49,7 @@ arch_config:
     - nerd-fonts-meslo
     - nerd-fonts-mononoki
     - nerd-fonts-source-code-pro
+    - ttf-devicons
+    - ttf-mononoki
 
 aur_builder_user_name: aur_builder
