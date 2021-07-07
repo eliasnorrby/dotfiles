@@ -87,7 +87,7 @@ modules-center = memory-bar cpu-bar
 
 [module/vpn]
 type = custom/script
-exec = if pgrep -x openfortivpn >/dev/null; then echo " "; else echo " "; fi
+exec = if pgrep -x openfortivpn >/dev/null; then echo " "; else echo "%{F#888} %{F-}"; fi
 interval = 5
 click-left = if pgrep -x openfortivpn >/dev/null; then sudo /usr/local/bin/vpn_disconnect; else alacritty_tmux_vpn_connect; fi
 
