@@ -25,11 +25,12 @@ bspc config borderless_monocle   false
 bspc config gapless_monocle      false
 
 bspc rule -a TmuxAlacritty desktop='1' follow=on
-bspc rule -a Google-chrome desktop='2'
+bspc rule -a Google-chrome desktop='2' follow=on
 bspc rule -a jetbrains-idea-ce desktop='3' follow=on
 bspc rule -a Emacs desktop='4' state=fullscreen follow=on
 
-bspc rule -a firefox desktop='A5'
+# bspc rule -a "microsoft teams - preview" desktop='A4' follow=on (*)
+bspc rule -a firefox desktop='A5' follow=on
 
 bspc rule -a Slack desktop='B1' follow=on
 # bspc rule -a spotify desktop='B2' (*)

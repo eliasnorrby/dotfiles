@@ -1,6 +1,7 @@
 #!/bin/bash
 
 declare -A ICONMAP
+ICONMAP[A4]=
 ICONMAP[A5]=
 
 ICONMAP[1]=

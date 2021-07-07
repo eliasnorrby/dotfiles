@@ -19,6 +19,8 @@ work_config:
     - openfortivpn
   pacman_packages:
     - openfortivpn
+  aur_packages:
+    - teams
 
 openfortivpn_bin_path: "{{ is_macos | ternary('/usr/local/bin/openfortivpn','/usr/bin/openfortivpn') }}"
 vpn_group_name: openfortivpn
