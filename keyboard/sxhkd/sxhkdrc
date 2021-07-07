@@ -18,6 +18,9 @@ hyper + t
 hyper + n
   focus_or_run NotesAlacritty notes_alacritty
 
+hyper + w
+  focus_or_run TaskAlacritty task_alacritty
+
 hyper + shift + t
   focus_or_run alacritty
 

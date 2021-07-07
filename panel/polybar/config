@@ -152,7 +152,7 @@ label-empty-padding = 2
 label-separator =
 label-separator-padding = 1.9
 
-ws-icon-0 = A1;A1
+ws-icon-0 = A1;
 ws-icon-1 = A2;A2
 ws-icon-2 = A3;A3
 ws-icon-3 = A4;

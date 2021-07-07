@@ -1,6 +1,10 @@
 ---
 task_config:
   path: base/task
+  links:
+    - src: task_alacritty.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: task_alacritty
   brew_formulas:
     - task
   pacman_packages:
