@@ -10,4 +10,7 @@ verbose=blank,header,footnote,label,new-id,affected,edit,special,sync,unwait,ove
 weekstart=monday
 
 alias.@=context
+alias.standup=end.after:yesterday project:work completed
+alias.standup-sow=end.after:eoww-8d project:work completed
+
 context.work=project:work
