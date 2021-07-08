@@ -7,11 +7,14 @@ is_callable() {
 kubectl_context() {
   is_callable kubectl || return
   context=$(kubectl config current-context)
+  context=${context:-?}
   format="#[fg=cyan]ﴱ $context"
-  namespace=$(kubectl config view -o json \
-    | jq -r '.contexts[] | select(.name == "'"$context"'").context.namespace')
-  if [ -n "$namespace" ] && [ "$namespace" != "null" ]; then
-    format="$format : $namespace"
+  if [ "$context" != "?" ]; then
+    namespace=$(kubectl config view -o json \
+      | jq -r '.contexts[] | select(.name == "'"$context"'").context.namespace')
+    if [ -n "$namespace" ] && [ "$namespace" != "null" ]; then
+      format="$format : $namespace"
+    fi
   fi
   format="$format#[fg=default]"
   echo "$format"
@@ -20,6 +23,7 @@ kubectl_context() {
 argocd_context() {
   is_callable argocd || return
   context=$(argocd context | grep '^\*' | tr -s ' ' | cut -d ' ' -f 2)
+  context=${context:-?}
   format="#[fg=red] $context#[fg=default]"
   echo "$format"
 }
