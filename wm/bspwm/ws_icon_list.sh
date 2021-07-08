@@ -1,5 +1,7 @@
 #!/bin/bash
 
+DEFAULT_ICON=•
+
 declare -A ICONMAP
 ICONMAP[A1]=
 ICONMAP[A4]=
@@ -18,6 +20,6 @@ ICONMAP[B5]=
 counter=0
 bspc query -D --names | while read -r name; do
   icon=${ICONMAP[$name]}
-  icon=${icon:-$name}
+  icon=${icon:-$DEFAULT_ICON}
   printf 'ws-icon-%i = %s;'"$icon"'\n' $((counter++)) "$name"
 done
