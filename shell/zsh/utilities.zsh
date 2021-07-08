@@ -25,6 +25,24 @@ mkd() {
     cd -P -- "$1"
 }
 
+backup() {
+  [ "$#" -ne 1 ] || [ ! -f "$1" ] && { echo "Usage: backup <file>" && return; }
+  local file=$1 backup
+  backup="$file.bak"
+  [ -e "$backup" ] && { echo "$backup already exists" && return; }
+  echo "$file -> $backup"
+  mv "$file" "$backup"
+}
+
+unbackup() {
+  [ "$#" -ne 1 ] || [ ! -f "$1" ] && { echo "Usage: unbackup <file>" && return; }
+  local file backup=$1
+  file="${backup%.bak}"
+  [ -e "$file" ] && { echo "$file already exists" && return; }
+  echo "$backup -> $file"
+  mv "$backup" "$file"
+}
+
 color() {
   print -P -- "$1: %F{$1}This is what your text would look like%f";
 }
