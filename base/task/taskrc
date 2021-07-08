@@ -14,3 +14,5 @@ alias.standup=end.after:yesterday project:work completed
 alias.standup-sow=end.after:eoww-8d project:work completed
 
 context.work=project:work
+
+# vim:commentstring=#%s
