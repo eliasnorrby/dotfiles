@@ -43,9 +43,9 @@ urgency_wrapper() {
     return
   fi
   urgency=$(task _get "${next_task}.urgency")
-  if [ "$urgency" -ge 8 ]; then
+  if [ "${urgency%.*}" -ge 8 ]; then
     echo "%{u#f07178}%{+u}$1%{u-}"
-  elif [ "$urgency" -ge 5 ]; then
+  elif [ "${urgency%.*}" -ge 5 ]; then
     echo "%{u#c3e88d}%{+u}$1%{u-}"
   else
     echo "$1"
