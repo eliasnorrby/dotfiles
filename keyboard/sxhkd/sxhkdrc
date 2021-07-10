@@ -81,7 +81,7 @@ super + shift + p
 super + Escape
 	pkill -USR1 -x sxhkd
 
-hyper + j
+hyper + shift + j
   jira-browse
 
 hyper + shift + c
@@ -89,6 +89,13 @@ hyper + shift + c
 
 hyper + shift + p
   power
+
+# vim-like arrow key bindings
+hyper + {h,j,k,l}
+  xdotool key {_,_} {Left,Down,Up,Right}
+
+hyper + ~{Left,Down,Up,Right}
+  # no-op
 
 #
 # bspwm hotkeys
