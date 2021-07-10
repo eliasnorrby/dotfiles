@@ -145,3 +145,17 @@ let g:coc_snippet_prev = ';N'
 
 " Explorer:
 nnoremap <silent> <leader>e :CocCommand explorer<CR>
+
+" Git:
+nmap [c <Plug>(coc-git-prevchunk)
+nmap ]c <Plug>(coc-git-nextchunk)
+nmap [C <Plug>(coc-git-prevconflict)
+nmap ]C <Plug>(coc-git-nextconflict)
+nmap <leader>ghd <Plug>(coc-git-chunkinfo)
+nmap <leader>ghi <Plug>(coc-git-commit)
+
+nnoremap <silent> <leader>ghs :CocCommand git.chunkStage<CR>
+nnoremap <silent> <leader>ghu :CocCommand git.chunkUndo<CR>
+
+nnoremap <silent> <leader>lb :<C-u>CocList branches<CR>
+nnoremap <silent> <leader>li :<C-u>CocList issues<CR>

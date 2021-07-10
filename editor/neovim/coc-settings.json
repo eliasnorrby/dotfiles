@@ -23,6 +23,14 @@
   "explorer.keyMappings.global": {
     "<cr>": ["expandable?", "expand", "open"]
   },
+  // git
+  "git.showCommitInFloating": true,
+  "git.addedSign.hlGroup": "SignifySignAdd",
+  "git.changedSign.hlGroup": "SignifySignChange",
+  "git.removedSign.hlGroup": "SignifySignDelete",
+  "git.topRemovedSign.hlGroup": "SignifySignDeleteFirstLine",
+  "git.changeRemovedSign.hlGroup": "SignifySignChange",
+  "git.semanticCommit.scope": false,
   // python
   "python.jediEnabled": false,
   "python.linting.enabled": true,

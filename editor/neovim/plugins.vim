@@ -37,7 +37,7 @@ Plug 'honza/vim-snippets'
 
 " Ui:
 runtime plugins.d/tpope/vim-vinegar.vim
-runtime plugins.d/mhinz/vim-signify.vim
+" runtime plugins.d/mhinz/vim-signify.vim
 runtime plugins.d/ap/vim-css-color.vim
 
 " Statusline:
