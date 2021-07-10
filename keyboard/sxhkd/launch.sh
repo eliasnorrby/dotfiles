@@ -7,4 +7,4 @@
 # pgrep -x sxhkd > /dev/null && pkill -USR1 -x sxhkd || sxhkd &
 
 killall -q sxhkd
-sxhkd &
+SXHKD_SHELL=/bin/sh sxhkd &
