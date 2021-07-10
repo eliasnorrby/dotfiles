@@ -70,7 +70,7 @@ super + shift + Return
 	konsole
 
 # program launcher
-super + @space
+alt + @space
 	rofi -show run
 
 # screenshot
