@@ -294,7 +294,9 @@ token = ${file:~/.config/polybar/github_access_token}
 user = eliasnorrby
 empty-notifications = false
 interval = 10
-label = %{A1:xdg-open https\://github.com/notifications:} %notifications%%{A}
+label = " %{A1:xdg-open https\://github.com/notifications:} %notifications%%{A} "
+label-background = ${colors.background-alt}
+format-underline = ${colors.okay}
 
 [module/spotify]
 type = custom/script
