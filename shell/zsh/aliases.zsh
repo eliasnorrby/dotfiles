@@ -9,6 +9,8 @@ alias -g L="| less"
 alias -g H="-h | less"
 alias -g Y="| yq"
 alias -g J="| jq"
+alias -g E="| entr"
+alias -g EE="| entr /_"
 
 if [[ "$(_os)" == "macos" ]] ; then
   # Enable ls colors by aliasing gnu coreutils ls – not needed when included in PATH
