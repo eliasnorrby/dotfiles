@@ -1,3 +1,14 @@
+# [6.0.0](https://github.com/eliasnorrby/dotfiles/compare/v5.2.0...v6.0.0) (2021-07-11)
+
+
+* refactor(zsh)!: remove zplug.zsh ([c574af3](https://github.com/eliasnorrby/dotfiles/commit/c574af369acca636f13b96ebd629081a16bf5e69))
+
+
+### BREAKING CHANGES
+
+* Remove (now unused) zplug configuration. See 90547d1
+for edits to ansible.
+
 # [5.2.0](https://github.com/eliasnorrby/dotfiles/compare/v5.1.0...v5.2.0) (2021-07-11)
 
 
