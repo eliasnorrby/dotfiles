@@ -26,7 +26,7 @@ mkd() {
 }
 
 backup() {
-  [ "$#" -ne 1 ] || [ ! -f "$1" ] && { echo "Usage: backup <file>" && return; }
+  [ "$#" -ne 1 ] || [ ! -e "$1" ] && { echo "Usage: backup <file/directory>" && return; }
   local file=$1 backup
   backup="$file.bak"
   [ -e "$backup" ] && { echo "$backup already exists" && return; }
@@ -35,7 +35,7 @@ backup() {
 }
 
 unbackup() {
-  [ "$#" -ne 1 ] || [ ! -f "$1" ] && { echo "Usage: unbackup <file>" && return; }
+  [ "$#" -ne 1 ] || [ ! -e "$1" ] && { echo "Usage: unbackup <file/directory>" && return; }
   local file backup=$1
   file="${backup%.bak}"
   [ -e "$file" ] && { echo "$file already exists" && return; }
