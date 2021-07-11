@@ -32,7 +32,6 @@ arch_config:
     - gucharmap
     - base-devel
     - yay
-    - lxappearance-gtk3
     - rofi
     - maim
     - udiskie

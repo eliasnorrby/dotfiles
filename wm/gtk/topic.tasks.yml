@@ -1,0 +1,12 @@
+---
+- name: ensure juno theme repo is cloned
+  block:
+    - name: create themes dir
+      file:
+        state: directory
+        path: "{{ gtk_themes_dir }}"
+    - name: clone theme repo
+      git:
+        repo: https://github.com/EliverLara/Juno
+        dest: "{{ gtk_themes_dir }}/Juno-palenight"
+        version: palenight

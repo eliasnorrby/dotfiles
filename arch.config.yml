@@ -58,6 +58,9 @@ topics:
     - name: feh
       state: present
       config: "{{ feh_config }}"
+    - name: gtk
+      state: present
+      config: "{{ gtk_config }}"
     - name: picom
       state: present
       config: "{{ picom_config }}"
