@@ -30,8 +30,8 @@ hyper + u
 hyper + space
   spotifyctl PlayPause
 
-hyper + shift + {l,h}
-  spotifyctl {Next,Previous}
+# hyper + shift + {l,h}
+#   spotifyctl {Next,Previous}
 
 hyper + d
   focus_or_run discord launch_on_desktop B3 discord
@@ -91,10 +91,10 @@ hyper + shift + p
   power
 
 # vim-like arrow key bindings
-hyper + {h,j,k,l}
-  xdotool key {_,_} {Left,Down,Up,Right}
+hyper + {_,shift +,shift + ctrl +} {h,j,k,l}
+  xdotool key {_,_,_} {Left,Down,Up,Right}
 
-hyper + ~{Left,Down,Up,Right}
+hyper + {_,shift +,shift + ctrl +} ~{Left,Down,Up,Right}
   # no-op
 
 #
