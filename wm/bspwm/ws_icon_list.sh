@@ -4,8 +4,8 @@ DEFAULT_ICON=•
 
 declare -A ICONMAP
 ICONMAP[A1]=
-ICONMAP[A4]=
-ICONMAP[A5]=
+ICONMAP[A2]=
+ICONMAP[A3]=
 
 ICONMAP[1]=
 ICONMAP[2]=
@@ -15,7 +15,7 @@ ICONMAP[4]=
 ICONMAP[B1]=
 ICONMAP[B2]=
 ICONMAP[B3]=
-ICONMAP[B5]=
+ICONMAP[B4]=
 
 counter=0
 bspc query -D --names | while read -r name; do
