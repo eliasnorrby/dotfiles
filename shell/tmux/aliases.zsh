@@ -1,15 +1,16 @@
 #!/usr/bin/env zsh
 
-alias tmux='tmux -f "$TMUX_HOME/tmux.conf"'
+ialias tmux='tmux -f "$TMUX_HOME/tmux.conf"'
 
-alias tmuc="vim $TMUX_HOME/tmux.conf"
+tmux_attach_default() {
+  tmux attach -t default 2>/dev/null || tmux new -s default
+}
+alias ta="tmux_attach_default"
 
-alias ta="tmux attach -t default || tmux new -s default"
-
-function tn() {
+tn() {
   if [[ $# -eq 0 ]] ; then
-      echo 'Error: must specify a session name'
-      return 1
+    echo 'Error: must specify a session name'
+    return 1
   fi
   tmux new-session -s "$1"
 }

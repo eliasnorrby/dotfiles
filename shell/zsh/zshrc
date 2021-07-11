@@ -40,7 +40,7 @@ _load_all aliases.zsh
 _load shell/ssh/start-agent.zsh
 
 if [[ "$(_os)" == "macos" ]] && [ -z "$TMUX" ] ; then
-  tmux attach -t default || tmux new -s default
+  tmux_attach_default
 fi
 
 # =============================================================================
