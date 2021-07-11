@@ -49,5 +49,3 @@ zsh_config:
     - src: helpers/preview_flag_docs.sh
       dest: "{{ xdg_bin_home }}/"
       rename: preview_flag_docs
-
-zplug_home: "{{ xdg_cache_home }}/zplug"

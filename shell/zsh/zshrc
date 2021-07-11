@@ -1,3 +1,5 @@
+_load "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+
 # =============================================================================
 #                                 Performance
 # =============================================================================
@@ -5,9 +7,7 @@
 ## Uncomment for performance stats
 # zmodload zsh/zprof
 
-# TODO: Find out why there are multiple compinit calls
-# autoload -Uz compinit && compinit -i
-# autoload -Uz compinit && compinit
+autoload -Uz compinit && compinit
 # if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
 #   compinit;
 # else
@@ -21,16 +21,13 @@ _load shell/zsh/config.zsh
 _load shell/zsh/completion.zsh
 _load shell/zsh/keybinds.zsh
 _load shell/zsh/utilities.zsh
-_load shell/zsh/prompt.zsh
-_load shell/zsh/plugins.zsh
+
 _load shell/zsh/alias_expansion.zsh
-
 _load shell/zsh/man_widget.zsh
-
-zplug load
-
-# fzf must be sourced after zplug load (or at least the z remap)
 _load shell/zsh/fzf.zsh
+
+_load shell/zsh/plugins.zsh
+_load shell/zsh/p10k.zsh
 
 if _remote ; then
   _load shell/zsh/remote.zsh

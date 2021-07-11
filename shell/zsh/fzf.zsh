@@ -41,9 +41,13 @@ export FZF_DEFAULT_OPTS='
 '
 
 # Use fzf for z
+# TODO: decide on whether to install z again
+# In the meantime, just call p
 alias j="_z 2>&1"
 unalias z 2> /dev/null
 z() {
+  p "$@"
+  return
   [ $# -gt 0 ] && _z "$*" && return
   cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
 }
@@ -252,10 +256,10 @@ fi
 # FZF Project search
 
 p() {
+  local query=$1
   local DIR_LIST=(
     "${HOME}/dev"
     "${HOME}/learn"
-    "${HOME}/.dotfiles"
     "${HOME}/work"
   )
 
@@ -263,24 +267,32 @@ p() {
     local REPOS="${REPOS}\n$(find ${dir} -maxdepth 3 -name ".git" -type d | sed 's/\/.git$//')"
   done
 
-  # # Preview with bat or ls
-  # local target="$(echo "$REPOS" |
-  #   sed "s#$HOME##" |
-  #   fzf --border \
-  #   --preview "[ -f ${HOME}{}/README.md ] \
-  #   && bat --color=always ${HOME}{}/README.md \
-  #   || ls --color=always ${HOME}{}")"
-  # echo $PWD
+  if [[ -n "$query" ]]; then
+    local TARGET="$(echo -e "$REPOS" | fzf --filter "$query" | head -1)"
+    if [[ -n "$TARGET" ]] ; then
+      cd "${TARGET}"
+    fi
+  else
+    # # Preview with bat or ls
+    # local target="$(echo "$REPOS" |
+    #   sed "s#$HOME##" |
+    #   fzf --border \
+    #   --preview "[ -f ${HOME}{}/README.md ] \
+    #   && bat --color=always ${HOME}{}/README.md \
+    #   || ls --color=always ${HOME}{}")"
+    # echo $PWD
 
-  # # Preview with tree
-  local TARGET="$(echo -e "$REPOS" |
-    sed "s#$HOME##" |
-    fzf --border --tac \
-    --preview "tree -C -I node_modules -L 3 ${HOME}{}")"
+    # # Preview with tree
+    local TARGET="$(echo -e "$REPOS" |
+      sed "s#$HOME##" |
+      fzf --border --tac \
+      --preview "tree -C -I node_modules -L 3 ${HOME}{}")"
 
-  if [[ -n "$TARGET" ]] ; then
-    cd "${HOME}/${TARGET}"
+    if [[ -n "$TARGET" ]] ; then
+      cd "${HOME}/${TARGET}"
+    fi
   fi
+
 }
 
 if [[ "$(_os)" == "arch" ]] ; then

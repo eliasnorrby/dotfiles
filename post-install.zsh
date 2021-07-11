@@ -8,15 +8,6 @@ source "$DIR"/env
 
 _msg() { printf "\r\033[2K\033[0;32m[ .. ] %s\033[0m\n" "$*"; }
 
-# zplug
-if _is_callable zplug ; then
-  _msg "-- zplug --"
-  _msg "Sourcing plugins..."
-  _load shell/zsh/plugins.zsh
-  _msg "Running zplug install..."
-  zplug install
-fi
-
 # vim-plug
 if _is_callable nvim ; then
   _msg "-- vim-plug --"

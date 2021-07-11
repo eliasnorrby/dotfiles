@@ -6,15 +6,13 @@ source $(cd ${${(%):-%x}:A:h}/.. && pwd -P)/scripts/echos.sh
 SPACE="\n"
 ping -q -c 1 -W 1 8.8.8.8 >/dev/null || (echo "No internet access."; exit 1)
 
-# zplug
-zplug_log=$(mktemp)
+# zsh
+zsh_log=$(mktemp)
 echo "$SPACE"
-echo-info "Updating zplug plugins..."
-_load shell/zsh/plugins.zsh
-zplug check || zplug install | tee $zplug_log
-zplug update | tee -a $zplug_log
-echo-ok "zplug updated!"
-echo-info "Wrote logs to $zplug_log"
+echo-info "Updating zsh plugins..."
+git submodule update --recursive --remote | tee $zsh_log
+echo-ok "zsh updated!"
+echo-info "Wrote logs to $zsh_log"
 
 # vimplug
 # vim +'PlugInstall --sync' +qall
@@ -77,7 +75,7 @@ fi
 
 # finish up
 echo-info "Logs available at:"
-echo "  zplug: $zplug_log"
+echo "  zsh: $zsh_log"
 echo "  vim_plug: $vim_plug_log"
 echo "  brew: $brew_log"
 echo "  brew cask: $brew_cask_log"

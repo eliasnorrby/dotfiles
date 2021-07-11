@@ -8,6 +8,7 @@
   git:
     repo: "{{ dotfiles_repo }}"
     dest: "{{ dotfiles }}"
+    track_submodules: true
     version: "{{ lookup('env','DOTFILES_VERSION') or dotfiles_version }}"
   # Safety for running locally with a more recent version
   when: dotfiles_dir.stat.isdir is not defined

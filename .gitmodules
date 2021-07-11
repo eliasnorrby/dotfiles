@@ -1,0 +1,9 @@
+[submodule "shell/zsh/plugins/fast-syntax-highlighting"]
+	path = shell/zsh/plugins/fast-syntax-highlighting
+	url = https://github.com/zdharma/fast-syntax-highlighting
+[submodule "shell/zsh/plugins/powerlevel10k"]
+	path = shell/zsh/plugins/powerlevel10k
+	url = https://github.com/romkatv/powerlevel10k
+[submodule "shell/zsh/plugins/system-clipboard"]
+	path = shell/zsh/plugins/system-clipboard
+	url = https://github.com/kutsan/zsh-system-clipboard

@@ -29,7 +29,7 @@ setopt hist_save_no_dups        # Omit older commands in favor of newer ones.
 setopt hist_ignore_space        # Ignore commands that start with space.
 
 # disable flow control (unbind ^S)
-stty -ixon
+stty -ixon 2>/dev/null
 
 unsetopt BEEP                   # Turn off all beeps
 # unsetopt LIST_BEEP            # Turn off autocomplete beeps

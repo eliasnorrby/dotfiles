@@ -54,6 +54,13 @@ function _load {
   esac
 }
 
+function _load_silent {
+  case $1 in
+    /*) _source "$1" ;;
+    *)  _source "$DOTFILES/$1" ;;
+  esac
+}
+
 # load a file from all enabled topics
 #
 #   _load_all env.zsh
