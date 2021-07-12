@@ -37,7 +37,7 @@ hyper + d
   focus_or_run discord launch_on_desktop B3 discord
 
 hyper + a
-  focus_or_run "microsoft teams - preview" launch_on_desktop A4 teams
+  focus_or_run "microsoft teams - preview" launch_on_desktop A2 teams
 
 hyper + s
   focus_or_run emacs
