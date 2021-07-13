@@ -4,14 +4,14 @@ Plug 'itchyny/lightline.vim'
 let g:lightline = {
   \ 'active': {
   \   'left': [ [ 'mode', 'paste' ],
-  \             [ 'gitbranch', 'readonly', 'filename' ],
+  \             [ 'gitbranch', 'readonly', 'relativepath' ],
   \             [ 'modified' ] ],
   \   'right': [ ['lineinfo'],
   \              ['percent', 'cocstatus'],
-  \              ['fileformat', 'fileencoding', 'filetype'] ],
+  \              ['filetype'] ],
   \ },
   \ 'inactive': {
-  \   'left': [ ['filename'],
+  \   'left': [ ['relativepath'],
   \             ['modified'] ],
   \   'right': [ ['lineinfo'],
   \              ['percent'] ],
