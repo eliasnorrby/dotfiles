@@ -27,12 +27,6 @@ hyper + shift + t
 hyper + u
   focus_or_run spotify launch_on_desktop B2 spotify
 
-hyper + space
-  spotifyctl PlayPause
-
-# hyper + shift + {l,h}
-#   spotifyctl {Next,Previous}
-
 hyper + d
   focus_or_run discord launch_on_desktop B3 discord
 
@@ -68,6 +62,16 @@ hyper + shift + w
 
 super + shift + Return
 	konsole
+
+# audio controls
+XF86AudioPlay
+  spotifyctl PlayPause
+XF86AudioMute
+  amixer set Master toggle
+XF86Audio{Raise,Lower}Volume
+  amixer set Master 10%{+,-}
+XF86Audio{Next,Prev}
+  spotifyctl {Next,Previous}
 
 # program launcher
 alt + @space
