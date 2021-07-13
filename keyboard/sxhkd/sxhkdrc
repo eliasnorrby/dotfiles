@@ -54,9 +54,6 @@ hyper + {1-9}
 hyper + shift + {1-9}
   tmux_switch_session {1-9}
 
-hyper + shift + v
-   alacritty_tmux_vpn_connect
-
 hyper + shift + w
   ~/.config/feh/set-background.sh
 
@@ -72,6 +69,10 @@ XF86Audio{Raise,Lower}Volume
   amixer set Master 10%{+,-}
 XF86Audio{Next,Prev}
   spotifyctl {Next,Previous}
+
+# vpn
+XF86LaunchB
+  vpn_toggle
 
 # program launcher
 alt + @space

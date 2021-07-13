@@ -5,6 +5,9 @@ work_config:
     - src: vpn_connect.sh
       dest: "{{ xdg_bin_home }}/"
       rename: vpn_connect
+    - src: vpn_toggle.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: vpn_toggle
     - src: tmux_vpn_connect.sh
       dest: "{{ xdg_bin_home }}/"
       rename: tmux_vpn_connect
