@@ -38,6 +38,7 @@ export FZF_DEFAULT_OPTS='
   --prompt "λ: "
   --color fg:7,bg:-1,hl:3,fg+:15,bg+:-1,hl+:4
   --color info:7,prompt:4,spinner:6,pointer:4,marker:4,gutter:-1
+  --bind  ctrl-a:select-all
 '
 
 # Use fzf for z
