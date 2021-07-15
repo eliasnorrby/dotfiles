@@ -86,8 +86,10 @@ function! CocRefresh() abort
   silent CocEnable
 endfunction
 
+let g:coc_custom_diagnostics_enabled = 1
 function! CocToggleDiagnostic() abort
   let l:new_value = ! coc#util#get_config('diagnostic')['enable']
+  let g:coc_custom_diagnostics_enabled = l:new_value
   echo 'Coc Diagnostics: ' . (l:new_value == 0 ? 'disabled' : 'enabled')
   call coc#config('diagnostic.enable', l:new_value)
   call CocRefresh()
@@ -95,7 +97,7 @@ endfunction
 
 let g:coc_custom_diagnostics_ui_enabled = 0
 function! CocToggleDiagnosticUi() abort
-  let l:new_value = g:coc_custom_diagnostics_ui_enabled == 0 ? v:true : v:false
+  let l:new_value = !g:coc_custom_diagnostics_ui_enabled
   echo 'Coc Diagnostics UI: ' . (l:new_value == 0 ? 'disabled' : 'enabled')
   call coc#config('diagnostic.virtualText', l:new_value)
   call coc#config('diagnostic.enableSign', l:new_value)

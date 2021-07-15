@@ -31,8 +31,8 @@ let g:lightline = {
   \ }
 
 function! StatusDiagnostic() abort
-  if g:coc_service_initialized
-    if ! coc#util#get_config('diagnostic')['enable'] | return ' ' | endif
+  if get(g:, 'coc_service_initialized', 0)
+    if ! get(g:, 'coc_custom_diagnostics_enabled', 0)  | return ' ' | endif
   else
     return ' '
   endif
