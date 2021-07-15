@@ -14,9 +14,9 @@ exclude_primary() {
   grep -v '(primary)'
 }
 
-exclude_rightmost() {
-  if [ -n "$rightmost_monitor" ]; then
-    grep -v "$rightmost_monitor"
+exclude() {
+  if [ -n "$1" ]; then
+    grep -v "$1"
   else
     cat
   fi
@@ -34,6 +34,15 @@ if [ -n "$rightmost_monitor" ]; then
   launch_bar_on_monitor secondary-stats "$rightmost_monitor"
 fi
 
-for monitor in $(list_monitors | exclude_primary | exclude_rightmost | monitor_name); do
+leftmost_monitor=$(list_monitors | exclude_primary | head -1 | monitor_name)
+if [ -n "$leftmost_monitor" ] && [ "$leftmost_monitor" != "$rightmost_monitor" ]; then
+  launch_bar_on_monitor secondary-tools "$leftmost_monitor"
+fi
+
+for monitor in $(list_monitors \
+  | exclude_primary \
+  | exclude "$rightmost_monitor" \
+  | exclude "$leftmost_monitor" \
+  | monitor_name); do
   launch_bar_on_monitor secondary "$monitor"
 done

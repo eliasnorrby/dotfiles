@@ -77,7 +77,7 @@ inherit = bar/base
 
 modules-left = bspwm task
 modules-center = github
-modules-right = spotify vpn xkeyboard filesystem alsa memory cpu temperature date powermenu
+modules-right = vpn xkeyboard filesystem alsa memory cpu temperature date powermenu
 
 [bar/secondary]
 inherit = bar/base
@@ -90,6 +90,12 @@ modules-right =
 inherit = bar/secondary
 
 modules-center = memory-bar cpu-bar
+modules-right = eth
+
+[bar/secondary-tools]
+inherit = bar/secondary
+
+modules-center = spotify
 
 [module/vpn]
 type = custom/script
