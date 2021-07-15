@@ -31,17 +31,26 @@ let g:lightline = {
   \ }
 
 function! StatusDiagnostic() abort
-  if g:coc_custom_diagnostics_enabled == 0 | return 'D' | endif
+  if g:coc_service_initialized
+    if ! coc#util#get_config('diagnostic')['enable'] | return ' ' | endif
+  else
+    return ' '
+  endif
+
   let info = get(b:, 'coc_diagnostic_info', {})
-  if empty(info) | return '' | endif
+  if empty(info) | return ' ' | endif
   let msgs = []
   if get(info, 'error', 0)
-    call add(msgs, 'E' . info['error'])
+    call add(msgs, ' ' . info['error'])
   endif
   if get(info, 'warning', 0)
-    call add(msgs, 'W' . info['warning'])
+    call add(msgs, ' ' . info['warning'])
   endif
-  return join(msgs, ' ') . ' ' . get(g:, 'coc_status', '')
+  if get(info, 'information', 0)
+    call add(msgs, ' ' . info['information'])
+  endif
+  " return join(msgs, ' ') . ' ' . get(g:, 'coc_status', '')
+  return join(msgs, ' ')
 endfunction
 
 augroup CocStatus
@@ -49,10 +58,8 @@ augroup CocStatus
   autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 augroup END
 
-" let g:lightline.separator = { 'left': '', 'right': '' }
-" let g:lightline.subseparator = { 'left': '', 'right': '' }
-" let g:lightline.subseparator = { 'left': '｜', 'right': '｜' }
-let g:lightline.subseparator = { 'left': '╏', 'right': '╏' }
+" let g:lightline.subseparator = { 'left': '╏', 'right': '╏' }
+let g:lightline.subseparator = { 'left': '┃', 'right': '┃' }
 set laststatus=2
 
 function! LightlineModified() abort

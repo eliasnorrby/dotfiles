@@ -86,20 +86,27 @@ function! CocRefresh() abort
   silent CocEnable
 endfunction
 
-" Should match the diagnostic.enabled setting
-" in coc-settings for the best results
-let g:coc_custom_diagnostics_enabled = 1
-function! CocToggleDiagnosticUi() abort
-  let l:new_value = g:coc_custom_diagnostics_enabled == 0 ? v:true : v:false
+function! CocToggleDiagnostic() abort
+  let l:new_value = ! coc#util#get_config('diagnostic')['enable']
   echo 'Coc Diagnostics: ' . (l:new_value == 0 ? 'disabled' : 'enabled')
   call coc#config('diagnostic.enable', l:new_value)
   call CocRefresh()
-  let g:coc_custom_diagnostics_enabled = l:new_value
+endfunction
+
+let g:coc_custom_diagnostics_ui_enabled = 0
+function! CocToggleDiagnosticUi() abort
+  let l:new_value = g:coc_custom_diagnostics_ui_enabled == 0 ? v:true : v:false
+  echo 'Coc Diagnostics UI: ' . (l:new_value == 0 ? 'disabled' : 'enabled')
+  call coc#config('diagnostic.virtualText', l:new_value)
+  call coc#config('diagnostic.enableSign', l:new_value)
+  call CocRefresh()
+  let g:coc_custom_diagnostics_ui_enabled = l:new_value
 endfunction
 
 nnoremap <silent> <leader>z :call CocRefresh()<cr>
 
 nnoremap <silent> <leader>td :call CocToggleDiagnosticUi()<cr>
+nnoremap <silent> <leader>tD :call CocToggleDiagnostic()<cr>
 nnoremap <silent> <leader>ld :<C-u>CocList diagnostics<cr>
 nmap <silent> [d <Plug>(coc-diagnostic-prev)
 nmap <silent> ]d <Plug>(coc-diagnostic-next)

@@ -5,9 +5,15 @@
   "suggest.noselect": false,
   // diagnostics
   "diagnostic.enable": true,
-  "diagnostic.virtualText": true,
+  "diagnostic.enableSign": false,
+  "diagnostic.enableMessage": "jump",
+  "diagnostic.messageTarget": "float",
+  "diagnostic.errorSign": "",
+  "diagnostic.warningSign": "",
+  "diagnostic.infoSign": "",
+  "diagnostic.virtualText": false,
+  "diagnostic.virtualTextPrefix": " ┃ ",
   "diagnostic.virtualTextCurrentLineOnly": false,
-  "diagnostic.virtualTextPrefix": " | ",
   "diagnostic.maxWindowHeight": 20,
   "eslint.validate": [
     "javascript",
