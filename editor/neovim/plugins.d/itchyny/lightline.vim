@@ -1,5 +1,7 @@
 Plug 'itchyny/lightline.vim'
 
+set laststatus=2
+
 " Settings: lightline {{{2
 let g:lightline = {
   \ 'active': {
@@ -46,6 +48,9 @@ let g:lightline = {
   \ },
   \ }
 
+" let g:lightline.subseparator = { 'left': '╏', 'right': '╏' }
+let g:lightline.subseparator = { 'left': '┃', 'right': '┃' }
+
 function! CocLintCount(type) abort
   let info = get(b:, 'coc_diagnostic_info', {})
   if empty(info) | return 0 | endif
@@ -82,10 +87,6 @@ augroup CocStatus
   autocmd!
   autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 augroup END
-
-" let g:lightline.subseparator = { 'left': '╏', 'right': '╏' }
-let g:lightline.subseparator = { 'left': '┃', 'right': '┃' }
-set laststatus=2
 
 function! LightlineModified() abort
   return &modified ? '✚' : ''
@@ -158,3 +159,14 @@ augroup LightlineRefresh
   autocmd!
   autocmd ColorScheme * call LightlineReload()
 augroup END
+
+function! LightlineToggle() abort
+  if &laststatus
+    set laststatus=0
+  else
+    set laststatus=2
+  endif
+  call lightline#toggle()
+endfunction
+
+nnoremap <silent> <leader>ts :call LightlineToggle()<cr>
