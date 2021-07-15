@@ -11,6 +11,7 @@ alias -g Y="| yq"
 alias -g J="| jq"
 alias -g E="| entr"
 alias -g EE="| entr /_"
+alias -g C="| copy_cmd"
 
 if [[ "$(_os)" == "macos" ]] ; then
   # Enable ls colors by aliasing gnu coreutils ls – not needed when included in PATH
