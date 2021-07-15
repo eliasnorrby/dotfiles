@@ -7,7 +7,8 @@ let g:lightline = {
   \             [ 'gitbranch', 'readonly', 'relativepath' ],
   \             [ 'modified' ] ],
   \   'right': [ ['lineinfo'],
-  \              ['percent', 'cocstatus'],
+  \              ['percent'],
+  \              ['lint_errors', 'lint_warnings', 'lint_infos', 'lint_ok'],
   \              ['filetype'] ],
   \ },
   \ 'inactive': {
@@ -26,31 +27,51 @@ let g:lightline = {
   \   'fileencoding': 'LightlineFileencoding',
   \   'filetype': 'LightlineFiletype',
   \   'modified': 'LightlineModified',
-  \   'cocstatus': 'StatusDiagnostic'
+  \ },
+  \ 'component_expand': {
+  \   'lint_errors': 'CocLintErr',
+  \   'lint_warnings': 'CocLintWarn',
+  \   'lint_infos': 'CocLintInfo',
+  \   'lint_ok': 'CocLintOK'
+  \ },
+  \ 'component_type': {
+  \   'lint_errors': 'error',
+  \   'lint_warnings': 'warning',
+  \   'lint_infos': 'warning',
+  \   'lint_ok': 'ok'
   \ },
   \ }
 
-function! StatusDiagnostic() abort
-  if get(g:, 'coc_service_initialized', 0)
-    if ! get(g:, 'coc_custom_diagnostics_enabled', 0)  | return ' ' | endif
-  else
-    return ' '
-  endif
-
+function! CocLintCount(type) abort
   let info = get(b:, 'coc_diagnostic_info', {})
-  if empty(info) | return ' ' | endif
-  let msgs = []
-  if get(info, 'error', 0)
-    call add(msgs, ' ' . info['error'])
-  endif
-  if get(info, 'warning', 0)
-    call add(msgs, ' ' . info['warning'])
-  endif
-  if get(info, 'information', 0)
-    call add(msgs, ' ' . info['information'])
-  endif
-  " return join(msgs, ' ') . ' ' . get(g:, 'coc_status', '')
-  return join(msgs, ' ')
+  if empty(info) | return 0 | endif
+  return get(info, a:type, 0)
+endfunction
+
+function! CocLintFormat(type, symbol) abort
+  let l:num = CocLintCount(a:type)
+  if !l:num | return '' | endif
+  return a:symbol . l:num
+endfunction
+
+function! CocLintErr() abort
+  return CocLintFormat('error', ' ')
+endfunction
+
+function! CocLintWarn() abort
+  return CocLintFormat('warning', ' ')
+endfunction
+
+function! CocLintInfo() abort
+  return CocLintFormat('information', ' ')
+endfunction
+
+function! CocLintOK() abort
+  if ! get(g:, 'coc_service_initialized', 0) | return ' ' | endif
+  if ! get(g:, 'coc_custom_diagnostics_enabled', 0) | return ' ' | endif
+  let l:all_num = CocLintCount('error') + CocLintCount('warning') + CocLintCount('information')
+  if l:all_num == 0 | return ' ' | endif
+  return ''
 endfunction
 
 augroup CocStatus
