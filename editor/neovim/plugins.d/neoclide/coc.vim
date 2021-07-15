@@ -89,20 +89,36 @@ endfunction
 let g:coc_custom_diagnostics_enabled = 1
 function! CocToggleDiagnostic() abort
   let l:new_value = ! coc#util#get_config('diagnostic')['enable']
-  let g:coc_custom_diagnostics_enabled = l:new_value
-  echo 'Coc Diagnostics: ' . (l:new_value == 0 ? 'disabled' : 'enabled')
-  call coc#config('diagnostic.enable', l:new_value)
+  call CocSetDiagnostic(l:new_value)
   call CocRefresh()
+  call lightline#update()
+endfunction
+
+function! CocSetDiagnostic(enabled) abort
+  let g:coc_custom_diagnostics_enabled = a:enabled
+  " echo 'Coc Diagnostics: ' . (a:enabled ? 'enabled' : 'disabled')
+  call coc#config('diagnostic.enable', a:enabled)
+  if ! a:enabled && g:coc_custom_diagnostics_ui_enabled
+    call CocSetDiagnosticUi(0)
+  endif
 endfunction
 
 let g:coc_custom_diagnostics_ui_enabled = 0
 function! CocToggleDiagnosticUi() abort
   let l:new_value = !g:coc_custom_diagnostics_ui_enabled
-  echo 'Coc Diagnostics UI: ' . (l:new_value == 0 ? 'disabled' : 'enabled')
-  call coc#config('diagnostic.virtualText', l:new_value)
-  call coc#config('diagnostic.enableSign', l:new_value)
+  call CocSetDiagnosticUi(l:new_value)
   call CocRefresh()
-  let g:coc_custom_diagnostics_ui_enabled = l:new_value
+  call lightline#update()
+endfunction
+
+function! CocSetDiagnosticUi(enabled) abort
+  let g:coc_custom_diagnostics_ui_enabled = a:enabled
+  " echo 'Coc Diagnostics UI: ' . (a:enabled ? 'enabled' : 'disabled')
+  call coc#config('diagnostic.virtualText', a:enabled)
+  call coc#config('diagnostic.enableSign', a:enabled)
+  if a:enabled && ! g:coc_custom_diagnostics_enabled
+    call CocSetDiagnostic(1)
+  endif
 endfunction
 
 nnoremap <silent> <leader>z :call CocRefresh()<cr>
