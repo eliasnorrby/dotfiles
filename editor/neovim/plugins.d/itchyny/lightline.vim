@@ -17,6 +17,10 @@ let g:lightline = {
   \   'right': [ ['lineinfo'],
   \              ['percent'] ],
   \ },
+  \ 'tabline': {
+  \   'left': [['tabs']],
+  \   'right': []
+  \ },
   \ 'component': {
   \   'lineinfo': '%3l:%-2v',
   \ },
