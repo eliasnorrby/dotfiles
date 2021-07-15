@@ -76,3 +76,4 @@ endfunction
 nnoremap <silent> <leader>tb :call ToggleScrollbind()<CR>
 
 nnoremap <silent> <leader>fz 1z=
+nnoremap <silent> <leader>fZ ]s1z=
