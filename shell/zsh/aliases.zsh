@@ -64,11 +64,20 @@ fi
 
 alias chx="chmod +x"
 
-function ns() {
+ns() {
   touch "$1"
   chmod +x "$1"
 }
 
 cdt() {
   cd "$(mktemp -d)"
+}
+
+cdg() {
+  if !  git rev-parse HEAD > /dev/null 2>&1; then
+    echo "Not in a git repository"
+    return 1
+  fi
+
+  cd "$(git rev-parse --show-toplevel)"
 }
