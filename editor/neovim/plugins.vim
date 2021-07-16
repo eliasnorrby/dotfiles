@@ -67,7 +67,9 @@ Plug 'neoclide/jsonc.vim'
 runtime plugins.d/junegunn/fzf.vim
 
 " " Tmux_integration:
-" Plug 'christoomey/vim-tmux-navigator'
+if system('_os') == 'macos'
+  Plug 'christoomey/vim-tmux-navigator'
+endif
 runtime plugins.d/benmills/vimux.vim
 
 " Colorschemes:
