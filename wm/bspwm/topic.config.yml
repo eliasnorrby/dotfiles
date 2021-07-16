@@ -6,5 +6,8 @@ bspwm_config:
     - src: launch_on_desktop.sh
       dest: "{{ xdg_bin_home }}/"
       rename: launch_on_desktop
+    - src: navigate.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: navigate
   pacman_packages:
     - bspwm

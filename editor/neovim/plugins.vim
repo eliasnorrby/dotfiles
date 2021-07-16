@@ -67,7 +67,7 @@ Plug 'neoclide/jsonc.vim'
 runtime plugins.d/junegunn/fzf.vim
 
 " " Tmux_integration:
-Plug 'christoomey/vim-tmux-navigator'
+" Plug 'christoomey/vim-tmux-navigator'
 runtime plugins.d/benmills/vimux.vim
 
 " Colorschemes:

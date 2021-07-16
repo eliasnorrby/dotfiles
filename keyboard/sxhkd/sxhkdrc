@@ -145,9 +145,9 @@ super + p
 # focus/swap
 #
 
-# focus the node in the given direction
+# focus the node/pane/vim window in the given direction
 super + {h,j,k,l}
-	bspc node --focus {west,south,north,east}
+  navigate {left,down,up,right}
 
 # swap with node in the given direction
 super + shift + {h,j,k,l}
