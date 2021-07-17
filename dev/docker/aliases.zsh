@@ -13,5 +13,7 @@ alias dv="docker volume"
 alias dvl="docker volume ls"
 alias dn="docker node"
 alias dnl="docker node ls"
+alias drrm="docker run --rm"
+alias drit="docker run --rm -it"
 
 alias dc="docker-compose"
