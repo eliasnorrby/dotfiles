@@ -124,7 +124,9 @@ format-prefix = " "
 format-prefix-foreground = ${colors.foreground-alt}
 format-underline = ${colors.secondary}
 
-label-layout = %name%
+label-layout = %number%
+; TODO: variant will be available in polybar 3.6.0
+; label-layout = %variant%
 
 [module/filesystem]
 type = internal/fs

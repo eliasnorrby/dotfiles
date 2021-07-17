@@ -1,0 +1,86 @@
+// Modified version of Workman-P, based on:
+// https://github.com/workman-layout/Workman/tree/master/xorg
+
+// Workman-P Keyboard Layout symbols for xkb on X.Org Server 7.x
+// 09-06-2010 OJ Bucao. https://workmanlayout.org
+
+partial alphanumeric_keys
+xkb_symbols "workman-p" {
+
+    name[Group1]= "English (Workman-P)";
+
+    include "us(basic)"
+
+    // Alphanumeric section
+    key <AE01> {  [        exclam,  1   ] };
+    key <AE02> {  [            at,  2   ] };
+    key <AE03> {  [    numbersign,  3   ] };
+    key <AE04> {  [        dollar,  4,      EuroSign  ] };
+    key <AE05> {  [       percent,  5   ] };
+    key <AE06> {  [   asciicircum,  6   ] };
+    key <AE07> {  [     ampersand,  7   ] };
+    key <AE08> {  [      asterisk,  8   ] };
+    key <AE09> {  [     parenleft,  9   ] };
+    key <AE10> {  [    parenright,  0   ] };
+
+    key <AD01> {  [   q,  Q   ] };
+    key <AD02> {  [   d,  D   ] };
+    key <AD03> {  [   r,  R   ] };
+    key <AD04> {  [   w,  W   ] };
+    key <AD05> {  [   b,  B   ] };
+    key <AD06> {  [   j,  J   ] };
+    key <AD07> {  [   f,  F   ] };
+    key <AD08> {  [   u,  U,        udiaeresis,      Udiaeresis   ] };
+    key <AD09> {  [   p,  P   ] };
+    key <AD10> {  [   semicolon,  colon   ] };
+
+    key <AC01> {  [   a,  A,        adiaeresis,      Adiaeresis   ] };
+    key <AC02> {  [   s,  S,        ssharp,      U1E9E   ] };
+    key <AC03> {  [   h,  H   ] };
+    key <AC04> {  [   t,  T   ] };
+    key <AC05> {  [   g,  G   ] };
+    key <AC06> {  [   y,  Y   ] };
+    key <AC07> {  [   n,  N   ] };
+    key <AC08> {  [   e,  E   ] };
+    key <AC09> {  [   o,  O,        odiaeresis,      Odiaeresis   ] };
+    key <AC10> {  [   i,  I   ] };
+
+    key <AB01> {  [   z,  Z   ] };
+    key <AB02> {  [   x,  X   ] };
+    key <AB03> {  [   m,  M   ] };
+    key <AB04> {  [   c,  C   ] };
+    key <AB05> {  [   v,  V   ] };
+    key <AB06> {  [   k,  K   ] };
+    key <AB07> {  [   l,  L   ] };
+    // End alphanumeric section
+
+    // Don't use caps as another backspace, use as control & escape
+    // key <CAPS> { [    BackSpace,       Escape,       BackSpace,        BackSpace ] };
+
+    // Don't include ralt_switch, use as hyper key instead
+    // include "level3(ralt_switch)"
+    include "custom(superhyper)"
+};
+
+partial alphanumeric_keys
+xkb_symbols "qwerty-mod" {
+    name[Group1]= "English (QWERTY-mod)";
+
+    include "us(basic)"
+
+    include "custom(superhyper)"
+};
+
+default partial modifier_keys
+xkb_symbols "superhyper" {
+
+    // Move Alt_R from mod1 to mod3. Alt_r (keycode 108)
+    // is remapped to Hyper_L (0x6c) with xmodmap.
+    key <RALT> {    [ NoSymbol, Alt_R ]   };
+    modifier_map Mod3 { <RALT> };
+    modifier_map Mod3 { Alt_R };
+
+    // Move Hyper_L (0xcf) from mod4 to mod3.
+    key <HYPR> {    [ NoSymbol, Hyper_L ]   };
+    modifier_map Mod3   { <HYPR> };
+};

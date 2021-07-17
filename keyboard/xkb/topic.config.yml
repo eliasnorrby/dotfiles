@@ -4,5 +4,6 @@ xkb_config:
   links:
     - symbols
     - setup-keybindings.sh
+    - layout.xkb
   pacman_packages:
     - xcape
