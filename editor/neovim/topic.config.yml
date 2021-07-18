@@ -27,6 +27,7 @@ neovim_config:
     - keybindings.vim
     - experimental.vim
     - plugins.d
+    - lua
     - UltiSnips
     - coc-settings.json
     - src: coc-extensions.json

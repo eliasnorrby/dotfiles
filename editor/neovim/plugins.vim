@@ -63,6 +63,7 @@ Plug 'wellle/targets.vim'
 " Filetypes_and_syntax:
 runtime plugins.d/sheerun/vim-polyglot.vim
 Plug 'neoclide/jsonc.vim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 " Fuzzy_finder:
 runtime plugins.d/junegunn/fzf.vim
@@ -103,6 +104,7 @@ call plug#end()
 
 lua require'hop'.setup()
 lua require('gitsigns').setup()
+lua require('treesitter-conf')
 
 " " Settings: tmux-navigator {{{2
 " let g:tmux_navigator_disable_when_zoomed = 1
