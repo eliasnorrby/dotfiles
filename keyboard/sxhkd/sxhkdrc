@@ -2,61 +2,79 @@
 # wm independent hotkeys
 #
 
-# terminal emulator
+# new terminal
 super + Return
 	alacritty
 
+# chrome
 hyper + c
   focus_or_run google-chrome google-chrome-stable
 
+# firefox
 hyper + x
   focus_or_run firefox
 
+# tmux
 hyper + t
   focus_or_run TmuxAlacritty tmux_alacritty
 
+# notes
 hyper + n
   focus_or_run NotesAlacritty notes_alacritty
 
+# taskwarrior
 hyper + w
   focus_or_run TaskAlacritty task_alacritty
 
+# alacritty
 hyper + shift + t
   focus_or_run alacritty
 
+# spotify
 hyper + u
   focus_or_run spotify launch_on_desktop B2 spotify
 
+# discord
 hyper + d
   focus_or_run discord launch_on_desktop B3 discord
 
+# teams
 hyper + a
   focus_or_run "microsoft teams - preview" launch_on_desktop A2 teams
 
+# emacs
 hyper + s
   focus_or_run emacs
 
+# ranger
 hyper + r
   alacritty -e ranger
 
+# slack
 hyper + z
   focus_or_run slack
 
+# intellij
 hyper + i
   focus_or_run idea
 
+# 1password
 hyper + p
   focus_or_run 1password
 
+# tmux window select
 hyper + {1-9}
   tmux select-window -t {1-9}
 
+# tmux session select
 hyper + shift + {1-9}
   tmux_switch_session {1-9}
 
+# random background
 hyper + shift + w
   ~/.config/feh/set-background.sh
 
+# konsole (backup terminal)
 super + shift + Return
 	konsole
 
@@ -82,16 +100,22 @@ alt + @space
 super + shift + p
   maim --select --hidecursor | tee ~/screenshots/$(date +%s).png | xclip -selection clipboard -t image/png
 
-# make sxhkd reload its configuration files:
+# sxhkd configuration reload
 super + Escape
-	pkill -USR1 -x sxhkd
+	pkill -USR1 -x sxhkd && notify-send -t 1000 "sxhkd: config reloaded"
 
+super + space
+  keybinds_help
+
+# browse jira issues
 hyper + shift + j
   jira-browse
 
+# update kubectl token
 hyper + shift + c
   copy_and_update_kubectl_token
 
+# power menu
 hyper + shift + p
   power
 
@@ -110,7 +134,7 @@ hyper + {_,shift +,shift + ctrl +} ~{Left,Down,Up,Right}
 super + alt + {q,r}
 	bspc {quit,wm -r}
 
-# close and kill
+# close or kill
 super + {_,shift + }q
 	bspc node --{close,kill}
 
@@ -130,10 +154,11 @@ super + g
 # state/flags
 #
 
-# set the window state
-super + {t,shift + t,s,f}
-	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+# set window state: tiled
+super + {t,f}
+	bspc node -t {tiled,fullscreen}
 
+# make window sticky
 super + p
   bspc node --flag sticky
 
@@ -183,15 +208,17 @@ super + {o,i}
 	bspc node {older,newer} -f; \
 	bspc wm -h on
 
-# focus
+# focus desktop on main monitor
 super + {1-9,0}
 	bspc desktop --focus '{1-9,10}'
+# focus desktop on secondary monitors
 super + {a,d}; {1-9,0}
 	bspc desktop --focus '{A,B}{1-9,10}'
 
-# send
+# send to desktop on main monitor
 super + shift + {1-9,0}
 	bspc node --to-desktop '{1-9,10}' --follow
+# send to desktop on secondary monitor
 super + {a,d}; shift + {1-9,0}
 	bspc node --to-desktop '{A,B}{1-9,10}' --follow
 

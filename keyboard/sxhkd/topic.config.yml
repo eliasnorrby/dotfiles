@@ -4,5 +4,8 @@ sxhkd_config:
   links:
     - sxhkdrc
     - launch.sh
+    - src: keybinds_help.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: keybinds_help
   pacman_packages:
     - sxhkd
