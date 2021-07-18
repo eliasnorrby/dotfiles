@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
 menu() {
-  rofi -dmenu -i -width 10 -lines 3 -monitor primary -no-custom "$@"
+  rofi -dmenu \
+    -i -no-custom \
+    -font 'mononoki Nerd Font 20' \
+    -width 10 -lines 4 -monitor primary "$@"
 }
 
 confirm() {
@@ -13,9 +16,10 @@ confirm() {
   esac
 }
 
-ACTIONS=$'suspend\nreboot\nshutdown'
+ACTIONS=$'  suspend\n  reboot\n  shutdown\n  reload'
 
-ACTION=$(menu -p "What to do?" -u 2 <<<"$ACTIONS")
+ACTION=$(menu -p "POWER" -u 2 <<<"$ACTIONS")
+ACTION=${ACTION##* }
 [ -z "$ACTION" ] && exit
 
 case $ACTION in
@@ -28,6 +32,11 @@ case $ACTION in
       echo "Rebooting"
       reboot
     fi
+    ;;
+  reload)
+    echo "Reloading"
+    notify-send -t 1000 "Reloading bspwm" || :
+    bspc wm -r
     ;;
   shutdown)
     if confirm; then
