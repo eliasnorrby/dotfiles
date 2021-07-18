@@ -118,6 +118,8 @@ hyper + shift + c
 # power menu
 hyper + shift + p
   power
+XF86LaunchA
+  power
 
 # vim-like arrow key bindings
 hyper + {_,shift +,shift + ctrl +} {h,j,k,l}
