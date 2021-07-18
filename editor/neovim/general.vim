@@ -27,7 +27,7 @@ set autoread
 set backspace=indent,eol,start " set backspace=2
 
 set splitbelow splitright
-set scrolloff=999
+set scrolloff=5
 set showcmd
 set noshowmode
 set noruler
