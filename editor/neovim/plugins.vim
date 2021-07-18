@@ -37,7 +37,8 @@ Plug 'honza/vim-snippets'
 
 " Ui:
 runtime plugins.d/tpope/vim-vinegar.vim
-" runtime plugins.d/mhinz/vim-signify.vim
+Plug 'nvim-lua/plenary.nvim'
+Plug 'lewis6991/gitsigns.nvim'
 runtime plugins.d/ap/vim-css-color.vim
 
 " Statusline:
@@ -101,6 +102,7 @@ runtime plugins.d/junegunn/goyo.vim
 call plug#end()
 
 lua require'hop'.setup()
+lua require('gitsigns').setup()
 
 " " Settings: tmux-navigator {{{2
 " let g:tmux_navigator_disable_when_zoomed = 1
