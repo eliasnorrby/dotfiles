@@ -46,7 +46,11 @@ Plug 'itchyny/vim-gitbranch'
 
 " Navigation:
 runtime plugins.d/tpope/vim-unimpaired.vim
-runtime plugins.d/easymotion/vim-easymotion.vim
+if has('nvim-0.5')
+  runtime plugins.d/phaazon/hop.vim
+else
+  runtime plugins.d/easymotion/vim-easymotion.vim
+endif
 runtime plugins.d/unblevable/quick-scope.vim
 
 " Git:
@@ -100,6 +104,9 @@ runtime plugins.d/junegunn/goyo.vim
 
 call plug#end()
 
+if has('nvim-0.5')
+  lua require'hop'.setup {}
+endif
 
 " " Settings: tmux-navigator {{{2
 " let g:tmux_navigator_disable_when_zoomed = 1
