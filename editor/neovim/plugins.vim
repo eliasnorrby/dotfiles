@@ -90,10 +90,6 @@ runtime plugins.d/moll/vim-bbye.vim
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
 
-" " Wiki:
-runtime plugins.d/vimwiki/vimwiki.vim
-runtime plugins.d/junegunn/goyo.vim
-
 call plug#end()
 
 lua require'hop'.setup()
