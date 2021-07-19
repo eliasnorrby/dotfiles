@@ -41,7 +41,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 runtime plugins.d/ap/vim-css-color.vim
 Plug 'kyazdani42/nvim-web-devicons'
-Plug 'kyazdani42/nvim-tree.lua'
+Plug 'kyazdani42/nvim-tree.lua', {  'on': 'NvimTreeToggle'}
 
 " Statusline:
 Plug 'hoob3rt/lualine.nvim'
@@ -54,7 +54,7 @@ runtime plugins.d/unblevable/quick-scope.vim
 " Git:
 runtime plugins.d/tpope/vim-fugitive.vim
 Plug 'tpope/vim-rhubarb'
-Plug 'junegunn/gv.vim'
+Plug 'junegunn/gv.vim', { 'on': 'GV' }
 Plug 'rhysd/git-messenger.vim'
 runtime plugins.d/stsewd/fzf-checkout.vim
 
