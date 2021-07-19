@@ -22,10 +22,10 @@ fonts:
 
 font:
   normal: *iosevka
-  size: 12.0
+  size: 14.0
   offset:
     x: 0
-    y: -1
+    y: -2
   glyph_offset:
     x: 0
     y: -1
