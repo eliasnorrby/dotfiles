@@ -21,7 +21,7 @@ Plug 'tpope/vim-abolish'
 Plug 'godlygeek/tabular'
 Plug 'pedrohdz/vim-yaml-folds'
 " runtime plugins.d/mattn/emmet-vim.vim
-runtime plugins.d/raimondi/delimitmate.vim
+Plug 'windwp/nvim-autopairs'
 Plug 'AndrewRadev/splitjoin.vim'
 
 Plug 'tommcdo/vim-exchange'
@@ -110,6 +110,12 @@ require('treesitter-conf')
 require('lsp-conf')
 require('compe-conf')
 require('formatter-conf')
+
+require('nvim-autopairs').setup()
+require('nvim-autopairs.completion.compe').setup({
+  map_cr = true,
+  map_complete = false
+})
 EOF
 
 " TODO: put this somewhere else
