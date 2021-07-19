@@ -19,22 +19,13 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-abolish'
-Plug 'godlygeek/tabular'
 Plug 'pedrohdz/vim-yaml-folds'
 " runtime plugins.d/mattn/emmet-vim.vim
 Plug 'windwp/nvim-autopairs'
-Plug 'AndrewRadev/splitjoin.vim'
-
-Plug 'tommcdo/vim-exchange'
 runtime plugins.d/machakann/vim-highlightedyank.vim
-Plug 'junegunn/vim-easy-align'
 
 " Config:
 runtime plugins.d/editorconfig/editorconfig-vim.vim
-
-" Snippets:
-" runtime plugins.d/sirver/ultisnips.vim
-Plug 'honza/vim-snippets'
 
 " Ui:
 runtime plugins.d/tpope/vim-vinegar.vim
@@ -57,7 +48,6 @@ runtime plugins.d/tpope/vim-fugitive.vim
 Plug 'tpope/vim-rhubarb'
 Plug 'junegunn/gv.vim', { 'on': 'GV' }
 Plug 'rhysd/git-messenger.vim'
-runtime plugins.d/stsewd/fzf-checkout.vim
 
 " Text_objects:
 Plug 'wellle/targets.vim'
@@ -78,13 +68,10 @@ endif
 runtime plugins.d/benmills/vimux.vim
 
 " Colorschemes:
-Plug 'morhetz/gruvbox'
 Plug 'drewtempelmeyer/palenight.vim'
-Plug 'joshdick/onedark.vim'
 Plug 'RRethy/nvim-base16'
 
 " Miscellaneous:
-Plug 'tpope/vim-dispatch'
 runtime plugins.d/takac/vim-hardtime.vim
 runtime plugins.d/moll/vim-bbye.vim
 
