@@ -70,7 +70,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Fuzzy_finder:
 runtime plugins.d/junegunn/fzf.vim
 
-" " Tmux_integration:
+" Tmux_integration:
 if system('_os') == 'macos'
   Plug 'christoomey/vim-tmux-navigator'
 endif
@@ -82,21 +82,33 @@ Plug 'drewtempelmeyer/palenight.vim'
 Plug 'joshdick/onedark.vim'
 Plug 'RRethy/nvim-base16'
 
-" " Miscellaneous:
+" Miscellaneous:
 Plug 'tpope/vim-dispatch'
 runtime plugins.d/takac/vim-hardtime.vim
 runtime plugins.d/moll/vim-bbye.vim
 
-" " Completion:
+" LSP:
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
+Plug 'WhoIsSethDaniel/toggle-lsp-diagnostics.nvim'
 
 call plug#end()
 
-lua require'hop'.setup()
-lua require('gitsigns').setup()
-lua require('treesitter-conf')
-lua require('lsp-conf')
-lua require('compe-conf')
+lua <<EOF
+require('toggle_lsp_diagnostics').init({
+    underline = true, virtual_text     = false,
+    signs     = true, update_in_insert = true
+})
+require('hop').setup()
+require('gitsigns').setup()
+require('treesitter-conf')
+require('lsp-conf')
+require('compe-conf')
+EOF
+
+" TODO: put this somewhere else
+nmap <leader>tdv <Plug>(toggle-lsp-diag-vtext)
+nmap <leader>tdi <Plug>(toggle-lsp-diag-update_in_insert)
+nmap <leader>tdd <Plug>(toggle-lsp-diag)
 
 nnoremap <leader>e <cmd>NvimTreeToggle<CR>
