@@ -92,6 +92,9 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
 Plug 'WhoIsSethDaniel/toggle-lsp-diagnostics.nvim'
 
+" Formatting:
+Plug 'mhartington/formatter.nvim'
+
 call plug#end()
 
 lua <<EOF
@@ -104,6 +107,7 @@ require('gitsigns').setup()
 require('treesitter-conf')
 require('lsp-conf')
 require('compe-conf')
+require('formatter-conf')
 EOF
 
 " TODO: put this somewhere else
@@ -112,3 +116,5 @@ nmap <leader>tdi <Plug>(toggle-lsp-diag-update_in_insert)
 nmap <leader>tdd <Plug>(toggle-lsp-diag)
 
 nnoremap <leader>e <cmd>NvimTreeToggle<CR>
+
+nnoremap <silent> <leader>fF :Format<CR>
