@@ -1,4 +1,4 @@
-Plug 'takac/vim-hardtime'
+Plug 'takac/vim-hardtime', { 'on': 'HardTimeToggle' }
 
 let g:hardtime_default_on = 0
 let g:hardtime_showmsg = 0
