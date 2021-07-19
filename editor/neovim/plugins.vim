@@ -40,6 +40,8 @@ runtime plugins.d/tpope/vim-vinegar.vim
 Plug 'nvim-lua/plenary.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 runtime plugins.d/ap/vim-css-color.vim
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'kyazdani42/nvim-tree.lua'
 
 " Statusline:
 runtime plugins.d/itchyny/lightline.vim
@@ -100,14 +102,4 @@ lua require('treesitter-conf')
 lua require('lsp-conf')
 lua require('compe-conf')
 
-" " Settings: tmux-navigator {{{2
-" let g:tmux_navigator_disable_when_zoomed = 1
-
-" " Settings: vim-prettier {{{2
-" let g:prettier#autoformat = 0
-" nnoremap <leader>ff :PrettierAsync<CR>
-" " Format certain files on save
-" " augroup PrettierAutoformat
-" "   autocmd!
-" "   autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.vue,*.yaml,*.html PrettierAsync
-" " augroup END
+nnoremap <leader>e <cmd>NvimTreeToggle<CR>
