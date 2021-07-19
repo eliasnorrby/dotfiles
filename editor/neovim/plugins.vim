@@ -84,17 +84,9 @@ Plug 'tpope/vim-dispatch'
 runtime plugins.d/takac/vim-hardtime.vim
 runtime plugins.d/moll/vim-bbye.vim
 
-" " Formatting:
-" Plug 'prettier/vim-prettier', {
-"   \ 'do': 'npm install',
-"   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
-
-" " Linting:
-" runtime plugins.d/dense-analysis/ale.vim
-
 " " Completion:
-" runtime plugins.d/ycm-core/YouCompleteMe.vim
-runtime plugins.d/neoclide/coc.vim
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/nvim-compe'
 
 " " Wiki:
 runtime plugins.d/vimwiki/vimwiki.vim
@@ -105,6 +97,8 @@ call plug#end()
 lua require'hop'.setup()
 lua require('gitsigns').setup()
 lua require('treesitter-conf')
+lua require('lsp-conf')
+lua require('compe-conf')
 
 " " Settings: tmux-navigator {{{2
 " let g:tmux_navigator_disable_when_zoomed = 1
