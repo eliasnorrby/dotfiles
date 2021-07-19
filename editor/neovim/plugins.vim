@@ -34,6 +34,7 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'kyazdani42/nvim-tree.lua', {  'on': 'NvimTreeToggle'}
+Plug 'npxbr/glow.nvim'
 
 " Statusline:
 Plug 'hoob3rt/lualine.nvim'
@@ -123,3 +124,5 @@ nnoremap <leader>bb <cmd>Telescope buffers<cr>
 nnoremap <leader>;k <cmd>Telescope keymaps<cr>
 nnoremap <leader>;m <cmd>Telescope marks<cr>
 nnoremap <leader>;c <cmd>Telescope commands<cr>
+
+nnoremap <leader>p <cmd>Glow<cr>
