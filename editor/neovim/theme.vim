@@ -69,13 +69,40 @@ augroup OnedarkColors
   autocmd ColorScheme onedark call onedark#set_highlight("Normal", { "fg": s:white })
 augroup END
 
+function! Diagnostics() abort
+  highlight! LspDiagnosticsDefaultInformation guifg=LightBlue
+  highlight! LspDiagnosticsDefaultWarning     guifg=Orange
+  highlight! LspDiagnosticsDefaultError       guifg=Red
+endfunction
+
+function! NormalFloats() abort
+  " Floats have no distinguishing bg, making them almost unreadable
+  highlight! link NormalFloat Pmenu
+  " Parentheses in floating windows have weird bgs
+  " CAUTION: This only works if the vim theme matches the terminal theme
+  highlight! Normal guibg=NONE
+endfunction
+
+function! TSPalenightSetup() abort
+  let g:lightline.colorscheme = 'palenight'
+endfunction
+augroup TSPalenightColors
+  autocmd!
+
+  autocmd ColorSchemePre base16-material-palenight call TSPalenightSetup()
+  autocmd ColorScheme    base16-material-palenight call NormalFloats()
+  autocmd ColorScheme    base16-material-palenight call BlueCursorLine()
+  autocmd ColorScheme    base16-material-palenight call Diagnostics()
+
+augroup END
+
 if empty($VIM_COLOR)
   " let s:theme_to_use="gruvbox"
   " let s:theme_to_use="onedark"
-  let s:theme_to_use="palenight"
+  " let s:theme_to_use="palenight"
+  let s:theme_to_use = "base16-material-palenight"
 else
   let s:theme_to_use=$VIM_COLOR
 endif
 
 execute 'colorscheme' s:theme_to_use
-

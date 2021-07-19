@@ -80,6 +80,7 @@ runtime plugins.d/benmills/vimux.vim
 Plug 'morhetz/gruvbox'
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'joshdick/onedark.vim'
+Plug 'RRethy/nvim-base16'
 
 " " Miscellaneous:
 Plug 'tpope/vim-dispatch'
