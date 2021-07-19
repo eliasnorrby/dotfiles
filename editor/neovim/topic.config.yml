@@ -18,6 +18,7 @@ neovim_config:
     - python-black
   aur_packages:
     - luafmt
+    - glow
   npm_packages:
     - bash-language-server
     - diagnostic-languageserver
