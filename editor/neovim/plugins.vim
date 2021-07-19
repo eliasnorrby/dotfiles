@@ -91,6 +91,7 @@ runtime plugins.d/moll/vim-bbye.vim
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
 Plug 'WhoIsSethDaniel/toggle-lsp-diagnostics.nvim'
+Plug 'folke/trouble.nvim'
 
 " Formatting:
 Plug 'mhartington/formatter.nvim'
@@ -104,6 +105,7 @@ require('toggle_lsp_diagnostics').init({
 })
 require('hop').setup()
 require('gitsigns').setup()
+require('trouble').setup()
 require('treesitter-conf')
 require('lsp-conf')
 require('compe-conf')
@@ -118,3 +120,5 @@ nmap <leader>tdd <Plug>(toggle-lsp-diag)
 nnoremap <leader>e <cmd>NvimTreeToggle<CR>
 
 nnoremap <silent> <leader>fF :Format<CR>
+
+nnoremap <leader>tt <cmd>TroubleToggle<cr>
