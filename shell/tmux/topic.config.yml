@@ -13,3 +13,7 @@ tmux_config:
     - src: tmux_switch_session.sh
       dest: "{{ xdg_bin_home }}/"
       rename: tmux_switch_session
+    - src: navigate-macos.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: navigate
+      condition: "{{ is_macos }}"

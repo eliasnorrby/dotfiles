@@ -61,12 +61,6 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 
-" Tmux_integration:
-if system('_os') == 'macos'
-  Plug 'christoomey/vim-tmux-navigator'
-endif
-runtime plugins.d/benmills/vimux.vim
-
 " Colorschemes:
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'RRethy/nvim-base16'
