@@ -1,7 +1,3 @@
-if has("termguicolors")
-  set termguicolors
-endif
-
 function! NoTildes() abort
   highlight! EndOfBuffer ctermfg=NONE ctermbg=NONE guifg=NONE guibg=NONE
 endfunction

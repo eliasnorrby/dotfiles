@@ -34,3 +34,7 @@ set noruler
 set signcolumn=yes
 
 set foldlevel=100
+
+if has("termguicolors")
+  set termguicolors
+endif
