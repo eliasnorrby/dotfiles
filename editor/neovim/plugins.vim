@@ -31,7 +31,7 @@ runtime plugins.d/editorconfig/editorconfig-vim.vim
 runtime plugins.d/tpope/vim-vinegar.vim
 Plug 'nvim-lua/plenary.nvim'
 Plug 'lewis6991/gitsigns.nvim'
-runtime plugins.d/ap/vim-css-color.vim
+Plug 'norcalli/nvim-colorizer.lua'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'kyazdani42/nvim-tree.lua', {  'on': 'NvimTreeToggle'}
 
@@ -89,6 +89,7 @@ require('toggle_lsp_diagnostics').init({
 require('hop').setup()
 require('gitsigns').setup()
 require('trouble').setup()
+require('colorizer').setup()
 require('treesitter-conf')
 require('lsp-conf')
 require('compe-conf')

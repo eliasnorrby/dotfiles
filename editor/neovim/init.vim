@@ -11,8 +11,8 @@
 let mapleader=" "
 nnoremap <space> <nop>
 
-runtime plugins.vim
 runtime general.vim
+runtime plugins.vim
 runtime autocmds.vim
 runtime theme.vim
 runtime keybindings.vim
