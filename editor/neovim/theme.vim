@@ -90,13 +90,16 @@ augroup TSPalenightColors
   autocmd ColorScheme    base16-material-palenight call Diagnostics()
 augroup END
 
-if empty($VIM_COLOR)
-  " let s:theme_to_use="gruvbox"
-  " let s:theme_to_use="onedark"
-  " let s:theme_to_use="palenight"
-  let s:theme_to_use = "base16-material-palenight"
-else
-  let s:theme_to_use=$VIM_COLOR
-endif
+" if empty($VIM_COLOR)
+"   " let s:theme_to_use="gruvbox"
+"   " let s:theme_to_use="onedark"
+"   " let s:theme_to_use="palenight"
+"   " let s:theme_to_use = "base16-material-palenight"
+" else
+"   let s:theme_to_use=$VIM_COLOR
+" endif
+
+let s:theme_to_use = "material"
+let g:material_style = 'palenight'
 
 execute 'colorscheme' s:theme_to_use

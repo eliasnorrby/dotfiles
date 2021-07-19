@@ -70,6 +70,7 @@ runtime plugins.d/benmills/vimux.vim
 " Colorschemes:
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'RRethy/nvim-base16'
+Plug 'marko-cerovac/material.nvim'
 
 " Miscellaneous:
 runtime plugins.d/takac/vim-hardtime.vim
