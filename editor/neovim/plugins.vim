@@ -12,6 +12,7 @@ endif
 call plug#begin(stdpath('data') . '/plugged')
 
 " Plugins requiring configuration get their own file in plugins.d
+Plug 'dstein64/vim-startuptime'
 
 " Editing:
 Plug 'tpope/vim-surround'
