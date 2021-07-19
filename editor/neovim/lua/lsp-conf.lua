@@ -45,7 +45,6 @@ end
 -- map buffer local keybindings when the language server attaches
 local servers = {
   "bashls",
-  "diagnosticls",
   "tsserver",
   "cssls",
   "html",
@@ -65,9 +64,13 @@ end
 
 nvim_lsp.diagnosticls.setup {
     on_attach = on_attach,
+    flags = {
+      debounce_text_changes = 150,
+    },
     -- capabilities = lsp_status.capabilities,
     cmd = {"diagnostic-languageserver", "--stdio"},
     filetypes = {
+        "lua",
         "sh",
         "markdown",
         "json",
