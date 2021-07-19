@@ -44,8 +44,7 @@ Plug 'kyazdani42/nvim-web-devicons'
 Plug 'kyazdani42/nvim-tree.lua'
 
 " Statusline:
-runtime plugins.d/itchyny/lightline.vim
-Plug 'itchyny/vim-gitbranch'
+Plug 'hoob3rt/lualine.nvim'
 
 " Navigation:
 runtime plugins.d/tpope/vim-unimpaired.vim
@@ -112,6 +111,7 @@ require('lsp-conf')
 require('compe-conf')
 require('formatter-conf')
 require('telescope-conf')
+require('lualine-conf')
 
 require('nvim-autopairs').setup()
 require('nvim-autopairs.completion.compe').setup({

@@ -83,17 +83,11 @@ function! NormalFloats() abort
   highlight! Normal guibg=NONE
 endfunction
 
-function! TSPalenightSetup() abort
-  let g:lightline.colorscheme = 'palenight'
-endfunction
 augroup TSPalenightColors
   autocmd!
-
-  autocmd ColorSchemePre base16-material-palenight call TSPalenightSetup()
   autocmd ColorScheme    base16-material-palenight call NormalFloats()
   autocmd ColorScheme    base16-material-palenight call BlueCursorLine()
   autocmd ColorScheme    base16-material-palenight call Diagnostics()
-
 augroup END
 
 if empty($VIM_COLOR)
