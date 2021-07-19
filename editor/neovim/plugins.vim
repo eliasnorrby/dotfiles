@@ -110,6 +110,7 @@ nmap <leader>tdi <Plug>(toggle-lsp-diag-update_in_insert)
 nmap <leader>tdd <Plug>(toggle-lsp-diag)
 
 nnoremap <leader>e <cmd>NvimTreeToggle<CR>
+nnoremap <leader>fl <cmd>NvimTreeFindFile<CR>
 
 nnoremap <silent> <leader>fF :Format<CR>
 
