@@ -33,7 +33,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'kyazdani42/nvim-web-devicons'
-Plug 'kyazdani42/nvim-tree.lua', {  'on': 'NvimTreeToggle'}
+Plug 'kyazdani42/nvim-tree.lua', {  'on': ['NvimTreeToggle', 'NvimTreeFindFile'] }
 Plug 'npxbr/glow.nvim'
 
 " Statusline:
