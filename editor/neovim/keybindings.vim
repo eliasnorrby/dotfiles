@@ -78,4 +78,4 @@ nnoremap <silent> <leader>tb :call ToggleScrollbind()<CR>
 nnoremap <silent> <leader>fz 1z=
 nnoremap <silent> <Plug>FixNextSpelling ]s1z=
       \:call repeat#set("\<Plug>FixNextSpelling", v:count)<cr>
-nmap <silent> <leader> <Plug>FixNextSpelling
+nmap <silent> <leader>fZ <Plug>FixNextSpelling
