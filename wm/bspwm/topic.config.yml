@@ -9,5 +9,9 @@ bspwm_config:
     - src: navigate.sh
       dest: "{{ xdg_bin_home }}/"
       rename: navigate
+    - src: send_home.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: send_home
   pacman_packages:
     - bspwm
+    - xdo
