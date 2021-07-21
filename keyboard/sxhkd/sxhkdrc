@@ -71,8 +71,11 @@ hyper + shift + {1-9}
   tmux_switch_session {1-9}
 
 # random background
-hyper + shift + w
+hyper + ctrl + shift + w
   ~/.config/feh/set-background.sh
+
+hyper + shift + w
+  ~/.config/feh/choose_background.sh
 
 # konsole (backup terminal)
 super + shift + Return
