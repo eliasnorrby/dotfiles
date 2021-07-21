@@ -3,5 +3,6 @@ feh_config:
   path: wm/feh
   links:
     - set-background.sh
+    - choose_background.sh
   pacman_packages:
     - feh
