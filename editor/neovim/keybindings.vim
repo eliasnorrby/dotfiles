@@ -96,3 +96,5 @@ nnoremap <silent> <leader>fz 1z=
 nnoremap <silent> <Plug>FixNextSpelling ]s1z=
       \:call repeat#set("\<Plug>FixNextSpelling", v:count)<cr>
 nmap <silent> <leader>fZ <Plug>FixNextSpelling
+
+xnoremap <silent> <leader>ft :s/^  /	/<cr>
