@@ -86,6 +86,16 @@ augroup TSPalenightColors
   autocmd ColorScheme    base16-material-palenight call Diagnostics()
 augroup END
 
+function! Tabline() abort
+  highlight! TabLine    guibg=NONE
+  highlight! TabLineSel guibg=#ffcb6b
+endfunction
+
+augroup MaterialColors
+  autocmd!
+  autocmd ColorScheme material call Tabline()
+augroup END
+
 " if empty($VIM_COLOR)
 "   " let s:theme_to_use="gruvbox"
 "   " let s:theme_to_use="onedark"
