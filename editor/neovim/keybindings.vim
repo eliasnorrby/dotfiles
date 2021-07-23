@@ -47,7 +47,10 @@ nnoremap <silent> <leader>fo zo
 nnoremap <silent> <leader>fc zc
 nnoremap <silent> <leader>fO zR
 nnoremap <silent> <leader>fC zM
-nnoremap <silent> <leader>fb $zf%
+
+nnoremap <silent> <Plug>FoldBraceBlock $zf%
+      \:call repeat#set("\<Plug>FoldBraceBlock", v:count)<cr>
+nmap <silent> <leader>fb <Plug>FoldBraceBlock
 
 " move vertically by visual line
 nnoremap <silent> j gj
