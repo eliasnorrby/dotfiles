@@ -19,6 +19,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-abolish'
+runtime plugins.d/godlygeek/tabular.vim
 Plug 'pedrohdz/vim-yaml-folds'
 " runtime plugins.d/mattn/emmet-vim.vim
 Plug 'windwp/nvim-autopairs'
