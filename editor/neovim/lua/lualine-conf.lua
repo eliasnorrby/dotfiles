@@ -4,10 +4,21 @@ local diagnostics = {
   sections = {'error', 'warn', 'info', 'hint'},
 }
 
+local custom_palenight = require'lualine.themes.palenight'
+local default_fg = custom_palenight.normal.c.fg
+
+custom_palenight.normal.c.bg = 'NONE'
+custom_palenight.inactive.a.bg = 'NONE'
+custom_palenight.inactive.a.fg = default_fg
+custom_palenight.inactive.b.bg = 'NONE'
+custom_palenight.inactive.b.fg = default_fg
+custom_palenight.inactive.c.bg = 'NONE'
+custom_palenight.inactive.c.fg = default_fg
+
 require'lualine'.setup {
   options = {
     icons_enabled = true,
-    theme = 'palenight',
+    theme = custom_palenight,
     component_separators = {'┃', '┃'},
     section_separators = '',
     disabled_filetypes = {}

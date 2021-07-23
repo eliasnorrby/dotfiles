@@ -3,6 +3,7 @@ function! NoTildes() abort
 endfunction
 
 function! TransparentBg() abort
+  highlight! SignColumn ctermbg=NONE guibg=NONE
   highlight! Normal ctermbg=NONE guibg=NONE
   highlight! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
 endfunction
@@ -94,6 +95,7 @@ endfunction
 augroup MaterialColors
   autocmd!
   autocmd ColorScheme material call Tabline()
+  autocmd ColorScheme material call TransparentBg()
 augroup END
 
 " if empty($VIM_COLOR)
