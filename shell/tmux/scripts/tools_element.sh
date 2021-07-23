@@ -42,7 +42,14 @@ java_version() {
   echo "$format"
 }
 
-for item in "$(kubectl_context)" "$(argocd_context)" "$(node_version)" "$(java_version)"; do
+ngrok_tunnel() {
+  is_callable ngrok || return
+  pgrep -x ngrok || return
+  format="#[fg=green]  ngrok#[fg=default]"
+  echo "$format"
+}
+
+for item in "$(ngrok_tunnel)" "$(kubectl_context)" "$(argocd_context)" "$(node_version)" "$(java_version)"; do
   [ -z "$item" ] && continue
   printf '%s  ' "$item"
 done
