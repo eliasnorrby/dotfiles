@@ -53,6 +53,7 @@ alias cdd="cd ~/dev"
 alias cdw="cd ~/work"
 alias cdl="cd ~/learn"
 alias cds="cd ~/sandbox"
+alias cdf="cd ~/forks"
 
 # Script aliases
 alias cs="complete-section"
