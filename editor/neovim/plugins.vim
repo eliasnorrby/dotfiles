@@ -50,6 +50,7 @@ runtime plugins.d/tpope/vim-fugitive.vim
 Plug 'tpope/vim-rhubarb'
 Plug 'junegunn/gv.vim', { 'on': 'GV' }
 Plug 'rhysd/git-messenger.vim'
+Plug 'wincent/vcs-jump'
 
 " Text_objects:
 Plug 'wellle/targets.vim'
