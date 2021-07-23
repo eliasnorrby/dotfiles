@@ -1,4 +1,5 @@
 local nvim_lsp = require('lspconfig')
+local util = require 'lspconfig/util'
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -44,7 +45,8 @@ end
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 local servers = {
-  "bashls",
+  -- We need to override some settings for bashls
+  -- "bashls",
   "tsserver",
   "cssls",
   "html",
@@ -61,6 +63,22 @@ for _, lsp in ipairs(servers) do
     }
   }
 end
+
+nvim_lsp.bashls.setup {
+  on_attach = on_attach,
+  flags = {
+    debounce_text_changes = 150,
+  },
+  cmd_env = {
+    -- lsp-config defaults will disable recursive scanning
+    GLOB_PATTERN = '**/*@(.sh|.inc|.bash|.command)',
+  },
+  root_dir = function(fname)
+    -- lsp-config will use util.path.dirname, with will be the directory
+    -- containing the file - we won't scan anything in parent directories.
+    return util.root_pattern('.git')(fname) or util.path.dirname(fname)
+  end,
+}
 
 nvim_lsp.diagnosticls.setup {
     on_attach = on_attach,
