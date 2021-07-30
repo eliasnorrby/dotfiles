@@ -74,6 +74,7 @@ hyper + shift + {1-9}
 hyper + ctrl + shift + w
   ~/.config/feh/set-background.sh
 
+# background picker
 hyper + shift + w
   ~/.config/feh/choose_background.sh
 
