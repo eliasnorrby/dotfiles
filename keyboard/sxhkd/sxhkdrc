@@ -228,6 +228,7 @@ super + shift + {1-9,0}
 super + {a,d}; shift + {1-9,0}
 	bspc node --to-desktop '{A,B}{1-9,10}' --follow
 
+# send to 'home' desktop
 super + shift + ctrl + h
   send_home
 
