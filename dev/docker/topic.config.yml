@@ -13,4 +13,4 @@ docker_config:
     - podman
     - skopeo
   aur_packages:
-    - hadolint
+    - hadolint-bin

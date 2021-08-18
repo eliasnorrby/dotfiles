@@ -28,5 +28,5 @@ kubernetes_config:
     - kustomize
     - k9s
   aur_packages:
-    - kind
+    - kind-bin
     - origin-client

@@ -17,6 +17,6 @@ cicd_config:
   npm_packages:
     - semantic-release-cli
   aur_packages:
-    - pack-cli
-    - terraform-ls
-    - tflint
+    - pack-cli-bin
+    - terraform-ls-bin
+    - tflint-bin
