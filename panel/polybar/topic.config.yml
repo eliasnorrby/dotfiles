@@ -4,7 +4,6 @@ polybar_config:
   links:
     - config
     - launch.sh
-  pacman_packages:
-    - polybar
   aur_packages:
+    - polybar
     - polybar-spotify

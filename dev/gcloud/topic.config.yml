@@ -3,3 +3,5 @@ gcloud_config:
   path: dev/gcloud
   brew_casks:
     - google-cloud-sdk
+  aur_packages:
+    - google-cloud-sdk
