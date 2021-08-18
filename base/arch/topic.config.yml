@@ -27,11 +27,9 @@ arch_config:
     - xorg-xev
     - xsel
     - ttf-font-awesome
-    - ttf-material-design-icons-webfont
     - ttf-roboto
     - gucharmap
     - base-devel
-    - yay
     - rofi
     - maim
     - udiskie
@@ -50,5 +48,6 @@ arch_config:
     - nerd-fonts-source-code-pro
     - ttf-devicons
     - ttf-mononoki
+    - ttf-material-design-icons-webfont
 
 aur_builder_user_name: aur_builder

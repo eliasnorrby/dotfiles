@@ -3,6 +3,26 @@
   file:
     state: directory
     path: ~/.gnupg
+    mode: 0700
+  tags: ["never", "do_pacman"]
+
+- name: install yay
+  block:
+    - name: check if yay is installed
+      shell: command -v yay >/dev/null 2>&1
+      register: is_yay_installed
+      changed_when: False
+      failed_when: False
+    - name: clone yay repo
+      git:
+        repo: https://aur.archlinux.org/yay.git
+        dest: /tmp/yay
+      when: is_yay_installed.rc == 1
+    - name: make yay binary
+      shell:
+        cmd: makepkg -si --noconfirm
+        chdir: /tmp/yay
+      when: is_yay_installed.rc == 1
   tags: ["never", "do_pacman"]
 
 - name: setup aur builder
