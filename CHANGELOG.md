@@ -1,3 +1,43 @@
+# [6.1.0](https://github.com/eliasnorrby/dotfiles/compare/v6.0.0...v6.1.0) (2021-08-18)
+
+
+### Bug Fixes
+
+* **bspwm:** update rules to match icon placements ([8a47975](https://github.com/eliasnorrby/dotfiles/commit/8a479754e2c45311ae815c92cef41f57ca3398eb))
+* **gtk:** use # for comments instead of ; ([befd266](https://github.com/eliasnorrby/dotfiles/commit/befd2666493c2e48cb6ecefe0904d9dfcd72013a))
+* **tmux:** fix broken c-space binding ([b34cc4a](https://github.com/eliasnorrby/dotfiles/commit/b34cc4a29d8b8b9525237f5dbe7642c021661020))
+* **vim:** store diagnostics.enable state in variable ([66ff5a6](https://github.com/eliasnorrby/dotfiles/commit/66ff5a6665f858b8ec6d71a13c9d3a1864ac64da))
+
+
+### Features
+
+* **arch:** add reload option to power menu ([9f5a5c3](https://github.com/eliasnorrby/dotfiles/commit/9f5a5c3059a65060cb97941c86daa64f38023a32))
+* **bspwm:** add unified navigation between bspwm/tmux/vim ([76c2d72](https://github.com/eliasnorrby/dotfiles/commit/76c2d72282412b4e03620139af358b7a0f10fe76))
+* **docker:** add drrm and drit aliases ([6c5c9f7](https://github.com/eliasnorrby/dotfiles/commit/6c5c9f76c33c72c7fa69ebfdb01ee11249c82c74))
+* **fzf:** bind ctrl-a to select-all ([42ce0c0](https://github.com/eliasnorrby/dotfiles/commit/42ce0c016427fe7d6781d7e5b5f0be1e8cd951c6))
+* **gtk:** add topic config ([f733156](https://github.com/eliasnorrby/dotfiles/commit/f7331566448ca32497e6ef637fd2ff787aa605f7)), closes [#41](https://github.com/eliasnorrby/dotfiles/issues/41)
+* **kubernetes:** add kaf and kak aliases ([fe45b88](https://github.com/eliasnorrby/dotfiles/commit/fe45b88d5b6511c2e3bdaa21c1af49a3e3353349))
+* **polybar:** add tools bar ([ae8c7fe](https://github.com/eliasnorrby/dotfiles/commit/ae8c7fe495f8058aeff9fbbe6f8340e03ebbdc0c))
+* **sxhkd:** add keybinds dmenu helper ([02d9640](https://github.com/eliasnorrby/dotfiles/commit/02d9640af3b4c5a5702ad65d7c6d5fa53f444e20))
+* **sxhkd:** bind media keys to audio controls ([089fe7e](https://github.com/eliasnorrby/dotfiles/commit/089fe7ebda9b4dd617432cec9622b1396f880468))
+* **sxhkd:** bind power to LaunchA (F3) ([b7d946e](https://github.com/eliasnorrby/dotfiles/commit/b7d946efccade35110e4fcb582791aef3c4a8971))
+* **task:** make L priority less urgent ([17401c4](https://github.com/eliasnorrby/dotfiles/commit/17401c44498380e7f64a738c39e6e200f495de56))
+* **tmux:** add toggle for showing status ([726e552](https://github.com/eliasnorrby/dotfiles/commit/726e552e8b239f2ecf3a78d977a088f3111bfd49))
+* **vim:** add fix next misspelling binding ([b116d31](https://github.com/eliasnorrby/dotfiles/commit/b116d31134581ecbe37a5fd1d6f6eac0d2d3c5e9))
+* **vim:** add hop.nvim ([92e677a](https://github.com/eliasnorrby/dotfiles/commit/92e677a1891f3966bae947330e581ffe70fccb3e))
+* **vim:** add spell fix binding ([0d513f7](https://github.com/eliasnorrby/dotfiles/commit/0d513f79295bd8d15747706cc7697995d9356924))
+* **vim:** add toggle for showing lightline ([8285f57](https://github.com/eliasnorrby/dotfiles/commit/8285f57502e13a4cc247fcfbbb8e67d3d082d332))
+* **vim:** choose navigation based on os ([5d74bd5](https://github.com/eliasnorrby/dotfiles/commit/5d74bd54981512d8e31f8e4aaacd3710f60c0c4e))
+* **vim:** make spell fix binding repeatable ([55bc192](https://github.com/eliasnorrby/dotfiles/commit/55bc192184972559c75fb014e4badd4d6d47886c))
+* **vim:** remove x from tabline ([dd637cf](https://github.com/eliasnorrby/dotfiles/commit/dd637cf70e284fbbfdc067c1e20c7bc578a235cc))
+* **vim:** rework coc diagnostic displays ([a1d509b](https://github.com/eliasnorrby/dotfiles/commit/a1d509bbf23e56886e9cc67958aa099bbd4dce50))
+* **vim:** split diagnostic indicators ([b025035](https://github.com/eliasnorrby/dotfiles/commit/b025035fa982d24b5598e36f89ef944be0e4916b)), closes [itchyny/lightline.vim#236](https://github.com/itchyny/lightline.vim/issues/236)
+* **work:** add vpn_toggle.sh ([f7d99da](https://github.com/eliasnorrby/dotfiles/commit/f7d99dab60035bab20f05260156857dc458ed675))
+* **xkb:** add workman layout & refactor xkb ([72caba2](https://github.com/eliasnorrby/dotfiles/commit/72caba23229cc677a12f9795b9979ec96e12b303))
+* **zsh:** add cdg alias ([d967143](https://github.com/eliasnorrby/dotfiles/commit/d9671437d7b14b03d8adff09617db89c1bef30c2))
+* **zsh:** add global C alias for copying ([0201576](https://github.com/eliasnorrby/dotfiles/commit/02015765a4a0c3d8f2f2c0e0f35890f753451487))
+* **zsh:** allow (un)backup to target directories ([62f8ffa](https://github.com/eliasnorrby/dotfiles/commit/62f8ffaca7caec750f6bd1c52ca673db7db638c5))
+
 # [6.0.0](https://github.com/eliasnorrby/dotfiles/compare/v5.2.0...v6.0.0) (2021-07-11)
 
 
