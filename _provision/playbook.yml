@@ -15,6 +15,9 @@
   vars_files:
     - vars.yml
 
+  pre_tasks:
+    - include_tasks: tasks/directories.yml
+
   roles:
     - role: eliasnorrby.dotfiles
       tags: ["dotfiles", "bootstrap"]
@@ -26,7 +29,6 @@
       tags: ["never", "do_pacman", "bootstrap"]
 
   tasks:
-    - include_tasks: tasks/directories.yml
     - include_tasks: tasks/pacman.yml
       tags: ["never", "do_pacman", "bootstrap"]
     - include_tasks: tasks/homebrew.yml
