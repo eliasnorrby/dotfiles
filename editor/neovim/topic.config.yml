@@ -9,6 +9,7 @@ neovim_config:
     - python
     - pylint
     - black
+    - glow
   pacman_packages:
     - neovim
     - fzf
