@@ -36,6 +36,9 @@ Plug 'norcalli/nvim-colorizer.lua'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'kyazdani42/nvim-tree.lua', {  'on': ['NvimTreeToggle', 'NvimTreeFindFile'] }
 Plug 'npxbr/glow.nvim'
+Plug 'gcmt/taboo.vim'
+let g:taboo_tab_format = " %N %f%m "
+let g:taboo_renamed_tab_format = " %N [%l]%m "
 
 " Statusline:
 Plug 'hoob3rt/lualine.nvim'
