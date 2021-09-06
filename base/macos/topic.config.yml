@@ -1,6 +1,8 @@
 ---
 macos_config:
   path: base/macos
+  brew_formulas:
+    - curl
   brew_taps:
     - homebrew/cask-versions # for firefox-developer-edition
     - homebrew/cask-fonts
