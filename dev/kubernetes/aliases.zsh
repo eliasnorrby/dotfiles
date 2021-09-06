@@ -6,3 +6,4 @@ alias kuc="kubectl config use-context"
 
 alias kaf="kubectl apply -f"
 alias kak="kubectl apply -k"
+alias kcf="kubectl create -f"
