@@ -8,6 +8,10 @@ topics:
     - name: notes
       state: present
       config: "{{ notes_config }}"
+  tools:
+    - name: slides
+      state: present
+      config: "{{ slides_config }}"
   base:
     - name: arch
       state: present

@@ -1,0 +1,10 @@
+---
+slides_config:
+  path: tools/slides
+  pacman_packages:
+    - figlet
+  aur_packages:
+    - slides
+    - perl-graph-easy
+  brew_formulas:
+    - slides
