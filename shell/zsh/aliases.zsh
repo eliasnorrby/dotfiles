@@ -5,6 +5,7 @@ balias clh="curl -sS localhost:"
 # global aliases
 alias -g G="| grep"
 alias -g X="| xargs"
+alias -g Xi="| xargs -I{}"
 alias -g L="| less"
 alias -g H="-h | less"
 alias -g Y="| yq"
@@ -12,6 +13,8 @@ alias -g J="| jq"
 alias -g E="| entr"
 alias -g EE="| entr /_"
 alias -g C="| copy_cmd"
+alias -g B="| base64"
+alias -g Bd="| base64 -d"
 
 if [[ "$(_os)" == "macos" ]] ; then
   # Enable ls colors by aliasing gnu coreutils ls – not needed when included in PATH
