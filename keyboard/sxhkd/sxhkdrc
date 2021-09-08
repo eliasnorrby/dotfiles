@@ -168,6 +168,10 @@ super + {t,f}
 super + p
   bspc node --flag sticky
 
+# hide window (invisible)
+super + shift + i
+  bspc node --flag hidden
+
 # # set the node flags
 # super + ctrl + {m,x,y,z}
 # 	bspc node -g {marked,locked,sticky,private}
