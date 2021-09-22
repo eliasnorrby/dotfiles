@@ -4,7 +4,8 @@ menu() {
   rofi -dmenu \
     -i -no-custom \
     -font 'mononoki Nerd Font 20' \
-    -width 10 -lines 4 -monitor primary "$@"
+    -theme-str 'window {width: 200;} listview {lines: 4; scrollbar: false;}' \
+    -monitor primary "$@"
 }
 
 confirm() {
