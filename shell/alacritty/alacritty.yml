@@ -97,3 +97,4 @@ key_bindings:
   - { key: C,  mods: Alt,           chars: "\x1bc"                       }
   - { key: D,  mods: Alt,           chars: "\x1bd"                       }
   - { key: Paste,                                       action: Paste    }
+  - { key: Space,  mods: Control,  chars: "\x00"                         }
