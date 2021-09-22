@@ -46,9 +46,9 @@ hyper + a
 hyper + s
   focus_or_run emacs
 
-# ranger
+# reminder
 hyper + r
-  alacritty -e ranger
+  reminder
 
 # slack
 hyper + z

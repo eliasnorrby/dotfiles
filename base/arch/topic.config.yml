@@ -14,6 +14,9 @@ arch_config:
     - src: power.sh
       dest: "{{ xdg_bin_home }}/"
       rename: power
+    - src: reminder.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: reminder
     - src: gpg.conf
       dest: ~/.gnupg/
     - autostart.sh
