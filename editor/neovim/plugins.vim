@@ -34,7 +34,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'kyazdani42/nvim-web-devicons'
-Plug 'kyazdani42/nvim-tree.lua', {  'on': ['NvimTreeToggle', 'NvimTreeFindFile'] }
+Plug 'kyazdani42/nvim-tree.lua'
 Plug 'npxbr/glow.nvim'
 Plug 'gcmt/taboo.vim'
 let g:taboo_tab_format = " %N %f%m "
