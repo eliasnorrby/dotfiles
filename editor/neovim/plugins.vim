@@ -36,6 +36,7 @@ Plug 'norcalli/nvim-colorizer.lua'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'kyazdani42/nvim-tree.lua'
 let g:nvim_tree_disable_netrw = 0
+Plug 'felipec/vim-sanegx'
 Plug 'npxbr/glow.nvim'
 Plug 'gcmt/taboo.vim'
 let g:taboo_tab_format = " %N %f%m "
