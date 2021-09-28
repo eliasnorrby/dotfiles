@@ -3,7 +3,7 @@ kubernetes_config:
   path: dev/kubernetes
   links:
     - src: k9s/skin.yml
-      dest: ~/.k9s/
+      dest: "{{ k9s_config_dir }}/"
       rename: skin.yml
     - src: update_kubectl_token.sh
       dest: "{{ xdg_bin_home }}/"
@@ -30,3 +30,5 @@ kubernetes_config:
   aur_packages:
     - kind-bin
     - origin-client
+
+k9s_config_dir: "{{ xdg_config_home }}/k9s"

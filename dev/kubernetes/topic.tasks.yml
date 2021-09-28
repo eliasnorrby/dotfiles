@@ -2,4 +2,4 @@
 - name: create k9s config dir
   file:
     state: directory
-    path: "~/.k9s"
+    path: "{{ k9s_config_dir }}"
