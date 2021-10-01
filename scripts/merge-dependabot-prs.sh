@@ -8,7 +8,7 @@ git checkout -b dependabot-updates
 git remote prune origin
 
 for branch in $(git branch -r | grep 'dependabot/npm_and_yarn'); do
-  if ! git merge --no-edit "$branch"; then
+  if ! git merge --no-edit --no-verify "$branch"; then
     git merge --abort
     echo "Could not merge $branch"
   fi
