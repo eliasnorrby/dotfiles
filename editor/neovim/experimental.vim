@@ -72,3 +72,12 @@ nnoremap <silent> <c-l> :call UnifiedNavigation('l')<cr>
 " ============================================================================ "
 
 set showtabline=1  " 1 to show tabline only when more than one tab is present
+
+" ============================================================================ "
+" ===                            BASE64                                    === "
+" ============================================================================ "
+
+nnoremap <silent> <leader>64 :echo system('base64 --decode', expand('<cWORD>'))<cr>
+
+xnoremap <silent> <leader>64 c<c-r>=system('base64 --wrap 0', @")<cr><esc>
+xnoremap <silent> <leader>d64 c<c-r>=system('base64 --decode', @")<cr><esc>
