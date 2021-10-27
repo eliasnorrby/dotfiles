@@ -98,3 +98,5 @@ nnoremap <silent> <Plug>FixNextSpelling ]s1z=
 nmap <silent> <leader>fZ <Plug>FixNextSpelling
 
 xnoremap <silent> <leader>ft :s/^  /	/<cr>
+
+nnoremap - <Nop>
