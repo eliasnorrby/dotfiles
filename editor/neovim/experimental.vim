@@ -44,6 +44,8 @@ function! SynStack()
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
 
+nnoremap <silent> <leader>hl :call SynStack()<CR>
+
 set fcs=eob:.
 
 
