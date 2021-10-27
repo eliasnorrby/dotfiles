@@ -35,7 +35,6 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'kyazdani42/nvim-tree.lua'
-let g:nvim_tree_disable_netrw = 0
 Plug 'felipec/vim-sanegx'
 Plug 'npxbr/glow.nvim'
 Plug 'gcmt/taboo.vim'
@@ -110,6 +109,9 @@ require('nvim-autopairs').setup()
 require('nvim-autopairs.completion.compe').setup({
   map_cr = true,
   map_complete = false
+})
+require('nvim-tree').setup({
+  disable_netrw = false
 })
 EOF
 
