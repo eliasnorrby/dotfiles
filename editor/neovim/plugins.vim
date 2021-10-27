@@ -67,7 +67,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Fuzzy_finder:
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-runtime plugins.d/junegunn/fzf.vim
+" runtime plugins.d/junegunn/fzf.vim
 
 " Colorschemes:
 Plug 'drewtempelmeyer/palenight.vim'
@@ -127,12 +127,12 @@ nnoremap <silent> <leader>fF :Format<CR>
 
 nnoremap <leader>tt <cmd>TroubleToggle<cr>
 
-" nnoremap <leader><leader> <cmd>Telescope find_files<cr>
-" nnoremap <leader>// <cmd>Telescope live_grep<cr>
-" nnoremap <leader>/b <cmd>Telescope current_buffer_fuzzy_find<cr>
-" nnoremap <leader>bb <cmd>Telescope buffers<cr>
-" nnoremap <leader>;k <cmd>Telescope keymaps<cr>
-" nnoremap <leader>;m <cmd>Telescope marks<cr>
-" nnoremap <leader>;c <cmd>Telescope commands<cr>
+nnoremap <leader><leader> <cmd>Telescope find_files<cr>
+nnoremap <leader>// <cmd>Telescope live_grep<cr>
+nnoremap <leader>/b <cmd>Telescope current_buffer_fuzzy_find<cr>
+nnoremap <leader>bb <cmd>Telescope buffers<cr>
+nnoremap <leader>;k <cmd>Telescope keymaps<cr>
+nnoremap <leader>;m <cmd>Telescope marks<cr>
+nnoremap <leader>;c <cmd>Telescope commands<cr>
 
 nnoremap <leader>p <cmd>Glow<cr>
