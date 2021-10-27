@@ -16,6 +16,7 @@ alias.standup-sow=end.after:eoww-8d project:work completed
 uda.priority.values=H,M,,L
 urgency.uda.priority.L.coefficient=-0.5
 
-context.work=project:work
+context.work.read=project:work
+context.work.write=project:work
 
 # vim:commentstring=#%s
