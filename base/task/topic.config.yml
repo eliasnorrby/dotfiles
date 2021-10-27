@@ -2,13 +2,10 @@
 task_config:
   path: base/task
   links:
+    - taskrc
     - src: task_alacritty.sh
       dest: "{{ xdg_bin_home }}/"
       rename: task_alacritty
-      # TODO: remove when v2.6 is released
-    - src: taskrc
-      dest: ~/
-      rename: .taskrc
     - src: task_module.sh
       dest: "{{ xdg_bin_home }}/"
       rename: task_module
