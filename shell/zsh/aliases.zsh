@@ -16,6 +16,8 @@ alias -g C="| copy_cmd"
 alias -g B="| base64"
 alias -g Bd="| base64 -d"
 
+alias m="make"
+
 if [[ "$(_os)" == "macos" ]] ; then
   # Enable ls colors by aliasing gnu coreutils ls – not needed when included in PATH
   ialias ls="gls --color=auto --human-readable --group-directories-first"
