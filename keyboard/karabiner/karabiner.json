@@ -276,9 +276,11 @@
                             "from": {
                                 "key_code": "f2"
                             },
-                            "to": {
-                                "key_code": "f2"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "f2"
+                                }
+                            ]
                         }
                     ],
                     "identifiers": {
@@ -294,57 +296,71 @@
                             "from": {
                                 "key_code": "fn"
                             },
-                            "to": {
-                                "key_code": "left_control"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "left_control"
+                                }
+                            ]
                         },
                         {
                             "from": {
                                 "key_code": "grave_accent_and_tilde"
                             },
-                            "to": {
-                                "key_code": "non_us_backslash"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "non_us_backslash"
+                                }
+                            ]
                         },
                         {
                             "from": {
                                 "key_code": "left_command"
                             },
-                            "to": {
-                                "key_code": "left_option"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "left_option"
+                                }
+                            ]
                         },
                         {
                             "from": {
                                 "key_code": "left_option"
                             },
-                            "to": {
-                                "key_code": "left_command"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "left_command"
+                                }
+                            ]
                         },
                         {
                             "from": {
                                 "key_code": "non_us_backslash"
                             },
-                            "to": {
-                                "key_code": "grave_accent_and_tilde"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "grave_accent_and_tilde"
+                                }
+                            ]
                         },
                         {
                             "from": {
                                 "key_code": "right_control"
                             },
-                            "to": {
-                                "key_code": "right_option"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "right_option"
+                                }
+                            ]
                         },
                         {
                             "from": {
                                 "key_code": "right_option"
                             },
-                            "to": {
-                                "key_code": "right_command"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "right_command"
+                                }
+                            ]
                         }
                     ]
                 },
@@ -355,9 +371,11 @@
                             "from": {
                                 "key_code": "f2"
                             },
-                            "to": {
-                                "key_code": "f2"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "f2"
+                                }
+                            ]
                         }
                     ],
                     "identifiers": {
@@ -373,25 +391,31 @@
                             "from": {
                                 "key_code": "left_command"
                             },
-                            "to": {
-                                "key_code": "left_option"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "left_option"
+                                }
+                            ]
                         },
                         {
                             "from": {
                                 "key_code": "left_option"
                             },
-                            "to": {
-                                "key_code": "left_command"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "left_command"
+                                }
+                            ]
                         },
                         {
                             "from": {
                                 "key_code": "right_option"
                             },
-                            "to": {
-                                "key_code": "right_command"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "right_command"
+                                }
+                            ]
                         }
                     ]
                 },
@@ -411,25 +435,31 @@
                             "from": {
                                 "key_code": "left_command"
                             },
-                            "to": {
-                                "key_code": "left_option"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "left_option"
+                                }
+                            ]
                         },
                         {
                             "from": {
                                 "key_code": "left_option"
                             },
-                            "to": {
-                                "key_code": "left_command"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "left_command"
+                                }
+                            ]
                         },
                         {
                             "from": {
                                 "key_code": "right_option"
                             },
-                            "to": {
-                                "key_code": "right_command"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "right_command"
+                                }
+                            ]
                         }
                     ]
                 },
@@ -449,41 +479,51 @@
                             "from": {
                                 "key_code": "left_command"
                             },
-                            "to": {
-                                "key_code": "left_option"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "left_option"
+                                }
+                            ]
                         },
                         {
                             "from": {
                                 "key_code": "left_option"
                             },
-                            "to": {
-                                "key_code": "left_command"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "left_command"
+                                }
+                            ]
                         },
                         {
                             "from": {
                                 "key_code": "non_us_backslash"
                             },
-                            "to": {
-                                "key_code": "grave_accent_and_tilde"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "grave_accent_and_tilde"
+                                }
+                            ]
                         },
                         {
                             "from": {
                                 "key_code": "right_control"
                             },
-                            "to": {
-                                "key_code": "fn"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "fn"
+                                }
+                            ]
                         },
                         {
                             "from": {
                                 "key_code": "right_option"
                             },
-                            "to": {
-                                "key_code": "right_command"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "right_command"
+                                }
+                            ]
                         }
                     ]
                 },
@@ -503,25 +543,31 @@
                             "from": {
                                 "key_code": "left_command"
                             },
-                            "to": {
-                                "key_code": "left_option"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "left_option"
+                                }
+                            ]
                         },
                         {
                             "from": {
                                 "key_code": "left_option"
                             },
-                            "to": {
-                                "key_code": "left_command"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "left_command"
+                                }
+                            ]
                         },
                         {
                             "from": {
                                 "key_code": "right_option"
                             },
-                            "to": {
-                                "key_code": "right_command"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "right_command"
+                                }
+                            ]
                         }
                     ]
                 },
@@ -539,35 +585,97 @@
                     "simple_modifications": [
                         {
                             "from": {
+                                "key_code": "escape"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "grave_accent_and_tilde"
+                                }
+                            ]
+                        },
+                        {
+                            "from": {
                                 "key_code": "left_command"
                             },
-                            "to": {
-                                "key_code": "left_option"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "left_option"
+                                }
+                            ]
                         },
                         {
                             "from": {
                                 "key_code": "left_option"
                             },
-                            "to": {
-                                "key_code": "left_command"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "left_command"
+                                }
+                            ]
                         },
                         {
                             "from": {
                                 "key_code": "right_option"
                             },
-                            "to": {
-                                "key_code": "right_command"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "right_command"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "disable_built_in_keyboard_if_exists": false,
+                    "fn_function_keys": [],
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "is_pointing_device": false,
+                        "product_id": 591,
+                        "vendor_id": 1452
+                    },
+                    "ignore": false,
+                    "manipulate_caps_lock_led": true,
+                    "simple_modifications": [
+                        {
+                            "from": {
+                                "key_code": "right_option"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "right_command"
+                                }
+                            ]
                         },
                         {
                             "from": {
-                                "key_code": "escape"
+                                "key_code": "right_command"
                             },
-                            "to": {
-                                "key_code": "grave_accent_and_tilde"
-                            }
+                            "to": [
+                                {
+                                    "key_code": "right_option"
+                                }
+                            ]
+                        },
+                        {
+                            "from": {
+                                "key_code": "left_option"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "left_command"
+                                }
+                            ]
+                        },
+                        {
+                            "from": {
+                                "key_code": "left_command"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "left_option"
+                                }
+                            ]
                         }
                     ]
                 }
@@ -577,97 +685,121 @@
                     "from": {
                         "key_code": "f1"
                     },
-                    "to": {
-                        "key_code": "vk_consumer_brightness_down"
-                    }
+                    "to": [
+                        {
+                            "key_code": "vk_consumer_brightness_down"
+                        }
+                    ]
                 },
                 {
                     "from": {
                         "key_code": "f2"
                     },
-                    "to": {
-                        "key_code": "vk_consumer_brightness_up"
-                    }
+                    "to": [
+                        {
+                            "key_code": "vk_consumer_brightness_up"
+                        }
+                    ]
                 },
                 {
                     "from": {
                         "key_code": "f3"
                     },
-                    "to": {
-                        "key_code": "vk_mission_control"
-                    }
+                    "to": [
+                        {
+                            "key_code": "vk_mission_control"
+                        }
+                    ]
                 },
                 {
                     "from": {
                         "key_code": "f4"
                     },
-                    "to": {
-                        "key_code": "vk_launchpad"
-                    }
+                    "to": [
+                        {
+                            "key_code": "vk_launchpad"
+                        }
+                    ]
                 },
                 {
                     "from": {
                         "key_code": "f5"
                     },
-                    "to": {
-                        "key_code": "vk_consumer_illumination_down"
-                    }
+                    "to": [
+                        {
+                            "key_code": "vk_consumer_illumination_down"
+                        }
+                    ]
                 },
                 {
                     "from": {
                         "key_code": "f6"
                     },
-                    "to": {
-                        "key_code": "vk_consumer_illumination_up"
-                    }
+                    "to": [
+                        {
+                            "key_code": "vk_consumer_illumination_up"
+                        }
+                    ]
                 },
                 {
                     "from": {
                         "key_code": "f7"
                     },
-                    "to": {
-                        "key_code": "vk_consumer_previous"
-                    }
+                    "to": [
+                        {
+                            "key_code": "vk_consumer_previous"
+                        }
+                    ]
                 },
                 {
                     "from": {
                         "key_code": "f8"
                     },
-                    "to": {
-                        "key_code": "vk_consumer_play"
-                    }
+                    "to": [
+                        {
+                            "key_code": "vk_consumer_play"
+                        }
+                    ]
                 },
                 {
                     "from": {
                         "key_code": "f9"
                     },
-                    "to": {
-                        "key_code": "vk_consumer_next"
-                    }
+                    "to": [
+                        {
+                            "key_code": "vk_consumer_next"
+                        }
+                    ]
                 },
                 {
                     "from": {
                         "key_code": "f10"
                     },
-                    "to": {
-                        "key_code": "mute"
-                    }
+                    "to": [
+                        {
+                            "key_code": "mute"
+                        }
+                    ]
                 },
                 {
                     "from": {
                         "key_code": "f11"
                     },
-                    "to": {
-                        "key_code": "volume_down"
-                    }
+                    "to": [
+                        {
+                            "key_code": "volume_down"
+                        }
+                    ]
                 },
                 {
                     "from": {
                         "key_code": "f12"
                     },
-                    "to": {
-                        "key_code": "volume_up"
-                    }
+                    "to": [
+                        {
+                            "key_code": "volume_up"
+                        }
+                    ]
                 }
             ],
             "name": "Default profile",
@@ -679,6 +811,7 @@
             "virtual_hid_keyboard": {
                 "caps_lock_delay_milliseconds": 0,
                 "country_code": 0,
+                "indicate_sticky_modifier_keys_state": true,
                 "keyboard_type": "ansi",
                 "mouse_key_xy_scale": 100
             }
