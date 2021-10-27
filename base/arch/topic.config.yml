@@ -31,6 +31,7 @@ arch_config:
     - xsel
     - ttf-font-awesome
     - ttf-roboto
+    - ttf-iosevka-nerd
     - gucharmap
     - base-devel
     - rofi
@@ -45,7 +46,6 @@ arch_config:
     - slack-desktop
     - nerd-fonts-fira-code
     - nerd-fonts-hack
-    - nerd-fonts-iosevka
     - nerd-fonts-meslo
     - nerd-fonts-mononoki
     - nerd-fonts-source-code-pro
