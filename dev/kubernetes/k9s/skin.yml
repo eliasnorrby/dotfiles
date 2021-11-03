@@ -14,6 +14,10 @@ yellow_bright: &yellow_bright "#ffe585"
 
 # Dig through internal/config/styles.go:246 to find missing keys
 k9s:
+  prompt:
+    fgColor: *foreground
+    bgColor: *background
+    suggestColor: *blue
   help:
     fgColor: *foreground
     bgColor: *background
