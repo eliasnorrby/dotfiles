@@ -9,6 +9,8 @@
   rebase = true
 [merge]
   conflictstyle = diff3
+[init]
+	defaultBranch = main
 
 [hub]
   protocol = https
