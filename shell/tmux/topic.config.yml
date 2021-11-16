@@ -17,3 +17,6 @@ tmux_config:
       dest: "{{ xdg_bin_home }}/"
       rename: navigate
       condition: "{{ is_macos }}"
+    - src: bash_repl.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: bash_repl
