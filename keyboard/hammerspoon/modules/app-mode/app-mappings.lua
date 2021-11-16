@@ -1,12 +1,12 @@
 -- Keybindings for launching apps in App Mode
 return {
-  { 'b', 'Bear' },                 -- "B" for "Bear"
+  { 'b', 'Sunsama' },              -- "B" for "(Time) Block"
   { 'c', 'Google Chrome' },        -- "C" for "Chrome"
   { 'o', 'Microsoft Outlook' },    -- "O" for "Outlook"
   { 'e', 'Visual Studio Code' },   -- "E" for "Editor"
   { 'f', 'Fantastical 2' },        -- "F" for "Fantastical"
   { 's', 'Emacs' },                -- "S" for "Sublime"
-  { 'g', 'Things3' },              -- "G" for "GTD"
+  { 'g', 'Todoist' },              -- "G" for "GTD"
   { 't', 'Alacritty' },            -- "T" for "Terminal"
   { 'd', 'Drafts' },               -- "D" for "Drafts"
   { 'm', 'Gmail'},                 -- "M" for "Mail"
