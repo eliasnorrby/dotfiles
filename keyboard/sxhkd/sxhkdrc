@@ -26,6 +26,14 @@ hyper + n
 hyper + w
   focus_or_run TaskAlacritty task_alacritty
 
+# todoist
+hyper + g
+  focus_or_run todoist
+
+# sunsama
+hyper + b
+  focus_or_run sunsama
+
 # alacritty
 hyper + shift + t
   focus_or_run alacritty
