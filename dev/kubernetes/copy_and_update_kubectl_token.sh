@@ -5,7 +5,9 @@ timeout=2000
 xsel --clear
 
 # Copy token from browser tab using vimium
-sleep 1; xdotool key --delay 50 slash s h a KP_Enter V y
+sleep 1
+xdotool key --delay 50 slash s h a KP_Enter V y
+sleep 0.5
 
 token=$(xsel -o)
 if [ -z "$token" ] || [ "${token#sha}" = "${token}" ]; then
