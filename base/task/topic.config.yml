@@ -11,6 +11,11 @@ task_config:
       rename: task_module
   brew_formulas:
     - task
+    - sunsama
+    - todoist
   pacman_packages:
     - task
     - taskwarrior-tui
+  aur_packages:
+    - todoist-appimage
+    - sunsama-appimage
