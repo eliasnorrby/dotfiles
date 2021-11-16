@@ -8,6 +8,9 @@ git_config:
     - config-work
     - config-notes
     - ignore
+    - src: gh_browse.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: gh_browse
   brew_formulas:
     - git
     - tig
