@@ -17,6 +17,7 @@ git_config:
     - hub
     - gh
     - diff-so-fancy
+    - git-delta
     - grip
     # git-flow-avh
   pacman_packages:
@@ -25,5 +26,6 @@ git_config:
     - hub
     - github-cli
     - diff-so-fancy
+    - git-delta
   aur_packages:
     - python-grip
