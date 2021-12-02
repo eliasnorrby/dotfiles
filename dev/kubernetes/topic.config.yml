@@ -20,6 +20,7 @@ kubernetes_config:
     - helm
     - kustomize
     - k9s
+    - skopeo
   pacman_packages:
     - minikube
     - kubectl
@@ -27,6 +28,7 @@ kubernetes_config:
     - helm
     - kustomize
     - k9s
+    - skopeo
   aur_packages:
     - kind-bin
     - origin-client
