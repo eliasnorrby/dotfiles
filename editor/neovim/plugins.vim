@@ -90,6 +90,9 @@ Plug 'mhartington/formatter.nvim'
 " REST
 Plug 'NTBBloodbath/rest.nvim'
 
+" DB
+Plug 'tpope/vim-dadbod'
+
 call plug#end()
 
 lua <<EOF
