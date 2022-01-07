@@ -45,9 +45,9 @@ end
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 local servers = {
-  -- We need to override some settings for bashls
+  -- We need to override some settings for bashls and tsserver
   -- "bashls",
-  "tsserver",
+  -- "tsserver",
   "cssls",
   "html",
   "yamlls",
@@ -63,6 +63,25 @@ for _, lsp in ipairs(servers) do
     }
   }
 end
+
+local function organize_imports()
+  local params = {
+    command = "_typescript.organizeImports",
+    arguments = {vim.api.nvim_buf_get_name(0)},
+    title = ""
+  }
+  vim.lsp.buf.execute_command(params)
+end
+
+nvim_lsp.tsserver.setup {
+  on_attach = on_attach,
+  commands = {
+    OrganizeImports = {
+      organize_imports,
+      description = "Organize Imports"
+    }
+  }
+}
 
 nvim_lsp.bashls.setup {
   on_attach = on_attach,
