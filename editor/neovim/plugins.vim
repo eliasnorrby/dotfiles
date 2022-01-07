@@ -87,6 +87,9 @@ Plug 'folke/trouble.nvim'
 " Formatting:
 Plug 'mhartington/formatter.nvim'
 
+" REST
+Plug 'NTBBloodbath/rest.nvim'
+
 call plug#end()
 
 lua <<EOF
@@ -113,6 +116,7 @@ require('nvim-autopairs.completion.compe').setup({
 require('nvim-tree').setup({
   disable_netrw = false
 })
+require('rest-nvim').setup()
 EOF
 
 " TODO: put this somewhere else
@@ -136,3 +140,8 @@ nnoremap <leader>;m <cmd>Telescope marks<cr>
 nnoremap <leader>;c <cmd>Telescope commands<cr>
 
 nnoremap <leader>p <cmd>Glow<cr>
+
+" TODO: only bind in http filetype
+nmap <leader>rr <Plug>RestNvim
+nmap <leader>rp <Plug>RestNvimPreview
+nmap <leader>rl <Plug>RestNvimLast
