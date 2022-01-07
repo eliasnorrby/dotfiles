@@ -13,6 +13,7 @@ macos_config:
     - discord
     - dropbox
     - google-chrome
+    - firefox-developer-edition
     - istat-menus
     - 1password
     - 1password-cli
@@ -23,9 +24,6 @@ macos_config:
     - balenaetcher
     - fantastical
     - obsidian
-    # dev
-    - firefox-developer-edition
-    - postman
     # fonts
     - font-3270-nerd-font
     - font-dejavu-sans-mono-nerd-font
