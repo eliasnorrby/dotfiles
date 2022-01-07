@@ -70,6 +70,10 @@ hyper + i
 hyper + p
   focus_or_run 1password
 
+# postman
+hyper + o
+  focus_or_run postman launch_on_desktop A4 postman
+
 # tmux window select
 hyper + {1-9}
   tmux select-window -t {1-9}

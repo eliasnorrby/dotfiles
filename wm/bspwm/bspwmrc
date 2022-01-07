@@ -34,6 +34,7 @@ bspc rule -a Todoist desktop='A1' follow=on
 bspc rule -a Sunsama desktop='A1' follow=on
 bspc rule -a "Microsoft Teams - Preview" desktop='A2' follow=on # (*)
 bspc rule -a firefox desktop='A3' follow=on
+bspc rule -a postman desktop='A4' follow=on # (*)
 
 bspc rule -a Slack desktop='B1' follow=on
 bspc rule -a Spotify desktop='B2' # (*)
