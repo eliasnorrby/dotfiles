@@ -5,7 +5,8 @@ git_config:
     - config
     - attributes
     - aliases
-    - config-work
+    - config-irori
+    - config-bemlo
     - config-notes
     - ignore
     - src: gh_browse.sh
