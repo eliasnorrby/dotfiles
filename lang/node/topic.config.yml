@@ -3,13 +3,14 @@ node_config:
   path: lang/node
   brew_formulas:
     - node
-    # - node@10
     - yarn
+    - fnm
   pacman_packages:
     - nodejs
     - npm
     - yarn
   aur_packages:
     - nvm
+    - fnm-bin
 
 npm_global_packages_dir: "{{ xdg_cache_home }}/npm-global"

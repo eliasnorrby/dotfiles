@@ -18,3 +18,5 @@ if [ "$(_os)" = "arch" ]; then
     $0 "$@"
   }
 fi
+
+eval "$(fnm env)"
