@@ -1,6 +1,6 @@
 ---
 roles:
-  - name: geerlingguy.homebrew
-  - name: geerlingguy.mas
+  - name: elliotweiser.osx-command-line-tools
 collections:
   - name: kewlfft.aur
+  - name: geerlingguy.mac

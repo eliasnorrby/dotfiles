@@ -21,9 +21,9 @@
   roles:
     - role: eliasnorrby.dotfiles
       tags: ["dotfiles", "bootstrap"]
-    - role: geerlingguy.homebrew
+    - role: geerlingguy.mac.homebrew
       tags: ["never", "setup_homebrew", "bootstrap"]
-    - role: geerlingguy.mas
+    - role: geerlingguy.mac.mas
       tags: ["never", "do_mas", "bootstrap"]
 
   tasks:
