@@ -80,7 +80,7 @@ function _msg() { printf "\r\033[2K\033[0;32m[ SETUP ] %s\033[0m\n" "$*"; }
 
 function _prompt() {
   _msg "$1"
-  read -p "[ ..... ] Press Enter to continue"
+  read -r -p "[ ..... ] Press Enter to continue"
 }
 
 function install_homebrew() {
@@ -117,7 +117,7 @@ function run_playbook() {
 function print_duration() {
   ELAPSED="$((SECONDS / 3600))hrs $(((SECONDS / 60) % 60))min $((SECONDS % 60))sec"
 
-  _mg "Setup completed in $ELAPSED"
+  _msg "Setup completed in $ELAPSED"
 }
 
 _prompt "Next step: installing homebrew"
@@ -154,4 +154,3 @@ if [[ "$DO_POST_INSTALL" == true ]]; then
 fi
 
 _msg "Done!"
-
