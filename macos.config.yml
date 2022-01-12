@@ -39,7 +39,7 @@ topics:
       state: present
       config: "{{ vscode_config }}"
     - name: intellij
-      state: present
+      state: absent
       config: "{{ intellij_config }}"
   keyboard:
     - name: fasterkeys
@@ -90,7 +90,7 @@ topics:
       state: present
       config: "{{ kubernetes_config }}"
     - name: kafka
-      state: present
+      state: absent
       config: "{{ kafka_config }}"
     - name: web
       state: present
