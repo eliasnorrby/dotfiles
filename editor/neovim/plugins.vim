@@ -120,6 +120,12 @@ require('nvim-tree').setup({
   disable_netrw = false
 })
 require('rest-nvim').setup()
+require('material').setup({
+  contrast = {
+      sidebars = true,
+      floating_windows = true,
+    },
+})
 EOF
 
 " TODO: put this somewhere else
