@@ -7,7 +7,7 @@
   become: yes
 
 - name: install packages from the AUR
-  aur:
+  kewlfft.aur.aur:
     name: "{{ aur_packages }}"
     use: yay
   when: aur_packages | length > 0
