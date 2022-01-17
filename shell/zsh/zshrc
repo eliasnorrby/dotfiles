@@ -7,13 +7,6 @@
 ## Uncomment for performance stats
 # zmodload zsh/zprof
 
-autoload -Uz compinit && compinit
-# if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
-#   compinit;
-# else
-#   compinit -C;
-# fi;
-
 # =============================================================================
 #                                Load all the things
 # =============================================================================

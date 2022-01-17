@@ -25,3 +25,11 @@ zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX
 
 # Keep directories and files separated
 zstyle ':completion:*' list-dirs-first true
+
+autoload -Uz compinit && compinit
+# if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+#   compinit;
+# else
+#   compinit -C;
+# fi;
+
