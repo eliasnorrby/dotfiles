@@ -13,10 +13,6 @@ if _is_callable nvim ; then
   _msg "-- vim-plug --"
   _msg "Running PlugInstall..."
   nvim +'PlugInstall --sync' +qall
-  _msg "Installing coc-nvim extensions..."
-  cd ~/.config/coc/extensions
-  npm install --ignore-scripts --no-lockfile --production --legacy-peer-deps
-  cd -
 fi
 
 # emacs
