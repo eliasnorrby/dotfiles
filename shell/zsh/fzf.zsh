@@ -99,7 +99,7 @@ fgr() {
 # select from previous long-ish arguments
 fargs() {
   local args
-  history -50 | cut -d " " -f 5- | sed 's/ /\n/g' | sed '/^.\{0,5\}$/d' | sort | uniq | fzf-down --reverse
+  history -50 | cut -c 8- | sed 's/ /\n/g' | sed '/^.\{0,5\}$/d' | sort | uniq | fzf-down --reverse
 }
 
 fzf-args-widget() { local result=$(fargs | join-lines); zle reset-prompt; LBUFFER+=$result }
