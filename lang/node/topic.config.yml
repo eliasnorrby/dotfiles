@@ -10,7 +10,6 @@ node_config:
     - npm
     - yarn
   aur_packages:
-    - nvm
     - fnm-bin
 
 npm_global_packages_dir: "{{ xdg_cache_home }}/npm-global"
