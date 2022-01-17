@@ -19,4 +19,4 @@ if [ "$(_os)" = "arch" ]; then
   }
 fi
 
-eval "$(fnm env)"
+_is_callable fnm && eval "$(fnm env)"
