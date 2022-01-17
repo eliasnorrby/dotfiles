@@ -5,10 +5,12 @@ web_config:
     - httpie
   brew_casks:
     - postman
+    - insomnia
   pacman_packages:
     - httpie
   aur_packages:
     - postman-bin
+    - insomnia-bin
   npm_packages:
     - firebase-tools
     - gatsby-cli
