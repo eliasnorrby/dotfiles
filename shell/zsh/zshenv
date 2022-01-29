@@ -6,7 +6,6 @@ unsetopt GLOBAL_RCS
 source $HOME/.dotfiles/env
 
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-export ZPLUG_HOME="$XDG_CACHE_HOME/zplug"
 export ZSH_CACHE="$XDG_CACHE_HOME/zsh"
 
 export BAT_THEME=base16

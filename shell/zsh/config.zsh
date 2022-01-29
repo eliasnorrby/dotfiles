@@ -33,10 +33,3 @@ stty -ixon 2>/dev/null
 
 unsetopt BEEP                   # Turn off all beeps
 # unsetopt LIST_BEEP            # Turn off autocomplete beeps
-
-# setup up colors for ls
-dircolors_file=${ZPLUG_HOME}/repos/seebi/dircolors-solarized/dircolors.ansi-dark
-if [[ $(_os) == macos ]] && [ -f $dircolors_file ] && _is_callable gdircolors > /dev/null ; then
-  alias dircolors='gdircolors'
-  eval $(gdircolors $dircolors_file)
-fi
