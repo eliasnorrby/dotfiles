@@ -11,6 +11,8 @@ dotfiles: "~/.dotfiles"
 dotfiles_version: "develop"
 dotfiles_data: "{{ xdg_data_home }}/dotfiles"
 
+is_interactive: false
+
 topics:
   editor:
     - name: vim
