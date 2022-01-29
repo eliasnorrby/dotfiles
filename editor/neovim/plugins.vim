@@ -100,7 +100,7 @@ call plug#end()
 lua <<EOF
 require('toggle_lsp_diagnostics').init({
     underline = true, virtual_text     = false,
-    signs     = true, update_in_insert = true
+    signs     = true, update_in_insert = false
 })
 require('hop').setup()
 require('gitsigns-conf')
