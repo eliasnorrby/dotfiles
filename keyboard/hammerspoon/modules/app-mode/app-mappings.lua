@@ -12,8 +12,7 @@ return {
   { 'm', 'Gmail'},                 -- "M" for "Mail"
   { 'q', 'MySQLWorkbench'},        -- "Q" for "sQl"
   { 'n', 'Postman'},
-  -- { 'w', 'MacVim'},                -- "W" for "Wiki"
-  { 'i', 'IntelliJ IDEA'},         -- "I" for "IntelliJ"
+  { 'i', 'Insomnia'},              -- "I" for "Insomnia"
   { 'r', 'Rider' },
   { 'u', 'Spotify' },              -- "U" for some reason
   { 'x', 'Firefox Developer Edition' },

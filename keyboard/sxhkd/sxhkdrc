@@ -62,9 +62,9 @@ hyper + r
 hyper + z
   focus_or_run slack
 
-# intellij
+# insomnia
 hyper + i
-  focus_or_run idea
+  focus_or_run insomnia
 
 # 1password
 hyper + p
