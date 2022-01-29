@@ -96,6 +96,7 @@ augroup MaterialColors
   autocmd!
   autocmd ColorScheme material call Tabline()
   autocmd ColorScheme material call TransparentBg()
+  autocmd ColorScheme material call BlueCursorLine()
 augroup END
 
 " if empty($VIM_COLOR)
