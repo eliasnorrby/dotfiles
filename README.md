@@ -228,26 +228,32 @@ The CLI provides a simpler way to edit, view and apply configurations.
 After running the provisioning script, there are a few things that need to be
 configured manually.
 
-- Start all apps and prepare to grant lots of privileges
-  - Start with Karabiner and Hammerspoon to enable app shortcuts
-- Download the [Dank Mono font](https://dank.sh)
-- Set main Alfred hotkey to <kbd>⌥</kbd> + <kbd>SPACE</kbd>
-- Install the Things 3 helper
-- Add additional desktops
-- Enable shortcuts for desktop navigation (Preferences <kbd>→</kbd> Keyboard <kbd>→</kbd> Shortcuts <kbd>→</kbd> Mission Control)
-- Set desktop backgrounds (assets available in Dropbox)
-- Download Fluid and set up Gmail as a desktop app
-- Configure Bartender to hide the appropriate icons, supply license
-- Import iStatMenus settings from `assets/istatmenus`, supply license
-- Link the proper scripts to `~/.local/bin`. There's a helper in the `scripts` directory. This could be scripted.
+### General
+
 - Set the computer name
-  - Preferences <kbd>→</kbd> Sharing
-  - `sudo scutil --set HostName <name-you-want>`
+  - (MacOS) Preferences <kbd>→</kbd> Sharing
+  - (Linux) `sudo scutil --set HostName <name-you-want>`
 - Generate ssh keys
   - [Generate][ssh-github-generate]
   - [Add][ssh-github-add]
+- Download the [Dank Mono font](https://dank.sh)
+- Link the proper scripts to `~/.local/bin`. There's a helper in the `scripts` directory. This could be scripted.
 
-- ...?
+### MacOS
+
+- Start all apps and prepare to grant lots of privileges
+  - Start with Karabiner and Hammerspoon to enable app shortcuts
+- Set main Alfred hotkey to <kbd>⌥</kbd> + <kbd>SPACE</kbd>
+- Set desktop background (assets available in Dropbox)
+- Add additional desktops
+- Enable shortcuts for desktop navigation (Preferences <kbd>→</kbd> Keyboard <kbd>→</kbd> Shortcuts <kbd>→</kbd> Mission Control)
+- Remap layout switching shortcuts (Preferences <kbd>→</kbd> Keyboard <kbd>→</kbd> Shortcuts <kbd>→</kbd> Input Sources)
+- Add Amethyst padding (`2 px` window margin, `5 px` screen padding)
+- Configure Bartender to hide the appropriate icons, supply license
+- Import iStatMenus settings from `assets/istatmenus`, supply license
+- Some apps may require Rosetta to run
+  - `/usr/sbin/softwareupdate --install-rosetta --agree-to-license`
+- Add Workman-P layout (?)
 
 ## Troubleshooting
 
