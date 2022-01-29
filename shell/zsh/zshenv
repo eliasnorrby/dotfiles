@@ -1,6 +1,6 @@
-# source env file at root of dotfiles repo
 unsetopt GLOBAL_RCS
 
+# source env file at root of dotfiles repo
 # subshell-elimination: may not make a world of difference, but then again...
 # source $(cd ${${(%):-%x}:A:h}/../.. && pwd -P)/env
 source $HOME/.dotfiles/env
@@ -31,13 +31,16 @@ export CLICOLOR=1
 export WORDCHARS='*?_-[]~=&;!#$%^(){}<>'
 
 if [[ "$(_os)" == "macos" ]]; then
+  # Cache output of brew shellenv
+  HOMEBREW_ENV_FILE="$HOME/.homebrew"
+  if [[ ! -f "$HOMEBREW_ENV_FILE" ]]; then
+    brew shellenv > "$HOMEBREW_ENV_FILE"
+  fi
+  . "$HOMEBREW_ENV_FILE"
 
   # For using GNU coreutils with default names
-  # NTS: I use this for the 'tree' command
-  # FIXME: No, appearently I don't. Is it for gnu ls?
   # FIXME: I need it to do readlink -f
-  path=( /usr/local/opt/coreutils/libexec/gnubin $path )
-  path=( /usr/local/mysql/bin $path )
+  path=( $HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin $path )
 
   path=( ~/bin $path )
 fi
