@@ -1,14 +1,15 @@
-# check the example config at /usr/share/dunst/dunstrc for more details
+# check the example config at /etc/dunst/dunstrc for more details
 
 [global]
     ### Display ###
-    monitor = 0
+    monitor = 2
     follow = none
-    geometry = "500x5-30+65"
+    width = 500
+    origin = top-left
+    offset = 30x60
     indicate_hidden = yes
     shrink = no
     transparency = 10
-    notification_height = 0
     separator_height = 2
     padding = 8
     horizontal_padding = 8
@@ -49,8 +50,6 @@
     always_run_script = true
     title = Dunst
     class = Dunst
-    startup_notification = false
-    verbosity = mesg
     corner_radius = 0
     ignore_dbusclose = false
     force_xinerama = false
