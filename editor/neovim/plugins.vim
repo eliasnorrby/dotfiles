@@ -103,7 +103,7 @@ require('toggle_lsp_diagnostics').init({
     signs     = true, update_in_insert = true
 })
 require('hop').setup()
-require('gitsigns').setup()
+require('gitsigns-conf')
 require('trouble').setup()
 require('colorizer').setup()
 require('treesitter-conf')
