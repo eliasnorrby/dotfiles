@@ -8,8 +8,7 @@ window:
   # none gets rid of the rounded corners, but at buttonless allows for
   # maximization with APP+CR
   decorations: buttonless
-
-background_opacity: 0.92
+  opacity: 0.94
 
 fonts:
   dankmono: &dankmono
