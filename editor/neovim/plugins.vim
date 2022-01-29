@@ -137,7 +137,7 @@ nmap <leader>tdd <Plug>(toggle-lsp-diag)
 nnoremap <leader>e <cmd>NvimTreeToggle<CR>
 nnoremap <leader>fl <cmd>NvimTreeFindFile<CR>
 
-nnoremap <silent> <leader>fF :Format<CR>
+nnoremap <silent> <leader>ff :Format<CR>
 
 nnoremap <leader>tt <cmd>TroubleToggle<cr>
 
