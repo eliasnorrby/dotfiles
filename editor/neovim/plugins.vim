@@ -124,9 +124,11 @@ require('nvim-tree').setup({
 require('rest-nvim').setup()
 require('material').setup({
   contrast = {
-      sidebars = true,
-      floating_windows = true,
-    },
+    sidebars = true,
+  },
+  disable = {
+    background = true,
+  }
 })
 EOF
 
