@@ -60,7 +60,7 @@ Plug 'wincent/vcs-jump'
 Plug 'wellle/targets.vim'
 
 " Filetypes_and_syntax:
-runtime plugins.d/sheerun/vim-polyglot.vim
+" runtime plugins.d/sheerun/vim-polyglot.vim
 Plug 'neoclide/jsonc.vim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
