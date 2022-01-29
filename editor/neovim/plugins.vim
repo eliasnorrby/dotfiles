@@ -55,6 +55,7 @@ Plug 'tpope/vim-rhubarb'
 Plug 'junegunn/gv.vim', { 'on': 'GV' }
 Plug 'rhysd/git-messenger.vim'
 Plug 'wincent/vcs-jump'
+Plug 'pwntester/octo.nvim'
 
 " Text_objects:
 Plug 'wellle/targets.vim'
