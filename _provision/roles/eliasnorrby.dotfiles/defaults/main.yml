@@ -33,9 +33,8 @@ topics:
           - fzf
           - ripgrep
         links:
-          - .zshrc
-          - .zshenv
-          - src: .zshenv
+          - zshrc
+          - src: zshenv
             dest: ~/.zshenv
     - name: git
       state: present
