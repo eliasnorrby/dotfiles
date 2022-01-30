@@ -33,7 +33,7 @@ fi
 _msg "-- ansible --"
 _msg "Installing playbook roles..."
 cd "$DOTFILES/_provision"
-ansible-galaxy install -r requirements.yml -p ./roles
+ansible-galaxy install -r requirements.yml
 cd -
 
 _msg "Done!"
