@@ -1,0 +1,12 @@
+---
+kitty_config:
+  path: terminal/kitty
+  links:
+    - kitty.conf
+    - src: tmux_kitty.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: tmux_kitty
+  brew_casks:
+    - kitty
+  pacman_packages:
+    - kitty

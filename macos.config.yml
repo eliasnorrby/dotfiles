@@ -55,6 +55,9 @@ topics:
     - name: alacritty
       state: present
       config: "{{ alacritty_config }}"
+    - name: kitty
+      state: present
+      config: "{{ kitty_config }}"
   shell:
     - name: bash
       state: present
