@@ -51,7 +51,7 @@ vim_in_tmux_select() {
 }
 
 is_tmux() {
-  xprop -id "$(xdo id)" | grep 'WM_CLASS.*TmuxAlacritty' >/dev/null
+  xprop -id "$(xdo id)" | grep -E 'WM_CLASS.*Tmux(Alacritty|Kitty)' >/dev/null
 }
 
 is_vim() {
