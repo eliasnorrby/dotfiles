@@ -1,6 +1,6 @@
 ---
 alacritty_config:
-  path: shell/alacritty
+  path: terminal/alacritty
   links:
     - alacritty.yml
     - src: alacritty.arch.yml

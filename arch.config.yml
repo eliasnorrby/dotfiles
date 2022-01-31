@@ -71,10 +71,11 @@ topics:
     - name: rofi
       state: present
       config: "{{ rofi_config }}"
-  shell:
+  terminal:
     - name: alacritty
       state: present
       config: "{{ alacritty_config }}"
+  shell:
     - name: bash
       state: present
       config: "{{ bash_config }}"

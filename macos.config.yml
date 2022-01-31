@@ -51,10 +51,11 @@ topics:
     - name: karabiner
       state: present
       config: "{{ karabiner_config }}"
-  shell:
+  terminal:
     - name: alacritty
       state: present
       config: "{{ alacritty_config }}"
+  shell:
     - name: bash
       state: present
       config: "{{ bash_config }}"
