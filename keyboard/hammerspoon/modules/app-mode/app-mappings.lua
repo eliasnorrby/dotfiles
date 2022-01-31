@@ -13,7 +13,7 @@ return {
   { 'q', 'MySQLWorkbench'},        -- "Q" for "sQl"
   { 'n', 'Postman'},
   { 'i', 'Insomnia'},              -- "I" for "Insomnia"
-  { 'r', 'Rider' },
+  { 'r', 'kitty' },
   { 'u', 'Spotify' },              -- "U" for some reason
   { 'x', 'Firefox Developer Edition' },
   { 'w', 'Microsoft PowerPoint' },
