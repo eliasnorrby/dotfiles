@@ -10,7 +10,7 @@ fi
 
 # Customization
 # -------------
-export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | $(get_copy_cmd))+abort' --header 'Press CTRL-Y to copy command into clipboard' --border"
+export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | $(get_copy_cmd))+abort' --header 'Press CTRL-Y to copy command into clipboard'"
 
 if _is_callable fd ; then
   export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
@@ -27,6 +27,8 @@ export FZF_DEFAULT_OPTS='
   --color info:7,prompt:4,spinner:6,pointer:4,marker:4,gutter:-1
   --bind  ctrl-a:select-all
 '
+
+export FZF_TMUX_OPTS='-p 70%,70%'
 
 # Use fzf for z
 # TODO: decide on whether to install z again
@@ -86,7 +88,7 @@ fgr() {
 # select from previous long-ish arguments
 fargs() {
   local args
-  history -50 | cut -c 8- | sed 's/ /\n/g' | sed '/^.\{0,5\}$/d' | sort | uniq | fzf-down --reverse
+  history -50 | cut -c 8- | sed 's/ /\n/g' | sed '/^.\{0,5\}$/d' | sort | uniq | fzf_tmux --reverse
 }
 
 fzf-args-widget() { local result=$(fargs | join-lines); zle reset-prompt; LBUFFER+=$result }
@@ -105,8 +107,8 @@ fnpm() {
       package_dir="$repo_root"
     fi
   fi
-  script=$( jq -r '.scripts' "${package_dir}/package.json" | jq 'keys[]' | sed 's/"//g' | package_dir="$package_dir" fzf-down --ansi --reverse \
-    --preview 'jq -r ".scripts[\"$(echo {})\"]" "${package_dir}/package.json" | bat -l sh --color always --decorations never')
+  script=$( jq -r '.scripts' "${package_dir}/package.json" | jq 'keys[]' | sed 's/"//g' | package_dir="$package_dir" fzf_tmux --ansi --reverse \
+    --preview 'jq -r ".scripts[\"$(echo {})\"]" "'"${package_dir}"'/package.json" | bat -l sh --color always --decorations never')
   [ -z "$script" ] && return
   npm run $script
 }
@@ -122,8 +124,8 @@ npm-widget() {
       package_dir="$repo_root"
     fi
   fi
-  script=$( jq -r '.scripts' "${package_dir}/package.json" | jq 'keys[]' | sed 's/"//g' | package_dir="$package_dir" fzf-down --ansi --reverse \
-    --preview 'jq -r ".scripts[\"$(echo {})\"]" "${package_dir}/package.json" | bat -l sh --color always --decorations never')
+  script=$( jq -r '.scripts' "${package_dir}/package.json" | jq 'keys[]' | sed 's/"//g' | package_dir="$package_dir" fzf_tmux --ansi --reverse \
+    --preview 'jq -r ".scripts[\"$(echo {})\"]" "'"${package_dir}"'/package.json" | bat -l sh --color always --decorations never')
   zle reset-prompt
   [ -z "$script" ] && return
   BUFFER="npm run ${script}"
@@ -162,10 +164,14 @@ fzf-down() {
   fzf --height 50% "$@" --border
 }
 
+fzf_tmux() {
+  fzf-tmux "$FZF_TMUX_OPTS" "$@"
+}
+
 gf() {
   is_in_git_repo || return
   git -c color.status=always status --short |
-  fzf-down -m --ansi --nth 2..,.. \
+  fzf_tmux -m --ansi --nth 2..,.. \
     --preview '(git diff --color=always -- {-1} | sed 1,4d; cat {-1}) | head -500' |
   cut -c4- | sed 's/.* -> //'
 }
@@ -192,7 +198,7 @@ _gitLogLineToHash="echo {} | grep -o '[a-f0-9]\{7\}' | head -1 -c -1"
 gg() {
   is_in_git_repo || return
   git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --graph --color=always |
-  fzf-down --ansi --no-sort --reverse --multi \
+  fzf_tmux -p "90%,70%" --ansi --no-sort --reverse --multi \
     --bind 'ctrl-n:toggle-sort' \
     --bind "ctrl-y:execute-silent($_gitLogLineToHash | $(get_copy_cmd))+abort" \
     --header 'Press CTRL-N to toggle sort, CTRL-Y to yank' \
