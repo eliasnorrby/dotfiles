@@ -22,6 +22,7 @@ zsh_config:
     # misc
     - neofetch
     - terminal-notifier
+    - exa
   pacman_packages:
     - zsh
     - xclip
@@ -36,6 +37,7 @@ zsh_config:
     - mdcat
     - entr
     - parallel
+    - exa
   aur_packages:
     - yq2-bin
   links:
