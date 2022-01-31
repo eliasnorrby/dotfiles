@@ -1,0 +1,27 @@
+---
+font_config:
+  path: base/font
+  brew_taps:
+    - homebrew/cask-fonts
+  brew_casks:
+    - font-3270-nerd-font
+    - font-dejavu-sans-mono-nerd-font
+    - font-fira-code-nerd-font
+    - font-hack-nerd-font
+    - font-iosevka-nerd-font
+    - font-mononoki-nerd-font
+    - font-roboto-mono-nerd-font
+    - font-sauce-code-pro-nerd-font
+  pacman_packages:
+    - ttf-font-awesome
+    - ttf-roboto
+    - ttf-iosevka-nerd
+  aur_packages:
+    - nerd-fonts-fira-code
+    - nerd-fonts-hack
+    - nerd-fonts-meslo
+    - nerd-fonts-mononoki
+    - nerd-fonts-source-code-pro
+    - ttf-devicons
+    - ttf-mononoki
+    - ttf-material-design-icons-webfont

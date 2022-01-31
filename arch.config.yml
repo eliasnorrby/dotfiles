@@ -16,6 +16,9 @@ topics:
     - name: arch
       state: present
       config: "{{ arch_config }}"
+    - name: font
+      state: present
+      config: "{{ font_config }}"
     - name: work
       state: present
       config: "{{ work_config }}"

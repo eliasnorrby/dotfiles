@@ -29,9 +29,6 @@ arch_config:
     - xorg-xinput
     - xorg-xev
     - xsel
-    - ttf-font-awesome
-    - ttf-roboto
-    - ttf-iosevka-nerd
     - gucharmap
     - base-devel
     - rofi
@@ -44,13 +41,5 @@ arch_config:
     - 1password
     - 1password-cli
     - slack-desktop
-    - nerd-fonts-fira-code
-    - nerd-fonts-hack
-    - nerd-fonts-meslo
-    - nerd-fonts-mononoki
-    - nerd-fonts-source-code-pro
-    - ttf-devicons
-    - ttf-mononoki
-    - ttf-material-design-icons-webfont
 
 aur_builder_user_name: aur_builder

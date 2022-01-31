@@ -5,7 +5,6 @@ macos_config:
     - curl
   brew_taps:
     - homebrew/cask-versions # for firefox-developer-edition
-    - homebrew/cask-fonts
   brew_casks:
     # essential
     - alfred
@@ -24,15 +23,6 @@ macos_config:
     - balenaetcher
     - fantastical
     - obsidian
-    # fonts
-    - font-3270-nerd-font
-    - font-dejavu-sans-mono-nerd-font
-    - font-fira-code-nerd-font
-    - font-hack-nerd-font
-    - font-iosevka-nerd-font
-    - font-mononoki-nerd-font
-    - font-roboto-mono-nerd-font
-    - font-sauce-code-pro-nerd-font
   mas_apps:
     - id: 950297057
       name: "FuzzyTime"
