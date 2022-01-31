@@ -128,7 +128,10 @@ require('material').setup({
   },
   disable = {
     background = true,
-  }
+  },
+  italics = {
+    comments = true,
+  },
 })
 EOF
 
