@@ -3,6 +3,12 @@ kitty_config:
   path: terminal/kitty
   links:
     - kitty.conf
+    - src: kitty.arch.conf
+      rename: kitty.local.conf
+      condition: "{{ is_arch }}"
+    - src: kitty.macos.conf
+      rename: kitty.local.conf
+      condition: "{{ is_macos }}"
     - src: tmux_kitty.sh
       dest: "{{ xdg_bin_home }}/"
       rename: tmux_kitty
