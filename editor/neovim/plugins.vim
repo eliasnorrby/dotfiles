@@ -64,6 +64,7 @@ Plug 'wellle/targets.vim'
 " runtime plugins.d/sheerun/vim-polyglot.vim
 Plug 'neoclide/jsonc.vim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'fladson/vim-kitty'
 
 " Fuzzy_finder:
 Plug 'nvim-lua/popup.nvim'
