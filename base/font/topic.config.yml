@@ -12,6 +12,7 @@ font_config:
     - font-mononoki-nerd-font
     - font-roboto-mono-nerd-font
     - font-sauce-code-pro-nerd-font
+    - font-victor-mono-nerd-font
   pacman_packages:
     - ttf-font-awesome
     - ttf-roboto
@@ -22,6 +23,7 @@ font_config:
     - nerd-fonts-meslo
     - nerd-fonts-mononoki
     - nerd-fonts-source-code-pro
+    - nerd-fonts-victor-mono
     - ttf-devicons
     - ttf-mononoki
     - ttf-material-design-icons-webfont
