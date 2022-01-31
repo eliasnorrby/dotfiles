@@ -8,6 +8,11 @@ source "$DIR"/env
 
 _msg() { printf "\r\033[2K\033[0;32m[ .. ] %s\033[0m\n" "$*"; }
 
+# install tmux terminfo
+if [[ "$(_os)" == "macos" ]]; then
+  tic -x "$DIR/assets/tmux.terminfo"
+fi
+
 # vim-plug
 if _is_callable nvim ; then
   _msg "-- vim-plug --"
