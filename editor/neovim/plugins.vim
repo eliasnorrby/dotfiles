@@ -95,6 +95,9 @@ Plug 'NTBBloodbath/rest.nvim'
 " DB
 Plug 'tpope/vim-dadbod'
 
+" Keybinds
+Plug 'folke/which-key.nvim'
+
 call plug#end()
 
 lua <<EOF
@@ -133,6 +136,7 @@ require('material').setup({
     comments = true,
   },
 })
+require('which-key').setup()
 EOF
 
 " TODO: put this somewhere else
