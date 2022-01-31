@@ -17,6 +17,8 @@ hyper + x
 # tmux
 hyper + t
   focus_or_run TmuxAlacritty tmux_alacritty
+hyper + r
+  focus_or_run TmuxKitty tmux_kitty
 
 # notes
 hyper + n
@@ -55,7 +57,7 @@ hyper + s
   focus_or_run emacs
 
 # reminder
-hyper + r
+hyper + shift + r
   reminder
 
 # slack
