@@ -16,7 +16,7 @@ get_copy_cmd() {
   if [[ "$(_os)" == "macos" ]] ; then
     echo "pbcopy"
   else
-    echo "xclip -selection clipboard"
+    echo "xsel -b"
   fi
 }
 
