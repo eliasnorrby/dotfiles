@@ -52,6 +52,10 @@ hyper + d
 hyper + a
   focus_or_run "microsoft teams - preview" launch_on_desktop A2 teams
 
+# google meet
+hyper + m
+  focus_or_run Chromium chromium
+
 # emacs
 hyper + s
   focus_or_run emacs
