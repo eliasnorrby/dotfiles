@@ -214,12 +214,11 @@ gr() {
   cut -d$'\t' -f1
 }
 
-# This won't work, because I've got session switching bound to C-s, and gs aliased to gsutil
-# gs() {
-#   is_in_git_repo || return
-#   git stash list | fzf-down --reverse -d: --preview 'git show --color=always {1}' |
-#   cut -d: -f1
-# }
+gz() {
+  is_in_git_repo || return
+  git stash list | fzf-down --reverse -d: --preview 'git show --color=always {1}' |
+  cut -d: -f1
+}
 
 join-lines() {
   local item
@@ -236,7 +235,7 @@ bind-git-helper() {
     eval "bindkey '^g^$c' fzf-g$c-widget"
   done
 }
-bind-git-helper f b t r g s
+bind-git-helper f b t r g z
 unset -f bind-git-helper
 
 # More git love
