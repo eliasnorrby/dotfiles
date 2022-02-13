@@ -27,7 +27,7 @@ export LESS='-R -i -w -M -z-4 -F'
 export LESSHISTFILE="$XDG_DATA_HOME/lesshst"
 export CLICOLOR=1
 
-export WORDCHARS='*?_-[]~=&;!#$%^(){}<>'
+export WORDCHARS='*?_-[]~&;!#$%^(){}<>'
 
 if [[ "$(_os)" == "macos" ]]; then
   # Cache output of brew shellenv
