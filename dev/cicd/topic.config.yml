@@ -10,6 +10,8 @@ cicd_config:
     - tflint
     - pack
     - argocd
+  brew_casks:
+    - ngrok
   pacman_packages:
     - tekton-cli
     - terraform
