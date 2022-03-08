@@ -22,6 +22,7 @@
   rc = rebase --continue
   ra = rebase --abort
   rr = rebase --autostash
+  rs = rebase -i --autosquash
   # 'Remote Prune'
   rp = remote prune origin
   rv = remote -v
