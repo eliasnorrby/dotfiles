@@ -15,12 +15,10 @@ echo-ok "zsh updated!"
 echo-info "Wrote logs to $zsh_log"
 
 # vim
-vim_plug_log=$(mktemp)
 echo "$SPACE"
 echo-info "Updating vim-plug plugins..."
-nvim +'PlugInstall --sync' +PlugUpdate +PlugUpgrade +qall | tee $vim_plug_log
+nvim +'PlugInstall --sync' +PlugUpdate +PlugUpgrade +qall
 echo-ok "vim-plug updated!"
-echo-info "Wrote logs to $vim_plug_log"
 
 if [[ "$(_os)" == "macos" ]]; then
   # brew
@@ -68,7 +66,6 @@ fi
 # finish up
 echo-info "Logs available at:"
 echo "  zsh: $zsh_log"
-echo "  vim_plug: $vim_plug_log"
 echo "  brew: $brew_log"
 echo "  brew cask: $brew_cask_log"
 echo "  doom: $doom_log"
