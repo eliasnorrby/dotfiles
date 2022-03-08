@@ -86,6 +86,7 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
 Plug 'WhoIsSethDaniel/toggle-lsp-diagnostics.nvim'
 Plug 'folke/trouble.nvim'
+Plug 'kosayoda/nvim-lightbulb'
 
 " Formatting:
 Plug 'mhartington/formatter.nvim'
@@ -166,3 +167,8 @@ nnoremap <leader>p <cmd>Glow<cr>
 nmap <leader>rr <Plug>RestNvim
 nmap <leader>rp <Plug>RestNvimPreview
 nmap <leader>rl <Plug>RestNvimLast
+
+augroup Lightbulb
+  autocmd!
+  autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()
+augroup END
