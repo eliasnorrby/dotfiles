@@ -114,7 +114,7 @@ fnpm() {
 }
 
 npm-widget() {
-  local repo_root package_dir script
+  local repo_root package_dir script runner
   package_dir="$(pwd)"
   if [[ ! -f package.json ]] ; then
     repo_root="$(git rev-parse --show-toplevel)"
@@ -124,11 +124,16 @@ npm-widget() {
       package_dir="$repo_root"
     fi
   fi
+  if [[ -f yarn.lock ]] ; then
+    runner=yarn
+  else
+    runner="npm run"
+  fi
   script=$( jq -r '.scripts' "${package_dir}/package.json" | jq 'keys[]' | sed 's/"//g' | package_dir="$package_dir" fzf_tmux --ansi --reverse \
     --preview 'jq -r ".scripts[\"$(echo {})\"]" "'"${package_dir}"'/package.json" | bat -l sh --color always --decorations never')
   zle reset-prompt
   [ -z "$script" ] && return
-  BUFFER="npm run ${script}"
+  BUFFER="${runner} ${script}"
   zle end-of-line
 }
 
