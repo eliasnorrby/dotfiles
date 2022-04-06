@@ -26,3 +26,5 @@ lsp_map('n', '<leader>ca', "lsp_code_actions")
 lsp_map('n', 'gd', "lsp_definitions")
 lsp_map('n', 'gi', "lsp_implementations")
 lsp_map('n', 'go', "lsp_document_symbols")
+
+require('telescope-pickers')
