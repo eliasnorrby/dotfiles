@@ -18,10 +18,12 @@ nnoremap <C-E> <C-E><C-E><C-E>
 nnoremap <C-Y> <C-Y><C-Y><C-Y>
 
 " saving & quitting
-nnoremap <silent> <leader>q :q<CR>
 nnoremap <silent> <leader>fs :w<CR>
-nnoremap <silent> <leader>Q :q!<CR>
+nnoremap <silent> <leader>q :q<CR>
+nnoremap <silent> <leader>Q :qall<CR>
+nnoremap <silent> <leader>x :q!<CR>
 nnoremap <silent> <leader>X :qall!<CR>
+nnoremap <silent> <leader>R :%bd<CR>
 
 " windows
 nnoremap <silent> <leader>w <C-W>
