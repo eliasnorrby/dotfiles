@@ -5,12 +5,16 @@
   pager = delta -s
 [interactive]
   diffFilter = delta --color-only
+[diff]
+  colorMoved = default
+[merge]
+  conflictstyle = diff3
+[delta]
+  navigate = true
 [push]
   default = current
 [pull]
   rebase = true
-[merge]
-  conflictstyle = diff3
 [init]
 	defaultBranch = main
 
