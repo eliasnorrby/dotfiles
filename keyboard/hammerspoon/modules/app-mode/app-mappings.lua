@@ -9,7 +9,7 @@ return {
   { 'f', 'Fantastical' },        -- "F" for "Fantastical"
   { 'g', 'Todoist' },            -- "G" for "GTD"
   { 'i', 'Insomnia'},            -- "I" for "Insomnia"
-  { 'm', 'Gmail'},               -- "M" for "Mail"
+  { 'm', 'iMovie'},
   { 'n', 'Postman'},
   -- { 'o', '?' },
   { 'p', 'Adobe Lightroom' },          -- "P" for "Photo"
