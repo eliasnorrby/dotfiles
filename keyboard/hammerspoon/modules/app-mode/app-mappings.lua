@@ -12,7 +12,7 @@ return {
   { 'm', 'Gmail'},               -- "M" for "Mail"
   { 'n', 'Postman'},
   -- { 'o', '?' },
-  -- { 'p', '?' },
+  { 'p', 'Adobe Lightroom' },          -- "P" for "Photo"
   { 'q', '?'},
   { 'r', 'Alacritty' },
   { 's', 'Emacs' },
