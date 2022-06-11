@@ -4,7 +4,7 @@ return {
   { 'c', 'Google Chrome' },        -- "C" for "Chrome"
   { 'o', 'Microsoft Outlook' },    -- "O" for "Outlook"
   { 'e', 'Visual Studio Code' },   -- "E" for "Editor"
-  { 'f', 'Fantastical 2' },        -- "F" for "Fantastical"
+  { 'f', 'Fantastical' },        -- "F" for "Fantastical"
   { 's', 'Emacs' },                -- "S" for "Sublime"
   { 'g', 'Todoist' },              -- "G" for "GTD"
   { 't', 'kitty' },            -- "T" for "Terminal"
