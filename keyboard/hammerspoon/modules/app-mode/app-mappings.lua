@@ -2,24 +2,24 @@
 -- h, j, k, l occupied by arrow key mappings
 return {
   { 'a', 'Microsoft Teams' },
-  { 'b', 'Sunsama' },            -- "B" for "(Time) Block"
+  -- { 'b', '?' },
   { 'c', 'Google Chrome' },      -- "C" for "Chrome"
   { 'd', 'Drafts' },             -- "D" for "Drafts"
-  { 'e', 'Visual Studio Code' }, -- "E" for "Editor"
+  -- { 'e', '?' },
   { 'f', 'Fantastical' },        -- "F" for "Fantastical"
   { 'g', 'Todoist' },            -- "G" for "GTD"
   { 'i', 'Insomnia'},            -- "I" for "Insomnia"
   { 'm', 'Gmail'},               -- "M" for "Mail"
   { 'n', 'Postman'},
-  { 'o', 'Microsoft Outlook' },  -- "O" for "Outlook"
+  -- { 'o', '?' },
   -- { 'p', '?' },
-  { 'q', 'MySQLWorkbench'},      -- "Q" for "sQl"
+  { 'q', '?'},
   { 'r', 'Alacritty' },
-  { 's', 'Emacs' },              -- "S" for "Sublime"
+  { 's', 'Emacs' },
   { 't', 'kitty' },              -- "T" for "Terminal"
-  { 'u', 'Spotify' },            -- "U" for some reason
+  { 'u', 'Spotify' },
   -- { 'v', '?' },
-  { 'w', 'Microsoft PowerPoint' },
+  -- { 'w', '?' },
   { 'x', 'Firefox Developer Edition' },
   -- { 'y', '?' },
   { 'z', 'Slack' },
