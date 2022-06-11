@@ -1,22 +1,22 @@
 -- Keybindings for launching apps in App Mode
 return {
-  { 'b', 'Sunsama' },              -- "B" for "(Time) Block"
-  { 'c', 'Google Chrome' },        -- "C" for "Chrome"
-  { 'o', 'Microsoft Outlook' },    -- "O" for "Outlook"
-  { 'e', 'Visual Studio Code' },   -- "E" for "Editor"
-  { 'f', 'Fantastical' },        -- "F" for "Fantastical"
-  { 's', 'Emacs' },                -- "S" for "Sublime"
-  { 'g', 'Todoist' },              -- "G" for "GTD"
-  { 't', 'kitty' },            -- "T" for "Terminal"
-  { 'd', 'Drafts' },               -- "D" for "Drafts"
-  { 'm', 'Gmail'},                 -- "M" for "Mail"
-  { 'q', 'MySQLWorkbench'},        -- "Q" for "sQl"
-  { 'n', 'Postman'},
-  { 'i', 'Insomnia'},              -- "I" for "Insomnia"
-  { 'r', 'Alacritty' },
-  { 'u', 'Spotify' },              -- "U" for some reason
-  { 'x', 'Firefox Developer Edition' },
-  { 'w', 'Microsoft PowerPoint' },
   { 'a', 'Microsoft Teams' },
+  { 'b', 'Sunsama' },            -- "B" for "(Time) Block"
+  { 'c', 'Google Chrome' },      -- "C" for "Chrome"
+  { 'd', 'Drafts' },             -- "D" for "Drafts"
+  { 'e', 'Visual Studio Code' }, -- "E" for "Editor"
+  { 'f', 'Fantastical' },        -- "F" for "Fantastical"
+  { 'g', 'Todoist' },            -- "G" for "GTD"
+  { 'i', 'Insomnia'},            -- "I" for "Insomnia"
+  { 'm', 'Gmail'},               -- "M" for "Mail"
+  { 'n', 'Postman'},
+  { 'o', 'Microsoft Outlook' },  -- "O" for "Outlook"
+  { 'q', 'MySQLWorkbench'},      -- "Q" for "sQl"
+  { 'r', 'Alacritty' },
+  { 's', 'Emacs' },              -- "S" for "Sublime"
+  { 't', 'kitty' },              -- "T" for "Terminal"
+  { 'u', 'Spotify' },            -- "U" for some reason
+  { 'w', 'Microsoft PowerPoint' },
+  { 'x', 'Firefox Developer Edition' },
   { 'z', 'Slack' },
 }
