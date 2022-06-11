@@ -1,4 +1,5 @@
 -- Keybindings for launching apps in App Mode
+-- h, j, k, l occupied by arrow key mappings
 return {
   { 'a', 'Microsoft Teams' },
   { 'b', 'Sunsama' },            -- "B" for "(Time) Block"
@@ -11,12 +12,15 @@ return {
   { 'm', 'Gmail'},               -- "M" for "Mail"
   { 'n', 'Postman'},
   { 'o', 'Microsoft Outlook' },  -- "O" for "Outlook"
+  -- { 'p', '?' },
   { 'q', 'MySQLWorkbench'},      -- "Q" for "sQl"
   { 'r', 'Alacritty' },
   { 's', 'Emacs' },              -- "S" for "Sublime"
   { 't', 'kitty' },              -- "T" for "Terminal"
   { 'u', 'Spotify' },            -- "U" for some reason
+  -- { 'v', '?' },
   { 'w', 'Microsoft PowerPoint' },
   { 'x', 'Firefox Developer Edition' },
+  -- { 'y', '?' },
   { 'z', 'Slack' },
 }
