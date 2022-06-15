@@ -5,6 +5,7 @@ node_config:
     - node
     - yarn
     - fnm
+    - pnpm
   pacman_packages:
     - nodejs
     - npm
