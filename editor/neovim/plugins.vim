@@ -100,6 +100,8 @@ Plug 'tpope/vim-dadbod'
 " Keybinds
 Plug 'folke/which-key.nvim'
 
+Plug 'github/copilot.vim'
+
 call plug#end()
 
 lua <<EOF
