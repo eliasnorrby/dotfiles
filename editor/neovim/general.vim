@@ -35,6 +35,8 @@ set signcolumn=yes
 
 set foldlevel=100
 
+set pumheight=8
+
 if has("termguicolors")
   set termguicolors
 endif
