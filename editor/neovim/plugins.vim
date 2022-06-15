@@ -70,6 +70,7 @@ Plug 'fladson/vim-kitty'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'nvim-telescope/telescope-ui-select.nvim'
 " runtime plugins.d/junegunn/fzf.vim
 
 " Colorschemes:

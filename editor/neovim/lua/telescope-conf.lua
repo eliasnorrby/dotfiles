@@ -1,5 +1,8 @@
 local actions = require('telescope.actions')
 require('telescope').setup{
+  extensions = {
+    ['ui-select'] = {},
+  },
   defaults = {
     prompt_prefix = "λ ",
     mappings = {
@@ -10,6 +13,7 @@ require('telescope').setup{
   }
 }
 require('telescope').load_extension('fzf')
+require('telescope').load_extension('ui-select')
 
 local opts = {noremap=true, silent=true }
 local function lsp_map(mode, keybind, command)
