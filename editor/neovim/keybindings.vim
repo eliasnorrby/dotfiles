@@ -102,3 +102,6 @@ nmap <silent> <leader>fZ <Plug>FixNextSpelling
 xnoremap <silent> <leader>ft :s/^  /	/<cr>
 
 nnoremap - <Nop>
+
+nnoremap s ysiw
+nnoremap S ysiW
