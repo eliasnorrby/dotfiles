@@ -28,7 +28,7 @@ require'lualine'.setup {
     lualine_b = {'branch'},
     lualine_c = {'filename'},
     -- lualine_x = {'encoding', 'fileformat', 'filetype'},
-    lualine_x = { diagnostics, 'filetype' },
+    lualine_x = { '%a', diagnostics, 'filetype' },
     lualine_y = {'progress'},
     lualine_z = {'location'}
   },
