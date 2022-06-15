@@ -32,7 +32,9 @@ require('formatter').setup({
   filetype = {
     json = prettier,
     javascript = prettier,
+    javascriptreact = prettier,
     typescript = prettier,
+    typescriptreact = prettier,
     yaml = prettier,
     toml = prettier,
     markdown = prettier,
