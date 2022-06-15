@@ -83,3 +83,16 @@ nnoremap <silent> <leader>64 :echo system('base64 --decode', expand('<cWORD>'))<
 
 xnoremap <silent> <leader>64 c<c-r>=system('base64 --wrap 0', @")<cr><esc>
 xnoremap <silent> <leader>d64 c<c-r>=system('base64 --decode', @")<cr><esc>
+
+
+" ============================================================================ "
+" ===                            RANDOM                                    === "
+" ============================================================================ "
+
+function! InlineRead(command)
+  let colnum = col('.')
+  let line = getline('.')
+  call setline('.', strpart(line, 0, colnum) . system(a:command) . strpart(line, colnum))
+endfunction
+
+nnoremap <silent> <leader>ir :call InlineRead("printf '%s' $RANDOM \| md5sum \| head -c 8")<cr>
