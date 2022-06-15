@@ -38,6 +38,8 @@
   fp = "!f() { git push --force-with-lease origin $(git cb); }; f"
   # 'Branch Delete': Delete merged branches
   bdelete = "!f() { git branch --merged | grep -Ev '(\\*|master|main|develop)' | xargs -n 1 git branch -d; }; f"
+  # Delete squashed branches (https://github.com/not-an-aardvark/git-delete-squashed)
+	delete-squashed = "!f() { local targetBranch=${1:-master} && git checkout -q $targetBranch && git branch --merged | grep -v \"\\*\" | xargs -n 1 git branch -d && git for-each-ref refs/heads/ \"--format=%(refname:short)\" | while read branch; do mergeBase=$(git merge-base $targetBranch $branch) && [[ $(git cherry $targetBranch $(git commit-tree $(git rev-parse $branch^{tree}) -p $mergeBase -m _)) == \"-\"* ]] && git branch -D $branch; done; }; f"
   # 'Branch Clean'
   bclean = "!git rp && git bdelete"
   # 'Pull Request Delete': Checkout previous branch, deleting the current one
