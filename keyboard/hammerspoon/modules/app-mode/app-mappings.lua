@@ -5,14 +5,14 @@ return {
   -- { 'b', '?' },
   { 'c', 'Google Chrome' },      -- "C" for "Chrome"
   { 'd', 'Drafts' },             -- "D" for "Drafts"
-  -- { 'e', '?' },
+  { 'e', 'Adobe Lightroom' },    -- "E" for "Edit"
   { 'f', 'Fantastical' },        -- "F" for "Fantastical"
   { 'g', 'Todoist' },            -- "G" for "GTD"
   { 'i', 'Insomnia'},            -- "I" for "Insomnia"
   { 'm', 'iMovie'},
   { 'n', 'Postman'},
   -- { 'o', '?' },
-  { 'p', 'Adobe Lightroom' },          -- "P" for "Photo"
+  -- { 'p', '?' },               -- occupied by 1Password shortcut
   { 'q', '?'},
   { 'r', 'Alacritty' },
   { 's', 'Emacs' },
