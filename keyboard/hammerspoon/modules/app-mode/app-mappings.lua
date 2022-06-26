@@ -11,7 +11,7 @@ return {
   { 'i', 'Insomnia'},            -- "I" for "Insomnia"
   { 'm', 'iMovie'},
   { 'n', 'Postman'},
-  -- { 'o', '?' },
+  { 'o', 'OmniFocus' },
   -- { 'p', '?' },               -- occupied by 1Password shortcut
   { 'q', '?'},
   { 'r', 'Alacritty' },
