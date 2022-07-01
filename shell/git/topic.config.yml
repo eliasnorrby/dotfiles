@@ -9,6 +9,9 @@ git_config:
     - config-bemlo
     - config-notes
     - ignore
+    - src: gh-config.yml
+      dest: "{{ xdg_config_home }}/gh/"
+      rename: config.yml
     - src: gh_browse.sh
       dest: "{{ xdg_bin_home }}/"
       rename: gh_browse

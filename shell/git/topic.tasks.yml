@@ -1,0 +1,5 @@
+---
+- name: create gh config dir
+  file:
+    state: directory
+    path: "{{ xdg_config_home }}/gh"
