@@ -293,6 +293,39 @@ projects() {
 
 }
 
+apps() {
+  cd "$(git rev-parse --show-toplevel)" || return 1
+  local query=$1
+  local DIR_LIST=(
+    "${PWD}/apps"
+    "${PWD}/packages"
+  )
+
+  for dir in ${DIR_LIST[@]}; do
+    local APPS="${APPS}\n$(find ${dir} -maxdepth 1 -mindepth 1 -type d)"
+  done
+
+  if [[ -n "$query" ]]; then
+    local TARGET="$(echo -e "$APPS" | fzf --filter "$query" | head -1)"
+    if [[ -n "$TARGET" ]] ; then
+      cd "${TARGET}"
+    fi
+  else
+    # # Preview with tree
+    local TARGET="$(echo -e "$APPS" |
+      sed "s#$PWD##" |
+      fzf --border --tac \
+      --preview "tree -C -I node_modules -L 3 {}")"
+
+    if [[ -n "$TARGET" ]] ; then
+      cd "${PWD}/${TARGET}"
+    fi
+  fi
+
+}
+
+alias a=apps
+
 if [[ "$(_os)" == "arch" ]] ; then
   # FZF Pacman search
   ialias pf="pacman -Slq | fzf --multi --preview-window=right:70% --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S"

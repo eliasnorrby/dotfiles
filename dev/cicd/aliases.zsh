@@ -1,1 +1,1 @@
-alias a="argocd"
+# alias a="argocd"
