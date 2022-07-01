@@ -5,6 +5,12 @@ if type brew &>/dev/null; then
   fpath=( $HOMEBREW_PREFIX/share/zsh/site-functions $fpath )
 fi
 
+# tabtab source for packages (pnpm)
+# uninstall by removing these lines
+[[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
+# tabtab source for packages (netlify)
+[[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true
+
 # travis gem completion
 [ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
 
