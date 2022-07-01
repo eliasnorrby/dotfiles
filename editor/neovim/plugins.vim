@@ -156,7 +156,7 @@ nnoremap <silent> <leader>ff :Format<CR>
 
 nnoremap <leader>tt <cmd>TroubleToggle<cr>
 
-nnoremap <leader><leader> <cmd>Telescope find_files<cr>
+nnoremap <leader><leader> <cmd>Telescope git_files use_git_root=false<cr>
 nnoremap <leader><cr> <cmd>Telescope git_status<cr>
 nnoremap <leader>// <cmd>Telescope live_grep<cr>
 nnoremap <leader>/b <cmd>Telescope current_buffer_fuzzy_find<cr>
