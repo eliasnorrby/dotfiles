@@ -46,7 +46,7 @@ Plug 'hoob3rt/lualine.nvim'
 
 " Navigation:
 runtime plugins.d/tpope/vim-unimpaired.vim
-runtime plugins.d/phaazon/hop.vim
+runtime plugins.d/phaazon/hop.nvim
 runtime plugins.d/unblevable/quick-scope.vim
 
 " Git:
