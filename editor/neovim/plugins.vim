@@ -46,7 +46,7 @@ Plug 'hoob3rt/lualine.nvim'
 
 " Navigation:
 runtime plugins.d/tpope/vim-unimpaired.vim
-runtime plugins.d/phaazon/hop.nvim
+runtime plugins.d/phaazon/hop.nvim.vim
 runtime plugins.d/unblevable/quick-scope.vim
 
 " Git:
@@ -157,6 +157,7 @@ nnoremap <silent> <leader>ff :Format<CR>
 nnoremap <leader>tt <cmd>TroubleToggle<cr>
 
 nnoremap <leader><leader> <cmd>Telescope git_files use_git_root=false<cr>
+nnoremap <leader>. <cmd>Telescope find_files<cr>
 nnoremap <leader><cr> <cmd>Telescope git_status<cr>
 nnoremap <leader>// <cmd>Telescope live_grep<cr>
 nnoremap <leader>/b <cmd>Telescope current_buffer_fuzzy_find<cr>
