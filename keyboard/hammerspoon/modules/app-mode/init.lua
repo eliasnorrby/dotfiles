@@ -1,6 +1,6 @@
 -- A global variable for the App Mode
 appMode = hs.hotkey.modal.new()
-appModeStatusMessage = message.new('App Mode')
+appModeStatusMessage = message.new('🚀')
 appModeBlocked = false
 
 function enterAppMode()
