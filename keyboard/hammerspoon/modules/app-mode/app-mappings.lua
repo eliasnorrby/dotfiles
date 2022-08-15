@@ -1,7 +1,7 @@
 -- Keybindings for launching apps in App Mode
 -- h, j, k, l occupied by arrow key mappings
 return {
-  { 'a', 'Microsoft Teams' },
+  { 'a', 'Google Meet' },
   -- { 'b', '?' },
   { 'c', 'Google Chrome' },      -- "C" for "Chrome"
   { 'd', 'Drafts' },             -- "D" for "Drafts"
