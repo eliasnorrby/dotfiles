@@ -20,6 +20,8 @@ work_config:
       condition: "{{ is_arch }}"
   brew_formulas:
     - openfortivpn
+  brew_casks:
+    - notion
   pacman_packages:
     - openfortivpn
   aur_packages:

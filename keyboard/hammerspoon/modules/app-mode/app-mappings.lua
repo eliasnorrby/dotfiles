@@ -18,7 +18,7 @@ return {
   { 's', 'Emacs' },
   { 't', 'kitty' },              -- "T" for "Terminal"
   { 'u', 'Spotify' },
-  -- { 'v', '?' },
+  { 'v', 'Notion' },
   -- { 'w', '?' },
   { 'x', 'Firefox Developer Edition' },
   -- { 'y', '?' },
