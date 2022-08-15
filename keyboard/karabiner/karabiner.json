@@ -81,25 +81,6 @@
                         ]
                     },
                     {
-                        "description": "Set left ctrl as a main key for amethyst",
-                        "manipulators": [
-                            {
-                                "from": {
-                                    "key_code": "left_control"
-                                },
-                                "to_if_held_down": [
-                                    {
-                                        "key_code": "left_shift",
-                                        "modifiers": [
-                                            "left_option"
-                                        ]
-                                    }
-                                ],
-                                "type": "basic"
-                            }
-                        ]
-                    },
-                    {
                         "description": "Map h/j/k/l to arrow keys in App Mode",
                         "manipulators": [
                             {
