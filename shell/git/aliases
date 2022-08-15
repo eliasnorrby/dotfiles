@@ -9,6 +9,7 @@
   cr = reset --soft HEAD~
   b = branch
   d = diff
+  dc = diff --cached
   co = checkout
   empty = commit --allow-empty -m
   prevmessage = log --format=%B -1
