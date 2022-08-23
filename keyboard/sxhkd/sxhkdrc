@@ -6,79 +6,82 @@
 super + Return
 	alacritty
 
-# chrome
-hyper + c
-  focus_or_run google-chrome google-chrome-stable
-
-# firefox
-hyper + x
-  focus_or_run firefox
-
-# tmux
-hyper + r
-  focus_or_run TmuxAlacritty tmux_alacritty
-hyper + t
-  focus_or_run TmuxKitty tmux_kitty
-
-# notes
-hyper + n
-  focus_or_run NotesAlacritty notes_alacritty
-
-# taskwarrior
-hyper + w
-  focus_or_run TaskAlacritty task_alacritty
-
-# todoist
-hyper + g
-  focus_or_run todoist
-
-# sunsama
-hyper + b
-  focus_or_run sunsama
-
-# alacritty
-hyper + shift + t
-  focus_or_run alacritty
-
-# spotify
-hyper + u
-  focus_or_run spotify launch_on_desktop B2 spotify
-
-# discord
-hyper + d
-  focus_or_run discord launch_on_desktop B3 discord
+# Apps -------------------------------------------------------------------------
 
 # teams
 hyper + a
   focus_or_run "microsoft teams - preview" launch_on_desktop A2 teams
 
-# google meet
-hyper + m
-  focus_or_run Chromium chromium
+# sunsama
+hyper + b
+  focus_or_run sunsama
 
-# emacs
-hyper + s
-  focus_or_run emacs
+# chrome
+hyper + c
+  focus_or_run google-chrome google-chrome-stable
 
-# reminder
-hyper + shift + r
-  reminder
+# discord
+hyper + d
+  focus_or_run discord launch_on_desktop B3 discord
 
-# slack
-hyper + z
-  focus_or_run slack
+# todoist
+hyper + g
+  focus_or_run todoist
 
 # insomnia
 hyper + i
   focus_or_run insomnia
 
-# 1password
-hyper + p
-  focus_or_run 1password
+# google meet
+hyper + m
+  focus_or_run Chromium chromium
+
+# notes
+hyper + n
+  focus_or_run NotesAlacritty notes_alacritty
 
 # postman
 hyper + o
   focus_or_run postman launch_on_desktop A4 postman
+
+# 1password
+hyper + p
+  focus_or_run 1password
+
+# alacritty
+hyper + r
+  focus_or_run TmuxAlacritty tmux_alacritty
+hyper + shift + t
+  focus_or_run alacritty
+
+# emacs
+hyper + s
+  focus_or_run emacs
+
+hyper + t
+  focus_or_run TmuxKitty tmux_kitty
+
+# spotify
+hyper + u
+  focus_or_run spotify launch_on_desktop B2 spotify
+
+# taskwarrior
+hyper + w
+  focus_or_run TaskAlacritty task_alacritty
+
+# firefox
+hyper + x
+  focus_or_run firefox
+
+# slack
+hyper + z
+  focus_or_run slack
+
+# ------------------------------------------------------------------------------
+
+# reminder
+hyper + shift + r
+  reminder
 
 # tmux window select
 hyper + {1-9}
