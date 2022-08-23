@@ -26,6 +26,7 @@ work_config:
     - openfortivpn
   aur_packages:
     - teams
+    - notion-app
 
 openfortivpn_bin_path: "{{ is_macos | ternary('/usr/local/bin/openfortivpn','/usr/bin/openfortivpn') }}"
 vpn_group_name: openfortivpn

@@ -65,6 +65,10 @@ hyper + t
 hyper + u
   focus_or_run spotify launch_on_desktop B2 spotify
 
+# notion
+hyper + v
+  focus_or_run notion-app
+
 # taskwarrior
 hyper + w
   focus_or_run TaskAlacritty task_alacritty
