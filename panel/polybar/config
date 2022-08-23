@@ -298,6 +298,8 @@ menu-0-1 = reboot
 menu-0-1-exec = reboot
 menu-0-2 = power off
 menu-0-2-exec = systemctl poweroff
+menu-0-3 = reset
+menu-0-3-exec = bspc wm -r
 
 [module/github]
 type = internal/github
