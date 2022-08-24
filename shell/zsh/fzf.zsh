@@ -116,15 +116,17 @@ fnpm() {
 npm-widget() {
   local repo_root package_dir script runner
   package_dir="$(pwd)"
+  repo_root="$(git rev-parse --show-toplevel)"
   if [[ ! -f package.json ]] ; then
-    repo_root="$(git rev-parse --show-toplevel)"
     if [[ ! -f "${repo_root}/package.json" ]] ; then
       return
     else
       package_dir="$repo_root"
     fi
   fi
-  if [[ -f yarn.lock ]] ; then
+  if [[ -f yarn.lock ]] \
+    || [[ -f "${package_dir}/yarn.lock" ]] \
+    || [[ -f "${repo_root}/yarn.lock" ]]; then
     runner=yarn
   else
     runner="npm run"
