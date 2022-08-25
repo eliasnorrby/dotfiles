@@ -234,10 +234,11 @@ configured manually.
   - (MacOS) Preferences <kbd>→</kbd> Sharing
   - (Linux) `sudo scutil --set HostName <name-you-want>`
 - Generate ssh keys
-  - [Generate][ssh-github-generate]
-  - [Add][ssh-github-add]
-- Download the [Dank Mono font](https://dank.sh)
-- Link the proper scripts to `~/.local/bin`. There's a helper in the `scripts` directory. This could be scripted.
+  ```bash
+  ssh-keygen -t ed25519 -C "your_email@example.com"
+  gh auth login
+  ```
+  - Docs: [Generate][ssh-github-generate], [Add][ssh-github-add]
 
 ### MacOS
 
@@ -249,11 +250,17 @@ configured manually.
 - Enable shortcuts for desktop navigation (Preferences <kbd>→</kbd> Keyboard <kbd>→</kbd> Shortcuts <kbd>→</kbd> Mission Control)
 - Remap layout switching shortcuts (Preferences <kbd>→</kbd> Keyboard <kbd>→</kbd> Shortcuts <kbd>→</kbd> Input Sources)
 - Add Amethyst padding (`2 px` window margin, `5 px` screen padding)
+- Start Amethyst on Login (menubar configuration)
 - Configure Bartender to hide the appropriate icons, supply license
 - Import iStatMenus settings from `assets/istatmenus`, supply license
 - Some apps may require Rosetta to run
   - `/usr/sbin/softwareupdate --install-rosetta --agree-to-license`
 - Add Workman-P layout (?)
+
+### Optional
+
+- Download the [Dank Mono font](https://dank.sh)
+- Link the proper scripts to `~/.local/bin`. There's a helper in the `scripts` directory. This could be scripted.
 
 ## Troubleshooting
 
