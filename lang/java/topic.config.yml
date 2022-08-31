@@ -6,7 +6,6 @@ java_config:
     - gradle
     - java
   brew_casks:
-    - temurin8
     - adoptopenjdk/openjdk/adoptopenjdk11
   brew_taps:
     - homebrew/cask-versions
@@ -16,7 +15,5 @@ java_config:
     - jre-openjdk
     - jdk11-openjdk
     - jre11-openjdk
-    - jdk8-openjdk
-    - jre8-openjdk
     - maven
     - gradle
