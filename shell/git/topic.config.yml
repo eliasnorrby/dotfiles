@@ -21,6 +21,9 @@ git_config:
     - src: watch_branches.sh
       dest: "{{ xdg_bin_home }}/"
       rename: watch_branches
+    - src: fuzzy_branch.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: fuzzy_branch
   brew_formulas:
     - git
     - tig
