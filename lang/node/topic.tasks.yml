@@ -3,3 +3,11 @@
   file:
     state: directory
     path: "{{ npm_global_packages_dir }}/lib"
+
+# - name: add yarn completion
+#   block:
+#     - name: file
+#       state: directory
+#       path: "~/.zsh/completion"
+#     - download file
+#       curl -O https://raw.githubusercontent.com/zsh-users/zsh-completions/master/src/_yarn
