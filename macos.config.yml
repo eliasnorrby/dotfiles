@@ -39,7 +39,7 @@ topics:
       state: present
       config: "{{ editorconfig_config }}"
     - name: vscode
-      state: present
+      state: absent
       config: "{{ vscode_config }}"
     - name: intellij
       state: absent
@@ -94,7 +94,7 @@ topics:
       state: absent
       config: "{{ vagrant_config }}"
     - name: kubernetes
-      state: present
+      state: absent
       config: "{{ kubernetes_config }}"
     - name: kafka
       state: absent
