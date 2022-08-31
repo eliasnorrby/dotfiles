@@ -18,6 +18,9 @@ git_config:
     - src: list_branch_files.sh
       dest: "{{ xdg_bin_home }}/"
       rename: list_branch_files
+    - src: watch_branches.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: watch_branches
   brew_formulas:
     - git
     - tig
