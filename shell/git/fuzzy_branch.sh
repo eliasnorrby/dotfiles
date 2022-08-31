@@ -14,10 +14,15 @@ fzf_branch_select() {
   sed 's#^remotes/##'
 }
 
+# Assume we're working with origin
+filter_remote() {
+  sed 's#^origin/##'
+}
+
 main() {
   is_in_git_repo || return
   local branch
-  branch=$(fzf_branch_select)
+  branch=$(fzf_branch_select | filter_remote)
   if [[ -z "$branch" ]]; then
     return
   fi
