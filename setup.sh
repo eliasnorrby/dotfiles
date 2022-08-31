@@ -49,6 +49,12 @@ DO_MAS=${DO_MAS:-true}
 ASK_PASS=${ASK_PASS:-true}
 DO_POST_INSTALL=${DO_POST_INSTALL:-true}
 DEBUG=${DEBUG:-false}
+PROVISIONING_WORKDIR=${PROVISIONING_WORKDIR:-$(mktemp -d)}
+
+if [[ ! -d "$PROVISIONING_WORKDIR" ]]; then
+  echo "Invalid provisioning workdir: '${PROVISIONING_WORKDIR}'"
+  exit 1
+fi
 
 if [ -z "$DOTFILES_VERSION" ]; then
   DOTFILES_VERSION=${1:-develop}
@@ -98,6 +104,7 @@ function install_python_and_openssl() {
 }
 
 function get_repo_snapshot() {
+  _msg "Working directory: $PWD"
   _msg "Downloading repository snapshot from eliasnorrby/dotfiles@$DOTFILES_VERSION..."
   curl -sL "$TARBALL_URL" | tar xz
 }
@@ -130,7 +137,7 @@ install_python_and_openssl
 
 _prompt "Next step: downloading repo"
 
-cd "$(mktemp -d)"
+cd "$PROVISIONING_WORKDIR" || exit 1
 
 get_repo_snapshot
 
