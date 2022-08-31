@@ -51,7 +51,7 @@ DO_POST_INSTALL=${DO_POST_INSTALL:-true}
 DEBUG=${DEBUG:-false}
 
 if [ -z "$DOTFILES_VERSION" ]; then
-  DOTFILES_VERSION=${1:-master}
+  DOTFILES_VERSION=${1:-develop}
 fi
 
 ANSIBLE_TAGS=${ANSIBLE_TAGS:-all,setup_homebrew,do_homebrew,do_packages,do_defaults}
