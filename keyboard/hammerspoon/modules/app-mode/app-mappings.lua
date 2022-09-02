@@ -19,7 +19,7 @@ return {
   { 't', 'kitty' },              -- "T" for "Terminal"
   { 'u', 'Spotify' },
   { 'v', 'Notion' },
-  -- { 'w', '?' },
+  { 'w', 'zoom.us' },
   { 'x', 'Firefox Developer Edition' },
   -- { 'y', '?' },
   { 'z', 'Slack' },

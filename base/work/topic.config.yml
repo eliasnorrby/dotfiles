@@ -22,6 +22,7 @@ work_config:
     - openfortivpn
   brew_casks:
     - notion
+    - zoom
   pacman_packages:
     - openfortivpn
   aur_packages:
