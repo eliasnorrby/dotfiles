@@ -28,7 +28,10 @@ fonts:
     style: RegularForPowerline
   sourcecodepro: &sourcecodepro
     family: SauceCodePro Nerd Font
+  victormono: &victormono
+    family: VictorMono Nerd Font
+    style: Light
 
 font:
-  normal: *iosevka
+  normal: *victormono
   size: 14
