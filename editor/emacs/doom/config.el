@@ -18,7 +18,7 @@
 
 (if (string= (shell-command-to-string "_os") "arch")
   (setq doom-font (font-spec :family "Iosevka Nerd Font" :size 18))
-  (setq doom-font (font-spec :family "Dank Mono" :size 18)))
+  (setq doom-font (font-spec :family "VictorMono Nerd Font" :size 18)))
 
 ;; Set the theme
 (setq doom-theme 'doom-palenight)
