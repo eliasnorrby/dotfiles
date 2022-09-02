@@ -11,3 +11,10 @@
         dest: "{{ doom_home }}"
         version: develop
       when: doom.stat.isdir is undefined
+
+- name: link Emacs.app
+  when: is_macos
+  file:
+    state: link
+    src: "{{ homebrew_prefix }}/opt/emacs-plus/Emacs.app"
+    dest: /Applications/Emacs.app
