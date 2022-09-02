@@ -1,6 +1,10 @@
 ---
 node_config:
   path: lang/node
+  links:
+    - src: select_and_run_package_script.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: select_and_run_package_script
   brew_formulas:
     - node
     - yarn
