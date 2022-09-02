@@ -1,0 +1,5 @@
+---
+- name: create zsh completion directory
+  file:
+    state: directory
+    path: "{{ zsh_custom_completion_dir }}"
