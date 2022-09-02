@@ -1,0 +1,8 @@
+---
+- name: link jdk
+  when: is_macos
+  become: yes
+  file:
+    state: link
+    src: "{{ homebrew_prefix }}/opt/openjdk/libexec/openjdk.jdk"
+    dest: /Library/Java/JavaVirtualMachines/openjdk.jdk

@@ -28,6 +28,8 @@ brew_formulas: []
 brew_taps: []
 brew_casks: []
 
+homebrew_prefix: /opt/homebrew
+
 pacman_packages: []
 
 gem_packages: []

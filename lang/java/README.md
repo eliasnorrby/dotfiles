@@ -11,6 +11,8 @@ For the system Java wrappers to find this JDK, symlink it with
     /Library/Java/JavaVirtualMachines/openjdk.jdk
 ```
 
+Note: this is taken care of in `topic.tasks.yml`.
+
 # Switching versions on Arch
 
 Use the `archlinux-java` helper to set the default version.
