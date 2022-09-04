@@ -263,8 +263,13 @@ projects() {
     "${HOME}/work"
   )
 
+  local REPOS
   for dir in ${DIR_LIST[@]}; do
-    local REPOS="${REPOS}\n$(find ${dir} -maxdepth 3 -name ".git" -type d | sed 's/\/.git$//')"
+    local dir_repos=$(find ${dir} -maxdepth 3 -name ".git" -type d | sed 's/\/.git$//')
+    if [[ -z "${dir_repos}" ]]; then
+      continue
+    fi
+    REPOS="${REPOS}\n${dir_repos}"
   done
 
   if [[ -n "$query" ]]; then
