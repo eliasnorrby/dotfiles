@@ -29,6 +29,7 @@ neovim_config:
     - yaml-language-server
     - dockerfile-language-server-nodejs
     - pyright
+    - '@tailwindcss/language-server'
   pip_packages:
     - pynvim
   links:
