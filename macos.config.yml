@@ -54,6 +54,9 @@ topics:
     - name: karabiner
       state: present
       config: "{{ karabiner_config }}"
+    - name: espanso
+      state: present
+      config: "{{ espanso_config }}"
   terminal:
     - name: alacritty
       state: present

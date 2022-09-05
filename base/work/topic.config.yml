@@ -23,7 +23,6 @@ work_config:
   brew_casks:
     - notion
     - zoom
-    - espanso
   pacman_packages:
     - openfortivpn
   aur_packages:
