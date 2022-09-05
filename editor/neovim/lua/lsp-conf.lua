@@ -56,6 +56,7 @@ local servers = {
   "pyright",
   "jsonls",
   "tailwindcss",
+  "prismals",
 }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
