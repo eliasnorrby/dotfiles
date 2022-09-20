@@ -128,6 +128,10 @@ npm-widget() {
     || [[ -f "${package_dir}/yarn.lock" ]] \
     || [[ -f "${repo_root}/yarn.lock" ]]; then
     runner=yarn
+  elif [[ -f pnpm-lock.yaml ]] \
+    || [[ -f "${package_dir}/pnpm-lock.yaml" ]] \
+    || [[ -f "${repo_root}/pnpm-lock.yaml" ]]; then
+    runner=pnpm
   else
     runner="npm run"
   fi
