@@ -21,7 +21,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-abolish'
 runtime plugins.d/godlygeek/tabular.vim
 Plug 'pedrohdz/vim-yaml-folds'
-" runtime plugins.d/mattn/emmet-vim.vim
+runtime plugins.d/mattn/emmet-vim.vim
 Plug 'windwp/nvim-autopairs'
 runtime plugins.d/machakann/vim-highlightedyank.vim
 
