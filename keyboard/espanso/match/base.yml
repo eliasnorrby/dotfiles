@@ -1,0 +1,41 @@
+global_vars:
+  - name: firstname
+    type: echo
+    params:
+      echo: Elias
+  - name: lastname
+    type: echo
+    params:
+      echo: Norrby
+  - name: fullname
+    type: echo
+    params:
+      echo: "{{firstname}} {{lastname}}"
+
+matches:
+  - trigger: ";date"
+    replace: "{{mydate}}"
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%y-%m-%d"
+
+  - trigger: ";sig"
+    replace: |-
+      Best regards,
+      {{fullname}}
+
+  - trigger: ";name"
+    replace: "{{fullname}}"
+
+  - trigger: ;nl
+    label: Insert a notion markdown link
+    replace: "[{{link_text}}]({{link_url}})"
+    vars:
+      - name: link_url
+        type: clipboard
+      - name: link_text
+        type: shell
+        params:
+          cmd: echo "{{link_url}}" | sed -e 's#.*/##' -e 's#-[^-]*$##' -e 's/-/ /g'

@@ -1,0 +1,16 @@
+matches:
+  # Git
+  - trigger: ;cl
+    replace: 'chore(lint): '
+  - trigger: ;rc
+    replace: 'refactor(connections): '
+  - trigger: ;lh0
+
+  # Browser
+    replace: localhost:8000
+  - trigger: ;lh1
+    replace: localhost:8001
+
+  # Web
+  - trigger: ;cn
+    replace: className="$|$"

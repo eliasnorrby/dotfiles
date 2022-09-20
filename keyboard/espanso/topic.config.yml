@@ -2,3 +2,6 @@ espanso_config:
   path: keyboard/espanso
   brew_casks:
     - espanso
+  links:
+    - match
+    - config
