@@ -2,6 +2,7 @@
   a = add
   aa = add -A
   f = fetch
+  fm = fetch origin master:master
   p = push
   m = merge
   s = status
