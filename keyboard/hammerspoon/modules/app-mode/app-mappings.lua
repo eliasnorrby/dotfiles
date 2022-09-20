@@ -21,6 +21,6 @@ return {
   { 'v', 'Notion' },
   { 'w', 'zoom.us' },
   { 'x', 'Firefox Developer Edition' },
-  -- { 'y', '?' },
+  { 'y', 'Linear' },
   { 'z', 'Slack' },
 }
