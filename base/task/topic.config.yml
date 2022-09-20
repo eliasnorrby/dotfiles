@@ -15,6 +15,10 @@ task_config:
   brew_casks:
     - sunsama
     - todoist
+    - omnifocus
+  mas_apps:
+    - id: 904280696
+      name: "Things"
   pacman_packages:
     - task
     - taskwarrior-tui

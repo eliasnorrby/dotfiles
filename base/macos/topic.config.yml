@@ -32,8 +32,6 @@ macos_config:
       name: "Keynote"
     - id: 441258766
       name: "Magnet"
-    - id: 904280696
-      name: "Things"
     - id: 1191449274
       name: "ToothFairy"
     - id: 1091189122
