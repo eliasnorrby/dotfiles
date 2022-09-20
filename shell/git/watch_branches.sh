@@ -14,4 +14,4 @@ watch -c -n 2 \
     --pretty=format:'"'$GIT_LOG_FORMAT'"' \
     --abbrev-commit \
     --branches \
-    -10'
+    -25'
