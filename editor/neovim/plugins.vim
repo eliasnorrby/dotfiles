@@ -142,6 +142,7 @@ require('material').setup({
   },
 })
 require('which-key').setup()
+require('octo').setup()
 EOF
 
 " TODO: put this somewhere else
