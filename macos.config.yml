@@ -25,6 +25,10 @@ topics:
     - name: task
       state: present
       config: "{{ task_config }}"
+  hobby:
+    - name: photo
+      state: present
+      config: "{{ photo_config }}"
   editor:
     - name: vim
       state: disabled
