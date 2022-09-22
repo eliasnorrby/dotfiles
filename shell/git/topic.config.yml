@@ -15,6 +15,9 @@ git_config:
     - src: gh_browse.sh
       dest: "{{ xdg_bin_home }}/"
       rename: gh_browse
+    - src: gh_browse_pull.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: gh_browse_pull
     - src: list_branch_files.sh
       dest: "{{ xdg_bin_home }}/"
       rename: list_branch_files
