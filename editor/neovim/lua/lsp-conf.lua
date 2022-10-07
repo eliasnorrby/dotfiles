@@ -51,7 +51,7 @@ local servers = {
   -- "tsserver",
   "cssls",
   "html",
-  "yamlls",
+  -- "yamlls",
   "dockerls",
   "pyright",
   "jsonls",
@@ -79,6 +79,17 @@ local function organize_imports()
   vim.lsp.buf.execute_command(params)
 end
 
+nvim_lsp.yamlls.setup {
+  on_attach = on_attach,
+  settings = {
+    yaml = {
+      schemas = {
+        ["http://json-schema.org/draft-07/schema#"] = "/schema.yaml",
+        ["./packages/cli/schema.yaml"] = "**/.bemlorc",
+      }
+    }
+  }
+}
 nvim_lsp.tsserver.setup {
   on_attach = on_attach,
   commands = {
