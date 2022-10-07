@@ -8,6 +8,7 @@ macos_config:
   brew_casks:
     # essential
     - alfred
+    - raycast
     - bartender
     - discord
     - dropbox
