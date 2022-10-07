@@ -50,8 +50,9 @@ ngrok_tunnel() {
 
 gcloud_project() {
   is_callable gcloud || return
+  configuration=$(gcloud config configurations list --format 'value(name)' --filter 'is_active:true')
   project=$(gcloud config get project --quiet)
-  format="#[fg=blue] $project#[fg=default]"
+  format="#[fg=blue] ${configuration}:${project}#[fg=default]"
   echo "$format"
 }
 
