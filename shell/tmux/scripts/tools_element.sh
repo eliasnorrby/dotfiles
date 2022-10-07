@@ -5,7 +5,7 @@ is_callable() {
 }
 
 kubectl_context() {
-  is_callable kubectl || return
+  is_callable kubectl && kubectl config current-context >/dev/null 2>&1 || return
   context=$(kubectl config current-context)
   context=${context:-?}
   format="#[fg=cyan]ﴱ $context"
@@ -21,9 +21,8 @@ kubectl_context() {
 }
 
 argocd_context() {
-  is_callable argocd || return
+  is_callable argocd && argocd context >/dev/null 2>&1 || return
   context=$(argocd context | grep '^\*' | tr -s ' ' | cut -d ' ' -f 2)
-  context=${context:-?}
   format="#[fg=red] $context#[fg=default]"
   echo "$format"
 }
