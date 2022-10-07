@@ -56,6 +56,8 @@ local servers = {
   "pyright",
   "jsonls",
   "tailwindcss",
+  "terraformls",
+  -- "tflint",
   "prismals",
   "graphql",
 }
