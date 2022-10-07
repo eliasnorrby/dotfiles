@@ -5,6 +5,7 @@ require'nvim-treesitter.configs'.setup {
     'dockerfile',
     'go',
     'graphql',
+    'hcl',
     'html',
     'http',
     'java',
