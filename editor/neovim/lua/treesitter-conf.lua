@@ -32,7 +32,7 @@ require'nvim-treesitter.configs'.setup {
   },
   indent = {
     enable = false,
-    disable = { 'yaml' },
+    -- disable = { 'yaml' },
   },
   incremental_selection = {
     enable = true,
