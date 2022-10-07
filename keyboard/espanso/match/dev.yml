@@ -5,9 +5,9 @@ matches:
   - trigger: ;rc
     replace: 'refactor(connections): '
   - trigger: ;lh0
+    replace: localhost:8000
 
   # Browser
-    replace: localhost:8000
   - trigger: ;lh1
     replace: localhost:8001
 
