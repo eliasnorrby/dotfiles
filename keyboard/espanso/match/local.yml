@@ -1,0 +1,3 @@
+# FIXME: Resolve path on linux / macos
+imports:
+  - "/Users/elias/.local/share/espanso/match/local.yml"
