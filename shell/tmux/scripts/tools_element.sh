@@ -48,7 +48,14 @@ ngrok_tunnel() {
   echo "$format"
 }
 
-for item in "$(ngrok_tunnel)" "$(kubectl_context)" "$(argocd_context)" "$(node_version)" "$(java_version)"; do
+gcloud_project() {
+  is_callable gcloud || return
+  project=$(gcloud config get project --quiet)
+  format="#[fg=blue] $project#[fg=default]"
+  echo "$format"
+}
+
+for item in "$(ngrok_tunnel)" "$(kubectl_context)" "$(argocd_context)" "$(gcloud_project)" "$(node_version)" "$(java_version)"; do
   [ -z "$item" ] && continue
   printf '%s  ' "$item"
 done
