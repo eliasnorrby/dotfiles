@@ -19,6 +19,8 @@ task_config:
   mas_apps:
     - id: 904280696
       name: "Things"
+    - id: 1278508951
+      name: "Trello"
   pacman_packages:
     - task
     - taskwarrior-tui
