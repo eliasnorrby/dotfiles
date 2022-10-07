@@ -48,6 +48,7 @@
   bclean = "!git rp && git bdelete"
   # 'Pull Request Delete': Checkout previous branch, deleting the current one
   prd = "!f() { branch=$(git cb); git checkout -; git branch -D $branch; }; f"
+  prm = "!f() { git prd; git rt; }; f"
   z = stash
   zp = stash pop
   za = stash apply
