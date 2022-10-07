@@ -115,10 +115,13 @@ local status, appModeMappings = pcall(require, 'modules.app-mode.app-mappings')
 for i, mapping in ipairs(appModeMappings) do
   local key = mapping[1]
   local app = mapping[2]
-  appMode:bind({}, key, function()
+  local mods = mapping[3] or {}
+  appMode:bind(mods, key, function()
     if (type(app) == 'string') then
       hs.application.open(app)
       exitAppMode()
+    elseif(type(app) == 'function') then
+      app()
     else
       hs.logger.new('apps'):e('Invalid mapping for App Mode +', key)
     end
