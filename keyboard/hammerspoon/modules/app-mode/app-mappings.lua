@@ -23,4 +23,6 @@ return {
   { 'x', 'Firefox Developer Edition' },
   { 'y', 'Linear' },
   { 'z', 'Slack' },
+
+  { 'd', function() hs.execute('open ~/Downloads') end, {'shift'} },
 }
