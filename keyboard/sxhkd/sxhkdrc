@@ -117,10 +117,6 @@ XF86Audio{Raise,Lower}Volume
 XF86Audio{Next,Prev}
   spotifyctl {Next,Previous}
 
-# vpn
-XF86LaunchB
-  vpn_toggle
-
 # program launcher
 alt + @space
 	rofi -show run
