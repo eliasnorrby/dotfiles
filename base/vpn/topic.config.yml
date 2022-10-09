@@ -1,0 +1,24 @@
+---
+vpn_config:
+  path: base/vpn
+  links:
+    - src: vpn_connect.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: vpn_connect
+    - src: vpn_toggle.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: vpn_toggle
+    - src: tmux_vpn_connect.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: tmux_vpn_connect
+    - src: alacritty_tmux_vpn_connect.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: alacritty_tmux_vpn_connect
+  brew_formulas:
+    - openfortivpn
+  pacman_packages:
+    - openfortivpn
+
+openfortivpn_bin_path: "{{ is_macos | ternary('/usr/local/bin/openfortivpn','/usr/bin/openfortivpn') }}"
+vpn_group_name: openfortivpn
+vpn_disconnect_path: /usr/local/bin/vpn_disconnect

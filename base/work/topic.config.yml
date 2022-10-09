@@ -2,34 +2,14 @@
 work_config:
   path: base/work
   links:
-    - src: vpn_connect.sh
-      dest: "{{ xdg_bin_home }}/"
-      rename: vpn_connect
-    - src: vpn_toggle.sh
-      dest: "{{ xdg_bin_home }}/"
-      rename: vpn_toggle
-    - src: tmux_vpn_connect.sh
-      dest: "{{ xdg_bin_home }}/"
-      rename: tmux_vpn_connect
-    - src: alacritty_tmux_vpn_connect.sh
-      dest: "{{ xdg_bin_home }}/"
-      rename: alacritty_tmux_vpn_connect
     - src: jira-browse.sh
       dest: "{{ xdg_bin_home }}/"
       rename: jira-browse
       condition: "{{ is_arch }}"
-  brew_formulas:
-    - openfortivpn
   brew_casks:
     - notion
     - zoom
     - linear-linear
-  pacman_packages:
-    - openfortivpn
   aur_packages:
     - teams
     - notion-app
-
-openfortivpn_bin_path: "{{ is_macos | ternary('/usr/local/bin/openfortivpn','/usr/bin/openfortivpn') }}"
-vpn_group_name: openfortivpn
-vpn_disconnect_path: /usr/local/bin/vpn_disconnect
