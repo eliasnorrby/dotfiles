@@ -9,7 +9,6 @@ pager:
 # Aliases allow you to create nicknames for gh commands
 aliases:
     co: pr checkout
-    po: pr view -w
     auto: '!git push -u && gh pr create --fill && gh pr merge --auto --squash'
     squash: pr merge --auto --squash
     wait: pr checks --watch
