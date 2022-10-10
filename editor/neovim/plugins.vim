@@ -84,7 +84,11 @@ runtime plugins.d/moll/vim-bbye.vim
 
 " LSP:
 Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-compe'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
 Plug 'WhoIsSethDaniel/toggle-lsp-diagnostics.nvim'
 Plug 'folke/trouble.nvim'
 Plug 'kosayoda/nvim-lightbulb'
@@ -116,16 +120,12 @@ require('trouble').setup()
 require('colorizer').setup()
 require('treesitter-conf')
 require('lsp-conf')
-require('compe-conf')
+require('cmp-conf')
 require('formatter-conf')
 require('telescope-conf')
 require('lualine-conf')
 
 require('nvim-autopairs').setup()
-require('nvim-autopairs.completion.compe').setup({
-  map_cr = true,
-  map_complete = false
-})
 require('nvim-tree').setup({
   disable_netrw = false
 })
