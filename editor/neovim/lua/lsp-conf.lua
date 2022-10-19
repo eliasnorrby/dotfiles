@@ -66,11 +66,21 @@ local servers = {
   "terraformls",
   -- "tflint",
   "prismals",
-  "graphql",
+  -- "graphql",
 }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {}
 end
+
+nvim_lsp.graphql.setup {
+  filetypes = {
+    "graphql",
+    "typescript",
+    "typescriptreact",
+    "javascriptreact"
+  },
+  root_dir = util.root_pattern('.graphqlrc.*', '.git'),
+}
 
 nvim_lsp.yamlls.setup {
   settings = {
