@@ -24,6 +24,8 @@ Plug 'pedrohdz/vim-yaml-folds'
 runtime plugins.d/mattn/emmet-vim.vim
 Plug 'windwp/nvim-autopairs'
 runtime plugins.d/machakann/vim-highlightedyank.vim
+Plug 'epwalsh/obsidian.nvim'
+Plug 'preservim/vim-markdown'
 
 " Config:
 runtime plugins.d/editorconfig/editorconfig-vim.vim
@@ -145,6 +147,12 @@ require('material').setup({
 })
 require('which-key').setup()
 require('octo').setup()
+require('obsidian').setup({
+ dir = "~/obsidian",
+ completion = {
+   nvim_cmp = true,
+ }
+})
 EOF
 
 " TODO: put this somewhere else
