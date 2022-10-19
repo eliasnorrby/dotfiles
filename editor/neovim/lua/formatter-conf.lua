@@ -48,6 +48,7 @@ require('formatter').setup({
     yaml = prettier,
     toml = prettier,
     markdown = prettier,
+    graphql = prettier,
     sh = shfmt,
     lua = luafmt,
     terraform = tfmt,
