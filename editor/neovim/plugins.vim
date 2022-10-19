@@ -145,9 +145,9 @@ require('material').setup({
   disable = {
     background = true,
   },
-  italics = {
-    comments = true,
-  },
+  styles = {
+    comments = { italic = true },
+  }
 })
 require('which-key').setup()
 require('octo').setup()
