@@ -84,6 +84,7 @@ nnoremap <silent> <leader>64 :echo system('base64 --decode', expand('<cWORD>'))<
 xnoremap <silent> <leader>64 c<c-r>=system('base64 --wrap 0', @")<cr><esc>
 xnoremap <silent> <leader>d64 c<c-r>=system('base64 --decode', @")<cr><esc>
 
+xnoremap <silent> <leader>s :'<,'>!sort<CR>
 
 " ============================================================================ "
 " ===                            RANDOM                                    === "
