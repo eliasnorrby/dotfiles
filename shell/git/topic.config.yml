@@ -27,6 +27,9 @@ git_config:
     - src: fuzzy_branch.sh
       dest: "{{ xdg_bin_home }}/"
       rename: fuzzy_branch
+    - src: branch_pruner.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: branch_pruner
   brew_formulas:
     - git
     - tig
