@@ -143,11 +143,21 @@ require('material').setup({
     sidebars = true,
   },
   disable = {
-    background = true,
+    borders = false,
   },
   styles = {
     comments = { italic = true },
-  }
+    functions = { bold = true },
+  },
+  plugins = {
+    'gitsigns',
+    'hop',
+    'nvim-cmp',
+    'nvim-tree',
+    'telescope',
+    'trouble',
+    'which-key',
+  },
 })
 require('which-key').setup()
 require('octo').setup()
