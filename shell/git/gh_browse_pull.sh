@@ -2,7 +2,7 @@
 
 export GH_FORCE_TTY='50%'
 
-STATES="open\nall\nmerged\nclosed"
+STATES="open\nall\nmerged\nclosed\nnumber"
 
 select_state() {
   echo -e "$STATES" | fzf --prompt="States: " --reverse
@@ -19,6 +19,11 @@ main() {
   local state pr_number
   state=$(select_state)
   if [[ -z "$state" ]]; then
+    return
+  fi
+  if [[ "$state" == 'number' ]]; then
+    read -r -p "PR number: " pr_number
+    gh pr view "$pr_number"
     return
   fi
   pr_number=$(select_pr "$state")
