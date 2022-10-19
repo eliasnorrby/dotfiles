@@ -129,6 +129,10 @@ require('formatter-conf')
 require('telescope-conf')
 require('lualine-conf')
 
+require('nvim-lightbulb').setup({
+  autocmd = { enabled = true },
+})
+
 require('nvim-autopairs').setup()
 require('nvim-tree').setup({
   disable_netrw = false
@@ -153,6 +157,8 @@ require('obsidian').setup({
    nvim_cmp = true,
  }
 })
+
+vim.fn.sign_define('LightBulbSign', { text = "" })
 EOF
 
 " TODO: put this somewhere else
@@ -185,7 +191,11 @@ nmap <leader>rr <Plug>RestNvim
 nmap <leader>rp <Plug>RestNvimPreview
 nmap <leader>rl <Plug>RestNvimLast
 
-augroup Lightbulb
-  autocmd!
-  autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()
-augroup END
+let g:copilot_no_tab_map = v:true
+let g:copilot_assume_mapped = v:true
+imap <silent><script><expr> <C-P> copilot#Accept("<C-P>")
+
+" augroup Lightbulb
+"   autocmd!
+"   autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()
+" augroup END
