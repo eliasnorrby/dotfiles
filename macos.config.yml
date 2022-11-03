@@ -117,7 +117,7 @@ topics:
       state: absent
       config: "{{ dotnet_config }}"
     - name: go
-      state: absent
+      state: present
       config: "{{ go_config }}"
     - name: java
       state: present
