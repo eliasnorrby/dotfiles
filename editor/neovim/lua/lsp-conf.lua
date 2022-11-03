@@ -53,20 +53,15 @@ nvim_lsp.util.default_config = vim.tbl_deep_extend(
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 local servers = {
-  -- We need to override some settings for bashls and tsserver
-  -- "bashls",
-  -- "tsserver",
   "cssls",
-  "html",
-  -- "yamlls",
   "dockerls",
-  "pyright",
+  "html",
   "jsonls",
+  "prismals",
+  "pyright",
   "tailwindcss",
   "terraformls",
   -- "tflint",
-  "prismals",
-  -- "graphql",
 }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {}
@@ -187,7 +182,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     underline = true,
     virtual_text = false,
     signs = true,
-    update_in_insert = true
+    update_in_insert = true,
   }
 )
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
