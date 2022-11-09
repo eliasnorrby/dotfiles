@@ -3,6 +3,9 @@ web_config:
   path: dev/web
   brew_formulas:
     - httpie
+    - stripe
+  brew_taps:
+    - stripe/stripe-cli
   brew_casks:
     - postman
     - insomnia
