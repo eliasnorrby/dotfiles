@@ -19,6 +19,7 @@ nnoremap <C-Y> <C-Y><C-Y><C-Y>
 
 " saving & quitting
 nnoremap <silent> <leader>fs :w<CR>
+nnoremap <silent> <leader>dd :wq<CR>
 nnoremap <silent> <leader>q :q<CR>
 nnoremap <silent> <leader>Q :qall<CR>
 nnoremap <silent> <leader>x :q!<CR>
