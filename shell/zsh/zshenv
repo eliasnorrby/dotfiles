@@ -38,8 +38,10 @@ if [[ "$(_os)" == "macos" ]]; then
   . "$HOMEBREW_ENV_FILE"
 
   # For using GNU coreutils with default names
-  # FIXME: I need it to do readlink -f
+  # Specifically needed for readlink -f
   path=( $HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin $path )
+  # Override the version of curl bundled with macOS
+  path=( $HOMEBREW_PREFIX/opt/curl/bin $path )
 
   path=( ~/bin $path )
 fi
