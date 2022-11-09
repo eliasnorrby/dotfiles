@@ -55,6 +55,7 @@ nvim_lsp.util.default_config = vim.tbl_deep_extend(
 local servers = {
   "cssls",
   "dockerls",
+  "gopls",
   "html",
   "jsonls",
   "prismals",
