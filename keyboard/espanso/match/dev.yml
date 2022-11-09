@@ -4,12 +4,14 @@ matches:
     replace: 'chore(lint): '
   - trigger: ;rc
     replace: 'refactor(connections): '
-  - trigger: ;lh0
-    replace: localhost:8000
 
   # Browser
+  - trigger: ;lh0
+    replace: localhost:8000
   - trigger: ;lh1
     replace: localhost:8001
+  - trigger: ;lh4
+    replace: localhost:4000
 
   # Web
   - trigger: ;cn
