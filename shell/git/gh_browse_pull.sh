@@ -23,7 +23,7 @@ main() {
   fi
   if [[ "$state" == 'number' ]]; then
     read -r -p "PR number: " pr_number
-    gh pr view "$pr_number"
+    gh pr view -w "$pr_number"
     return
   fi
   pr_number=$(select_pr "$state")
