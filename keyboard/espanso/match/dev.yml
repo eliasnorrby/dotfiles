@@ -1,9 +1,15 @@
 matches:
   # Git
   - trigger: ;cl
-    replace: 'chore(lint): '
+    replace: "chore(lint): "
   - trigger: ;rc
-    replace: 'refactor(connections): '
+    replace: "refactor(connections): "
+  - trigger: ;lb
+    label: Insert command to check out a branch name copied from linear
+    replace: git checkout -b {{branch_name}}
+    vars:
+      - name: branch_name
+        type: clipboard
 
   # Browser
   - trigger: ;lh0
