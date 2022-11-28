@@ -7,6 +7,10 @@ local opt = vim.opt   -- Set options (global/buffer/windows-scoped)
 
 opt.shortmess:append "sI"
 
+opt.path:append("**")
+
+opt.clipboard = 'unnamedplus'
+
 -----------------------------------------------------------
 -- Startup
 -----------------------------------------------------------
