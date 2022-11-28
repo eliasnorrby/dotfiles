@@ -35,13 +35,16 @@ neovim_config:
   pip_packages:
     - pynvim
   links:
-    - init.vim
-    - plugins.vim
-    - general.vim
-    - autocmds.vim
-    - theme.vim
-    - keybindings.vim
-    - experimental.vim
-    - plugins.d
+    - init.lua
     - lua
-    - UltiSnips
+  # links:
+  #   - init.vim
+  #   - plugins.vim
+  #   - general.vim
+  #   - autocmds.vim
+  #   - theme.vim
+  #   - keybindings.vim
+  #   - experimental.vim
+  #   - plugins.d
+  #   - lua
+  #   - UltiSnips
