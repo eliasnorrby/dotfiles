@@ -66,6 +66,62 @@ local servers = {
     end,
   },
   cssls = {},
+  diagnosticls = {
+    cmd = {"diagnostic-languageserver", "--stdio"},
+    filetypes = {
+      "lua",
+      "sh",
+      "markdown",
+      "json",
+      "yaml",
+      "toml"
+    },
+    init_options = {
+      linters = {
+        shellcheck = {
+          command = "shellcheck",
+          debounce = 100,
+          args = {"--format", "json", "-"},
+          sourceName = "shellcheck",
+          parseJson = {
+            line = "line",
+            column = "column",
+            endLine = "endLine",
+            endColumn = "endColumn",
+            message = "${message} [${code}]",
+            security = "level"
+          },
+          securities = {
+            error = "error",
+            warning = "warning",
+            info = "info",
+            style = "hint"
+          }
+        }
+      },
+      filetypes = {
+        sh = "shellcheck"
+      },
+      formatters = {
+        shfmt = {
+          command = "shfmt",
+          args = {"-filename", "script.sh"}
+        },
+        prettier = {
+          command = "prettier",
+          args = {"--stdin-filepath", "%filepath"},
+        }
+      },
+      formatFiletypes = {
+        sh = "shfmt",
+        json = "prettier",
+        yaml = "prettier",
+        toml = "prettier",
+        markdown = "prettier",
+        lua = "prettier"
+      }
+    }
+  },
   dockerls = {},
   gopls = {},
   graphql = {
