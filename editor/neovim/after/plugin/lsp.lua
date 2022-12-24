@@ -67,7 +67,7 @@ local servers = {
   },
   cssls = {},
   diagnosticls = {
-    cmd = {"diagnostic-languageserver", "--stdio"},
+    cmd = { "diagnostic-languageserver", "--stdio" },
     filetypes = {
       "lua",
       "sh",
@@ -81,7 +81,7 @@ local servers = {
         shellcheck = {
           command = "shellcheck",
           debounce = 100,
-          args = {"--format", "json", "-"},
+          args = { "--format", "json", "-" },
           sourceName = "shellcheck",
           parseJson = {
             line = "line",
@@ -105,11 +105,11 @@ local servers = {
       formatters = {
         shfmt = {
           command = "shfmt",
-          args = {"-filename", "script.sh"}
+          args = { "-filename", "script.sh" }
         },
         prettier = {
           command = "prettier",
-          args = {"--stdin-filepath", "%filepath"},
+          args = { "--stdin-filepath", "%filepath" },
         }
       },
       formatFiletypes = {
@@ -153,7 +153,7 @@ local servers = {
         function()
           vim.lsp.buf.execute_command({
             command = "_typescript.organizeImports",
-            arguments = {vim.api.nvim_buf_get_name(0)},
+            arguments = { vim.api.nvim_buf_get_name(0) },
             title = ""
           })
         end,
