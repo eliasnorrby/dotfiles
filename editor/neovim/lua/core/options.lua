@@ -33,6 +33,7 @@ opt.signcolumn = 'yes'
 -----------------------------------------------------------
 opt.number = true
 opt.relativenumber = true
+opt.hlsearch = false
 
 -----------------------------------------------------------
 -- Startup
