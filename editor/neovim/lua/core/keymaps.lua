@@ -2,7 +2,10 @@ local u = require('core.utils')
 
 vim.g.mapleader = ' '
 
-u.map('n', '<leader>q', ':q<CR>')
-u.map('n', '<leader>s', vim.cmd.w)
+u.map('n', '<leader>fs', vim.cmd.w)
+u.map('n', '<leader>q', vim.cmd.q)
+u.map('n', '<leader>Q', vim.cmd.qall)
+u.map('n', '<leader>x', ':q!<CR>')
+u.map('n', '<leader>X', ':qall!<CR>')
 
 u.map('n', '<leader>w', '<C-W>')
