@@ -54,6 +54,17 @@ nvim_lsp.util.default_config = vim.tbl_deep_extend(
 )
 
 local servers = {
+  bashls = {
+    cmd_env = {
+      -- lsp-config defaults will disable recursive scanning
+      GLOB_PATTERN = '**/*@(.sh|.inc|.bash|.command)',
+    },
+    root_dir = function(fname)
+      -- lsp-config will use util.path.dirname, with will be the directory
+      -- containing the file - we won't scan anything in parent directories.
+      return nvim_lsp.util.root_pattern('.git')(fname) or nvim_lsp.util.path.dirname(fname)
+    end,
+  },
   cssls = {},
   dockerls = {},
   gopls = {},
