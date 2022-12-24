@@ -37,6 +37,24 @@ local on_attach = function(_, bufnr)
   end, { desc = 'Format current buffer with LSP' })
 end
 
+vim.diagnostic.config({
+  float = { border = "rounded" }
+})
+
+local handlers = {
+  ["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics,
+    {
+      underline = true,
+      virtual_text = false,
+      signs = true,
+      update_in_insert = true,
+    }
+  ),
+  -- ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
+  ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
+}
+
 local lsp_defaults = {
   on_attach = on_attach,
   flags = {
@@ -45,6 +63,7 @@ local lsp_defaults = {
   capabilities = require('cmp_nvim_lsp').default_capabilities(
     vim.lsp.protocol.make_client_capabilities()
   ),
+  handlers = handlers
 }
 
 nvim_lsp.util.default_config = vim.tbl_deep_extend(
@@ -194,3 +213,15 @@ mason_lspconfig.setup_handlers {
 
 -- Turn on lsp status information
 require('fidget').setup()
+
+local signs = { Error = "", Warn = "", Hint = "", Info = " " }
+
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+end
+
+-- Diagnostic keymaps
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+vim.keymap.set('n', '<leader>do', vim.diagnostic.open_float)
