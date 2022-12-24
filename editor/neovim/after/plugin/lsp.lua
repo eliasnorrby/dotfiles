@@ -80,6 +80,16 @@ local servers = {
   },
   tailwindcss = {},
   terraformls = {},
+  yamlls = {
+    settings = {
+      yaml = {
+        schemas = {
+          ["http://json-schema.org/draft-07/schema#"] = "/schema.yaml",
+          ["./packages/cli/schema.yaml"] = "**/.bemlorc",
+        }
+      }
+    }
+  }
 }
 
 -- Setup neovim lua configuration
