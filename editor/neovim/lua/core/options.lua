@@ -10,6 +10,7 @@ vim.o.clipboard = 'unnamedplus'
 
 vim.o.swapfile = false
 vim.o.backup = false
+vim.o.undofile = true
 
 vim.o.tabstop = 8
 vim.o.softtabstop = 2
