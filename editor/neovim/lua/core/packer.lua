@@ -29,6 +29,10 @@ return require('packer').startup(function(use)
   use 'marko-cerovac/material.nvim'
 
   use 'tpope/vim-fugitive'
+  use {
+    'junegunn/gv.vim',
+    requires = { 'tpope/vim-fugitive' }
+  }
 
   use {
     'nvim-treesitter/nvim-treesitter',
