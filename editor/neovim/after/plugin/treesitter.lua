@@ -6,6 +6,7 @@ require'nvim-treesitter.configs'.setup {
     'go',
     'graphql',
     'hcl',
+    'help',
     'html',
     'http',
     'java',
