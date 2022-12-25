@@ -46,6 +46,10 @@ return require('packer').startup(function(use)
       require('Comment').setup()
     end
   }
+  use {
+    'windwp/nvim-autopairs',
+    config = function() require('nvim-autopairs').setup {} end
+  }
 
   use { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
