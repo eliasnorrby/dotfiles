@@ -9,16 +9,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
-local git_spelling_group = vim.api.nvim_create_augroup('GitSpelling', { clear = true })
-vim.api.nvim_create_autocmd('Filetype', {
-  callback = function()
-    vim.o.spell = true
-    vim.o.textwidth = 72
-  end,
-  group = git_spelling_group,
-  pattern = 'gitcommit',
-})
-
 local window_size_equal = vim.api.nvim_create_augroup('WindowSizeEqual', { clear = true })
 vim.api.nvim_create_autocmd('VimResized', {
   callback = function()
