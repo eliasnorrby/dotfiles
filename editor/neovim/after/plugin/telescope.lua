@@ -1,3 +1,4 @@
+local u = require('core.utils')
 local builtin = require('telescope.builtin')
 local actions = require('telescope.actions')
 
@@ -27,3 +28,5 @@ vim.keymap.set('n', '<leader>.', builtin.find_files, {})
 vim.keymap.set('n', '<leader><cr>', builtin.git_status, {})
 
 vim.keymap.set('n', '<leader>//', builtin.live_grep, {})
+
+u.map('n', '<leader>/r', builtin.resume)
