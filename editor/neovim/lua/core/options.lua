@@ -2,41 +2,32 @@
 -- General
 -----------------------------------------------------------
 
-local g = vim.g       -- Global variables
-local opt = vim.opt   -- Set options (global/buffer/windows-scoped)
+vim.opt.shortmess:append("sI")
 
-opt.shortmess:append "sI"
+vim.opt.path:append("**")
 
-opt.path:append("**")
+vim.o.clipboard = 'unnamedplus'
 
-opt.clipboard = 'unnamedplus'
+vim.o.swapfile = false
+vim.o.backup = false
 
-opt.swapfile = false
-opt.backup = false
+vim.o.tabstop = 8
+vim.o.softtabstop = 2
+vim.o.expandtab = true
+vim.o.shiftwidth = 2
+vim.o.autoindent = true
+vim.o.linebreak = true
 
-opt.tabstop = 8
-opt.softtabstop = 2
-opt.expandtab = true
-opt.shiftwidth = 2
-opt.autoindent = true
-opt.linebreak = true
-
-opt.splitbelow = true
-opt.splitright = true
-opt.scrolloff = 5
-opt.showcmd = false
-opt.ruler = false
-opt.signcolumn = 'yes'
+vim.o.splitbelow = true
+vim.o.splitright = true
+vim.o.scrolloff = 5
+vim.o.showcmd = false
+vim.o.ruler = false
+vim.o.signcolumn = 'yes'
 
 -----------------------------------------------------------
 -- UI
 -----------------------------------------------------------
-opt.number = true
-opt.relativenumber = true
-opt.hlsearch = false
-
------------------------------------------------------------
--- Startup
------------------------------------------------------------
--- Disable nvim intro
-opt.shortmess:append "sI"
+vim.o.number = true
+vim.o.relativenumber = true
+vim.o.hlsearch = false
