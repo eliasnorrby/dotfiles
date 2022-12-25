@@ -18,3 +18,12 @@ vim.api.nvim_create_autocmd('Filetype', {
   group = git_spelling_group,
   pattern = 'gitcommit',
 })
+
+local window_size_equal = vim.api.nvim_create_augroup('WindowSizeEqual', { clear = true })
+vim.api.nvim_create_autocmd('VimResized', {
+  callback = function()
+    vim.cmd.wincmd('=')
+  end,
+  group = window_size_equal,
+  pattern = '*',
+})
