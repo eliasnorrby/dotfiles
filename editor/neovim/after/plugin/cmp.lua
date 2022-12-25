@@ -2,6 +2,8 @@ local cmp = require 'cmp'
 local luasnip = require 'luasnip'
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 
+vim.o.pumheight = 8
+
 cmp.setup {
   snippet = {
     expand = function(args)
