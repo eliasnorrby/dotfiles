@@ -23,10 +23,10 @@ local project_files = function()
   end
 end
 
-u.map('n', '<leader><leader>', project_files)
-u.map('n', '<leader>.', builtin.find_files)
-u.map('n', '<leader><cr>', builtin.git_status)
+u.map('n', '<leader><leader>', project_files, { desc = 'Find project files' })
+u.map('n', '<leader>.', builtin.find_files, { desc = 'Find (non-git) project files'})
+u.map('n', '<leader><cr>', builtin.git_status, { desc = 'Find changed files' })
 
-u.map('n', '<leader>//', builtin.live_grep)
+u.map('n', '<leader>//', builtin.live_grep, { desc = 'Project grep' })
 
-u.map('n', '<leader>/r', builtin.resume)
+u.map('n', '<leader>/r', builtin.resume, { desc = 'Resume previous picker' })
