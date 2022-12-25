@@ -33,6 +33,13 @@ return require('packer').startup(function(use)
     run = ':TSUpdate'
   }
 
+  use({
+    'kylechui/nvim-surround',
+    tag = "*",
+    config = function()
+      require("nvim-surround").setup()
+    end
+  })
   use {
     'numToStr/Comment.nvim',
     config = function()
