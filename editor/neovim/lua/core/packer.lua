@@ -16,6 +16,7 @@ return require('packer').startup(function(use)
 
   use('gpanders/editorconfig.nvim')
   use('tpope/vim-unimpaired')
+  use('moll/vim-bbye')
 
   use({
     'nvim-telescope/telescope.nvim',
