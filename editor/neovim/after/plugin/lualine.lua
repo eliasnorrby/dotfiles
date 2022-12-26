@@ -45,6 +45,13 @@ require('lualine').setup {
       {
         'tabs',
         fmt = function(name, context)
+          -- workaround for lualine having hardcoded showtabline = 2
+          if (vim.go.showtabline ~= 2 and vim.fn.tabpagenr('$') > 0)  then
+            vim.go.showtabline = 2
+          end
+          if (vim.go.showtabline == 2 and vim.fn.tabpagenr('$') < 2) then
+            vim.go.showtabline = 1
+          end
           -- Show + if buffer is modified in tab
           local buflist = vim.fn.tabpagebuflist(context.tabnr)
           local winnr = vim.fn.tabpagewinnr(context.tabnr)
