@@ -15,6 +15,8 @@ require('nvim-treesitter.configs').setup({
     'json',
     'lua',
     'make',
+    'markdown',
+    'markdown_inline',
     'prisma',
     'python',
     'regex',
@@ -27,6 +29,7 @@ require('nvim-treesitter.configs').setup({
   },
   highlight = {
     enable = true,
+    additional_vim_regex_highlighting = { 'markdown' },
   },
   incremental_selection = {
     enable = true,

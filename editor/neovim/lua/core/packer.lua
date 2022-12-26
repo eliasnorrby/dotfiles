@@ -93,6 +93,18 @@ return require('packer').startup(function(use)
 
   use('mhartington/formatter.nvim')
 
+  use({
+    'epwalsh/obsidian.nvim',
+    config = function()
+      require('obsidian').setup({
+        dir = '~/obsidian',
+        completion = {
+          nvim_cmp = true,
+        },
+      })
+    end,
+  })
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if packer_bootstrap then
