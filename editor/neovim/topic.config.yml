@@ -10,6 +10,7 @@ neovim_config:
     - pylint
     - black
     - glow
+    - stylua
   pacman_packages:
     - neovim
     - fzf
@@ -18,7 +19,6 @@ neovim_config:
     - python-pylint
     - python-black
   aur_packages:
-    - lua-format
     - glow-bin
   npm_packages:
     - bash-language-server
