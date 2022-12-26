@@ -15,13 +15,13 @@ custom_palenight.inactive.b.fg = default_fg
 custom_palenight.inactive.c.bg = 'NONE'
 custom_palenight.inactive.c.fg = default_fg
 
-require('lualine').setup {
+require('lualine').setup({
   options = {
     icons_enabled = true,
     theme = custom_palenight,
     component_separators = { '┃', '┃' },
     section_separators = '',
-    disabled_filetypes = {}
+    disabled_filetypes = {},
   },
   sections = {
     lualine_a = { 'mode' },
@@ -30,7 +30,7 @@ require('lualine').setup {
     -- lualine_x = {'encoding', 'fileformat', 'filetype'},
     lualine_x = { '%a', diagnostics, 'filetype' },
     lualine_y = { 'progress' },
-    lualine_z = { 'location' }
+    lualine_z = { 'location' },
   },
   inactive_sections = {
     lualine_a = {},
@@ -38,7 +38,7 @@ require('lualine').setup {
     lualine_c = { 'filename' },
     lualine_x = { 'location' },
     lualine_y = {},
-    lualine_z = {}
+    lualine_z = {},
   },
   tabline = {
     lualine_z = {
@@ -46,10 +46,10 @@ require('lualine').setup {
         'tabs',
         fmt = function(name, context)
           -- workaround for lualine having hardcoded showtabline = 2
-          if (vim.go.showtabline ~= 2 and vim.fn.tabpagenr('$') > 0)  then
+          if vim.go.showtabline ~= 2 and vim.fn.tabpagenr('$') > 0 then
             vim.go.showtabline = 2
           end
-          if (vim.go.showtabline == 2 and vim.fn.tabpagenr('$') < 2) then
+          if vim.go.showtabline == 2 and vim.fn.tabpagenr('$') < 2 then
             vim.go.showtabline = 1
           end
           -- Show + if buffer is modified in tab
@@ -59,9 +59,9 @@ require('lualine').setup {
           local mod = vim.fn.getbufvar(bufnr, '&mod')
 
           return name .. (mod == 1 and ' +' or '')
-        end
-      }
-    }
+        end,
+      },
+    },
   },
-  extensions = { 'fugitive', 'nvim-tree', 'quickfix' }
-}
+  extensions = { 'fugitive', 'nvim-tree', 'quickfix' },
+})

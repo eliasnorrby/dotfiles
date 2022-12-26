@@ -1,11 +1,11 @@
-local cmp = require'cmp'
+local cmp = require('cmp')
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 
 cmp.setup({
   snippet = {
     expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body)
-    end
+      vim.fn['vsnip#anonymous'](args.body)
+    end,
   },
   completion = {
     completeopt = 'menu,menuone,noinsert',
@@ -26,22 +26,20 @@ cmp.setup({
         return
       end
       fallback()
-    end
-    , { 'i', 'c' }),
+    end, { 'i', 'c' }),
     ['<S-Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
         return
       end
       fallback()
-    end
-    , { 'i', 'c' }),
+    end, { 'i', 'c' }),
   }),
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
   }, {
     { name = 'buffer' },
-  })
+  }),
 })
 
 -- Set configuration for specific filetype.
@@ -57,21 +55,18 @@ cmp.setup({
 cmp.setup.cmdline({ '/', '?' }, {
   mapping = cmp.mapping.preset.cmdline(),
   sources = {
-    { name = 'buffer' }
-  }
+    { name = 'buffer' },
+  },
 })
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(':', {
   mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
-    { name = 'path' }
+    { name = 'path' },
   }, {
-    { name = 'cmdline' }
-  })
+    { name = 'cmdline' },
+  }),
 })
 
-cmp.event:on(
-  'confirm_done',
-  cmp_autopairs.on_confirm_done()
-)
+cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())

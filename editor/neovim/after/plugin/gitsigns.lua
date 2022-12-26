@@ -1,4 +1,4 @@
-require('gitsigns').setup {
+require('gitsigns').setup({
   on_attach = function(bufnr)
     local function map(mode, lhs, rhs, opts)
       opts = vim.tbl_extend('force', { noremap = true, silent = true }, opts or {})
@@ -27,5 +27,5 @@ require('gitsigns').setup {
     -- Text object
     map('o', 'ih', ':<C-U>Gitsigns select_hunk<CR>')
     map('x', 'ih', ':<C-U>Gitsigns select_hunk<CR>')
-  end
-}
+  end,
+})
