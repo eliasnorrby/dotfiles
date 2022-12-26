@@ -12,6 +12,14 @@ u.map('n', '<leader>X', ':qall!<CR>')
 -- windows
 u.map('n', '<leader>w', '<C-W>')
 
+-- tabs
+local tabmap = function ()
+  for i = 1, 5, 1 do
+    u.map('n', '<leader>' .. i, i .. 'gt')
+  end
+end
+tabmap()
+
 -- line numbers
 u.map('n', '<leader>olr', function()
   vim.wo.number = true
@@ -47,4 +55,3 @@ u.map('x', '<leader>ft', ':s/^  /	/<cr>')
 
 -- temporary
 u.map('n', '<leader>so', vim.cmd.source)
-
