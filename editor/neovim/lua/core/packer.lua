@@ -21,6 +21,8 @@ return require('packer').startup(function(use)
     'nvim-telescope/telescope.nvim', tag = '0.1.x',
     requires = { 'nvim-lua/plenary.nvim' }
   }
+  -- pin due to https://github.com/phaazon/hop.nvim/issues/345
+  use {'phaazon/hop.nvim', commit = 'caaccee'}
 
   use 'nvim-lualine/lualine.nvim'
   use 'lewis6991/gitsigns.nvim'
