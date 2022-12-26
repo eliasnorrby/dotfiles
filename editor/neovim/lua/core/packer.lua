@@ -15,6 +15,7 @@ return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
 
   use 'gpanders/editorconfig.nvim'
+  use 'tpope/vim-unimpaired'
 
   use {
     'nvim-telescope/telescope.nvim', tag = '0.1.x',
