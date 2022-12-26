@@ -32,7 +32,7 @@ return require('packer').startup(function(use)
 
   use 'tpope/vim-fugitive'
   use {
-    'junegunn/gv.vim',
+    'junegunn/gv.vim', cmd = { 'GV' },
     requires = { 'tpope/vim-fugitive' }
   }
 
