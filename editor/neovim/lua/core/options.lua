@@ -2,9 +2,9 @@
 -- General
 -----------------------------------------------------------
 
-vim.opt.shortmess:append("sI")
+vim.opt.shortmess:append('sI')
 
-vim.opt.path:append("**")
+vim.opt.path:append('**')
 
 vim.o.clipboard = 'unnamedplus'
 

@@ -1,10 +1,14 @@
 local nvim_lsp = require('lspconfig')
-local util = require 'lspconfig/util'
+local util = require('lspconfig/util')
 
-local opts = { noremap=true, silent=true }
+local opts = { noremap = true, silent = true }
 -- vim.keymap.set('n', '<space>y', vim.diagnostic.open_float, opts)
-vim.keymap.set('n', '[d', function() vim.diagnostic.goto_prev({ float = { border = "rounded" } }) end, opts)
-vim.keymap.set('n', ']d', function() vim.diagnostic.goto_next({ float = { border = "rounded" } }) end, opts)
+vim.keymap.set('n', '[d', function()
+  vim.diagnostic.goto_prev({ float = { border = 'rounded' } })
+end, opts)
+vim.keymap.set('n', ']d', function()
+  vim.diagnostic.goto_next({ float = { border = 'rounded' } })
+end, opts)
 -- vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
 
 -- Use an on_attach function to only map the following keys
@@ -15,7 +19,7 @@ local on_attach = function(client, bufnr)
 
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
-  local bufopts = { noremap=true, silent=true, buffer=bufnr }
+  local bufopts = { noremap = true, silent = true, buffer = bufnr }
   vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
@@ -31,7 +35,9 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', '<space>,', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', 'glr', vim.lsp.buf.references, bufopts)
-  vim.keymap.set('n', '<space>fF', function() vim.lsp.buf.format { async = true } end, bufopts)
+  vim.keymap.set('n', '<space>fF', function()
+    vim.lsp.buf.format({ async = true })
+  end, bufopts)
 end
 
 local lsp_defaults = {
@@ -39,75 +45,69 @@ local lsp_defaults = {
   flags = {
     debounce_text_changes = 150,
   },
-  capabilities = require('cmp_nvim_lsp').default_capabilities(
-    vim.lsp.protocol.make_client_capabilities()
-  ),
+  capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
 }
 
-nvim_lsp.util.default_config = vim.tbl_deep_extend(
-  'force',
-  nvim_lsp.util.default_config,
-  lsp_defaults
-)
+nvim_lsp.util.default_config = vim.tbl_deep_extend('force', nvim_lsp.util.default_config, lsp_defaults)
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 local servers = {
-  "cssls",
-  "dockerls",
-  "gopls",
-  "html",
-  "jsonls",
-  "prismals",
-  "pyright",
-  "tailwindcss",
-  "terraformls",
+  'cssls',
+  'dockerls',
+  'gopls',
+  'html',
+  'jsonls',
+  'prismals',
+  'pyright',
+  'tailwindcss',
+  'terraformls',
   -- "tflint",
 }
 for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {}
+  nvim_lsp[lsp].setup({})
 end
 
-nvim_lsp.graphql.setup {
+nvim_lsp.graphql.setup({
   filetypes = {
-    "graphql",
-    "typescript",
-    "typescriptreact",
-    "javascriptreact"
+    'graphql',
+    'typescript',
+    'typescriptreact',
+    'javascriptreact',
   },
   root_dir = util.root_pattern('.graphqlrc.*', '.git'),
-}
+})
 
-nvim_lsp.yamlls.setup {
+nvim_lsp.yamlls.setup({
   settings = {
     yaml = {
       schemas = {
-        ["http://json-schema.org/draft-07/schema#"] = "/schema.yaml",
-        ["./packages/cli/schema.yaml"] = "**/.bemlorc",
-      }
-    }
-  }
-}
+        ['http://json-schema.org/draft-07/schema#'] = '/schema.yaml',
+        ['./packages/cli/schema.yaml'] = '**/.bemlorc',
+      },
+    },
+  },
+})
 
 local function organize_imports()
   local params = {
-    command = "_typescript.organizeImports",
-    arguments = {vim.api.nvim_buf_get_name(0)},
-    title = ""
+    command = '_typescript.organizeImports',
+    arguments = { vim.api.nvim_buf_get_name(0) },
+    title = '',
   }
   vim.lsp.buf.execute_command(params)
 end
 
-nvim_lsp.tsserver.setup {
+nvim_lsp.tsserver.setup({
   commands = {
     OrganizeImports = {
       organize_imports,
-      description = "Organize Imports"
-    }
-  }
-}
+      description = 'Organize Imports',
+    },
+  },
+})
 
-nvim_lsp.bashls.setup {
+nvim_lsp.bashls.setup({
   cmd_env = {
     -- lsp-config defaults will disable recursive scanning
     GLOB_PATTERN = '**/*@(.sh|.inc|.bash|.command)',
@@ -117,81 +117,78 @@ nvim_lsp.bashls.setup {
     -- containing the file - we won't scan anything in parent directories.
     return util.root_pattern('.git')(fname) or util.path.dirname(fname)
   end,
-}
+})
 
-nvim_lsp.diagnosticls.setup {
-  cmd = {"diagnostic-languageserver", "--stdio"},
+nvim_lsp.diagnosticls.setup({
+  cmd = { 'diagnostic-languageserver', '--stdio' },
   filetypes = {
-    "lua",
-    "sh",
-    "markdown",
-    "json",
-    "yaml",
-    "toml"
+    'lua',
+    'sh',
+    'markdown',
+    'json',
+    'yaml',
+    'toml',
   },
   init_options = {
     linters = {
       shellcheck = {
-        command = "shellcheck",
+        command = 'shellcheck',
         debounce = 100,
-        args = {"--format", "json", "-"},
-        sourceName = "shellcheck",
+        args = { '--format', 'json', '-' },
+        sourceName = 'shellcheck',
         parseJson = {
-          line = "line",
-          column = "column",
-          endLine = "endLine",
-          endColumn = "endColumn",
-          message = "${message} [${code}]",
-          security = "level"
+          line = 'line',
+          column = 'column',
+          endLine = 'endLine',
+          endColumn = 'endColumn',
+          message = '${message} [${code}]',
+          security = 'level',
         },
         securities = {
-          error = "error",
-          warning = "warning",
-          info = "info",
-          style = "hint"
-        }
-      }
+          error = 'error',
+          warning = 'warning',
+          info = 'info',
+          style = 'hint',
+        },
+      },
     },
     filetypes = {
-      sh = "shellcheck"
+      sh = 'shellcheck',
     },
     formatters = {
       shfmt = {
-        command = "shfmt",
-        args = {"-filename", "script.sh"}
+        command = 'shfmt',
+        args = { '-filename', 'script.sh' },
       },
       prettier = {
-        command = "prettier",
-        args = {"--stdin-filepath", "%filepath"},
-      }
+        command = 'prettier',
+        args = { '--stdin-filepath', '%filepath' },
+      },
     },
     formatFiletypes = {
-      sh = "shfmt",
-      json = "prettier",
-      yaml = "prettier",
-      toml = "prettier",
-      markdown = "prettier",
-      lua = "prettier"
-    }
-  }
-}
+      sh = 'shfmt',
+      json = 'prettier',
+      yaml = 'prettier',
+      toml = 'prettier',
+      markdown = 'prettier',
+      lua = 'prettier',
+    },
+  },
+})
 
 -- Enable diagnostics
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics,
-  {
-    underline = true,
-    virtual_text = false,
-    signs = true,
-    update_in_insert = true,
-  }
-)
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
+vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+  underline = true,
+  virtual_text = false,
+  signs = true,
+  update_in_insert = true,
+})
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' })
 
-local signs = { Error = "", Warning = "", Hint = "", Information = " " }
+local signs = { Error = '', Warning = '', Hint = '', Information = ' ' }
 
 for type, icon in pairs(signs) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+  local hl = 'DiagnosticSign' .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
 end

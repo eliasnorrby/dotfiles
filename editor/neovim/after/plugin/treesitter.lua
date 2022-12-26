@@ -1,4 +1,4 @@
-require'nvim-treesitter.configs'.setup {
+require('nvim-treesitter.configs').setup({
   ensure_installed = {
     'bash',
     'css',
@@ -31,10 +31,10 @@ require'nvim-treesitter.configs'.setup {
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = "gnn",
-      node_incremental = ".",
-      node_decremental = ",",
-      scope_incremental = "grc",
+      init_selection = 'gnn',
+      node_incremental = '.',
+      node_decremental = ',',
+      scope_incremental = 'grc',
     },
   },
-}
+})

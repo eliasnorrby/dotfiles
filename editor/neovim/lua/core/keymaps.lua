@@ -13,7 +13,7 @@ u.map('n', '<leader>X', ':qall!<CR>')
 u.map('n', '<leader>w', '<C-W>')
 
 -- tabs
-local tabmap = function ()
+local tabmap = function()
   for i = 1, 5, 1 do
     u.map('n', '<leader>' .. i, i .. 'gt')
   end
