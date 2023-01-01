@@ -13,7 +13,7 @@ return {
   { 'n', 'Postman'},
   { 'o', 'OmniFocus' },
   -- { 'p', '?' },               -- occupied by 1Password shortcut
-  { 'q', '?'},
+  { 'q', 'Obsidian' },
   { 'r', 'Alacritty' },
   { 's', 'Emacs' },
   { 't', 'kitty' },              -- "T" for "Terminal"
