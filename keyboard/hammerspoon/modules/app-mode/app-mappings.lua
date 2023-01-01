@@ -7,7 +7,7 @@ return {
   { 'd', 'Drafts' },             -- "D" for "Drafts"
   { 'e', 'Adobe Lightroom' },    -- "E" for "Edit"
   { 'f', 'Fantastical' },        -- "F" for "Fantastical"
-  { 'g', 'Todoist' },            -- "G" for "GTD"
+  { 'g', 'Things3' },             -- "G" for "GTD"
   { 'i', 'Insomnia'},            -- "I" for "Insomnia"
   { 'm', 'iMovie'},
   { 'n', 'Postman'},
