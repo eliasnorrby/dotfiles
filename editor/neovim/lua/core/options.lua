@@ -26,6 +26,9 @@ vim.o.showcmd = false
 vim.o.ruler = false
 vim.o.signcolumn = 'yes'
 
+vim.o.ignorecase = true
+vim.o.smartcase = true
+
 -----------------------------------------------------------
 -- UI
 -----------------------------------------------------------
