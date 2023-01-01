@@ -64,3 +64,7 @@ macos_config:
       value: 44
       type: float
       state: present
+    - key: ApplePressAndHoldEnabled
+      value: false
+      type: bool
+      state: present
