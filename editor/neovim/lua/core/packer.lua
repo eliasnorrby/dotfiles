@@ -39,6 +39,7 @@ return require('packer').startup(function(use)
     cmd = { 'GV' },
     requires = { 'tpope/vim-fugitive' },
   })
+  use('rhysd/git-messenger.vim')
 
   use({
     'nvim-treesitter/nvim-treesitter',
