@@ -29,6 +29,8 @@ macos_config:
       name: "FuzzyTime"
     - id: 1435957248
       name: "Drafts"
+    - id: 1055511498
+      name: "Day One"
     - id: 409183694
       name: "Keynote"
     - id: 441258766
