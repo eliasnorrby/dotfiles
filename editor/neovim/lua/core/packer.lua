@@ -33,7 +33,7 @@ return require('packer').startup(function(use)
 
   use('marko-cerovac/material.nvim')
 
-  use('tpope/vim-fugitive')
+  use({ 'tpope/vim-fugitive', requires = { 'tpope/vim-rhubarb' } })
   use({
     'junegunn/gv.vim',
     cmd = { 'GV' },
