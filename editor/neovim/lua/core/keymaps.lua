@@ -8,6 +8,7 @@ u.map('n', '<leader>q', vim.cmd.q)
 u.map('n', '<leader>Q', vim.cmd.qall)
 u.map('n', '<leader>x', ':q!<CR>')
 u.map('n', '<leader>X', ':qall!<CR>')
+u.map('n', '<leader>R', ':%bd<CR>')
 
 -- windows
 u.map('n', '<leader>w', '<C-W>')
