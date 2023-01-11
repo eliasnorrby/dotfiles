@@ -21,7 +21,11 @@ return require('packer').startup(function(use)
   use({
     'nvim-telescope/telescope.nvim',
     tag = '0.1.x',
-    requires = { 'nvim-lua/plenary.nvim' },
+    requires = {
+      'nvim-lua/plenary.nvim',
+      { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
+      { 'nvim-telescope/telescope-ui-select.nvim' },
+    },
   })
   -- pin due to https://github.com/phaazon/hop.nvim/issues/345
   use({ 'phaazon/hop.nvim', commit = 'caaccee' })

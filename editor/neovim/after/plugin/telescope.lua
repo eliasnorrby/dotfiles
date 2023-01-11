@@ -3,6 +3,9 @@ local builtin = require('telescope.builtin')
 local actions = require('telescope.actions')
 
 require('telescope').setup({
+  extensions = {
+    ['ui-select'] = {},
+  },
   defaults = {
     prompt_prefix = 'λ ',
     mappings = {
@@ -12,6 +15,9 @@ require('telescope').setup({
     },
   },
 })
+
+require('telescope').load_extension('fzf')
+require('telescope').load_extension('ui-select')
 
 local project_files = function()
   local opts = {}
