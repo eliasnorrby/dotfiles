@@ -2,26 +2,26 @@
 -- h, j, k, l occupied by arrow key mappings
 return {
   { 'a', 'Google Meet' },
-  -- { 'b', '?' },
+  { 'b', 'Adobe Lightroom' },
   { 'c', 'Google Chrome' },      -- "C" for "Chrome"
   { 'd', 'Drafts' },             -- "D" for "Drafts"
-  { 'e', 'Adobe Lightroom' },    -- "E" for "Edit"
+  -- { 'e', '?' },
   { 'f', 'Fantastical' },        -- "F" for "Fantastical"
-  { 'g', 'Things3' },             -- "G" for "GTD"
+  { 'g', 'Things3' },            -- "G" for "GTD"
   { 'i', 'Insomnia'},            -- "I" for "Insomnia"
-  { 'm', 'iMovie'},
-  { 'n', 'Postman'},
-  { 'o', 'OmniFocus' },
+  -- { 'm', '?'},
+  -- { 'n', '?'},
+  { 'o', 'Obsidian' },
   -- { 'p', '?' },               -- occupied by 1Password shortcut
-  { 'q', 'Obsidian' },
+  { 'q', '' },
   { 'r', 'Alacritty' },
   { 's', 'Emacs' },
   { 't', 'kitty' },              -- "T" for "Terminal"
   { 'u', 'Spotify' },
   { 'v', 'Notion' },
-  { 'w', 'zoom.us' },
+  { 'w', 'Linear' },
   { 'x', 'Firefox Developer Edition' },
-  { 'y', 'Linear' },
+  -- { 'y', '?' },
   { 'z', 'Slack' },
 
   { 'd', function() hs.execute('open ~/Downloads') end, {'shift'} },
