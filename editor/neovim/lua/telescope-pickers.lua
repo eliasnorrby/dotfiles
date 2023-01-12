@@ -21,8 +21,4 @@ M.changed_branch_files = function()
     :find()
 end
 
-local opts = { noremap = true, silent = true }
-
-vim.api.nvim_set_keymap('n', '<leader>g<cr>', "<cmd>lua require'telescope-pickers'.changed_branch_files()<CR>", opts)
-
 return M
