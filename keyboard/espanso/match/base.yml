@@ -19,7 +19,7 @@ matches:
       - name: mydate
         type: date
         params:
-          format: "%y-%m-%d"
+          format: "%Y-%m-%d"
 
   - trigger: ";sig"
     replace: |-
