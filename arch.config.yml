@@ -26,9 +26,6 @@ topics:
       state: present
       config: "{{ task_config }}"
   editor:
-    - name: vim
-      state: disabled
-      config: "{{ vim_config }}"
     - name: neovim
       state: present
       config: "{{ neovim_config }}"
