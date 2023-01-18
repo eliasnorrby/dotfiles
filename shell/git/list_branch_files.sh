@@ -11,7 +11,7 @@ usage() {
 }
 
 main() {
-  local base_branch cmd action
+  local base_branch cmd action merge_base
   action=$(parse_args "$@")
   base_branch=$(guess_base_branch)
   cmd=(git)
@@ -20,7 +20,8 @@ main() {
   fi
   cmd+=(diff --diff-filter=ACMR)
   if [[ -n "$base_branch" ]]; then
-    cmd+=(--relative "$base_branch")
+    merge_base=$(git merge-base "$base_branch" HEAD)
+    cmd+=(--relative "$merge_base")
   fi
   case $action in
     list)
