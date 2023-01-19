@@ -4,6 +4,7 @@
   f = fetch
   fm = fetch origin master:master
   p = push
+  pu = push -u
   m = merge
   s = status
   c = commit -v
