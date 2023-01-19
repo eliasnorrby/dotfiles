@@ -46,8 +46,8 @@
 	delete-squashed = "!f() { local targetBranch=${1:-master} && git checkout -q $targetBranch && git branch --merged | grep -v \"\\*\" | xargs -n 1 git branch -d && git for-each-ref refs/heads/ \"--format=%(refname:short)\" | while read branch; do mergeBase=$(git merge-base $targetBranch $branch) && [[ $(git cherry $targetBranch $(git commit-tree $(git rev-parse $branch^{tree}) -p $mergeBase -m _)) == \"-\"* ]] && git branch -D $branch; done; }; f"
   # 'Branch Clean'
   bclean = "!git rp && git bdelete"
-  # 'Pull Request Delete': Checkout previous branch, deleting the current one
-  prd = "!f() { branch=$(git cb); git checkout -; git branch -D $branch; }; f"
+  # 'Pull Request Delete': Checkout main branch, deleting the current one
+  prd = "!f() { branch=$(git cb); if git checkout master || git checkout main; then git branch -D $branch; fi }; f"
   prm = "!f() { git prd; git rt; }; f"
   z = stash
   zp = stash pop
