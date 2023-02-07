@@ -8,6 +8,7 @@ prompt: enabled
 pager:
 # Aliases allow you to create nicknames for gh commands
 aliases:
+    pc: pr create
     co: pr checkout
     auto: '!git push -u && gh pr create --fill && gh pr merge --auto --squash'
     squash: pr merge --auto --squash
