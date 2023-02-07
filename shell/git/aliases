@@ -41,6 +41,8 @@
   rt = "!f() { git fetch && git rr; }; f"
   # 'Force Push'
   fp = "!f() { git push --force-with-lease origin $(git cb); }; f"
+  # 'Branch Pruner'
+  bp = "!f() { branch_pruner; }; f"
   # 'Branch Delete': Delete merged branches
   bdelete = "!f() { git branch --merged | grep -Ev '(\\*|master|main|develop)' | xargs -n 1 git branch -d; }; f"
   # Delete squashed branches (https://github.com/not-an-aardvark/git-delete-squashed)
