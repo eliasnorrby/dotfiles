@@ -14,12 +14,6 @@ git submodule update --recursive --remote | tee $zsh_log
 echo-ok "zsh updated!"
 echo-info "Wrote logs to $zsh_log"
 
-# vim
-echo "$SPACE"
-echo-info "Updating vim-plug plugins..."
-nvim +'PlugInstall --sync' +PlugUpdate +PlugUpgrade +qall
-echo-ok "vim-plug updated!"
-
 if [[ "$(_os)" == "macos" ]]; then
   # brew
   brew_log=$(mktemp)
