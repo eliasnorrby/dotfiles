@@ -15,7 +15,7 @@ fonts:
     family: Dank Mono
   iosevka: &iosevka
     family: Iosevka Nerd Font
-    style: Light
+    style: ExtraLight
   mononoki: &mononoki
     family: mononoki Nerd Font
   hack: &hack
@@ -30,8 +30,8 @@ fonts:
     family: SauceCodePro Nerd Font
   victormono: &victormono
     family: VictorMono Nerd Font
-    style: Light
+    style: Thin
 
 font:
-  normal: *victormono
+  normal: *iosevka
   size: 14
