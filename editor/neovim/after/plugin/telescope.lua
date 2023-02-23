@@ -34,5 +34,6 @@ u.map('n', '<leader>.', builtin.find_files, { desc = 'Find (non-git) project fil
 u.map('n', '<leader><cr>', builtin.git_status, { desc = 'Find changed files' })
 
 u.map('n', '<leader>//', builtin.live_grep, { desc = 'Project grep' })
+u.map('n', '<leader>bb', builtin.buffers, { desc = 'Find buffers' })
 
 u.map('n', '<leader>/r', builtin.resume, { desc = 'Resume previous picker' })
