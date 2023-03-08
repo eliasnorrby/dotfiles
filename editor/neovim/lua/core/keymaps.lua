@@ -61,3 +61,5 @@ u.map('x', '<leader>ft', ':s/^  /	/<cr>')
 -- temporary
 u.map('n', '<leader>so', vim.cmd.source)
 u.map('n', '<leader>lf', ':r !linear_issue_number fix<CR>')
+
+u.map('n', '<leader>ln', 'd/##<CR>ONone.<ESC>O<ESC>jo<ESC>k')
