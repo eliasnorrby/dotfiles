@@ -63,5 +63,6 @@
   lr = "!f() { git lg ..$(git rb); }; f"
   alias = "!git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /"
   fa = "!f() { selected=$(git alias | fzf | cut -d '=' -f1); [[ -n $selected ]] && echo git $selected && git $selected; }; f"
+  parent = "!git show-branch | grep '*' | grep -v \"$(git rev-parse --abbrev-ref HEAD)\" | head -n1 | sed 's/.*\\[\\(.*\\)\\].*/\\1/' | sed 's/[\\^~].*//' #"
 
 # vim: ft=gitconfig
