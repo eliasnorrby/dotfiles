@@ -10,6 +10,7 @@ pager:
 aliases:
     pc: pr create
     stack: '!gh pr create --base $(git parent)'
+    restack: '!git fetch && git stack-dump && git rebase --onto origin/master $(git parent)'
     co: pr checkout
     auto: '!git push -u && gh pr create --fill && gh pr merge --auto --squash'
     squash: pr merge --auto --squash
