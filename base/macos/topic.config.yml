@@ -24,6 +24,7 @@ macos_config:
     - balenaetcher
     - fantastical
     - obsidian
+    - betterdisplay
   mas_apps:
     - id: 950297057
       name: "FuzzyTime"
