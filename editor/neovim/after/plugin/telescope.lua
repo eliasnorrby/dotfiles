@@ -1,6 +1,7 @@
 local u = require('core.utils')
 local builtin = require('telescope.builtin')
 local actions = require('telescope.actions')
+local layout = require('telescope.actions.layout')
 
 require('telescope').setup({
   extensions = {
@@ -11,6 +12,7 @@ require('telescope').setup({
     mappings = {
       i = {
         ['<esc>'] = actions.close,
+        ['<C-p>'] = layout.toggle_preview,
       },
     },
   },
