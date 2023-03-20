@@ -14,7 +14,7 @@ main() {
 
   for branch in $branches; do
     printf "branch: ${ORANGE}%s${NC} | " "$branch"
-    if is_merged_or_closed "$branch"; then
+    if is_merged_or_closed "$branch" || is_stack "$branch"; then
       printf "action: ${RED}%s${NC}\n" "deleting"
       delete_branch "$branch"
     else
@@ -32,6 +32,16 @@ is_merged_or_closed() {
   state=$(gh pr view "$branch" --json state --jq .state 2>/dev/null)
   print_state "$state"
   if [[ "$state" == "MERGED" ]] || [[ "$state" == "CLOSED" ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+is_stack() {
+  local branch=$1
+  if [[ "$branch" == *_stack ]]; then
+    print_state "STACK"
     return 0
   else
     return 1
