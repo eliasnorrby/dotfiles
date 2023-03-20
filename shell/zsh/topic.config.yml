@@ -12,6 +12,7 @@ zsh_config:
     - coreutils
     - watch
     - tree
+    - htop
     # extras
     - jq
     - yq
