@@ -9,8 +9,9 @@ pager:
 # Aliases allow you to create nicknames for gh commands
 aliases:
     pc: pr create
+    base: pr view --json baseRefName --jq '.baseRefName'
     stack: '!gh pr create --base $(git parent)'
-    restack: '!git fetch && git stack-dump && git rebase --onto origin/master $(git parent)'
+    restack: '!git fetch && git stack-dump && git rebase --onto $(gh base) $(git parent)'
     co: pr checkout
     auto: '!git push -u && gh pr create --fill && gh pr merge --auto --squash'
     squash: pr merge --auto --squash
