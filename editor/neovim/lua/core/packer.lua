@@ -69,6 +69,7 @@ return require('packer').startup(function(use)
       require('nvim-autopairs').setup({})
     end,
   })
+  use('godlygeek/tabular')
 
   use({ -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
