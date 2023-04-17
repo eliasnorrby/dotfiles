@@ -63,3 +63,5 @@ u.map('n', '<leader>so', vim.cmd.source)
 u.map('n', '<leader>lf', ':r !linear_issue_number fix<CR>')
 
 u.map('n', '<leader>ln', 'd/##<CR>ONone.<ESC>O<ESC>jo<ESC>k')
+
+u.map('n', '<leader>/w', ':silent Telescope grep_string<CR>')
