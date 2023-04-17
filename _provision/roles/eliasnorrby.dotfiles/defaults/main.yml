@@ -15,14 +15,14 @@ is_interactive: false
 
 topics:
   editor:
-    - name: vim
+    - name: neovim
       state: present
       config:
-        path: editor/vim
+        path: editor/neovim
         brew_formulas:
-          - vim
+          - neovim
         links:
-          - .vimrc
+          - init.lua
   shell:
     - name: zsh
       state: present
