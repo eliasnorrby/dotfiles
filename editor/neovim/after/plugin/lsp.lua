@@ -201,7 +201,7 @@ mason_lspconfig.setup_handlers({
 -- Turn on lsp status information
 require('fidget').setup()
 
-local signs = { Error = '', Warn = '', Hint = '', Info = ' ' }
+local signs = { Error = '', Warn = '', Hint = '󰌶', Info = ' ' }
 
 for type, icon in pairs(signs) do
   local hl = 'DiagnosticSign' .. type
