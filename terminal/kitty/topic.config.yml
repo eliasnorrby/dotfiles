@@ -3,6 +3,7 @@ kitty_config:
   path: terminal/kitty
   links:
     - kitty.conf
+    - themes
     - src: kitty.arch.conf
       rename: kitty.local.conf
       condition: "{{ is_arch }}"
