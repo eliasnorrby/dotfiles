@@ -5,7 +5,7 @@ window:
   dynamic_padding: true
 
 schemes:
-  catpuccin: &catppuccin
+  catppuccin: &catppuccin
     # Default colors
     primary:
         background: "#24273A" # base
@@ -162,7 +162,7 @@ schemes:
       cyan: '#BAFAE3'
       white: '#FFFFFF'
 
-colors: *palenight
+colors: *catppuccin
 
 cursor:
   style:
