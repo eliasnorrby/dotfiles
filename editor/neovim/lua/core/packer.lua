@@ -35,6 +35,7 @@ return require('packer').startup(function(use)
   use('lewis6991/gitsigns.nvim')
 
   use({ 'kyazdani42/nvim-tree.lua', requires = { 'nvim-tree/nvim-web-devicons' } })
+  use({ 'akinsho/bufferline.nvim', tag = '*', requires = 'nvim-tree/nvim-web-devicons' })
 
   use('marko-cerovac/material.nvim')
   use({ 'catppuccin/nvim', as = 'catppuccin' })
