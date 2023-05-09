@@ -5,7 +5,7 @@ local diagnostics = {
   symbols = { error = ' ', warn = ' ', hint = '󰌶 ', info = ' ' },
 }
 
-local custom_palenight = require('lualine.themes.palenight')
+local custom_palenight = require('lualine.themes.catppuccin')
 local default_fg = custom_palenight.normal.c.fg
 
 custom_palenight.normal.c.bg = 'NONE'

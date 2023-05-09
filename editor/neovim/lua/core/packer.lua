@@ -37,6 +37,7 @@ return require('packer').startup(function(use)
   use({ 'kyazdani42/nvim-tree.lua', requires = { 'nvim-tree/nvim-web-devicons' } })
 
   use('marko-cerovac/material.nvim')
+  use({ 'catppuccin/nvim', as = 'catppuccin' })
 
   use({ 'tpope/vim-fugitive', requires = { 'tpope/vim-rhubarb' } })
   use({
