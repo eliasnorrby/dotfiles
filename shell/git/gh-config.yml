@@ -13,7 +13,8 @@ aliases:
     stack: '!gh pr create --base $(git parent)'
     restack: '!git fetch && git stack-dump && git rebase --onto $(gh base) $(git parent)'
     co: pr checkout
-    auto: '!git push -u && gh pr create --fill && gh pr merge --auto --squash'
+    auto: '!gh fill && gh pr merge --auto --squash'
+    fill: '!git push -u && gh pr create --fill'
     squash: pr merge --auto --squash
     wait: pr checks --watch
     merge: '!gh auto && sleep 3 && gh wait && git prm'
