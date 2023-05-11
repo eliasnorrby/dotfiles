@@ -310,9 +310,13 @@ apps() {
   local DIR_LIST=(
     "${PWD}/apps"
     "${PWD}/packages"
+    "${PWD}/workspaces"
   )
 
   for dir in ${DIR_LIST[@]}; do
+    if [[ ! -d "${dir}" ]]; then
+      continue
+    fi
     local APPS="${APPS}\n$(find ${dir} -maxdepth 1 -mindepth 1 -type d)"
   done
 
