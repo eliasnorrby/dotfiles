@@ -13,6 +13,8 @@
   d = diff
   dc = diff --cached
   co = checkout
+  # 'Hard Reset'
+  hr = "!f() { git reset --hard origin/$(git cb); }; f"
   empty = commit --allow-empty -m
   prevmessage = log --format=%B -1
   cm = "!f() { git co master 2>&1 | grep -v 'did not match any' || git co main; }; f"
