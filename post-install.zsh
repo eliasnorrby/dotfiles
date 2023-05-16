@@ -34,6 +34,13 @@ if _is_callable code ; then
   "$DIR/editor/vscode/install-extensions.zsh"
 fi
 
+# node corepack
+if _is_callable corepack ; then
+  _msg "-- node --"
+  _msg "Enabling corepack..."
+  corepack enable
+fi
+
 # ansible
 _msg "-- ansible --"
 _msg "Installing playbook roles..."
