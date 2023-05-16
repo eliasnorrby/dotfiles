@@ -13,11 +13,11 @@ if [[ "$(_os)" == "macos" ]]; then
   tic -x "$DIR/assets/tmux.terminfo"
 fi
 
-# vim-plug
+# nvim
 if _is_callable nvim ; then
-  _msg "-- vim-plug --"
-  _msg "Running PlugInstall..."
-  nvim +'PlugInstall --sync' +qall
+  _msg "-- nvim --"
+  _msg "Running PackerSync..."
+  nvim +'PackerSync' +qall
 fi
 
 # emacs
