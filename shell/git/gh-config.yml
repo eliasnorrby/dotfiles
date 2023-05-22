@@ -11,7 +11,7 @@ aliases:
     pc: pr create
     base: pr view --json baseRefName --jq '.baseRefName'
     stack: '!gh pr create --base $(git parent)'
-    restack: '!git fetch && git stack-dump && git rebase --onto $(gh base) $(git parent)'
+    restack: '!git fetch && git fm && git stack-dump && git rebase --onto $(gh base) $(git parent)'
     co: pr checkout
     auto: '!gh fill && gh pr merge --auto --squash'
     fill: '!git push -u && gh pr create --fill'
