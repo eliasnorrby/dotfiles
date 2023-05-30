@@ -5,11 +5,16 @@ return {
   config = true,
   event = 'VeryLazy',
   init = function()
-    local u = require('core.utils')
+    local wk = require('which-key')
 
-    u.map('n', 'gsj', vim.cmd.HopLineAC)
-    u.map('n', 'gsk', vim.cmd.HopLineBC)
-    u.map('n', 'gsw', vim.cmd.HopWord)
-    u.map('n', 'gs<space>', vim.cmd.HopWord)
+    wk.register({
+      ['gs'] = {
+        name = '+hop',
+        j = { '<cmd>HopLineAC<cr>', 'HopLineAC' },
+        k = { '<cmd>HopLineBC<cr>', 'HopLineBC' },
+        w = { '<cmd>HopWord<cr>', 'HopWord' },
+        ['<space>'] = { '<cmd>HopWord<cr>', 'HopWord' },
+      },
+    })
   end,
 }
