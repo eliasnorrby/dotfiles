@@ -56,17 +56,16 @@ return {
     require('telescope').load_extension('ui-select')
   end,
   init = function()
-    local u = require('core.utils')
+    local wk = require('which-key')
     local builtin = require('telescope.builtin')
-    u.map('n', '<leader><leader>', project_files, { desc = 'Find project files' })
-    u.map('n', '<leader>.', builtin.find_files, { desc = 'Find (non-git) project files' })
-    u.map('n', '<leader><cr>', builtin.git_status, { desc = 'Find changed files' })
-
-    u.map('n', '<leader>//', builtin.live_grep, { desc = 'Project grep' })
-    u.map('n', '<leader>bb', builtin.buffers, { desc = 'Find buffers' })
-
-    u.map('n', '<leader>/r', builtin.resume, { desc = 'Resume previous picker' })
-
-    u.map('n', '<leader>g<cr>', changed_branch_files, { desc = 'Find changed files on current branch' })
+    wk.register({
+      ['<leader>'] = { project_files, 'Find project files' },
+      ['.'] = { builtin.find_files, 'Find (non-git) project files' },
+      ['/r'] = { builtin.resume, 'Resume previous picker' },
+      ['//'] = { builtin.live_grep, 'Project grep' },
+      ['<cr>'] = { builtin.git_status, 'Find changed files' },
+      ['bb'] = { builtin.buffers, 'Find buffers' },
+      ['g<cr>'] = { changed_branch_files, 'Find changed files on current branch' },
+    }, { prefix = '<leader>' })
   end,
 }
