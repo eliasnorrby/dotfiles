@@ -130,6 +130,7 @@ local servers = {
   },
   dockerls = {},
   gopls = {},
+  phpactor = {},
   graphql = {
     filetypes = {
       'graphql',
