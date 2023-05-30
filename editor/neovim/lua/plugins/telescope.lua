@@ -63,6 +63,7 @@ return {
       ['.'] = { builtin.find_files, 'Find (non-git) project files' },
       ['/r'] = { builtin.resume, 'Resume previous picker' },
       ['//'] = { builtin.live_grep, 'Project grep' },
+      ['/w'] = { builtin.grep_string, 'Grep string' },
       ['<cr>'] = { builtin.git_status, 'Find changed files' },
       ['bb'] = { builtin.buffers, 'Find buffers' },
       ['g<cr>'] = { changed_branch_files, 'Find changed files on current branch' },
