@@ -38,12 +38,6 @@ return {
       require('Comment').setup()
     end,
   },
-  {
-    'windwp/nvim-autopairs',
-    config = function()
-      require('nvim-autopairs').setup({})
-    end,
-  },
   'godlygeek/tabular',
 
   { -- LSP Configuration & Plugins
@@ -60,16 +54,6 @@ return {
       'folke/neodev.nvim',
     },
   },
-  { -- Autocompletion
-    'hrsh7th/nvim-cmp',
-    dependencies = {
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-buffer',
-      'L3MON4D3/LuaSnip',
-      'saadparwaiz1/cmp_luasnip',
-    },
-  },
-
 
   'mhartington/formatter.nvim',
 
