@@ -82,7 +82,6 @@ return {
     },
   },
 
-  'github/copilot.vim',
 
   'mhartington/formatter.nvim',
 
