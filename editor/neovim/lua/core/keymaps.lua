@@ -1,7 +1,5 @@
 local u = require('core.utils')
 
-vim.g.mapleader = ' '
-
 -- save & quit
 u.map('n', '<leader>fs', vim.cmd.w)
 u.map('n', '<leader>q', vim.cmd.q)
