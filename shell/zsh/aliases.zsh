@@ -37,6 +37,7 @@ alias cl="clear"
 alias map="xargs -n1"
 
 alias myip="curl -s api.ipify.org"
+alias ipc="myip | copy_cmd"
 
 # Folder managemant
 # alias d='dirs -v'
