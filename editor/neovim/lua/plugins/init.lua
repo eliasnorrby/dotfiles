@@ -15,8 +15,6 @@ return {
       { 'nvim-telescope/telescope-ui-select.nvim' },
     },
   },
-  -- pin due to https://github.com/phaazon/hop.nvim/issues/345
-  { 'phaazon/hop.nvim', commit = 'caaccee' },
 
   'nvim-lualine/lualine.nvim',
   'lewis6991/gitsigns.nvim',
