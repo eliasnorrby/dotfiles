@@ -22,7 +22,6 @@ return {
   'lewis6991/gitsigns.nvim',
 
   { 'kyazdani42/nvim-tree.lua', dependencies = { 'nvim-tree/nvim-web-devicons' } },
-  { 'akinsho/bufferline.nvim', version = '*', dependencies = 'nvim-tree/nvim-web-devicons' },
 
   'marko-cerovac/material.nvim',
   { 'catppuccin/nvim', name = 'catppuccin' },
