@@ -4,16 +4,6 @@ return {
   'tpope/vim-abolish',
   'moll/vim-bbye',
 
-  {
-    'nvim-telescope/telescope.nvim',
-    version = '0.1.x',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
-      { 'nvim-telescope/telescope-ui-select.nvim' },
-    },
-  },
-
   'nvim-lualine/lualine.nvim',
   'lewis6991/gitsigns.nvim',
 
