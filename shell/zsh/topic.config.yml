@@ -20,6 +20,7 @@ zsh_config:
     - mdcat
     - entr
     - parallel
+    - hyperfine
     # misc
     - neofetch
     - terminal-notifier
