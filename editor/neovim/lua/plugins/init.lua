@@ -1,6 +1,4 @@
 return {
-  'wbthomason/packer.nvim',
-
   'gpanders/editorconfig.nvim',
   'tpope/vim-unimpaired',
   'tpope/vim-abolish',
