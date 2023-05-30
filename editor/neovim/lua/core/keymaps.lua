@@ -49,8 +49,6 @@ u.map('n', 'k', 'gk')
 u.map('n', '<leader>co', vim.cmd.copen)
 u.map('n', '<leader>cc', vim.cmd.cclose)
 
-u.map('n', '<leader>g<cr>', "<cmd>lua require'telescope-pickers'.changed_branch_files()<CR>")
-
 u.map('x', '<leader>s', ":'<,'>!sort<CR>")
 
 -- for heredoc formatting
