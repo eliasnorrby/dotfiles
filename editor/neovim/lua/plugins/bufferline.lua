@@ -8,6 +8,9 @@ return {
         if vim.bo[buf_number].filetype ~= 'fugitive' then
           return true
         end
+        if vim.fn.bufname(buf_number) ~= "[No Name]" then
+            return true
+        end
       end,
     },
   },
