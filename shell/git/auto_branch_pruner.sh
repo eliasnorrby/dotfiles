@@ -8,12 +8,18 @@ CYAN=$(tput setaf 6)
 NC=$(tput sgr 0) # No Color
 
 main() {
-  local branches
+  local branches maxlength
 
   branches=$(list_branches)
 
   for branch in $branches; do
-    printf "branch: ${ORANGE}%s${NC} | " "$branch"
+    if [[ ${#branch} -gt $maxlength ]]; then
+      maxlength=${#branch}
+    fi
+  done
+
+  for branch in $branches; do
+    printf "branch: ${ORANGE}%-${maxlength}s${NC} | " "$branch"
     if is_merged_or_closed "$branch" || is_stack "$branch"; then
       printf "action: ${RED}%s${NC}\n" "deleting"
       delete_branch "$branch"
@@ -54,9 +60,10 @@ delete_branch() {
 }
 
 print_state() {
-  local state=$1 color
+  local state=$1 width=7 color
   if [[ -z "$state" ]]; then
-    printf "state: no PR | "
+    state="no PR"
+    printf "state: %-${width}s | " "$state"
     return
   fi
 
@@ -67,7 +74,7 @@ print_state() {
   elif [[ "$state" == "OPEN" ]]; then
     color=${GREEN}
   fi
-  printf "state: ${color}%s${NC} | " "$state"
+  printf "state: ${color}%-${width}s${NC} | " "$state"
 }
 
 main
