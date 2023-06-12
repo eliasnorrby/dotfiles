@@ -7,6 +7,9 @@ RED=$(tput setaf 1)
 CYAN=$(tput setaf 6)
 NC=$(tput sgr 0) # No Color
 
+STATE_LENGTH=7
+ACTION_LENGTH=9
+
 main() {
   local branches maxlength
 
@@ -18,13 +21,16 @@ main() {
     fi
   done
 
+  printf "%-${maxlength}s │ %-${STATE_LENGTH}s │ %-${ACTION_LENGTH}s\n" "branch" "state" "action"
+  printf "%-${maxlength}s ┼ %-${STATE_LENGTH}s ┼ %-${ACTION_LENGTH}s\n" | sed 's/ /─/g'
+
   for branch in $branches; do
-    printf "branch: ${ORANGE}%-${maxlength}s${NC} | " "$branch"
+    printf "${ORANGE}%-${maxlength}s${NC} │ " "$branch"
     if is_merged_or_closed "$branch" || is_stack "$branch"; then
-      printf "action: ${RED}%s${NC}\n" "deleting"
+      printf "${RED}%s${NC}\n" "deleting"
       delete_branch "$branch"
     else
-      printf "action: ${CYAN}%s${NC}\n" "skipping"
+      printf "${CYAN}%s${NC}\n" "skipping"
     fi
   done
 }
@@ -60,10 +66,10 @@ delete_branch() {
 }
 
 print_state() {
-  local state=$1 width=7 color
+  local state=$1 width=$STATE_LENGTH color
   if [[ -z "$state" ]]; then
     state="no PR"
-    printf "state: %-${width}s | " "$state"
+    printf "%-${width}s │ " "$state"
     return
   fi
 
@@ -74,7 +80,7 @@ print_state() {
   elif [[ "$state" == "OPEN" ]]; then
     color=${GREEN}
   fi
-  printf "state: ${color}%-${width}s${NC} | " "$state"
+  printf "${color}%-${width}s${NC} │ " "$state"
 }
 
 main
