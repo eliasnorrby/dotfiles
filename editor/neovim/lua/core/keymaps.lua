@@ -15,6 +15,7 @@ wk.register({
 wk.register({
   ['v'] = { ':vsplit<CR>', 'vertical split' },
   ['s'] = { ':split<CR>', 'horizontal split' },
+  ['o'] = { '<C-W>o', 'close other windows' },
   ['q'] = { '<C-W>q', 'close window' },
   ['='] = { '<C-W>=', 'balance windows' },
   ['-'] = { '<C-W>-', 'decrease height' },
@@ -25,6 +26,7 @@ wk.register({
   ['J'] = { '<C-W>J', 'move to bottom window' },
   ['K'] = { '<C-W>K', 'move to top window' },
   ['L'] = { '<C-W>L', 'move to right window' },
+  ['T'] = { '<C-W>T', 'move window to new tab' },
 }, { prefix = '<leader>w' })
 
 -- tabs
