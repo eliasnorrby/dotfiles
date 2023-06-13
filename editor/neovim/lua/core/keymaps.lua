@@ -97,6 +97,7 @@ wk.register({
     ['f'] = { ':r !linear_issue_number fix<CR>', 'fixes...' },
     ['n'] = { 'd/##<CR>ONone.<ESC>O<ESC>jo<ESC>k', 'none' },
   },
+  ['L'] = { ':Lazy<CR>', 'Lazy' },
 }, { prefix = '<leader>' })
 
 -- temporary
