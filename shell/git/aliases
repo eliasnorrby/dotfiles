@@ -59,6 +59,7 @@
   za = stash apply
   # 'Stash Everything'
   ze = "!f() { git stash push -u -m \"$1\"; }; f"
+  x = co .
   # 'Quick Save': Create a stash and reapply the changes
   qs = "!f() { git ze \"$1\" && git za; }; f"
   # 'Log Remote': Compare current branch to tracking branch
