@@ -9,6 +9,7 @@ work_config:
   brew_casks:
     - notion
     - zoom
+    - microsoft-teams
     - linear-linear
   aur_packages:
     - teams
