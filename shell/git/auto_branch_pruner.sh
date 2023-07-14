@@ -26,7 +26,7 @@ main() {
 
   for branch in $branches; do
     printf "${ORANGE}%-${maxlength}s${NC} │ " "$branch"
-    if is_merged_or_closed "$branch" || is_stack "$branch"; then
+    if is_stack "$branch" || is_merged_or_closed "$branch"; then
       printf "${RED}%s${NC}\n" "deleting"
       delete_branch "$branch"
     else
@@ -62,7 +62,7 @@ is_stack() {
 
 delete_branch() {
   local branch=$1
-  git branch -D "$branch"
+  git branch -D "$branch" >/dev/null 2>&1
 }
 
 print_state() {
