@@ -8,8 +8,8 @@ return {
   -- { 'e', '?' },
   { 'f', 'Fantastical' },        -- "F" for "Fantastical"
   { 'g', 'Things3' },            -- "G" for "GTD"
-  { 'i', 'Insomnia'},            -- "I" for "Insomnia"
-  -- { 'm', '?'},
+  { 'i', 'Insomnia' },            -- "I" for "Insomnia"
+  { 'm', 'Microsoft Teams classic' },
   -- { 'n', '?'},
   { 'o', 'Obsidian' },
   -- { 'p', '?' },               -- occupied by 1Password shortcut
