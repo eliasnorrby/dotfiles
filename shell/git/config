@@ -31,11 +31,6 @@
 [include]
   path = aliases
 
-[includeIf "gitdir:work/irori/"]
-  path = config-irori
-[includeIf "gitdir:work/coop/"]
-  path = config-irori
-
 [includeIf "gitdir:work/bemlo/"]
   path = config-bemlo
 
