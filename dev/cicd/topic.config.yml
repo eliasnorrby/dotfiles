@@ -5,7 +5,7 @@ cicd_config:
     - buildpacks/tap
   brew_formulas:
     - tektoncd-cli
-    - terraform
+    - tfenv
     - terraform-ls
     - tflint
     - pack
