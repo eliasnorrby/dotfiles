@@ -56,7 +56,6 @@ matches:
         type: shell
         params:
           cmd: lorem-ipsum $ESPANSO_COUNT sentences
-
   - regex: l(?P<count>\d+)(?P<unit>(words|paragraphs|sentences))
     label: Lorem ipsum
     replace: "{{lorem}}"
