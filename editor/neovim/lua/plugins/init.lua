@@ -12,7 +12,6 @@ return {
   'marko-cerovac/material.nvim',
   { 'catppuccin/nvim', name = 'catppuccin' },
 
-  { 'tpope/vim-fugitive', dependencies = { 'tpope/vim-rhubarb' } },
   {
     'junegunn/gv.vim',
     cmd = { 'GV' },
