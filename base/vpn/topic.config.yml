@@ -16,6 +16,8 @@ vpn_config:
       rename: alacritty_tmux_vpn_connect
   brew_formulas:
     - openfortivpn
+  brew_casks:
+    - nordvpn
   pacman_packages:
     - openfortivpn
 
