@@ -7,7 +7,7 @@ return {
   'nvim-lualine/lualine.nvim',
   'lewis6991/gitsigns.nvim',
 
-  { 'kyazdani42/nvim-tree.lua', dependencies = { 'nvim-tree/nvim-web-devicons' } },
+  { 'nvim-tree/nvim-tree.lua', dependencies = { 'nvim-tree/nvim-web-devicons' } },
 
   'marko-cerovac/material.nvim',
   { 'catppuccin/nvim', name = 'catppuccin' },
