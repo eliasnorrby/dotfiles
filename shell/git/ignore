@@ -2,3 +2,8 @@
 .DS_Store?
 
 *.log
+
+# Ignore direnv files
+.envrc
+
+# vim: ft=gitignore

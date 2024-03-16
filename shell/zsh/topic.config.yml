@@ -21,6 +21,7 @@ zsh_config:
     - entr
     - parallel
     - hyperfine
+    - direnv
     # misc
     - neofetch
     - terminal-notifier
