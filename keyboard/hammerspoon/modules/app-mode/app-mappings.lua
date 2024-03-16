@@ -9,8 +9,7 @@ return {
   { 'f', 'Fantastical' },        -- "F" for "Fantastical"
   { 'g', 'Things3' },            -- "G" for "GTD"
   { 'i', 'Insomnia' },            -- "I" for "Insomnia"
-  -- { 'm', 'Microsoft Teams classic' },
-  { 'm', function () hs.eventtap.keyStroke('ctrl', '2', 0) end },
+  { 'm', 'Microsoft Teams (work or school)' },
   -- { 'n', '?'},
   { 'o', 'Obsidian' },
   -- { 'p', '?' },               -- occupied by 1Password shortcut
