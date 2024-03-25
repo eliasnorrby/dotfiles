@@ -10,6 +10,7 @@
   c = commit -v
   cr = reset --soft HEAD~
   b = branch
+  bs = "!branch_status"
   d = diff
   dc = diff --cached
   co = checkout
