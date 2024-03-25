@@ -26,14 +26,14 @@ main() {
     fi
   done
 
-  printf "%-${maxlength}s │ %${STATUS_LENGTH}s │ %-${STATUS_LENGTH}s │ %${REMOTE_LENGTH}s │ %s \n" "branch" "behind" "ahead" "r" "pr"
-  printf "%-${maxlength}s ┼ %-${STATUS_LENGTH}s ┼ %-${STATUS_LENGTH}s ┼ %${REMOTE_LENGTH}s ┼ %${PR_LENGTH}s \n" | sed 's/ /─/g'
+  printf "%${REMOTE_LENGTH}s %-${maxlength}s │ %${STATUS_LENGTH}s │ %-${STATUS_LENGTH}s │ %s \n" "" "branch" "behind" "ahead" "pr"
+  printf "%${REMOTE_LENGTH}s %-${maxlength}s ┼ %-${STATUS_LENGTH}s ┼ %-${STATUS_LENGTH}s ┼ %${PR_LENGTH}s \n" | sed 's/ /─/g'
 
   for branch in $branches; do
+    printf "%-${REMOTE_LENGTH}s " "$(remote "$branch")"
     printf "${ORANGE}%-${maxlength}s${NC} │ " "$branch"
     printf "${RED}%${STATUS_LENGTH}s${NC} │ " "$(behind "$branch")"
     printf "${GREEN}%-${STATUS_LENGTH}s${NC} │ " "$(ahead "$branch")"
-    printf "%-${REMOTE_LENGTH}s │ " "$(remote "$branch")"
     printf "%${PR_LENGTH}s \n" "$(pull_request "$prs" "$branch" "$mode")"
   done
 }
@@ -52,7 +52,7 @@ remote() {
   local branch=$1 remote
   remote=$(git rev-parse --abbrev-ref --symbolic-full-name "${branch}@{u}" 2>/dev/null)
   if [[ -n "$remote" ]]; then
-    echo "${GREEN}✓${NC}"
+    echo "${GREEN}•${NC}"
   fi
 }
 
