@@ -21,3 +21,6 @@ tmux_config:
     - src: bash_repl.sh
       dest: "{{ xdg_bin_home }}/"
       rename: bash_repl
+    - src: tmux_warning_wrapper.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: tmux_warning_wrapper
