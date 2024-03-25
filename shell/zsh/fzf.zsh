@@ -35,21 +35,6 @@ export FZF_TMUX_OPTS='-p 70%,70%'
 # Inspired by (read: copy-pasted from) the Jarvis dotfiles (ctaylo21/jarvis)
 # Source: https://github.com/ctaylo21/jarvis
 
-# fo [FUZZY PATTERN] - Open the selected file with the default editor
-#   - Bypass fuzzy finder if there's only one match (--select-1)
-#   - Exit if there's no match (--exit-0)
-fo() {
-  local files
-  IFS=$'\n' files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
-  [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
-}
-
-# fh [FUZZY PATTERN] - Search in command history
-# Note: duplicated by ^R mapping
-fh() {
-  print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
-}
-
 # fgb [FUZZY PATTERN] - Checkout specified branch
 # Include remote branches, sorted by most recent commit and limited to 30
 fgb() {
@@ -82,24 +67,6 @@ fargs() {
 fzf-args-widget() { local result=$(fargs | join-lines); zle reset-prompt; LBUFFER+=$result }
 zle -N fzf-args-widget
 bindkey ',a' fzf-args-widget
-
-# FZF heart NPM?
-fnpm() {
-  local repo_root package_dir script
-  package_dir="$(pwd)"
-  if [[ ! -f package.json ]] ; then
-    repo_root="$(git rev-parse --show-toplevel)"
-    if [[ ! -f "${repo_root}/package.json" ]] ; then
-      return
-    else
-      package_dir="$repo_root"
-    fi
-  fi
-  script=$( jq -r '.scripts' "${package_dir}/package.json" | jq 'keys[]' | sed 's/"//g' | package_dir="$package_dir" fzf_tmux --ansi --reverse \
-    --preview 'jq -r ".scripts[\"$(echo {})\"]" "'"${package_dir}"'/package.json" | bat -l sh --color always --decorations never')
-  [ -z "$script" ] && return
-  npm run $script
-}
 
 npm-widget() {
   local repo_root package_dir script runner
@@ -153,7 +120,6 @@ fartii() {
 # Copied from junegunn's dotfiles and/or this post:
 # https://junegunn.kr/2016/07/fzf-git
 # -------------
-# FIXME: key-bindings
 
 is_in_git_repo() {
   git rev-parse HEAD > /dev/null 2>&1
