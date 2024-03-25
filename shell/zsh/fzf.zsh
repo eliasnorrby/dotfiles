@@ -30,18 +30,6 @@ export FZF_DEFAULT_OPTS='
 
 export FZF_TMUX_OPTS='-p 70%,70%'
 
-# Use fzf for z
-# TODO: decide on whether to install z again
-# In the meantime, just call p
-alias j="_z 2>&1"
-unalias z 2> /dev/null
-z() {
-  projects "$@"
-  return
-  [ $# -gt 0 ] && _z "$*" && return
-  cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
-}
-
 ## FZF FUNCTIONS ##
 # -----------------
 # Inspired by (read: copy-pasted from) the Jarvis dotfiles (ctaylo21/jarvis)
@@ -303,6 +291,8 @@ projects() {
   fi
 
 }
+
+alias z=projects
 
 apps() {
   cd "$(git rev-parse --show-toplevel)" || return 1
