@@ -20,6 +20,7 @@ return {
       augroup SQLSetup
         autocmd!
         autocmd FileType sql,mysql,plsql lua vim.api.nvim_buf_set_keymap(0, 'n', '<CR>', '<Plug>(DBUI_ExecuteQuery)', {})
+        autocmd FileType sql,mysql,plsql lua vim.api.nvim_buf_set_keymap(0, 'x', '<CR>', '<Plug>(DBUI_ExecuteQuery)', {})
         autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })
       augroup END
     ]])
