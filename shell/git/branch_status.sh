@@ -57,7 +57,7 @@ remote() {
 }
 
 list_branches() {
-  git branch --sort='-committerdate' --format '%(refname:short)'
+  git branch --sort='-committerdate' --format '%(refname:short)' | grep -v 'master'
 }
 
 list_prs() {
