@@ -11,7 +11,9 @@ NC=$(tput sgr 0) # No Color
 MASTER="origin/master"
 STATUS_LENGTH=6
 REMOTE_LENGTH=1
-PR_LENGTH=14
+PR_NUMBER_LENGTH=5
+PR_STATE_LENGTH=6
+CHECKS_LENGTH=10
 
 main() {
   local mode=$1 branches maxlength prs
@@ -26,15 +28,15 @@ main() {
     fi
   done
 
-  printf "%${REMOTE_LENGTH}s %-${maxlength}s │ %${STATUS_LENGTH}s │ %-${STATUS_LENGTH}s │ %s \n" "" "branch" "behind" "ahead" "pr"
-  printf "%${REMOTE_LENGTH}s %-${maxlength}s ┼ %-${STATUS_LENGTH}s ┼ %-${STATUS_LENGTH}s ┼ %${PR_LENGTH}s \n" | sed 's/ /─/g'
+  printf "%${REMOTE_LENGTH}s %-${maxlength}s │ %${STATUS_LENGTH}s │ %-${STATUS_LENGTH}s │ %-${PR_NUMBER_LENGTH}s │ %-${PR_STATE_LENGTH}s │ %s \n" "" "branch" "behind" "ahead" "pr" "state" "checks"
+  printf "%${REMOTE_LENGTH}s %-${maxlength}s ┼ %-${STATUS_LENGTH}s ┼ %-${STATUS_LENGTH}s ┼ %${PR_NUMBER_LENGTH}s ┼ %${PR_STATE_LENGTH}s ┼ %${CHECKS_LENGTH}s \n" | sed 's/ /─/g'
 
   for branch in $branches; do
     printf "%-${REMOTE_LENGTH}s " "$(remote "$branch")"
     printf "${ORANGE}%-${maxlength}s${NC} │ " "$branch"
     printf "${RED}%${STATUS_LENGTH}s${NC} │ " "$(behind "$branch")"
     printf "${GREEN}%-${STATUS_LENGTH}s${NC} │ " "$(ahead "$branch")"
-    printf "%${PR_LENGTH}s \n" "$(pull_request "$prs" "$branch" "$mode")"
+    pull_request "$prs" "$branch" "$mode"
   done
 }
 
@@ -61,43 +63,73 @@ list_branches() {
 }
 
 list_prs() {
-  gh pr list --state all --json number,state,headRefName 2>/dev/null
+  gh pr list --state all --json number,state,headRefName,statusCheckRollup 2>/dev/null
 }
 
 single_pr() {
   local branch=$1
-  gh pr view "$branch" --json number,state 2>/dev/null
+  gh pr view "$branch" --json number,state,statusCheckRollup 2>/dev/null
 }
 
 pull_request() {
-  local prs=$1 branch=$2 mode=$3 number state pr remote
+  local prs=$1 branch=$2 mode=$3 number state pr remote checks
   pr=$(echo "$prs" | jq -r ".[] | select(.headRefName == \"$branch\")")
   if [[ -z "$pr" ]]; then
     if [[ "$mode" != "full" ]]; then
+      _empty_pr_line
       return
     fi
     remote=$(remote "$branch")
     if [[ -z "$remote" ]]; then
+      _empty_pr_line
       return
     fi
     pr=$(single_pr "$branch")
     if [[ -z "$pr" ]]; then
+      _empty_pr_line
       return
     fi
   fi
   number=$(echo "$pr" | jq -r '.number')
   state=$(echo "$pr" | jq -r '.state')
-  printf "#%s (%s)" "$number" "$(pr_state "$state")"
+  checks=$(checks "$pr")
+  printf "%-${PR_NUMBER_LENGTH}s │ %-${PR_STATE_LENGTH}s%s │ %-${CHECKS_LENGTH}s \n" "#$number" "$(pr_state "$state")" "${NC}" "$checks"
+}
+_empty_pr_line() {
+  printf "%-${PR_NUMBER_LENGTH}s │ %-${PR_STATE_LENGTH}s%s │ %-${CHECKS_LENGTH}s \n"
+}
+
+checks() {
+  local pr=$1 success failure pending
+  success=$(echo "$pr" | _count_status "SUCCESS")
+  failure=$(echo "$pr" | _count_status "FAILURE")
+  pending=$(echo "$pr" | _count_status "PENDING")
+
+  if [[ "$success" -gt 0 ]]; then
+    printf "%2s ${GREEN}✓${NC}" "$success"
+  fi
+  if [[ "$failure" -gt 0 ]]; then
+    printf "%2s ${RED}✗${NC}" "$failure"
+  fi
+  if [[ "$pending" -gt 0 ]]; then
+    printf "%2s ${ORANGE}⊙${NC}" "$pending"
+  fi
+}
+
+_count_status() {
+  local status=$1
+  jq -r 'def count(stream): reduce stream as $i (0; .+1); .statusCheckRollup | count(.[] | select(.conclusion == "'"$status"'"))'
 }
 
 pr_state() {
-  local state=$1
+  local state=$1 color
   case $state in
-    "OPEN") echo "${GREEN}$state${NC}" ;;
-    "CLOSED") echo "${RED}$state${NC}" ;;
-    "MERGED") echo "${PURPLE}$state${NC}" ;;
-    *) echo "${ORANGE}$state${NC}" ;;
+    "OPEN") color="${GREEN}" ;;
+    "CLOSED") color="${RED}" ;;
+    "MERGED") color="${PURPLE}" ;;
+    *) color="${ORANGE}" ;;
   esac
+  printf "${color}%-${PR_STATE_LENGTH}s${NC}" "$state"
 }
 
 main "$@"
