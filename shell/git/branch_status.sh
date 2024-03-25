@@ -13,7 +13,7 @@ STATUS_LENGTH=6
 REMOTE_LENGTH=1
 PR_NUMBER_LENGTH=5
 PR_STATE_LENGTH=6
-CHECKS_LENGTH=10
+PR_REVIEW_LENGTH=8
 
 main() {
   local mode=$1 branches maxlength prs
@@ -28,8 +28,8 @@ main() {
     fi
   done
 
-  printf "%${REMOTE_LENGTH}s %-${maxlength}s │ %${STATUS_LENGTH}s │ %-${STATUS_LENGTH}s │ %-${PR_NUMBER_LENGTH}s │ %-${PR_STATE_LENGTH}s │ %s \n" "" "branch" "behind" "ahead" "pr" "state" "checks"
-  printf "%${REMOTE_LENGTH}s %-${maxlength}s ┼ %-${STATUS_LENGTH}s ┼ %-${STATUS_LENGTH}s ┼ %${PR_NUMBER_LENGTH}s ┼ %${PR_STATE_LENGTH}s ┼ %${CHECKS_LENGTH}s \n" | sed 's/ /─/g'
+  printf "%${REMOTE_LENGTH}s %-${maxlength}s │ %${STATUS_LENGTH}s │ %-${STATUS_LENGTH}s │ %-${PR_NUMBER_LENGTH}s │ %-${PR_STATE_LENGTH}s │ %-${PR_REVIEW_LENGTH}s │ %s \n" "" "branch" "behind" "ahead" "pr" "state" "reviews" "checks"
+  printf "%${REMOTE_LENGTH}s %-${maxlength}s ┼ %-${STATUS_LENGTH}s ┼ %-${STATUS_LENGTH}s ┼ %${PR_NUMBER_LENGTH}s ┼ %${PR_STATE_LENGTH}s ┼ %${PR_REVIEW_LENGTH}s ┼ %8s \n" | sed 's/ /─/g'
 
   for branch in $branches; do
     printf "%-${REMOTE_LENGTH}s " "$(remote "$branch")"
@@ -63,12 +63,12 @@ list_branches() {
 }
 
 list_prs() {
-  gh pr list --state all --json number,state,headRefName,statusCheckRollup 2>/dev/null
+  gh pr list --state all --json number,state,headRefName,statusCheckRollup,reviews 2>/dev/null
 }
 
 single_pr() {
   local branch=$1
-  gh pr view "$branch" --json number,state,statusCheckRollup 2>/dev/null
+  gh pr view "$branch" --json number,state,statusCheckRollup,reviews 2>/dev/null
 }
 
 pull_request() {
@@ -92,11 +92,42 @@ pull_request() {
   fi
   number=$(echo "$pr" | jq -r '.number')
   state=$(echo "$pr" | jq -r '.state')
-  checks=$(checks "$pr")
-  printf "%-${PR_NUMBER_LENGTH}s │ %-${PR_STATE_LENGTH}s%s │ %-${CHECKS_LENGTH}s \n" "#$number" "$(pr_state "$state")" "${NC}" "$checks"
+  printf "%-${PR_NUMBER_LENGTH}s │ %-${PR_STATE_LENGTH}s │ %-${PR_REVIEW_LENGTH}s │ " "#$number" "$(pr_state "$state")" "$(review "$pr")"
+  checks "$pr"
+  printf "\n"
 }
+
 _empty_pr_line() {
-  printf "%-${PR_NUMBER_LENGTH}s │ %-${PR_STATE_LENGTH}s%s │ %-${CHECKS_LENGTH}s \n"
+  printf "%-${PR_NUMBER_LENGTH}s ┆ %-${PR_STATE_LENGTH}s ┆ %-${PR_REVIEW_LENGTH}s ┆ \n"
+}
+
+review() {
+  local pr=$1 state color
+  state=$(determine_review "$pr")
+  case $state in
+    "APPROVED") color="${GREEN}" ;;
+    "BLOCKED") color="${RED}" ;;
+    *) color="${ORANGE}" ;;
+  esac
+  printf "${color}%-${PR_REVIEW_LENGTH}s${NC}" "$state"
+}
+
+determine_review() {
+  local pr=$1 approvals changes
+  approvals=$(echo "$pr" | _count_reviews "APPROVED")
+  changes=$(echo "$pr" | _count_reviews "CHANGES_REQUESTED")
+  if [[ "$changes" -gt 0 ]]; then
+    echo  "BLOCKED"
+  elif [[ "$approvals" -gt 0 ]]; then
+    echo "APPROVED"
+  else
+    echo "PENDING"
+  fi
+}
+
+_count_reviews() {
+  local state=$1
+  jq -r 'def count(stream): reduce stream as $i (0; .+1); .reviews | count(.[] | select(.state == "'"$state"'"))'
 }
 
 checks() {
