@@ -30,15 +30,14 @@ zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX
 # Keep directories and files separated
 zstyle ':completion:*' list-dirs-first true
 
-autoload -Uz compinit && compinit
+autoload -Uz compinit
+
+setopt extendedglob
+if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]] || [[ ! -f ${ZDOTDIR}/.zcompdump ]]; then
+  compinit
+else
+  compinit -C
+fi
+unsetopt extendedglob
 
 _load_all completions.zsh
-
-# FIXME: get this to work for once
-# setopt extendedglob
-# if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]] || [[ ! -f ${ZDOTDIR}/.zcompdump ]]; then
-#   compinit
-# else
-#   compinit -C
-# fi
-# unsetopt extendedglob
