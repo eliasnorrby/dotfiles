@@ -3,6 +3,7 @@ kitty_config:
   path: terminal/kitty
   links:
     - kitty.conf
+    - open-pull-request.py
     - themes
     - src: kitty.arch.conf
       rename: kitty.local.conf
