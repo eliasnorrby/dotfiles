@@ -21,6 +21,21 @@ require('catppuccin').setup({
     types = {},
     operators = {},
   },
+  integrations = {
+    cmp = true,
+    gitsigns = true,
+    nvimtree = true,
+    treesitter = true,
+    markdown = true,
+    mason = true,
+    noice = true,
+    notify = true,
+    telescope = {
+      enabled = true,
+    },
+    lsp_trouble = true,
+    which_key = true,
+  },
 })
 
 vim.cmd('colorscheme catppuccin')
