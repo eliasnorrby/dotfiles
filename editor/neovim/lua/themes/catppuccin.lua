@@ -36,6 +36,11 @@ require('catppuccin').setup({
     lsp_trouble = true,
     which_key = true,
   },
+  custom_highlights = function(colors)
+    return {
+      TabLineSel = { fg = colors.yellow },
+    }
+  end,
 })
 
 vim.cmd('colorscheme catppuccin')
