@@ -24,6 +24,7 @@ require('catppuccin').setup({
   integrations = {
     cmp = true,
     gitsigns = true,
+    fidget = true,
     nvimtree = true,
     treesitter = true,
     markdown = true,
