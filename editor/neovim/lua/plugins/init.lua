@@ -5,7 +5,6 @@ return {
   'moll/vim-bbye',
 
   'nvim-lualine/lualine.nvim',
-  'lewis6991/gitsigns.nvim',
 
   { 'nvim-tree/nvim-tree.lua', dependencies = { 'nvim-tree/nvim-web-devicons' } },
 
