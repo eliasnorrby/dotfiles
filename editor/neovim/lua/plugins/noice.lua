@@ -50,9 +50,16 @@ return {
         opts = { skip = true },
       },
       {
-        view = "notify",
-        filter = { event = "msg_showmode" },
+        view = 'notify',
+        filter = { event = 'msg_showmode' },
       },
+    },
+  },
+  keys = {
+    {
+      '<leader>nd',
+      vim.cmd.NoiceDismiss,
+      desc = 'Dismiss notification',
     },
   },
 }

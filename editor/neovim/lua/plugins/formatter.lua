@@ -52,10 +52,11 @@ return {
       },
     }
   end,
-  init = function()
-    local wk = require('which-key')
-    wk.register({
-      ['<leader>ff'] = { vim.cmd.Format, 'Format file' },
-    })
-  end,
+  keys = {
+    {
+      '<leader>ff',
+      vim.cmd.Format,
+      desc = 'Format file',
+    },
+  },
 }
