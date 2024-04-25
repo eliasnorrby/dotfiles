@@ -5,7 +5,15 @@ return {
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
     -- Useful status updates for LSP
-    { 'j-hui/fidget.nvim', tag = 'legacy' },
+    {
+      'j-hui/fidget.nvim',
+      tag = 'legacy',
+      opts = {
+        window = {
+          blend = 0,
+        },
+      },
+    },
     -- Additional lua configuration, makes nvim stuff amazing
     'folke/neodev.nvim',
   },
