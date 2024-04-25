@@ -30,12 +30,7 @@ return {
       require('nvim-surround').setup()
     end,
   },
-  {
-    'numToStr/Comment.nvim',
-    config = function()
-      require('Comment').setup()
-    end,
-  },
+  { 'numToStr/Comment.nvim', config = true },
   'godlygeek/tabular',
 
   'epwalsh/obsidian.nvim',
