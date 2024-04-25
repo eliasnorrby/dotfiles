@@ -1,14 +1,9 @@
 return {
   'lewis6991/gitsigns.nvim',
-  config = function()
+  opts = function()
     local wk = require('which-key')
-    require('gitsigns').setup({
+    return {
       on_attach = function(bufnr)
-        -- local function map(mode, lhs, rhs, opts)
-        --   opts = vim.tbl_extend('force', { noremap = true, silent = true }, opts or {})
-        --   vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
-        -- end
-
         wk.register({
           h = {
             name = '+gitsigns',
@@ -62,6 +57,6 @@ return {
           ['ih'] = { ':<C-U>Gitsigns select_hunk<CR>', 'inner hunk' },
         }, { mode = 'x', buffer = bufnr })
       end,
-    })
+    }
   end,
 }

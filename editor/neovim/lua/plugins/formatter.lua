@@ -1,6 +1,7 @@
 return {
   'mhartington/formatter.nvim',
-  config = function()
+  cmd = 'Format',
+  opts = function()
     local util = require('formatter.util')
 
     local prettier = {
@@ -33,7 +34,7 @@ return {
       end,
     }
 
-    local opts = {
+    return {
       logging = false,
       filetype = {
         json = prettier,
@@ -50,8 +51,6 @@ return {
         terraform = tfmt,
       },
     }
-
-    require('formatter').setup(opts)
   end,
   init = function()
     local wk = require('which-key')
