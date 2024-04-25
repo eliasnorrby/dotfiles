@@ -39,7 +39,5 @@ return {
   },
   'godlygeek/tabular',
 
-  'mhartington/formatter.nvim',
-
   'epwalsh/obsidian.nvim',
 }

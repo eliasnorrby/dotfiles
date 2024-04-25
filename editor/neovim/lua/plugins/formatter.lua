@@ -1,0 +1,62 @@
+return {
+  'mhartington/formatter.nvim',
+  config = function()
+    local util = require('formatter.util')
+
+    local prettier = {
+      function()
+        return {
+          exe = 'prettier',
+          args = { '--stdin-filepath', util.escape_path(util.get_current_buffer_file_path()) },
+          stdin = true,
+        }
+      end,
+    }
+
+    local shfmt = {
+      function()
+        return {
+          exe = 'shfmt',
+          args = { '-filename', 'script.sh' },
+          stdin = true,
+        }
+      end,
+    }
+
+    local tfmt = {
+      function()
+        return {
+          exe = 'terraform',
+          args = { 'fmt', '-' },
+          stdin = true,
+        }
+      end,
+    }
+
+    local opts = {
+      logging = false,
+      filetype = {
+        json = prettier,
+        javascript = prettier,
+        javascriptreact = prettier,
+        typescript = prettier,
+        typescriptreact = prettier,
+        yaml = prettier,
+        toml = prettier,
+        markdown = prettier,
+        graphql = prettier,
+        sh = shfmt,
+        lua = require('formatter.filetypes.lua').stylua,
+        terraform = tfmt,
+      },
+    }
+
+    require('formatter').setup(opts)
+  end,
+  init = function()
+    local wk = require('which-key')
+    wk.register({
+      ['<leader>ff'] = { vim.cmd.Format, 'Format file' },
+    })
+  end,
+}
