@@ -30,6 +30,4 @@ return {
   },
   { 'numToStr/Comment.nvim', config = true },
   'godlygeek/tabular',
-
-  'epwalsh/obsidian.nvim',
 }
