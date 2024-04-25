@@ -17,11 +17,6 @@ return {
   'rhysd/git-messenger.vim',
 
   {
-    'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
-  },
-
-  {
     'kylechui/nvim-surround',
     version = '*',
     config = function()
