@@ -1,12 +1,25 @@
 return {
   'tpope/vim-fugitive',
   dependencies = { 'tpope/vim-rhubarb' },
-  init = function()
-    local wk = require('which-key')
-
-    wk.register({
-      ['o'] = { ":'<,'>GBrowse<CR>", 'Open on GitHub' },
-      ['O'] = { ":'<,'>GBrowse!<CR>", 'Copy permalink' },
-    }, { mode = 'v' })
-  end,
+  keys = {
+    {
+      '<leader>gg',
+      vim.cmd.Git,
+      desc = 'Git status',
+    },
+    {
+      'o',
+      ":'<,'>GBrowse<CR>",
+      desc = 'Open on GitHub',
+      mode = 'v',
+      silent = true,
+    },
+    {
+      'O',
+      ":'<,'>GBrowse!<CR>",
+      desc = 'Copy permalink',
+      mode = 'v',
+      silent = true,
+    },
+  },
 }
