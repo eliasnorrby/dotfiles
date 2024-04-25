@@ -7,7 +7,7 @@ return {
   end,
   opts = {
     icons = {
-      separator = '>',
+      separator = '•',
     }
   },
 }
