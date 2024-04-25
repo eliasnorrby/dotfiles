@@ -33,9 +33,7 @@ return {
   {
     'kylechui/nvim-surround',
     version = '*',
-    config = function()
-      require('nvim-surround').setup()
-    end,
+    config = true,
   },
   { 'numToStr/Comment.nvim', config = true },
   'godlygeek/tabular',
