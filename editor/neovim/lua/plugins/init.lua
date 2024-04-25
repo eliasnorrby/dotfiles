@@ -4,8 +4,6 @@ return {
   'tpope/vim-abolish',
   'moll/vim-bbye',
 
-  'nvim-lualine/lualine.nvim',
-
   { 'nvim-tree/nvim-tree.lua', dependencies = { 'nvim-tree/nvim-web-devicons' } },
 
   'marko-cerovac/material.nvim',
