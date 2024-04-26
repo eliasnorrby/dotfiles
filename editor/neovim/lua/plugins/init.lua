@@ -1,6 +1,5 @@
 return {
   'gpanders/editorconfig.nvim',
-  'tpope/vim-unimpaired',
   'tpope/vim-abolish',
   {
     'moll/vim-bbye',
