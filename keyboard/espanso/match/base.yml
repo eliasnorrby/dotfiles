@@ -40,27 +40,11 @@ matches:
         params:
           cmd: echo "{{link_url}}" | sed -e 's#.*/##' -e 's#-[^-]*$##' -e 's/-/ /g'
 
-  - regex: l(?P<count>\d+)w
-    label: Lorem ipsum words
-    replace: "{{lorem}}"
-    vars:
-      - name: lorem
-        type: shell
-        params:
-          cmd: lorem-ipsum $ESPANSO_COUNT words
-  - regex: l(?P<count>\d+)s
-    label: Lorem ipsum sentences
-    replace: "{{lorem}}"
-    vars:
-      - name: lorem
-        type: shell
-        params:
-          cmd: lorem-ipsum $ESPANSO_COUNT sentences
-  - regex: l(?P<count>\d+)(?P<unit>(words|paragraphs|sentences))
+  - regex: l(?P<count>\d+)(?P<unit>(w|p|s))
     label: Lorem ipsum
     replace: "{{lorem}}"
     vars:
       - name: lorem
         type: shell
         params:
-          cmd: lorem-ipsum $ESPANSO_COUNT $ESPANSO_UNIT
+          cmd: lorem-ipsum $ESPANSO_COUNT $(case $ESPANSO_UNIT in "w") echo "words" ;; "s") echo "sentences" ;; "p") echo "paragraphs" ;; esac)
