@@ -8,7 +8,6 @@ GREEN=$(tput setaf 2)
 RED=$(tput setaf 1)
 NC=$(tput sgr 0) # No Color
 
-MASTER="origin/master"
 STATUS_LENGTH=6
 REMOTE_LENGTH=1
 PR_NUMBER_LENGTH=5
@@ -17,6 +16,8 @@ PR_REVIEW_LENGTH=8
 
 main() {
   local mode=$1 branches maxlength prs
+
+  setup
 
   branches=$(list_branches)
 
@@ -40,14 +41,37 @@ main() {
   done
 }
 
+setup() {
+  local remote main_branch
+  if ! git remote | grep -q '^origin$'; then
+    echo "Could not determine remote ('origin' not found)"
+    exit 1
+  fi
+  remote="origin"
+  if _branch_exists 'master'; then
+    main_branch='master'
+  elif _branch_exists 'main'; then
+    main_branch='main'
+  else
+    echo "Could not determine main branch ('master' or 'main' not found)"
+    exit 1
+  fi
+  MAIN_BRANCH="$remote/$main_branch"
+}
+
+_branch_exists() {
+  local branch=$1
+  git show-ref --verify --quiet "refs/heads/$branch"
+}
+
 ahead() {
   local branch=$1
-  git rev-list --left-right "${branch}"..."${MASTER}" | grep -c '^<'
+  git rev-list --left-right "${branch}"..."${MAIN_BRANCH}" | grep -c '^<'
 }
 
 behind() {
   local branch=$1
-  git rev-list --left-right "${branch}"..."${MASTER}" | grep -c '^>'
+  git rev-list --left-right "${branch}"..."${MAIN_BRANCH}" | grep -c '^>'
 }
 
 remote() {
