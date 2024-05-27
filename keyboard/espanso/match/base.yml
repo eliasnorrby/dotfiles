@@ -26,6 +26,11 @@ matches:
       Best regards,
       {{fullname}}
 
+  - trigger: ";hl"
+    replace: |-
+      Hälsningar,
+      {{fullname}}
+
   - trigger: ";name"
     replace: "{{fullname}}"
 
