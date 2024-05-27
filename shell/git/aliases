@@ -55,7 +55,7 @@
   # 'Branch Clean'
   bclean = "!git rp && git bdelete"
   # 'Pull Request Delete': Checkout main branch, deleting the current one
-  prd = "!f() { branch=$(git cb); if git checkout master || git checkout main; then git branch -D $branch; fi }; f"
+  prd = "!f() { branch=$(git cb); if git checkout master 2> /dev/null || git checkout main; then git branch -D $branch; fi }; f"
   prm = "!f() { git prd; git rt; }; f"
   z = stash
   zp = stash pop
