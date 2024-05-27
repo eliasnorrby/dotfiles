@@ -96,8 +96,8 @@ single_pr() {
 }
 
 pull_request() {
-  local prs=$1 branch=$2 mode=$3 number state pr remote checks
-  pr=$(echo "$prs" | jq -r ".[] | select(.headRefName == \"$branch\")")
+  local prs=$1 branch=$2 mode=$3 number state pr remote
+  pr=$(echo "$prs" | jq -r "first(.[] | select(.headRefName == \"$branch\"))")
   if [[ -z "$pr" ]]; then
     if [[ "$mode" != "full" ]]; then
       _empty_pr_line
