@@ -22,6 +22,7 @@ zsh_config:
     - parallel
     - hyperfine
     - direnv
+    - csvlens
     # misc
     - neofetch
     - terminal-notifier
