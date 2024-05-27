@@ -34,6 +34,16 @@ return {
       end,
     }
 
+    local black = {
+      function()
+        return {
+          exe = 'black',
+          args = { '-' },
+          stdin = true,
+        }
+      end,
+    }
+
     return {
       logging = false,
       filetype = {
@@ -49,6 +59,7 @@ return {
         sh = shfmt,
         lua = require('formatter.filetypes.lua').stylua,
         terraform = tfmt,
+        python = black,
       },
     }
   end,
