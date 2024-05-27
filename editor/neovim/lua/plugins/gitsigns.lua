@@ -33,13 +33,13 @@ return {
         }, { prefix = '<leader>', buffer = bufnr })
 
         wk.register({
-          ['[c'] = {
-            "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'",
-            'Previous Hunk',
-          },
           [']c'] = {
-            "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'",
+            "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'",
             'Next Hunk',
+          },
+          ['[c'] = {
+            "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'",
+            'Previous Hunk',
           },
         }, { buffer = bufnr, expr = true })
 
