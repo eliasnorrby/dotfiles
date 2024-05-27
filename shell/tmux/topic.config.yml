@@ -24,3 +24,6 @@ tmux_config:
     - src: tmux_warning_wrapper.sh
       dest: "{{ xdg_bin_home }}/"
       rename: tmux_warning_wrapper
+    - src: tmux_active_pane_directory.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: tmux_active_pane_directory

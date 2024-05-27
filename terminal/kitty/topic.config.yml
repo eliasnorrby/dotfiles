@@ -14,6 +14,9 @@ kitty_config:
     - src: tmux_kitty.sh
       dest: "{{ xdg_bin_home }}/"
       rename: tmux_kitty
+    - src: get_pr_repository_url.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: get_pr_repository_url
   brew_casks:
     - kitty
   pacman_packages:
