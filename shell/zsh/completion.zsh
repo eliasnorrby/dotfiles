@@ -11,9 +11,6 @@ fi
 # tabtab source for packages (netlify)
 [[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true
 
-# travis gem completion
-[ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
-
 # case-insensitive (all), partial-word and then substring completion
 zstyle ":completion:*" matcher-list \
   "m:{a-zA-Z}={A-Za-z}" \
