@@ -13,8 +13,6 @@ task_config:
     - task
     - taskwarrior-tui
   brew_casks:
-    - sunsama
-    - todoist
     - omnifocus
   mas_apps:
     - id: 904280696
@@ -22,6 +20,3 @@ task_config:
   pacman_packages:
     - task
     - taskwarrior-tui
-  aur_packages:
-    - todoist-appimage
-    - sunsama-appimage
