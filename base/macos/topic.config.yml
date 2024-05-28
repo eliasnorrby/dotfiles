@@ -7,7 +7,6 @@ macos_config:
     - homebrew/cask-versions # for firefox-developer-edition
   brew_casks:
     # essential
-    - alfred
     - raycast
     - bartender
     - discord
