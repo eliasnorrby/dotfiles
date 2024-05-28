@@ -32,8 +32,6 @@ neovim_config:
     - '@tailwindcss/language-server'
     - '@prisma/language-server'
     - graphql-language-service-cli
-  pip_packages:
-    - pynvim
   links:
     - init.lua
     - lua
