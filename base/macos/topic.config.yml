@@ -42,8 +42,6 @@ macos_config:
       name: "Bear"
     - id: 409201541
       name: "Pages"
-    - id: 1176895641
-      name: "Spark"
     - id: 409203825
       name: "Numbers"
   osx_defaults:
