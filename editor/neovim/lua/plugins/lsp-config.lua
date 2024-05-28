@@ -114,17 +114,14 @@ return {
             hadolint = {
               command = 'hadolint',
               debounce = 100,
-              args = { '--no-color', '-' },
+              args = { '--format', 'json', '-' },
               sourceName = 'Dockerfile',
-              formatLines = 1,
-              formatPattern = {
-                '^([^:]+):(\\d+)\\s+(DL\\d+)\\s+([^:]+):\\s+(.*)$',
-                {
-                  sourceName = 1,
-                  line = 2,
-                  message = { 3, ' ', 5 },
-                  security = 4,
-                },
+              parseJson = {
+                sourceName = 'file',
+                line = 'line',
+                column = 'column',
+                message = '${message} [${code}]',
+                security = 'level',
               },
               securities = {
                 error = 'error',
