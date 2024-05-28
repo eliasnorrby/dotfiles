@@ -87,6 +87,7 @@ return {
           'json',
           'yaml',
           'toml',
+          'dockerfile',
         },
         init_options = {
           linters = {
@@ -110,9 +111,32 @@ return {
                 style = 'hint',
               },
             },
+            hadolint = {
+              command = 'hadolint',
+              debounce = 100,
+              args = { '--no-color', '-' },
+              sourceName = 'Dockerfile',
+              formatLines = 1,
+              formatPattern = {
+                '^([^:]+):(\\d+)\\s+(DL\\d+)\\s+([^:]+):\\s+(.*)$',
+                {
+                  sourceName = 1,
+                  line = 2,
+                  message = { 3, ' ', 5 },
+                  security = 4,
+                },
+              },
+              securities = {
+                error = 'error',
+                warning = 'warning',
+                info = 'info',
+                style = 'hint',
+              },
+            },
           },
           filetypes = {
             sh = 'shellcheck',
+            dockerfile = 'hadolint',
           },
           formatters = {
             shfmt = {
