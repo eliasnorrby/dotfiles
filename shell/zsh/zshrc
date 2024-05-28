@@ -22,12 +22,6 @@ _load shell/zsh/fzf.zsh
 _load shell/zsh/plugins.zsh
 _load shell/zsh/p10k.zsh
 
-if _remote ; then
-  _load shell/zsh/remote.zsh
-elif [[ "$(_os)" == "macos" ]] ; then
-  _load shell/zsh/macos.zsh
-fi
-
 _load_all aliases.zsh
 
 _load shell/ssh/start-agent.zsh
