@@ -13,16 +13,10 @@ end
 
 -- Load submodules
 require('modules.app-mode')
-wifi = require('modules.wifi')
 
 -- Reload Hammerspoon
 appMode:bind({}, ']', function()
     hs.reload()
   end)
-
--- Connect to wifi
--- appMode:bind({}, ']', function()
---     wifi.connect()
---   end)
 
 hs.notify.new({title='Hammerspoon', informativeText='Ready to rock 🤓🤘'}):send()
