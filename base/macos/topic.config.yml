@@ -19,7 +19,6 @@ macos_config:
     - 1password-cli
     - slack
     - spotify
-    - textexpander
     - amethyst
     - balenaetcher
     - fantastical
