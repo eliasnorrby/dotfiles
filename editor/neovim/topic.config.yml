@@ -20,18 +20,6 @@ neovim_config:
     - python-black
   aur_packages:
     - glow-bin
-  npm_packages:
-    - bash-language-server
-    - diagnostic-languageserver
-    - typescript
-    - typescript-language-server
-    - vscode-langservers-extracted
-    - yaml-language-server
-    - dockerfile-language-server-nodejs
-    - pyright
-    - '@tailwindcss/language-server'
-    - '@prisma/language-server'
-    - graphql-language-service-cli
   links:
     - init.lua
     - lua
