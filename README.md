@@ -260,7 +260,6 @@ configured manually.
 ### Optional
 
 - Download the [Dank Mono font](https://dank.sh)
-- Link the proper scripts to `~/.local/bin`. There's a helper in the `scripts` directory. This could be scripted.
 
 ## Troubleshooting
 
