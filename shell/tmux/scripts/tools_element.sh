@@ -8,7 +8,7 @@ kubectl_context() {
   is_callable kubectl && kubectl config current-context >/dev/null 2>&1 || return
   context=$(kubectl config current-context)
   context=${context:-?}
-  format="#[fg=cyan]ﴱ $context"
+  format="#[fg=cyan]󱃾 $context"
   if [ "$context" != "?" ]; then
     namespace=$(kubectl config view -o json \
       | jq -r '.contexts[] | select(.name == "'"$context"'").context.namespace')
@@ -23,7 +23,7 @@ kubectl_context() {
 argocd_context() {
   is_callable argocd && argocd context >/dev/null 2>&1 || return
   context=$(argocd context | grep '^\*' | tr -s ' ' | cut -d ' ' -f 2)
-  format="#[fg=red] $context#[fg=default]"
+  format="#[fg=red] $context#[fg=default]"
   echo "$format"
 }
 
