@@ -28,6 +28,10 @@ zsh_config:
     - neofetch
     - terminal-notifier
     - exa
+    # screensavers
+    - cmatrix
+    - cbonsai
+    - pipes.sh
   pacman_packages:
     - zsh
     - xclip
