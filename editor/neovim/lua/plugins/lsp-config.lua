@@ -205,6 +205,7 @@ return {
           },
         },
       },
+      marksman = {},
     }
 
     -- Setup neovim lua configuration
