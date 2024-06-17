@@ -22,4 +22,4 @@ jobs:
           cd _provision/roles/eliasnorrby.dotfiles
           molecule test
         env:
-          MOLECULE_DISTRO: ubuntu1804
+          MOLECULE_DISTRO: ubuntu2404
