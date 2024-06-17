@@ -6,6 +6,10 @@ return {
     renderer = {
       root_folder_label = false,
     },
+    view = {
+      side = 'right',
+      width = 50,
+    }
   },
   keys = {
     {
