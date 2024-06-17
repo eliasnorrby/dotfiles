@@ -23,6 +23,7 @@ macos_config:
     - fantastical
     - obsidian
     - betterdisplay
+    - mimestream
   mas_apps:
     - id: 950297057
       name: "FuzzyTime"

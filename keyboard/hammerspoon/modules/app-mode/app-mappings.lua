@@ -5,10 +5,10 @@ return {
   { 'b', 'Adobe Lightroom' },
   { 'c', 'Google Chrome' },      -- "C" for "Chrome"
   { 'd', 'Drafts' },             -- "D" for "Drafts"
-  -- { 'e', '?' },
+  { 'e', 'Mimestream' },         -- "E" for "Email"
   { 'f', 'Fantastical' },        -- "F" for "Fantastical"
   { 'g', 'Things3' },            -- "G" for "GTD"
-  { 'i', 'Insomnia' },            -- "I" for "Insomnia"
+  { 'i', 'Insomnia' },           -- "I" for "Insomnia"
   { 'm', 'Microsoft Teams (work or school)' },
   -- { 'n', '?'},
   { 'o', 'Obsidian' },
