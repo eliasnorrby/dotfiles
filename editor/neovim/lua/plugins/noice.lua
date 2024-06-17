@@ -14,6 +14,13 @@ return {
     },
   },
   opts = {
+    views = {
+      cmdline_popup = {
+        size = {
+          width = '80%'
+        },
+      },
+    },
     lsp = {
       enabled = false,
       progress = {
