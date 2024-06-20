@@ -44,6 +44,20 @@ return {
       end,
     }
 
+    local prisma = {
+      function()
+        return {
+          exe = 'prisma',
+          args = {'format', '--schema', util.escape_path(util.get_current_buffer_file_path())},
+          stdin = false,
+          try_node_modules = true,
+          transform = function(output)
+            return output
+          end,
+        }
+      end,
+    }
+
     return {
       logging = false,
       filetype = {
@@ -60,6 +74,7 @@ return {
         lua = require('formatter.filetypes.lua').stylua,
         terraform = tfmt,
         python = black,
+        prisma = prisma,
       },
     }
   end,
