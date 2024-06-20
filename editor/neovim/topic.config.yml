@@ -11,6 +11,7 @@ neovim_config:
     - black
     - glow
     - stylua
+    - pgformatter
   pacman_packages:
     - neovim
     - fzf
