@@ -32,17 +32,6 @@ return {
       xml = { 'xmllint' },
     },
     format_on_save = { timeout_ms = 500, lsp_format = 'fallback' },
-    formatters = {
-      prisma = {
-        stdin = false,
-        cmd = function()
-          require('conform.util').from_node_modules('prisma')
-        end,
-        args = function(_, ctx)
-          return { 'format', '--schema', ctx.filename }
-        end,
-      },
-    },
   },
   init = function()
     vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
