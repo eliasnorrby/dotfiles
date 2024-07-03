@@ -8,6 +8,9 @@ return {
   opts = {
     icons = {
       separator = '•',
-    }
+    },
+    window = {
+      border = 'rounded',
+    },
   },
 }

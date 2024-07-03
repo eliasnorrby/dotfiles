@@ -217,7 +217,11 @@ return {
     }
 
     -- Setup mason so it can manage external tooling
-    require('mason').setup()
+    require('mason').setup({
+      ui = {
+        border = 'rounded',
+      },
+    })
 
     -- Ensure the servers above are installed
     local mason_lspconfig = require('mason-lspconfig')
