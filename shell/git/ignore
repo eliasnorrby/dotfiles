@@ -3,6 +3,8 @@
 
 *.log
 
+generated/
+
 # Ignore direnv files
 .envrc
 
