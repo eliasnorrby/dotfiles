@@ -20,7 +20,6 @@ return {
   { 'nvim-tree/nvim-tree.lua', dependencies = { 'nvim-tree/nvim-web-devicons' } },
 
   'marko-cerovac/material.nvim',
-  { 'catppuccin/nvim', name = 'catppuccin' },
 
   {
     'junegunn/gv.vim',
