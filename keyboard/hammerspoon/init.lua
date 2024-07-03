@@ -20,4 +20,9 @@ appMode:bind({}, ']', function()
   hs.reload()
 end)
 
+appMode:bind({ 'shift' }, ']', function()
+  -- Load Spoons
+  hs.loadSpoon('EmmyLua')
+end)
+
 hs.notify.new({ title = 'Hammerspoon', informativeText = 'Ready to rock 🤓🤘' }):send()
