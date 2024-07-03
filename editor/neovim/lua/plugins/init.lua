@@ -19,8 +19,6 @@ return {
 
   { 'nvim-tree/nvim-tree.lua', dependencies = { 'nvim-tree/nvim-web-devicons' } },
 
-  'marko-cerovac/material.nvim',
-
   {
     'junegunn/gv.vim',
     cmd = { 'GV' },
