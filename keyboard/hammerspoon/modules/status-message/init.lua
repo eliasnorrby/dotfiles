@@ -1,43 +1,40 @@
-local drawing = require 'hs.drawing'
-local geometry = require 'hs.geometry'
-local screen = require 'hs.screen'
-local styledtext = require 'hs.styledtext'
+local drawing = require('hs.drawing')
+local screen = require('hs.screen')
+local styledtext = require('hs.styledtext')
+
+local function buildParts(messageText)
+  local frame = screen.primaryScreen():frame()
+
+  local styledTextAttributes = {
+    font = { name = 'Iosevka Nerd Font', size = 24 },
+    color = { hex = '#ffb700' },
+  }
+
+  local styledText = styledtext.new(messageText, styledTextAttributes)
+
+  local styledTextSize = drawing.getTextDrawingSize(styledText)
+  local textRect = {
+    x = frame.w - styledTextSize.w - 40,
+    y = frame.h - styledTextSize.h,
+    w = styledTextSize.w + 40,
+    h = styledTextSize.h + 40,
+  }
+  local text = drawing.text(textRect, styledText):setAlpha(1)
+
+  local background = drawing.rectangle({
+    x = frame.w - styledTextSize.w - 45,
+    y = frame.h - styledTextSize.h - 3,
+    w = styledTextSize.w + 15,
+    h = styledTextSize.h + 6,
+  })
+  background:setRoundedRectRadii(10, 10)
+  background:setFillColor({ red = 0, green = 0, blue = 0, alpha = 0.8 })
+
+  return background, text
+end
 
 local statusmessage = {}
 statusmessage.new = function(messageText)
-  local buildParts = function(messageText)
-    local frame = screen.primaryScreen():frame()
-
-    local styledTextAttributes = {
-      font = { name = 'Iosevka Nerd Font', size = 24 },
-      color = { hex = '#ffb700' }
-    }
-
-    local styledText = styledtext.new(messageText, styledTextAttributes)
-
-    local styledTextSize = drawing.getTextDrawingSize(styledText)
-    local textRect = {
-      x = frame.w - styledTextSize.w - 40,
-      y = frame.h - styledTextSize.h,
-      w = styledTextSize.w + 40,
-      h = styledTextSize.h + 40,
-    }
-    local text = drawing.text(textRect, styledText):setAlpha(1)
-
-    local background = drawing.rectangle(
-      {
-        x = frame.w - styledTextSize.w - 45,
-        y = frame.h - styledTextSize.h - 3,
-        w = styledTextSize.w + 15,
-        h = styledTextSize.h + 6
-      }
-    )
-    background:setRoundedRectRadii(10, 10)
-    background:setFillColor({ red = 0, green = 0, blue = 0, alpha=0.8 })
-
-    return background, text
-  end
-
   return {
     _buildParts = buildParts,
     show = function(self)
@@ -58,10 +55,13 @@ statusmessage.new = function(messageText)
       end
     end,
     notify = function(self, seconds)
-      local seconds = seconds or 1
       self:show()
-      hs.timer.delayed.new(seconds, function() self:hide() end):start()
-    end
+      hs.timer.delayed
+        .new(seconds or 1, function()
+          self:hide()
+        end)
+        :start()
+    end,
   }
 end
 
