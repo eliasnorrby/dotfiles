@@ -24,7 +24,6 @@ return {
     cmd = { 'GV' },
     dependencies = { 'tpope/vim-fugitive' },
   },
-  'rhysd/git-messenger.vim',
 
   {
     'kylechui/nvim-surround',
