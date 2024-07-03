@@ -13,10 +13,11 @@ end
 
 -- Load submodules
 require('modules.app-mode')
+require('modules.special-paste')
 
 -- Reload Hammerspoon
 appMode:bind({}, ']', function()
-    hs.reload()
-  end)
+  hs.reload()
+end)
 
-hs.notify.new({title='Hammerspoon', informativeText='Ready to rock 🤓🤘'}):send()
+hs.notify.new({ title = 'Hammerspoon', informativeText = 'Ready to rock 🤓🤘' }):send()
