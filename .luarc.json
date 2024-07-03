@@ -1,6 +1,0 @@
-{
-  "workspace.library": [
-    "${workspaceFolder}",
-    "~/.config/hammerspoon/Spoons/EmmyLua.spoon/annotations"
-  ]
-}

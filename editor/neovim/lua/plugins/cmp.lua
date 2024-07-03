@@ -58,6 +58,7 @@ return {
         { name = 'nvim_lsp' },
         { name = 'buffer' },
         { name = 'luasnip' },
+        { name = 'lazydev', group_index = 0 },
       },
     })
 

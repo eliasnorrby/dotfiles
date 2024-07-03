@@ -15,7 +15,15 @@ return {
       },
     },
     -- Additional lua configuration, makes nvim stuff amazing
-    'folke/neodev.nvim',
+    {
+      'folke/lazydev.nvim',
+      ft = 'lua', -- only load on lua files
+      opts = {
+        library = {
+          { path = '~/.config/hammerspoon/Spoons/EmmyLua.spoon/annotations', words = { 'hs%.' } },
+        },
+      },
+    },
   },
   config = function()
     local nvim_lsp = require('lspconfig')
@@ -207,9 +215,6 @@ return {
       },
       marksman = {},
     }
-
-    -- Setup neovim lua configuration
-    require('neodev').setup()
 
     -- Setup mason so it can manage external tooling
     require('mason').setup()
