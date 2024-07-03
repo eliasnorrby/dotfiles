@@ -1,13 +1,14 @@
 -- Function to get PR number from the clipboard URL
 local function getPRNumberFromClipboard()
   local clipboard = hs.pasteboard.getContents()
-  local prNumber = clipboard:match('/pull/(%d+)$')
-  if prNumber then
-    return '#' .. prNumber
-  else
-    hs.alert.show('Clipboard does not contain a valid GitHub PR URL')
-    return nil
+  if clipboard then
+    local prNumber = clipboard:match('/pull/(%d+)$')
+    if prNumber then
+      return '#' .. prNumber
+    end
   end
+  hs.alert.show('Clipboard does not contain a valid GitHub PR URL')
+  return nil
 end
 
 -- Function to type out the PR number, select it, and paste the URL
