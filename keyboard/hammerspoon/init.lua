@@ -1,7 +1,5 @@
 local log = hs.logger.new('init.lua', 'debug')
 message = require('modules.status-message')
-statusMessage = message.new('Config reloaded!')
-statusMessage:notify(1)
 
 -- Tap a key
 keyUpDown = function(modifiers, key)
