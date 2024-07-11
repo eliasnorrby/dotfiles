@@ -28,6 +28,8 @@ return {
   config = function()
     local nvim_lsp = require('lspconfig')
 
+    vim.lsp.set_log_level('OFF')
+
     local on_attach = function(_, bufnr)
       local wk = require('which-key')
 
