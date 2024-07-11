@@ -17,14 +17,14 @@ local changed_branch_files = function()
   pickers
     .new({
       results_title = 'Modified on current branch',
-      finder = finders.new_oneshot_job({ 'list_branch_files', 'list' }),
+      finder = finders.new_oneshot_job({ 'list_branch_files', 'list' }, {}),
       sorter = sorters.get_fuzzy_file(),
       previewer = previewers.new_termopen_previewer({
         get_command = function(entry)
           return { 'list_branch_files', 'diff', entry.value }
         end,
       }),
-    })
+    }, {})
     :find()
 end
 
