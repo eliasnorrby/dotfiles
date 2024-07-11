@@ -28,6 +28,23 @@ local changed_branch_files = function()
     :find()
 end
 
+local grep_hidden_files = function()
+  require('telescope.builtin').live_grep({
+    vimgrep_arguments = {
+      'rg',
+      '--color=never',
+      '--no-heading',
+      '--with-filename',
+      '--line-number',
+      '--column',
+      '--smart-case',
+      '--hidden',
+      '--glob',
+      '!.git',
+    },
+  })
+end
+
 return {
   'nvim-telescope/telescope.nvim',
   version = '0.1.x',
@@ -63,6 +80,7 @@ return {
       ['.'] = { builtin.find_files, 'Find (non-git) project files' },
       ['/r'] = { builtin.resume, 'Resume previous picker' },
       ['//'] = { builtin.live_grep, 'Project grep' },
+      ['/.'] = { grep_hidden_files, 'Project grep (hidden files)' },
       ['/w'] = { builtin.grep_string, 'Grep string' },
       ['<cr>'] = { builtin.git_status, 'Find changed files' },
       ['bb'] = { builtin.buffers, 'Find buffers' },
