@@ -1,8 +1,6 @@
 ---
 font_config:
   path: base/font
-  brew_taps:
-    - homebrew/cask-fonts
   brew_casks:
     - font-3270-nerd-font
     - font-dejavu-sans-mono-nerd-font
