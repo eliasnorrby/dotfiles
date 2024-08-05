@@ -16,14 +16,6 @@ web_config:
     - postman-bin
     - insomnia-bin
   npm_packages:
-    - firebase-tools
-    - gatsby-cli
     - lorem-ipsum
-    - netlify-cli
-    - vercel
-    - nodemon
-    - npm-check-updates
     - prettier
     - serve
-    - '@vue/cli'
-    - '@nestjs/cli'
