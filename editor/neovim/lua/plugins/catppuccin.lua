@@ -32,7 +32,7 @@ return {
         fidget = true,
         nvimtree = true,
         treesitter = true,
-        markdown = true,
+        render_markdown = true,
         mason = true,
         noice = true,
         notify = true,
