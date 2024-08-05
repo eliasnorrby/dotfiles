@@ -27,7 +27,7 @@ return {
     },
   },
   init = function()
-    require('which-key').register({ ['<leader>a'] = { name = 'ChatGPT' } })
+    require('which-key').add({ { '<leader>a', group = 'ChatGPT' } })
   end,
   dependencies = {
     'MunifTanjim/nui.nvim',

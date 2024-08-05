@@ -254,10 +254,10 @@ return {
     end
 
     local wk = require('which-key')
-    wk.register({
-      ['[d'] = { vim.diagnostic.goto_prev, 'Previous Diagnostic' },
-      [']d'] = { vim.diagnostic.goto_next, 'Next Diagnostic' },
-      ['<leader>do'] = { vim.diagnostic.open_float, 'Open Diagnostic' },
+    wk.add({
+      { '[d', vim.diagnostic.goto_prev, desc = 'Previous Diagnostic' },
+      { ']d', vim.diagnostic.goto_next, desc = 'Next Diagnostic' },
+      { '<leader>do', vim.diagnostic.open_float, desc = 'Open Diagnostic' },
     })
   end,
 }

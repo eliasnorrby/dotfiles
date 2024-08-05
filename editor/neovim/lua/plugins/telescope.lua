@@ -75,16 +75,16 @@ return {
   init = function()
     local wk = require('which-key')
     local builtin = require('telescope.builtin')
-    wk.register({
-      ['<leader>'] = { project_files, 'Find project files' },
-      ['.'] = { builtin.find_files, 'Find (non-git) project files' },
-      ['/r'] = { builtin.resume, 'Resume previous picker' },
-      ['//'] = { builtin.live_grep, 'Project grep' },
-      ['/.'] = { grep_hidden_files, 'Project grep (hidden files)' },
-      ['/w'] = { builtin.grep_string, 'Grep string' },
-      ['<cr>'] = { builtin.git_status, 'Find changed files' },
-      ['bb'] = { builtin.buffers, 'Find buffers' },
-      ['g<cr>'] = { changed_branch_files, 'Find changed files on current branch' },
-    }, { prefix = '<leader>' })
+    wk.add({
+      { '<leader><leader>', project_files, desc = 'Find project files' },
+      { '<leader>.', builtin.find_files, desc = 'Find (non-git) project files' },
+      { '<leader>/r', builtin.resume, desc = 'Resume previous picker' },
+      { '<leader>//', builtin.live_grep, desc = 'Project grep' },
+      { '<leader>/.', grep_hidden_files, desc = 'Project grep (hidden files)' },
+      { '<leader>/w', builtin.grep_string, desc = 'Grep string' },
+      { '<leader><cr>', builtin.git_status, desc = 'Find changed files' },
+      { '<leader>bb', builtin.buffers, desc = 'Find buffers' },
+      { '<leader>g<cr>', changed_branch_files, desc = 'Find changed files on current branch' },
+    })
   end,
 }
