@@ -25,4 +25,5 @@ return {
   { 'z', 'Slack' },
 
   { 'd', function() hs.execute('open ~/Downloads') end, {'shift'} },
+  { 'f', function() hs.execute('open ~') end, {'shift'} },
 }
