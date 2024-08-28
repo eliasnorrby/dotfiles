@@ -95,6 +95,7 @@ return {
           'sh',
           'markdown',
           'json',
+          'json5',
           'yaml',
           'toml',
           'dockerfile',
