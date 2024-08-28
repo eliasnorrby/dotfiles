@@ -13,7 +13,7 @@ return {
   -- { 'n', '?'},
   { 'o', 'Obsidian' },
   -- { 'p', '?' },               -- occupied by 1Password shortcut
-  { 'q', '' },
+  { 'q', 'ChatGPT' },
   { 'r', 'Alacritty' },
   { 's', 'Emacs' },
   { 't', 'kitty' },              -- "T" for "Terminal"
