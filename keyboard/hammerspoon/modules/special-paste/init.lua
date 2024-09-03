@@ -1,1 +1,1 @@
-require('modules.special-paste.pull-request-to-slack')
+require('modules.special-paste.pr-or-issue-to-slack')
