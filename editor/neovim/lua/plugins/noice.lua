@@ -1,6 +1,7 @@
 return {
   'folke/noice.nvim',
   event = 'VeryLazy',
+  enabled = false,
   dependencies = {
     'MunifTanjim/nui.nvim',
     {
@@ -17,7 +18,7 @@ return {
     views = {
       cmdline_popup = {
         size = {
-          width = '80%'
+          width = '80%',
         },
       },
     },
