@@ -14,6 +14,7 @@ task_config:
     - taskwarrior-tui
   brew_casks:
     - omnifocus
+    - todoist
   mas_apps:
     - id: 904280696
       name: "Things"
