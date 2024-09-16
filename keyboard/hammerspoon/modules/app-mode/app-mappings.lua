@@ -21,7 +21,7 @@ return {
   { 'v', 'Notion' },
   { 'w', 'Linear' },
   { 'x', 'Firefox Developer Edition' },
-  -- { 'y', '?' },
+  { 'y', 'DaVinci Resolve' },
   { 'z', 'Slack' },
 
   { 'd', function() hs.execute('open ~/Downloads') end, {'shift'} },
