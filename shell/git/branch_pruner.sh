@@ -10,7 +10,7 @@ main() {
 
   export list_cmd='git branch --format "%(refname:short)" | grep -vE "^local"'
 
-  list_branches | fzf --preview 'gh pr view {}' \
+  list_branches | fzf --preview 'git lg {}' \
     --bind "ctrl-d:execute-silent(git branch -D {})+reload($list_cmd)"
 }
 
