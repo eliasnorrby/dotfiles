@@ -33,21 +33,24 @@ return {
     local on_attach = function(_, bufnr)
       local wk = require('which-key')
 
-      wk.register({
-        ['rn'] = { vim.lsp.buf.rename, 'Rename' },
-        [','] = { vim.lsp.buf.code_action, 'Code action' },
-        ['s'] = {
-          name = '+symbols',
-          ['d'] = { require('telescope.builtin').lsp_document_symbols, 'Document Symbols' },
-          ['w'] = { require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Workspace Symbols' },
+      wk.add({
+        {
+          buffer = bufnr,
+          { '<leader>rn', vim.lsp.buf.rename, desc = 'Rename' },
+          { '<leader>,', vim.lsp.buf.code_action, desc = 'Code action' },
+          { '<leader>sd', require('telescope.builtin').lsp_document_symbols, desc = 'Document Symbols' },
+          { '<leader>sw', require('telescope.builtin').lsp_dynamic_workspace_symbols, desc = 'Workspace Symbols' },
         },
-      }, { prefix = '<leader>', buffer = bufnr })
+      })
 
-      wk.register({
-        ['d'] = { vim.lsp.buf.definition, 'Goto Definition' },
-        ['r'] = { require('telescope.builtin').lsp_references, 'Goto References' },
-        ['I'] = { vim.lsp.buf.implementation, 'Goto Implementation' },
-      }, { prefix = 'g', buffer = bufnr })
+      wk.add({
+        {
+          buffer = bufnr,
+          { 'gd', vim.lsp.buf.definition, desc = 'Goto Definition' },
+          { 'gr', require('telescope.builtin').lsp_references, desc = 'Goto References' },
+          { 'gI', vim.lsp.buf.implementation, desc = 'Goto Implementation' },
+        },
+      })
 
       -- See `:help K` for why this keymap
       vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr, desc = 'Hover Documentation' })
