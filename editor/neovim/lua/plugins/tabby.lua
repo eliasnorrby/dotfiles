@@ -3,6 +3,8 @@ return {
   event = 'VimEnter',
   dependencies = 'nvim-tree/nvim-web-devicons',
   config = function()
+    local wk = require('which-key')
+
     local theme = {
       fill = 'TabLineFill',
       head = 'TabLine',
@@ -40,6 +42,17 @@ return {
           end,
         },
       },
+    })
+
+    wk.add({
+      '<leader>tr',
+      function()
+        local name = vim.fn.input('Rename tab to: ')
+        if name ~= '' then
+          require('tabby').tab_rename(name)
+        end
+      end,
+      desc = 'Rename tab',
     })
   end,
 }
