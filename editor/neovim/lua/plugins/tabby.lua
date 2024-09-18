@@ -23,10 +23,11 @@ return {
           },
           line.tabs().foreach(function(tab)
             local hl = tab.is_current() and theme.current_tab or theme.tab
+            local sep = tab.is_current() and ' ┃ ' or ' ┋ '
             return {
               ' ',
               tab.number(),
-              tab.name() ~= '' and ' ' or '',
+              tab.name() ~= '' and sep or '',
               tab.name(),
               ' ',
               line.sep(' ', hl, theme.fill),
