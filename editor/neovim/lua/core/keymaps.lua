@@ -97,5 +97,9 @@ wk.add({
   { '<leader>L', '<cmd>Lazy<CR>', desc = 'Lazy' },
 })
 
+wk.add({
+  { '<leader>gt', require('core.extensions').quick_fix_todos, desc = 'quick fix todos' },
+})
+
 -- temporary
 u.map('n', '<leader>so', vim.cmd.source)
