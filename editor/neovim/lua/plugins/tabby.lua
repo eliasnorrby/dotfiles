@@ -14,6 +14,10 @@ return {
       tail = 'TabLine',
     }
 
+    local tab_name_fallback = function()
+      return ''
+    end
+
     require('tabby').setup({
       line = function(line)
         return {
@@ -38,20 +42,20 @@ return {
       end,
       option = {
         tab_name = {
-          name_fallback = function()
-            return ''
-          end,
+          name_fallback = tab_name_fallback,
         },
       },
     })
 
     wk.add({
-      '<leader>tr',
+      '<leader>rt',
       function()
-        local name = vim.fn.input('Rename tab to: ')
-        if name ~= '' then
-          require('tabby').tab_rename(name)
-        end
+        local current_tab = require('tabby.module.api').get_current_tab()
+        local current_name = require('tabby.feature.tab_name').get(current_tab, {
+          name_fallback = tab_name_fallback,
+        })
+        local name = vim.fn.input('Rename tab to: ', current_name)
+        require('tabby').tab_rename(name)
       end,
       desc = 'Rename tab',
     })
