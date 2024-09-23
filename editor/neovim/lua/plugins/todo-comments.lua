@@ -2,7 +2,16 @@ return {
   'folke/todo-comments.nvim',
   dependencies = { 'nvim-lua/plenary.nvim' },
   event = 'VeryLazy',
-  config = true,
+  opts = {
+    highlight = {
+      -- vimgrep regex, supporting the pattern TODO(name):
+      pattern = [[.*<((KEYWORDS)%(\(.{-1,}\))?):]],
+    },
+    search = {
+      -- ripgrep regex, supporting the pattern TODO(name):
+      pattern = [[\b(KEYWORDS)(\(\w*\))*:]],
+    },
+  },
   keys = {
     {
       ']t',
