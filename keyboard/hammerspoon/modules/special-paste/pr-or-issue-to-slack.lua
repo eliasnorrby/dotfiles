@@ -1,14 +1,22 @@
+local delay = 10000
+
 -- Function to get PR number or issue tag from the clipboard URL
 local function getIdentifier()
   local clipboard = hs.pasteboard.getContents()
   if clipboard then
-    local prNumber = clipboard:match('/pull/(%d+)$')
-    if prNumber then
-      return '#' .. prNumber
+    local prOrIssueNumber = clipboard:match('github.com/.*/(%d+)$')
+    if prOrIssueNumber then
+      return {
+        type = 'github',
+        id = prOrIssueNumber,
+      }
     end
     local issueTag = clipboard:match('/issue/([A-Z]+-%d+)/')
     if issueTag then
-      return issueTag
+      return {
+        type = 'linear',
+        id = issueTag,
+      }
     end
   end
   hs.alert.show('Clipboard does not contain a supported URL')
@@ -16,13 +24,13 @@ local function getIdentifier()
 end
 
 local function selectText(identifier)
-  if identifier:match('^#%d+$') then
-    hs.eventtap.keyStroke({ 'alt', 'shift' }, 'left')
+  if identifier.type == 'github' then
+    hs.eventtap.keyStroke({ 'alt', 'shift' }, 'left', delay)
     hs.eventtap.keyStroke({ 'shift' }, 'left')
-  else
-    hs.eventtap.keyStroke({ 'alt', 'shift' }, 'left')
-    hs.eventtap.keyStroke({ 'alt', 'shift' }, 'left')
-    hs.eventtap.keyStroke({ 'alt', 'shift' }, 'left')
+  elseif identifier.type == 'linear' then
+    hs.eventtap.keyStroke({ 'alt', 'shift' }, 'left', delay)
+    hs.eventtap.keyStroke({ 'alt', 'shift' }, 'left', delay)
+    hs.eventtap.keyStroke({ 'alt', 'shift' }, 'left', delay)
   end
 end
 
@@ -32,16 +40,25 @@ local function typeAndPastePRLink()
 
   if identifier then
     -- Type the identifier
-    hs.eventtap.keyStrokes(identifier)
+    if identifier.type == 'github' then
+      hs.eventtap.keyStrokes('#')
+      hs.timer.usleep(delay)
+    end
+
+    for i = 1, #identifier.id do
+      local char = identifier.id:sub(i, i)
+      local mod = char:match('[A-Z]') and { 'shift' } or {}
+      hs.eventtap.keyStroke(mod, identifier.id:sub(i, i), delay)
+    end
 
     -- Select the typed text
     selectText(identifier)
 
     -- Paste the URL
-    hs.eventtap.keyStroke({ 'cmd' }, 'v')
+    hs.eventtap.keyStroke({ 'cmd' }, 'v', delay)
 
     -- Move the cursor to after the pasted URL
-    hs.eventtap.keyStroke({}, 'right')
+    hs.eventtap.keyStroke({}, 'right', delay)
   end
 end
 
