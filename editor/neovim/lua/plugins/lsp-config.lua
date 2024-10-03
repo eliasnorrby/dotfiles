@@ -52,6 +52,13 @@ return {
         },
       })
 
+      wk.add({
+        {
+          buffer = bufnr,
+          { '<leader>lr', '<cmd>LspRestart<cr>', desc = 'Restart LSP' },
+        },
+      })
+
       -- See `:help K` for why this keymap
       vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr, desc = 'Hover Documentation' })
     end
