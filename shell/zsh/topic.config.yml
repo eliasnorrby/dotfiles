@@ -24,6 +24,8 @@ zsh_config:
     - hyperfine
     - direnv
     - csvlens
+    - xsv
+    - csvkit
     # misc
     - neofetch
     - terminal-notifier
