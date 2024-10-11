@@ -202,7 +202,7 @@ return {
       },
       tailwindcss = {},
       terraformls = {},
-      tsserver = {
+      ts_ls = {
         commands = {
           OrganizeImports = {
             function()
