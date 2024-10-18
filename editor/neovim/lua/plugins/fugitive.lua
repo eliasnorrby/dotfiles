@@ -1,3 +1,15 @@
+local function toggle_git_status()
+  local windows = vim.api.nvim_list_wins()
+  for _, v in pairs(windows) do
+    local status, _ = pcall(vim.api.nvim_win_get_var, v, 'fugitive_status')
+    if status then
+      vim.api.nvim_win_close(v, false)
+      return
+    end
+  end
+  vim.cmd([[Git]])
+end
+
 return {
   'tpope/vim-fugitive',
   dependencies = { 'tpope/vim-rhubarb' },
@@ -5,7 +17,7 @@ return {
   keys = {
     {
       '<leader>gg',
-      vim.cmd.Git,
+      toggle_git_status,
       desc = 'Git status',
     },
     {
