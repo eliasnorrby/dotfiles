@@ -47,7 +47,7 @@ return {
       wk.add({
         {
           buffer = bufnr,
-          { 'gd', vim.lsp.buf.definition, desc = 'Goto Definition' },
+          { 'gd', require('telescope.builtin').lsp_definitions, desc = 'Goto Definition' },
           { 'gr', require('telescope.builtin').lsp_references, desc = 'Goto References' },
           { 'gI', vim.lsp.buf.implementation, desc = 'Goto Implementation' },
         },
