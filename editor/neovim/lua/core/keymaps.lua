@@ -69,6 +69,7 @@ u.map('x', 'J', ":move '>+1<CR>gv=gv")
 
 u.map('n', 'Q', '<nop>')
 -- u.map('n', '-', '<nop>')
+u.map('n', '\\', '<C-^>')
 
 u.map('n', '<C-E>', '3<C-E>')
 u.map('n', '<C-Y>', '3<C-Y>')
