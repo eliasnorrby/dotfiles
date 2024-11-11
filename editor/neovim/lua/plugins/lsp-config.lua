@@ -20,6 +20,7 @@ return {
       ft = 'lua', -- only load on lua files
       opts = {
         library = {
+          'lazy.nvim',
           { path = '~/.config/hammerspoon/Spoons/EmmyLua.spoon/annotations', words = { 'hs%.' } },
         },
       },
