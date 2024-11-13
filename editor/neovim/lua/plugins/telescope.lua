@@ -80,6 +80,24 @@ return {
       { '<leader>.', builtin.find_files, desc = 'Find (non-git) project files' },
       { '<leader>/r', builtin.resume, desc = 'Resume previous picker' },
       { '<leader>//', builtin.live_grep, desc = 'Project grep' },
+      {
+        '<leader>/a',
+        function()
+          builtin.live_grep({
+            default_text = 'async ',
+          })
+        end,
+        desc = 'Find async method',
+      },
+      {
+        '<leader>/q',
+        function()
+          builtin.live_grep({
+            default_text = 'query ',
+          })
+        end,
+        desc = 'Find GraphQL query',
+      },
       { '<leader>/.', grep_hidden_files, desc = 'Project grep (hidden files)' },
       { '<leader>/w', builtin.grep_string, desc = 'Grep string' },
       { '<leader><cr>', builtin.git_status, desc = 'Find changed files' },
