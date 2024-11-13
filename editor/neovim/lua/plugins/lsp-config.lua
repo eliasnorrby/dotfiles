@@ -228,6 +228,7 @@ return {
         },
       },
       marksman = {},
+      rust_analyzer = {},
     }
 
     -- Setup mason so it can manage external tooling
