@@ -29,7 +29,7 @@ return {
       toml = { 'prettier' },
       markdown = { 'prettier' },
       graphql = { 'prettier' },
-
+      rust = { 'rustfmt', lsp_format = 'fallback' },
       lua = { 'stylua' },
       python = { 'black' },
       sh = { 'shfmt' },
