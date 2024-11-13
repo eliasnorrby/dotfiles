@@ -38,7 +38,7 @@ expand-alias-space() {
 }
 zle -N expand-alias-space
 
-bindkey " " expand-alias-space
-# bindkey -M isearch " " magic-space
+# This binding is found in zsh/which_cmd.zsh
+# bindkey " " expand-alias-space
 
 

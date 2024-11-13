@@ -16,6 +16,7 @@ _load shell/zsh/keybinds.zsh
 _load shell/zsh/utilities.zsh
 
 _load shell/zsh/alias_expansion.zsh
+_load shell/zsh/which_cmd.zsh
 _load shell/zsh/man_widget.zsh
 _load shell/zsh/fzf.zsh
 
