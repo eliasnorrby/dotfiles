@@ -44,7 +44,8 @@ return {
       },
       custom_highlights = function(colors)
         return {
-          TabLineSel = { fg = colors.yellow },
+          TabLineSel = { fg = colors.yellow, bg = colors.mantle },
+          TabLine = { bg = colors.mantle },
         }
       end,
     })
