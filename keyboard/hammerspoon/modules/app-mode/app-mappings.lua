@@ -5,7 +5,7 @@ return {
   { 'b', 'Adobe Lightroom' },
   { 'c', 'Google Chrome' },      -- "C" for "Chrome"
   { 'd', 'Drafts' },             -- "D" for "Drafts"
-  { 'e', 'Mimestream' },         -- "E" for "Email"
+  -- { 'e', 'Mimestream' },         -- "E" for "Email"
   { 'f', 'Fantastical' },        -- "F" for "Fantastical"
   { 'g', 'Things3' },            -- "G" for "GTD"
   { 'i', 'Insomnia' },           -- "I" for "Insomnia"
