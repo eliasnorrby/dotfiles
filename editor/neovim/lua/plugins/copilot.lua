@@ -11,6 +11,15 @@ return {
       },
     },
   },
+  keys = {
+    {
+      '<leader>tc',
+      function()
+        require('copilot.suggestion').toggle_auto_trigger()
+      end,
+      desc = 'Toggle Copilot',
+    },
+  },
   init = function()
     vim.keymap.set('i', ';', function()
       if require('copilot.suggestion').is_visible() then
