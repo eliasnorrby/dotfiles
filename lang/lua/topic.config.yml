@@ -1,0 +1,5 @@
+---
+lua_config:
+  path: lang/lua
+  brew_formulas:
+    - lua

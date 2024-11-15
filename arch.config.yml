@@ -126,6 +126,9 @@ topics:
     - name: dotnet
       state: absent
       config: "{{ dotnet_config }}"
+    - name: lua
+      state: absent
+      config: "{{ lua_config }}"
     - name: go
       state: present
       config: "{{ go_config }}"
