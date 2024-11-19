@@ -81,6 +81,9 @@ topics:
     - name: zsh
       state: present
       config: "{{ zsh_config }}"
+    - name: which_cmd
+      state: present
+      config: "{{ which_cmd_config }}"
   dev:
     - name: ansible
       state: present

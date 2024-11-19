@@ -1,0 +1,222 @@
+keys:
+  - key: g
+    value: git
+    keys:
+      - key: s
+        value: status
+        immediate: true
+      - key: d
+        value: diff
+        immediate: true
+      - key: b
+        value: branch
+        keys:
+          - key: m
+            name: rename
+            value: -m
+      - key: c
+        value: checkout
+        keys:
+          - key: b
+            name: new branch
+            value: -b
+          - key: "-"
+            name: previous branch
+            value: "-"
+      - key: z
+        value: stash
+        keys:
+          - key: p
+            value: push
+            loop: true
+            keys:
+              - key: u
+                name: untracked
+                value: --include-untracked
+                fleeting: true
+              - key: m
+                name: message
+                value: -m
+                fleeting: true
+          - key: l
+            value: list
+            immediate: true
+          - key: s
+            value: show
+      - key: r
+        value: rebase
+        keys:
+          - key: i
+            name: interactive
+            value: -i
+          - key: o
+            name: origin
+            value: origin/master
+            immediate: true
+          - key: O
+            name: onto
+            value: --onto
+          - key: c
+            name: continue
+            value: --continue
+          - key: a
+            name: abort
+            value: --abort
+      - key: R
+        value: reset
+        keys:
+          - key: h
+            value: --hard
+      - key: h
+        name: GitHub
+        value: gh
+        anchor: true
+        keys:
+          - key: p
+            name: pull request
+            value: pr
+            keys:
+              - key: c
+                value: create
+                immediate: true
+              - key: C
+                value: checkout
+              - key: v
+                value: view
+                immediate: true
+              - key: l
+                value: list
+                immediate: true
+          - key: b
+            value: browse
+            immediate: true
+  - key: D
+    value: date
+    keys:
+      - key: t
+        name: to unix
+        value: +%s -d
+      - key: f
+        name: from unix
+        value: -d @
+      - key: n
+        name: now
+        value: +%s
+        immediate: true
+  - key: l
+    value: ls
+    loop: true
+    keys:
+      - key: l
+        name: long
+        value: -l
+      - key: a
+        name: all
+        value: -a
+      - key: r
+        name: recursive
+        value: -R
+  - key: j
+    name: jest
+    value: pnpm jest
+    keys:
+      - key: t
+        name: filter by test name
+        value: -t
+  - key: C
+    value: curl
+    loop: true
+    keys:
+      - key: h
+        name: header
+        value: -H
+        fleeting: true
+        keys:
+          - key: c
+            name: ContentType
+            value: '"ContentType:'
+            fleeting: true
+            keys:
+              - key: a
+                name: application/json
+                value: 'application/json"'
+      - key: x
+        name: method
+        value: -X
+        keys:
+          - key: p
+            value: POST
+          - key: P
+            value: PUT
+          - key: g
+            value: GET
+          - key: o
+            value: OPTION
+          - key: d
+            value: DELETE
+  - key: c
+    value: cargo
+    keys:
+      - key: r
+        value: run
+      - key: b
+        value: build
+        immediate: true
+      - key: t
+        value: test
+        immediate: true
+      - key: f
+        name: format
+        value: fmt
+        immediate: true
+  - key: d
+    value: docker
+    keys:
+      - key: i
+        value: image
+        keys:
+          - key: l
+            value: ls
+      - key: r
+        value: run
+  - key: f
+    name: find
+    value: find .
+    loop: true
+    keys:
+      - key: t
+        value: -type
+        fleeting: true
+        keys:
+          - key: f
+            name: file
+            value: f
+          - key: d
+            name: directory
+            value: d
+  - key: x
+    value: cut
+    loop: true
+    keys:
+      - key: d
+        name: delimiter
+        value: -d
+        fleeting: true
+        # TODO: make an input node
+        keys:
+          - key: s
+            value: "' '"
+            name: space
+      - key: f
+        name: field
+        # TODO: make narrow (don't add space after)
+        value: -f
+        fleeting: true
+        # TODO: make an input node
+        keys:
+          - key: 1
+            value: 1
+          - key: 2
+            value: 2
+          - key: 3
+            value: 3

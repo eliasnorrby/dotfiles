@@ -1,0 +1,6 @@
+---
+which_cmd_config:
+  path: shell/which_cmd
+  dirname: which-cmd
+  links:
+    - commands.yml
