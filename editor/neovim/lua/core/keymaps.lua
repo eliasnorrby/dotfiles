@@ -77,8 +77,6 @@ u.map('n', '<C-Y>', '3<C-Y>')
 u.map('n', 'j', 'gj')
 u.map('n', 'k', 'gk')
 
-u.map('n', '<CR>', '<cmd>x<CR>')
-
 wk.add({
   { '<leader>c', group = '+quickfix' },
   { '<leader>co', '<cmd>copen<CR>', desc = 'open' },
