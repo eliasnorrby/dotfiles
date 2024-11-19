@@ -18,10 +18,17 @@ which_cmd_tmux_widget() {
     local tempfile result
     tempfile=$(mktemp)
     # TODO: Use proper path
-    tempfile=$tempfile tmux display-popup -b rounded -E "~/dev/which-cmd/target/debug/which-cmd > $tempfile"
+    tempfile=$tempfile tmux display-popup -T 'which-cmd' -y S -w 95% -h 20% -b rounded -E "~/dev/which-cmd/target/debug/which-cmd --immediate > $tempfile"
     result=$(<$tempfile)
     if [[ $result != "" ]]; then
+      if [[ $result = __IMMEDIATE__* ]]; then
+        local cmd
+        cmd=$(echo $result | cut -d' ' -f2-)
+        LBUFFER+="$cmd"
+        zle accept-line
+      else
         LBUFFER+="$result"
+      fi
     fi
     zle reset-prompt
   else
