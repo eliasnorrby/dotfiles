@@ -17,3 +17,12 @@ vim.api.nvim_create_autocmd('VimResized', {
   group = window_size_equal,
   pattern = '*',
 })
+
+local gitcommit_group = vim.api.nvim_create_augroup('GitCommitInsertMode', { clear = true })
+vim.api.nvim_create_autocmd('FileType', {
+  group = gitcommit_group,
+  pattern = 'gitcommit',
+  callback = function()
+    vim.cmd('startinsert')
+  end,
+})
