@@ -177,8 +177,44 @@ keys:
         keys:
           - key: l
             value: ls
+            immediate: true
+          - key: p
+            value: prune
+      - key: c
+        value: compose
+        keys:
+          - key: u
+            value: up
+          - key: d
+            value: down
+      - key: C
+        value: container
+        keys:
+          - key: l
+            value: ls
+            immediate: true
+          - key: p
+            value: prune
+      - key: s
+        value: system
+        keys:
+          - key: p
+            value: prune
       - key: r
         value: run
+        loop: true
+        keys:
+          - key: i
+            value: -it
+            name: interactive
+            fleeting: true
+          - key: r
+            value: --rm
+            name: remove
+            fleeting: true
+      - key: p
+        value: ps
+        immediate: true
   - key: f
     name: find
     value: find .
