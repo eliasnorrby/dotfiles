@@ -5,7 +5,7 @@ if [[ "$(_os)" == "macos" ]]; then
 fi
 function theme() {
   local theme=${1:-${VIM_COLOR:-${DEFAULT_THEME}}}
-  sed -i $sed_bak_str "s/^colors: \*.*/colors: \*$theme/" "$DOTFILES/shell/alacritty/alacritty.yml"
+  sed -i $sed_bak_str "s/^colors: \*.*/colors: \*$theme/" "$DOTFILES/terminal/alacritty/alacritty.yml"
 }
 
 alias ayu="theme ayu"
@@ -14,6 +14,6 @@ alias palenight="theme palenight"
 
 function opacity() {
   local opacity=${1:-0.95}
-  sed -i '' "s/^background_opacity: .*/background_opacity: $opacity/" "$DOTFILES/shell/alacritty/alacritty.yml"
+  sed -i '' "s/^background_opacity: .*/background_opacity: $opacity/" "$DOTFILES/terminal/alacritty/alacritty.yml"
 }
 
