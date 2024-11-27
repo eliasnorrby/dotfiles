@@ -3,8 +3,9 @@
 # command line variant
 which_cmd_widget() {
     local result
-    result=$(<$TTY ~/dev/which-cmd/target/debug/which-cmd)
+    <$TTY ~/dev/which-cmd/target/debug/which-cmd build
     if [[ $? -eq 0 ]]; then
+        result=$(~/dev/which-cmd/target/debug/which-cmd get)
         LBUFFER+="$result"
     fi
     zle reset-prompt
@@ -15,11 +16,10 @@ bindkey '^p' which_cmd_widget
 # tmux popup
 which_cmd_tmux_widget() {
   if [[ $LBUFFER == "" ]]; then
-    local tempfile result
-    tempfile=$(mktemp)
+    local result
     # TODO: Use proper path
-    tempfile=$tempfile tmux display-popup -T 'which-cmd' -y S -w 95% -h 20% -b rounded -E "~/dev/which-cmd/target/debug/which-cmd --immediate > $tempfile"
-    result=$(<$tempfile)
+    tmux display-popup -S fg=brightblack -T '#[fg=white bold] which-cmd #[fg=default]' -y S -w 95% -h 12 -b rounded -E "~/dev/which-cmd/target/debug/which-cmd build --immediate"
+    result=$(~/dev/which-cmd/target/debug/which-cmd get)
     if [[ $result != "" ]]; then
       if [[ $result = __IMMEDIATE__* ]]; then
         local cmd
@@ -28,6 +28,7 @@ which_cmd_tmux_widget() {
         zle accept-line
       else
         LBUFFER+="$result"
+        zle self-insert
       fi
     fi
     zle reset-prompt
