@@ -4,7 +4,7 @@ local delay = 10000
 local function getIdentifier()
   local clipboard = hs.pasteboard.getContents()
   if clipboard then
-    local prOrIssueNumber = clipboard:match('github.com/.*/(%d+)$')
+    local prOrIssueNumber = clipboard:match('github.com/.*/(%d+)')
     if prOrIssueNumber then
       return {
         type = 'github',
