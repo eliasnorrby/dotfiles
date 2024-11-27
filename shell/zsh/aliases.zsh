@@ -47,10 +47,6 @@ alias cdl="cd ~/learn"
 alias cds="cd ~/sandbox"
 alias cdf="cd ~/forks"
 
-# Script aliases
-alias cs="complete-section"
-alias fgc="find-git-changes"
-
 if [[ "$(_os)" == "macos" ]] ; then
   alias sudoedit="sudo -e"
 fi
