@@ -221,7 +221,7 @@ return {
         settings = {
           yaml = {
             schemas = {
-              ['http://json-schema.org/draft-07/schema#'] = '/schema.yaml',
+              ['http://json-schema.org/draft-07/schema#'] = 'schema.{yml,yaml}',
               ['./packages/cli/schema.yaml'] = '**/.bemlorc',
             },
           },
