@@ -16,9 +16,10 @@ bindkey '^p' which_cmd_widget
 # tmux popup
 which_cmd_tmux_widget() {
   if [[ $LBUFFER == "" ]]; then
-    local result
+    local result height
+    height=$(~/dev/which-cmd/target/debug/which-cmd height)
     # TODO: Use proper path
-    tmux display-popup -S fg=brightblack -T '#[fg=white bold] which-cmd #[fg=default]' -y S -w 95% -h 12 -b rounded -E "~/dev/which-cmd/target/debug/which-cmd build --immediate"
+    tmux display-popup -S fg=brightblack -T '#[fg=white bold] which-cmd #[fg=default]' -y S -w 95% -h $((height + 2)) -b rounded -EE "~/dev/which-cmd/target/debug/which-cmd build --immediate"
     result=$(~/dev/which-cmd/target/debug/which-cmd get)
     if [[ $result != "" ]]; then
       if [[ $result = __IMMEDIATE__* ]]; then
