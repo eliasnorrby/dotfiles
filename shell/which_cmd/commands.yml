@@ -23,6 +23,14 @@ keys:
           - key: "-"
             name: previous branch
             value: "-"
+            immediate: true
+      - key: p
+        value: push
+        keys:
+          - key: u
+            value: -u
+            name: set-upstream
+            immediate: true
       - key: z
         value: stash
         keys:
@@ -33,7 +41,6 @@ keys:
               - key: u
                 name: untracked
                 value: --include-untracked
-                fleeting: true
               - key: m
                 name: message
                 value: -m
@@ -86,6 +93,9 @@ keys:
                 immediate: true
               - key: l
                 value: list
+                immediate: true
+              - key: e
+                value: edit
                 immediate: true
           - key: b
             value: browse
@@ -207,11 +217,9 @@ keys:
           - key: i
             value: -it
             name: interactive
-            fleeting: true
           - key: r
             value: --rm
             name: remove
-            fleeting: true
       - key: p
         value: ps
         immediate: true
@@ -238,21 +246,60 @@ keys:
         name: delimiter
         value: -d
         fleeting: true
-        # TODO: make an input node
-        keys:
-          - key: s
-            value: "' '"
-            name: space
+        input: Text
       - key: f
         name: field
         # TODO: make narrow (don't add space after)
         value: -f
         fleeting: true
-        # TODO: make an input node
+        input: Number
+  - key: /
+    value: rg
+    loop: true
+    keys:
+      - key: h
+        name: hidden
+        value: --hidden
+      - key: i
+        name: ignore case
+        value: --ignore-case
+      - key: v
+        name: invert
+        value: --invert-match
+      - key: m
+        name: max count
+        value: --max-count
+        fleeting: true
+        input: Number
+      - key: d
+        name: max depth
+        value: --max-depth
+        fleeting: true
+        input: Number
+  - key: p
+    value: pnpm
+    keys:
+      - key: d
+        value: dev
+        loop: true
         keys:
-          - key: 1
-            value: 1
-          - key: 2
-            value: 2
-          - key: 3
-            value: 3
+          - key: p
+            value: --with-pusher
+          - key: s
+            value: --with-scheduling
+          - key: t
+            value: --tz
+            fleeting: true
+            choices:
+              - Europe/Stockholm
+              - America/New_York
+      - key: i
+        value: install
+        immediate: true
+      - key: a
+        value: add
+        loop: true
+        keys:
+          - key: d
+            name: development
+            value: -D
