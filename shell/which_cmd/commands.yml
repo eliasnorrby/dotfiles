@@ -44,7 +44,7 @@ keys:
               - key: m
                 name: message
                 value: -m
-                fleeting: true
+                input: Text
           - key: l
             value: list
             immediate: true
@@ -141,6 +141,7 @@ keys:
         name: header
         value: -H
         fleeting: true
+        repeatable: true
         keys:
           - key: c
             name: ContentType
@@ -220,6 +221,11 @@ keys:
           - key: r
             value: --rm
             name: remove
+          - key: e
+            value: --env
+            name: environment variable
+            input: Text
+            repeatable: true
       - key: p
         value: ps
         immediate: true
@@ -245,13 +251,11 @@ keys:
       - key: d
         name: delimiter
         value: -d
-        fleeting: true
         input: Text
       - key: f
         name: field
         # TODO: make narrow (don't add space after)
         value: -f
-        fleeting: true
         input: Number
   - key: /
     value: rg
@@ -269,12 +273,10 @@ keys:
       - key: m
         name: max count
         value: --max-count
-        fleeting: true
         input: Number
       - key: d
         name: max depth
         value: --max-depth
-        fleeting: true
         input: Number
   - key: p
     value: pnpm
@@ -289,7 +291,6 @@ keys:
             value: --with-scheduling
           - key: t
             value: --tz
-            fleeting: true
             choices:
               - Europe/Stockholm
               - America/New_York
