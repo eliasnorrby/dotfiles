@@ -289,6 +289,8 @@ keys:
             value: --with-pusher
           - key: s
             value: --with-scheduling
+          - key: q
+            value: --log-prisma-queries
           - key: t
             value: --tz
             choices:
@@ -304,3 +306,24 @@ keys:
           - key: d
             name: development
             value: -D
+  - key: t
+    value: terraform
+    keys:
+      - key: p
+        value: plan
+      - key: i
+        value: init
+      - key: v
+        value: validate
+  - key: b
+    value: brew
+    keys:
+      - key: i
+        value: install
+      - key: I
+        value: info
+      - key: l
+        value: leaves
+        immediate: true
+      - key: u
+        value: upgrade
