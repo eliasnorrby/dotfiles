@@ -1,0 +1,23 @@
+theme = catppuccin-macchiato
+
+# background = #000000
+background-opacity = 0.90
+background-blur-radius = 30
+
+font-family = Victor Mono
+# font-thicken = true
+
+adjust-font-baseline = 2
+
+macos-titlebar-style = hidden
+window-decoration = true
+
+# window-padding-x = 10
+# window-padding-y = 10
+# window-padding-balance = true
+
+auto-update = check
+
+keybind = super+r=reload_config
+
+# vim: ft=conf

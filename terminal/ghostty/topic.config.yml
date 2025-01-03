@@ -1,0 +1,7 @@
+---
+ghostty_config:
+  path: terminal/ghostty
+  links:
+    - config
+  brew_casks:
+    - ghostty
