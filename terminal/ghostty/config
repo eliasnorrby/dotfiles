@@ -19,5 +19,6 @@ window-decoration = true
 auto-update = check
 
 keybind = super+r=reload_config
+keybind = global:cmd+grave_accent=toggle_quick_terminal
 
 # vim: ft=conf
