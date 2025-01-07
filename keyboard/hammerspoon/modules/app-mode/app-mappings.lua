@@ -16,7 +16,7 @@ return {
   { 'q', 'ChatGPT' },
   { 'r', 'Alacritty' },
   { 's', 'Emacs' },
-  { 't', 'ghostty' },              -- "T" for "Terminal"
+  { 't', 'kitty' },              -- "T" for "Terminal"
   { 'u', 'Spotify' },
   { 'v', 'Notion' },
   { 'w', 'Linear' },
@@ -24,7 +24,7 @@ return {
   { 'y', 'DaVinci Resolve' },
   { 'z', 'Slack' },
 
-  { 't', 'kitty', { 'shift' }},
+  { 't', 'ghostty', { 'shift' }},
   { 'd', function() hs.execute('open ~/Downloads') end, {'shift'} },
   { 'f', function() hs.execute('open ~') end, {'shift'} },
 }
