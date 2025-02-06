@@ -9,6 +9,7 @@ return {
     cmd = { 'GV' },
     dependencies = { 'tpope/vim-fugitive' },
   },
+  { 'echasnovski/mini.ai', version = '*', config = true },
   {
     'kylechui/nvim-surround',
     version = '*',
