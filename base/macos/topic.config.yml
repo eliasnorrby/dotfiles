@@ -26,6 +26,7 @@ macos_config:
     - mimestream
     - chatgpt
     - rocket
+    - mouseless
   mas_apps:
     - id: 950297057
       name: "FuzzyTime"
