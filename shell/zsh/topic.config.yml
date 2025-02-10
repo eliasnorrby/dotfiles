@@ -14,6 +14,7 @@ zsh_config:
     - tree
     - htop
     - openssh
+    - unar
     # extras
     - jq
     - yq
