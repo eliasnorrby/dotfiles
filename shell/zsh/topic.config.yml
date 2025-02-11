@@ -25,6 +25,7 @@ zsh_config:
     - hyperfine
     - direnv
     - csvlens
+    - miller
     - xsv
     - csvkit
     # misc
