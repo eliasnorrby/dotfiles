@@ -98,6 +98,15 @@ return {
         end,
         desc = 'Find GraphQL query',
       },
+      {
+        '<leader>/q',
+        function()
+          builtin.live_grep({
+            default_text = 'mutation ',
+          })
+        end,
+        desc = 'Find GraphQL mutation',
+      },
       { '<leader>/.', grep_hidden_files, desc = 'Project grep (hidden files)' },
       { '<leader>/w', builtin.grep_string, desc = 'Grep string' },
       { '<leader><cr>', builtin.git_status, desc = 'Find changed files' },
