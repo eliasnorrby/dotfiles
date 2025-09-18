@@ -17,6 +17,27 @@ return {
   },
   {
     'MeanderingProgrammer/markdown.nvim',
+    opts = {
+      code = {
+        language_border = ' ',
+        language_left = '',
+        language_right = '',
+      },
+      overrides = {
+        buftype = {
+          nofile = {
+            render_modes = true,
+            sign = { enabled = false },
+            code = {
+              language_info = false,
+              language_name = false,
+              language_icon = false,
+              disable_background = true,
+            },
+          },
+        },
+      },
+    },
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     ft = 'markdown',
   },
