@@ -104,7 +104,7 @@ topics:
       state: absent
       config: "{{ vagrant_config }}"
     - name: kubernetes
-      state: absent
+      state: present
       config: "{{ kubernetes_config }}"
     - name: kafka
       state: absent
