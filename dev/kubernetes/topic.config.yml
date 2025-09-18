@@ -17,11 +17,9 @@ kubernetes_config:
     - kubelogin
     - kind
     - kubeseal
-    - openshift-cli
     - helm
     - kustomize
     - k9s
-    - skopeo
   pacman_packages:
     - minikube
     - kubectl
@@ -29,9 +27,7 @@ kubernetes_config:
     - helm
     - kustomize
     - k9s
-    - skopeo
   aur_packages:
     - kind-bin
-    - origin-client
 
 k9s_config_dir: "{{ xdg_config_home }}/k9s"
