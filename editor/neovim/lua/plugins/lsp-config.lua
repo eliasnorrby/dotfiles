@@ -1,9 +1,16 @@
 return {
-  'neovim/nvim-lspconfig',
+  'mason-org/mason-lspconfig.nvim',
   dependencies = {
     -- Automatically install LSPs to stdpath for neovim
-    'williamboman/mason.nvim',
-    'williamboman/mason-lspconfig.nvim',
+    {
+      'mason-org/mason.nvim',
+      opts = {
+        ui = {
+          border = 'rounded',
+        },
+      },
+    },
+    'neovim/nvim-lspconfig',
     -- Useful status updates for LSP
     {
       'j-hui/fidget.nvim',
@@ -20,6 +27,7 @@ return {
       ft = 'lua', -- only load on lua files
       opts = {
         library = {
+          'nvim-cmp/lua/cmp/types',
           'lazy.nvim',
           { path = '~/.config/hammerspoon/Spoons/EmmyLua.spoon/annotations', words = { 'hs%.' } },
         },
@@ -223,6 +231,7 @@ return {
             schemas = {
               ['http://json-schema.org/draft-07/schema#'] = 'schema.{yml,yaml}',
               ['./packages/cli/schema.yaml'] = '**/.bemlorc',
+              ['/Users/elias/dev/which-cmd/schema.yml'] = '**/commands.yml',
             },
           },
         },
@@ -231,25 +240,11 @@ return {
       rust_analyzer = {},
     }
 
-    -- Setup mason so it can manage external tooling
-    require('mason').setup({
-      ui = {
-        border = 'rounded',
-      },
-    })
+    for server_name, config in pairs(servers) do
+      vim.lsp.config(server_name, config)
+    end
 
-    -- Ensure the servers above are installed
-    local mason_lspconfig = require('mason-lspconfig')
-
-    mason_lspconfig.setup({
-      ensure_installed = vim.tbl_keys(servers),
-    })
-
-    mason_lspconfig.setup_handlers({
-      function(server_name)
-        require('lspconfig')[server_name].setup(servers[server_name])
-      end,
-    })
+    vim.lsp.enable(vim.tbl_keys(servers))
 
     -- Turn on lsp status information
     require('fidget').setup()
@@ -257,14 +252,21 @@ return {
   init = function()
     vim.diagnostic.config({
       float = { border = 'rounded' },
+      signs = {
+        numhl = {
+          [vim.diagnostic.severity.ERROR] = 'DiagnosticSignError',
+          [vim.diagnostic.severity.WARN] = 'DiagnosticSignWarn',
+          [vim.diagnostic.severity.HINT] = 'DiagnosticSignHint',
+          [vim.diagnostic.severity.INFO] = 'DiagnosticSignInfo',
+        },
+        text = {
+          [vim.diagnostic.severity.ERROR] = '',
+          [vim.diagnostic.severity.WARN] = '',
+          [vim.diagnostic.severity.HINT] = '󰌶',
+          [vim.diagnostic.severity.INFO] = ' ',
+        },
+      },
     })
-
-    local signs = { Error = '', Warn = '', Hint = '󰌶', Info = ' ' }
-
-    for type, icon in pairs(signs) do
-      local hl = 'DiagnosticSign' .. type
-      vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
-    end
 
     local wk = require('which-key')
     wk.add({
