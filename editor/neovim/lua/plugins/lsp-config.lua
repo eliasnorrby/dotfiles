@@ -103,7 +103,7 @@ return {
         root_dir = function(fname)
           -- lsp-config will use util.path.dirname, with will be the directory
           -- containing the file - we won't scan anything in parent directories.
-          return nvim_lsp.util.root_pattern('.git')(fname) or nvim_lsp.util.path.dirname(fname)
+          return nvim_lsp.util.root_pattern('.git')(fname) or vim.fs.dirname(fname)
         end,
       },
       cssls = {},
@@ -270,8 +270,8 @@ return {
 
     local wk = require('which-key')
     wk.add({
-      { '[d', vim.diagnostic.goto_prev, desc = 'Previous Diagnostic' },
-      { ']d', vim.diagnostic.goto_next, desc = 'Next Diagnostic' },
+      { '[d', vim.diagnostic.jump({ count = -1 }), desc = 'Previous Diagnostic' },
+      { ']d', vim.diagnostic.jump({ count = 1 }), desc = 'Next Diagnostic' },
       { '<leader>do', vim.diagnostic.open_float, desc = 'Open Diagnostic' },
     })
   end,
