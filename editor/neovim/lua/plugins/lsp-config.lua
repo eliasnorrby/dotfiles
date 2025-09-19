@@ -14,10 +14,11 @@ return {
     -- Useful status updates for LSP
     {
       'j-hui/fidget.nvim',
-      tag = 'legacy',
       opts = {
-        window = {
-          blend = 0,
+        notification = {
+          window = {
+            winblend = 0,
+          },
         },
       },
     },
