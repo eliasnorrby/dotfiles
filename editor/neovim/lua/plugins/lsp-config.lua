@@ -39,7 +39,7 @@ return {
 
     vim.lsp.set_log_level('OFF')
 
-    local on_attach = function(_, bufnr)
+    local set_lsp_keymaps = function(_, bufnr)
       local wk = require('which-key')
 
       wk.add({
@@ -72,27 +72,27 @@ return {
       vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr, desc = 'Hover Documentation' })
     end
 
-    local handlers = {
-      ['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-        underline = true,
-        virtual_text = false,
-        signs = true,
-        update_in_insert = true,
-      }),
-      ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' }),
-      ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' }),
-    }
-
-    local lsp_defaults = {
-      on_attach = on_attach,
+    local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+    vim.lsp.config('*', {
       flags = {
         debounce_text_changes = 150,
       },
-      capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
-      handlers = handlers,
-    }
+      capabilities = capabilities,
+    })
 
-    nvim_lsp.util.default_config = vim.tbl_deep_extend('force', nvim_lsp.util.default_config, lsp_defaults)
+    local lsp_group = vim.api.nvim_create_augroup('UserLspAttach', { clear = true })
+    vim.api.nvim_create_autocmd('LspAttach', {
+      group = lsp_group,
+      desc = 'Set buffer-local keymaps and options after an LSP client attaches',
+      callback = function(args)
+        local bufnr = args.buf
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if not client then
+          return
+        end
+        set_lsp_keymaps(client, bufnr)
+      end,
+    })
 
     local servers = {
       bashls = {
