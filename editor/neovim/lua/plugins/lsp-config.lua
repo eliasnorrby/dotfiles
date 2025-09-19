@@ -144,14 +144,14 @@ return {
       {
         '[d',
         function()
-          vim.diagnostic.jump({ count = -1 })
+          vim.diagnostic.jump({ count = -1, float = true })
         end,
         desc = 'Previous Diagnostic',
       },
       {
         ']d',
         function()
-          vim.diagnostic.jump({ count = 1 })
+          vim.diagnostic.jump({ count = 1, float = true })
         end,
         desc = 'Next Diagnostic',
       },
