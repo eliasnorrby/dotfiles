@@ -92,12 +92,12 @@ return {
       vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr, desc = 'Hover Documentation' })
     end
 
-    local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+    -- local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
     vim.lsp.config('*', {
       flags = {
         debounce_text_changes = 150,
       },
-      capabilities = capabilities,
+      -- capabilities = capabilities,
     })
 
     local lsp_group = vim.api.nvim_create_augroup('UserLspAttach', { clear = true })

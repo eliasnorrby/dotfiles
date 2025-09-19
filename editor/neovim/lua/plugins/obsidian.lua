@@ -3,8 +3,8 @@ return {
   opts = {
     dir = '~/obsidian',
     disable_frontmatter = true,
-    completion = {
-      nvim_cmp = true,
-    },
+    -- completion = {
+    --   nvim_cmp = true,
+    -- },
   },
 }
