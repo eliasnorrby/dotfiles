@@ -36,6 +36,32 @@ return {
     },
   },
   config = function()
+    local servers = {
+      'bashls',
+      'cssls',
+      'diagnosticls',
+      'dockerls',
+      'gopls',
+      'graphql',
+      'html',
+      'jsonls',
+      'lua_ls',
+      'marksman',
+      'phpactor',
+      'prismals',
+      'pyright',
+      'rust_analyzer',
+      'tailwindcss',
+      'terraformls',
+      'ts_ls',
+      'yamlls',
+    }
+
+    require('mason-lspconfig').setup({
+      ensure_installed = servers,
+      automatic_enable = true,
+    })
+
     vim.lsp.set_log_level('OFF')
 
     vim.diagnostic.config({
@@ -113,31 +139,5 @@ return {
         set_lsp_keymaps(client, bufnr)
       end,
     })
-
-    local servers = {
-      'bashls',
-      'cssls',
-      'diagnosticls',
-      'dockerls',
-      'gopls',
-      'graphql',
-      'html',
-      'jsonls',
-      'lua_ls',
-      'marksman',
-      'phpactor',
-      'prismals',
-      'pyright',
-      'rust_analyzer',
-      'tailwindcss',
-      'terraformls',
-      'ts_ls',
-      'yamlls',
-    }
-
-    vim.lsp.enable(servers)
-
-    -- Turn on lsp status information
-    require('fidget').setup()
   end,
 }
