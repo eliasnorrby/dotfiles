@@ -35,9 +35,25 @@ return {
     },
   },
   config = function()
-    local nvim_lsp = require('lspconfig')
-
     vim.lsp.set_log_level('OFF')
+
+    vim.diagnostic.config({
+      float = { border = 'rounded' },
+      signs = {
+        numhl = {
+          [vim.diagnostic.severity.ERROR] = 'DiagnosticSignError',
+          [vim.diagnostic.severity.WARN] = 'DiagnosticSignWarn',
+          [vim.diagnostic.severity.HINT] = 'DiagnosticSignHint',
+          [vim.diagnostic.severity.INFO] = 'DiagnosticSignInfo',
+        },
+        text = {
+          [vim.diagnostic.severity.ERROR] = '',
+          [vim.diagnostic.severity.WARN] = '',
+          [vim.diagnostic.severity.HINT] = '󰌶',
+          [vim.diagnostic.severity.INFO] = ' ',
+        },
+      },
+    })
 
     local set_lsp_keymaps = function(_, bufnr)
       local wk = require('which-key')
@@ -49,26 +65,29 @@ return {
           { '<leader>,', vim.lsp.buf.code_action, desc = 'Code action' },
           { '<leader>sd', require('telescope.builtin').lsp_document_symbols, desc = 'Document Symbols' },
           { '<leader>sw', require('telescope.builtin').lsp_dynamic_workspace_symbols, desc = 'Workspace Symbols' },
-        },
-      })
-
-      wk.add({
-        {
-          buffer = bufnr,
           { 'gd', require('telescope.builtin').lsp_definitions, desc = 'Goto Definition' },
           { 'gr', require('telescope.builtin').lsp_references, desc = 'Goto References' },
           { 'gI', vim.lsp.buf.implementation, desc = 'Goto Implementation' },
-        },
-      })
-
-      wk.add({
-        {
-          buffer = bufnr,
           { '<leader>lr', '<cmd>LspRestart<cr>', desc = 'Restart LSP' },
+          { '<leader>li', '<cmd>LspInfo<cr>', desc = 'LSP info' },
+          {
+            '[d',
+            function()
+              vim.diagnostic.jump({ count = -1, float = true })
+            end,
+            desc = 'Previous Diagnostic',
+          },
+          {
+            ']d',
+            function()
+              vim.diagnostic.jump({ count = 1, float = true })
+            end,
+            desc = 'Next Diagnostic',
+          },
+          { '<leader>do', vim.diagnostic.open_float, desc = 'Open Diagnostic' },
         },
       })
 
-      -- See `:help K` for why this keymap
       vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr, desc = 'Hover Documentation' })
     end
 
@@ -119,43 +138,5 @@ return {
 
     -- Turn on lsp status information
     require('fidget').setup()
-  end,
-  init = function()
-    vim.diagnostic.config({
-      float = { border = 'rounded' },
-      signs = {
-        numhl = {
-          [vim.diagnostic.severity.ERROR] = 'DiagnosticSignError',
-          [vim.diagnostic.severity.WARN] = 'DiagnosticSignWarn',
-          [vim.diagnostic.severity.HINT] = 'DiagnosticSignHint',
-          [vim.diagnostic.severity.INFO] = 'DiagnosticSignInfo',
-        },
-        text = {
-          [vim.diagnostic.severity.ERROR] = '',
-          [vim.diagnostic.severity.WARN] = '',
-          [vim.diagnostic.severity.HINT] = '󰌶',
-          [vim.diagnostic.severity.INFO] = ' ',
-        },
-      },
-    })
-
-    local wk = require('which-key')
-    wk.add({
-      {
-        '[d',
-        function()
-          vim.diagnostic.jump({ count = -1, float = true })
-        end,
-        desc = 'Previous Diagnostic',
-      },
-      {
-        ']d',
-        function()
-          vim.diagnostic.jump({ count = 1, float = true })
-        end,
-        desc = 'Next Diagnostic',
-      },
-      { '<leader>do', vim.diagnostic.open_float, desc = 'Open Diagnostic' },
-    })
   end,
 }
