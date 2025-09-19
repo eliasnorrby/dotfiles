@@ -95,156 +95,27 @@ return {
     })
 
     local servers = {
-      bashls = {
-        cmd_env = {
-          -- lsp-config defaults will disable recursive scanning
-          GLOB_PATTERN = '**/*@(.sh|.inc|.bash|.command)',
-        },
-        root_dir = function(fname)
-          -- lsp-config will use util.path.dirname, with will be the directory
-          -- containing the file - we won't scan anything in parent directories.
-          return nvim_lsp.util.root_pattern('.git')(fname) or vim.fs.dirname(fname)
-        end,
-      },
-      cssls = {},
-      diagnosticls = {
-        cmd = { 'diagnostic-languageserver', '--stdio' },
-        filetypes = {
-          'lua',
-          'sh',
-          'markdown',
-          'json',
-          'json5',
-          'yaml',
-          'toml',
-          'dockerfile',
-        },
-        init_options = {
-          linters = {
-            shellcheck = {
-              command = 'shellcheck',
-              debounce = 100,
-              args = { '--format', 'json', '-' },
-              sourceName = 'shellcheck',
-              parseJson = {
-                line = 'line',
-                column = 'column',
-                endLine = 'endLine',
-                endColumn = 'endColumn',
-                message = '${message} [${code}]',
-                security = 'level',
-              },
-              securities = {
-                error = 'error',
-                warning = 'warning',
-                info = 'info',
-                style = 'hint',
-              },
-            },
-            hadolint = {
-              command = 'hadolint',
-              debounce = 100,
-              args = { '--format', 'json', '-' },
-              sourceName = 'Dockerfile',
-              parseJson = {
-                sourceName = 'file',
-                line = 'line',
-                column = 'column',
-                message = '${message} [${code}]',
-                security = 'level',
-              },
-              securities = {
-                error = 'error',
-                warning = 'warning',
-                info = 'info',
-                style = 'hint',
-              },
-            },
-          },
-          filetypes = {
-            sh = 'shellcheck',
-            dockerfile = 'hadolint',
-          },
-          formatters = {
-            shfmt = {
-              command = 'shfmt',
-              args = { '-filename', 'script.sh' },
-            },
-            prettier = {
-              command = 'prettier',
-              args = { '--stdin-filepath', '%filepath' },
-            },
-          },
-          formatFiletypes = {
-            sh = 'shfmt',
-            json = 'prettier',
-            yaml = 'prettier',
-            toml = 'prettier',
-            markdown = 'prettier',
-            lua = 'prettier',
-          },
-        },
-      },
-      dockerls = {},
-      gopls = {},
-      phpactor = {},
-      graphql = {
-        filetypes = {
-          'graphql',
-          'typescript',
-          'typescriptreact',
-          'javascriptreact',
-        },
-        root_dir = nvim_lsp.util.root_pattern('.graphqlrc.*', '.git'),
-      },
-      html = {},
-      jsonls = {},
-      prismals = {},
-      pyright = {},
-      lua_ls = {
-        settings = {
-          Lua = {
-            workspace = { checkThirdParty = false },
-            telemetry = { enable = false },
-          },
-        },
-      },
-      tailwindcss = {},
-      terraformls = {},
-      ts_ls = {
-        commands = {
-          OrganizeImports = {
-            function()
-              vim.lsp.buf.execute_command({
-                command = '_typescript.organizeImports',
-                arguments = { vim.api.nvim_buf_get_name(0) },
-                title = '',
-              })
-            end,
-            description = 'Organize Imports',
-          },
-        },
-      },
-      yamlls = {
-        settings = {
-          yaml = {
-            schemas = {
-              ['http://json-schema.org/draft-07/schema#'] = 'schema.{yml,yaml}',
-              ['./packages/cli/schema.yaml'] = '**/.bemlorc',
-              ['/Users/elias/dev/which-cmd/schema.yml'] = '**/commands.yml',
-            },
-          },
-        },
-      },
-      marksman = {},
-      rust_analyzer = {},
+      'bashls',
+      'cssls',
+      'diagnosticls',
+      'dockerls',
+      'gopls',
+      'graphql',
+      'html',
+      'jsonls',
+      'lua_ls',
+      'marksman',
+      'phpactor',
+      'prismals',
+      'pyright',
+      'rust_analyzer',
+      'tailwindcss',
+      'terraformls',
+      'ts_ls',
+      'yamlls',
     }
 
-    for server_name, config in pairs(servers) do
-      vim.lsp.config(server_name, config)
-    end
-
-    vim.lsp.enable(vim.tbl_keys(servers))
+    vim.lsp.enable(servers)
 
     -- Turn on lsp status information
     require('fidget').setup()
@@ -270,8 +141,20 @@ return {
 
     local wk = require('which-key')
     wk.add({
-      { '[d', vim.diagnostic.jump({ count = -1 }), desc = 'Previous Diagnostic' },
-      { ']d', vim.diagnostic.jump({ count = 1 }), desc = 'Next Diagnostic' },
+      {
+        '[d',
+        function()
+          vim.diagnostic.jump({ count = -1 })
+        end,
+        desc = 'Previous Diagnostic',
+      },
+      {
+        ']d',
+        function()
+          vim.diagnostic.jump({ count = 1 })
+        end,
+        desc = 'Next Diagnostic',
+      },
       { '<leader>do', vim.diagnostic.open_float, desc = 'Open Diagnostic' },
     })
   end,
