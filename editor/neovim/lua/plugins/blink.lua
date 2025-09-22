@@ -15,7 +15,7 @@ return {
     keymap = {
       preset = 'enter',
 
-      ['<Tab>'] = { 'select_next', 'snippet_forward', 'fallback' },
+      ['<Tab>'] = { 'snippet_forward', 'select_next', 'fallback' },
       ['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' },
       ['<C-d>'] = { 'show_documentation', 'hide_documentation', 'fallback' },
       ['<C-f>'] = { 'show_signature', 'hide_signature', 'fallback' },
