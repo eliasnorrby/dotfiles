@@ -36,4 +36,13 @@ return {
     },
   },
   opts_extend = { 'sources.default' },
+  config = function(_, opts)
+    require('blink.cmp').setup(opts)
+    vim.keymap.set({ 'n', 'i', 's' }, '<Esc>', function()
+      if vim.snippet and vim.snippet.active({ direction = 1 }) then
+        vim.snippet.stop()
+      end
+      return '<Esc>'
+    end, { expr = true, noremap = true })
+  end,
 }
