@@ -41,6 +41,7 @@ return {
       'cssls',
       'diagnosticls',
       'dockerls',
+      'emmet_language_server',
       'gopls',
       'graphql',
       'html',
