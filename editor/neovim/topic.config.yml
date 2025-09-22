@@ -19,6 +19,9 @@ neovim_config:
     - python
     - python-pylint
     - python-black
+  npm_packages:
+    - kulala-ls
+    - kulala-fmt
   aur_packages:
     - glow-bin
   links:

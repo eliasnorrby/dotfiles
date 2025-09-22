@@ -62,6 +62,8 @@ return {
       automatic_enable = true,
     })
 
+    vim.lsp.enable('kulula_ls')
+
     vim.lsp.set_log_level('OFF')
 
     vim.diagnostic.config({
