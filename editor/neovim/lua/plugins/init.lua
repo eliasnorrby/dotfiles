@@ -3,7 +3,7 @@ return {
   'gpanders/editorconfig.nvim',
   'tpope/vim-abolish',
   'godlygeek/tabular',
-  { 'numToStr/Comment.nvim', config = true },
+  'tpope/vim-commentary',
   {
     'junegunn/gv.vim',
     cmd = { 'GV' },
