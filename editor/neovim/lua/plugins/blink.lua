@@ -8,6 +8,9 @@ return {
   ---@module 'blink.cmp'
   ---@type blink.cmp.Config
   opts = {
+    completion = {
+      accept = { auto_brackets = { enabled = true } },
+    },
     -- See :h blink-cmp-config-keymap for defining your own keymap
     keymap = {
       preset = 'enter',
