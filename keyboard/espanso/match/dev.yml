@@ -12,6 +12,8 @@ matches:
         type: clipboard
 
   # Browser
+  - trigger: ;lhh
+    replace: localhost
   - trigger: ;lh0
     replace: localhost:8000
   - trigger: ;lh1
