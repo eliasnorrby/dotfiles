@@ -6,8 +6,10 @@ return {
   opts = {
     suggestion = {
       auto_trigger = true,
+      trigger_on_accept = false,
       keymap = {
         accept = false,
+        next = '<C-n>',
       },
     },
   },
@@ -40,6 +42,13 @@ return {
       pattern = 'BlinkCmpMenuClose',
       callback = function()
         vim.b.copilot_suggestion_hidden = false
+      end,
+    })
+
+    vim.api.nvim_create_autocmd('FileType', {
+      pattern = 'typescriptreact',
+      callback = function()
+        require('copilot.suggestion').toggle_auto_trigger()
       end,
     })
   end,
