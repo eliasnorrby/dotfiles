@@ -41,6 +41,9 @@ return {
   opts = {
     completion = {
       accept = { auto_brackets = { enabled = true } },
+      menu = {
+        auto_show_delay_ms = 100,
+      },
     },
     -- See :h blink-cmp-config-keymap for defining your own keymap
     keymap = {
