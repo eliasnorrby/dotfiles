@@ -54,7 +54,11 @@ return {
 
     sources = {
       default = { 'lsp', 'path', 'snippets', 'buffer', 'lazydev' },
+      per_filetype = {
+        sql = { 'dadbod', 'snippets', 'buffer' },
+      },
       providers = {
+        dadbod = { name = 'Dadbod', module = 'vim_dadbod_completion.blink' },
         lazydev = {
           name = 'LazyDev',
           module = 'lazydev.integrations.blink',
