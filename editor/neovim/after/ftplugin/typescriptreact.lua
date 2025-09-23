@@ -124,6 +124,8 @@ function M.jump_or_insert_classname()
     return
   end
 
+  vim.cmd.normal({ args = { '^' }, bang = true })
+
   local cur = vim.api.nvim_win_get_cursor(0)
   local cur_row, cur_col = cur[1] - 1, cur[2]
 
