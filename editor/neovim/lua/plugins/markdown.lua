@@ -11,6 +11,9 @@ return {
         wk.add({
           { '<leader>mt', '<cmd>MDTaskToggle<cr>', desc = 'toggle checkbox', buffer = bufnr },
           { '<CR>', '<cmd>MDTaskToggle<cr>', desc = 'toggle checkbox', buffer = bufnr },
+          { '<leader>l', group = '+linear' },
+          { '<leader>lf', '<cmd>r !linear_issue_number fix<CR>', desc = 'fixes...' },
+          { '<leader>ln', 'd/##<CR>ONone.<ESC>O<ESC>jo<ESC>k', desc = 'none' },
         })
       end,
     },

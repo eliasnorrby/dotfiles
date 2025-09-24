@@ -92,9 +92,6 @@ wk.add({
 })
 
 wk.add({
-  { '<leader>l', group = '+linear' },
-  { '<leader>lf', '<cmd>r !linear_issue_number fix<CR>', desc = 'fixes...' },
-  { '<leader>ln', 'd/##<CR>ONone.<ESC>O<ESC>jo<ESC>k', desc = 'none' },
   { '<leader>L', '<cmd>Lazy<CR>', desc = 'Lazy' },
 })
 
