@@ -20,3 +20,6 @@ context.work.read=project:work
 context.work.write=project:work
 
 # vim:commentstring=#%s
+context.dotfiles.read=pro:dotfiles
+context.dotfiles.write=pro:dotfiles
+context=dotfiles
