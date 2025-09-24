@@ -60,7 +60,13 @@ return {
     },
 
     sources = {
-      default = { 'lsp', 'path', 'snippets', 'buffer', 'lazydev' },
+      default = {
+        'lsp',
+        'path',
+        -- 'snippets',
+        -- 'buffer',
+        'lazydev',
+      },
       per_filetype = {
         sql = { 'dadbod', 'snippets', 'buffer' },
       },
