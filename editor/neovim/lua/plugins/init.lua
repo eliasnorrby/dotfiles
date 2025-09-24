@@ -15,4 +15,5 @@ return {
     version = '*',
     config = true,
   },
+  { 'windwp/nvim-ts-autotag', config = true },
 }
