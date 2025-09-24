@@ -131,5 +131,20 @@ return {
         end,
       })
     end, { desc = 'Trigger Emmet (accept first)' })
+
+    -- Hide menu when opening brackets
+    vim.api.nvim_create_autocmd('User', {
+      pattern = 'BlinkCmpMenuOpen',
+      callback = function()
+        local col = vim.fn.col('.')
+        local line = vim.fn.getline('.')
+        if col > 1 then
+          local prev_char = line:sub(col - 1, col - 1)
+          if prev_char:match('[{(%[]') then
+            require('blink.cmp').hide()
+          end
+        end
+      end,
+    })
   end,
 }
