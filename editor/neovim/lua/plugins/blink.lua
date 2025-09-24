@@ -42,7 +42,15 @@ return {
     completion = {
       accept = { auto_brackets = { enabled = true } },
       menu = {
-        auto_show_delay_ms = 100,
+        auto_show = function()
+          return not vim.tbl_contains({ 'markdown', 'gitcommit' }, vim.bo.filetype)
+        end,
+        auto_show_delay_ms = function()
+          if vim.bo.filetype == 'typescriptreact' then
+            return 0
+          end
+          return 300
+        end,
       },
     },
     -- See :h blink-cmp-config-keymap for defining your own keymap
