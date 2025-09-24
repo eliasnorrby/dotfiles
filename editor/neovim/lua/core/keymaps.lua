@@ -93,6 +93,7 @@ wk.add({
 
 wk.add({
   { '<leader>L', '<cmd>Lazy<CR>', desc = 'Lazy' },
+  { '<leader>M', '<cmd>Mason<CR>', desc = 'Mason' },
 })
 
 wk.add({
