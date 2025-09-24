@@ -2,6 +2,13 @@ keys:
   - key: g
     value: git
     keys:
+      - key: .
+        name: +scripts
+        keys:
+          - key: b
+            anchor: true
+            value: auto_branch_pruner
+            name: Prune branches
       - key: s
         value: status
         immediate: true
@@ -180,6 +187,10 @@ keys:
         name: format
         value: fmt
         immediate: true
+      - key: c
+        name: lint
+        value: clippy
+        immediate: true
   - key: d
     value: docker
     keys:
@@ -257,7 +268,7 @@ keys:
         # TODO: make narrow (don't add space after)
         value: -f
         input: Number
-  - key: /
+  - key: r
     value: rg
     loop: true
     keys:
@@ -327,3 +338,107 @@ keys:
         immediate: true
       - key: u
         value: upgrade
+  - key: k
+    value: kubectl
+    loop: true
+    keys:
+      # TODO: Consider global keys for a tree
+      - key: "-"
+        name: "[options]"
+        repeatable: true
+        keys:
+          # FIX: - should be repeatable, but n shouldn't
+          - key: n
+            value: --namespace
+            input: Text
+      - key: g
+        value: get
+        keys:
+          - key: p
+            value: pods
+          - key: s
+            value: svc
+          - key: n
+            value: nodes
+          - key: a
+            value: all
+          - key: N
+            value: namespaces
+      - key: d
+        value: describe
+        keys:
+          - key: p
+            value: pod
+          - key: s
+            value: svc
+          - key: n
+            value: node
+      - key: e
+        value: edit
+      - key: a
+        value: apply
+        keys:
+          - key: f
+            value: -f
+      - key: D
+        value: delete
+        keys:
+          - key: p
+            value: pod
+          - key: s
+            value: svc
+          - key: ns
+            value: namespace
+          - key: f
+            value: -f
+      - key: E
+        value: exec -it
+      - key: l
+        value: logs
+        keys:
+          - key: f
+            value: -f
+      - key: p
+        value: port-forward
+      - key: t
+        value: top
+        keys:
+          - key: p
+            value: pod
+  - key: n
+    name: nest
+    value: pnpm exec nest
+    keys:
+      - key: n
+        name: new
+        anchor: true
+        value: pnpx @nestjs/cli new
+      - key: g
+        value: generate --no-spec
+        name: generate
+        keys: &schematics
+          - key: s
+            value: service
+          - key: c
+            value: controller
+          - key: m
+            value: module
+          - key: C
+            value: class
+      - key: G
+        name: generate (with spec)
+        value: generate
+        keys: *schematics
+  - key: P
+    name: prisma
+    value: pnpm exec prisma
+    keys:
+      - key: m
+        value: migrate
+        keys:
+          - key: d
+            value: dev
+      - key: g
+        value: generate
+      - key: G
+        value: generate --watch
