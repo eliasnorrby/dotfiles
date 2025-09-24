@@ -1,3 +1,36 @@
+-- Detect if we're inside a class/className attribute
+local function in_class_context()
+  local line = vim.fn.getline('.')
+  local col = vim.fn.col('.')
+  local before = line:sub(1, col - 1)
+  return before:match('className%s*=%s*["\'].*') ~= nil or before:match('class%s*=%s*["\'].*') ~= nil
+end
+
+-- Detect if we're likely in an Emmet abbreviation context
+local function in_emmet_context()
+  local line = vim.fn.getline('.')
+  local col = vim.fn.col('.')
+  local before = line:sub(1, col - 1)
+
+  -- Very rough heuristic: starts with a tag name and contains Emmet-y operators or dots
+  return before:match('[%w]+[%.>+*]') ~= nil
+end
+
+-- Generic accept-then-insert-then-continue behavior
+local function accept_and_continue(cmp, insert_char, provider)
+  if cmp.is_visible() then
+    cmp.accept()
+    -- Defer to let Blink finish its text edit before we mutate the buffer again
+    vim.defer_fn(function()
+      if insert_char then
+        vim.api.nvim_feedkeys(insert_char, 'n', true)
+      end
+      cmp.show({ providers = provider or { 'lsp' } })
+    end, 20)
+    return true
+  end
+end
+
 local function should_allow_emmet(ctx)
   local kw = ctx:get_keyword() or ''
   if not kw:match('^[a-z0-9]+$') then
@@ -51,6 +84,25 @@ return {
     keymap = {
       preset = 'enter',
 
+      ['<Space>'] = {
+        function(cmp)
+          if in_class_context() then
+            return accept_and_continue(cmp, ' ', { 'lsp' }) -- or { "tailwindcss" }
+          end
+        end,
+        'fallback',
+      },
+
+      -- Smart '.' mapping: accept + '.' + continue if in Emmet context
+      ['.'] = {
+        function(cmp)
+          if in_emmet_context() then
+            return accept_and_continue(cmp, '.', { 'lsp' })
+          end
+        end,
+        'fallback',
+      },
+
       ['<C-e>'] = false,
 
       ['<Tab>'] = { 'snippet_forward', 'select_next', 'fallback' },
@@ -80,6 +132,11 @@ return {
         lsp = {
           name = 'LSP',
           module = 'blink.cmp.sources.lsp',
+          -- Filter out Emmet completions so they don't interfere with LSP suggestions
+          -- div_       Emmet is allowed
+          -- div.fl_    Emmet is blocked, LSP is preferred
+          -- div>p_     Emmet is blocked, LSP is preferred
+          -- <div>p_    Emmet is allowed
           transform_items = function(ctx, items)
             local allow_emmet = should_allow_emmet(ctx)
             local out = {}
