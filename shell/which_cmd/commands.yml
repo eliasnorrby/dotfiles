@@ -95,6 +95,21 @@ keys:
                 immediate: true
               - key: C
                 value: checkout
+              - key: k
+                value: checks
+                keys:
+                  - key: w
+                    value: --watch
+              - key: m
+                value: merge
+                loop: true
+                keys:
+                  - key: s
+                    value: --squash
+                    name: Squash
+                  - key: a
+                    value: --admin
+                    name: Use admin privileges
               - key: v
                 value: view
                 immediate: true
@@ -387,7 +402,7 @@ keys:
             value: pod
           - key: s
             value: svc
-          - key: ns
+          - key: N
             value: namespace
           - key: f
             value: -f
