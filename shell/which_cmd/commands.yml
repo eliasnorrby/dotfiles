@@ -21,6 +21,10 @@ keys:
           - key: m
             name: rename
             value: -m
+          - key: p
+            name: prune
+            anchor: true
+            value: auto_branch_pruner
       - key: c
         value: checkout
         keys:
