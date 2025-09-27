@@ -167,5 +167,5 @@ function M.jump_or_insert_classname()
   vim.cmd('startinsert')
 end
 
-vim.keymap.set('n', '<TAB>', M.jump_or_insert_classname, { desc = 'Jump to or create className' })
+vim.keymap.set('n', '<C-f>', M.jump_or_insert_classname, { desc = 'Jump to or create className' })
 return M
