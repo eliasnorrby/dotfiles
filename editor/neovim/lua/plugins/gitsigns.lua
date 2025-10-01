@@ -12,7 +12,6 @@ return {
             { '<leader>hs', gitsigns.stage_hunk, desc = 'Stage hunk' },
             { '<leader>hr', gitsigns.reset_hunk, desc = 'Reset hunk' },
             { '<leader>hS', gitsigns.stage_buffer, desc = 'Stage buffer' },
-            { '<leader>hu', gitsigns.undo_stage_buffer, desc = 'Undo stage hunk' },
             { '<leader>hR', gitsigns.reset_buffer, desc = 'Reset buffer' },
             { '<leader>hp', gitsigns.preview_hunk, desc = 'Preview hunk' },
             {
