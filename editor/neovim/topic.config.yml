@@ -22,6 +22,7 @@ neovim_config:
   npm_packages:
     - kulala-ls
     - kulala-fmt
+    - eslint_d
   aur_packages:
     - glow-bin
   links:
