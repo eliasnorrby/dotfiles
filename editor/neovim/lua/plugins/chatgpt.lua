@@ -1,11 +1,9 @@
 return {
   'jackMort/ChatGPT.nvim',
   lazy = true,
-  config = function()
-    require('chatgpt').setup({
-      api_key_cmd = 'op read op://work/OpenAI_ChatGPT_nvim_key/credential --no-newline',
-    })
-  end,
+  opts = {
+    api_key_cmd = 'op read op://work/OpenAI_ChatGPT_nvim_key/credential --no-newline',
+  },
   keys = {
     { '<leader>ac', '<cmd>ChatGPT<CR>', desc = 'ChatGPT' },
     { '<leader>ae', '<cmd>ChatGPTEditWithInstruction<CR>', desc = 'Edit with instruction', mode = { 'n', 'v' } },
@@ -32,6 +30,7 @@ return {
   dependencies = {
     'MunifTanjim/nui.nvim',
     'nvim-lua/plenary.nvim',
+    -- TODO: Why is this a dependency?
     'folke/trouble.nvim',
     'nvim-telescope/telescope.nvim',
   },

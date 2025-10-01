@@ -46,6 +46,7 @@ return {
       end,
     })
 
+    -- disable by default in react
     vim.api.nvim_create_autocmd('FileType', {
       pattern = 'typescriptreact',
       callback = function()
