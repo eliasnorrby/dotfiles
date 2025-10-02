@@ -32,6 +32,7 @@ return {
       'python',
       'regex',
       'rust',
+      'sql',
       'terraform',
       'toml',
       'tsx',
