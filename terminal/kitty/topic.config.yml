@@ -4,6 +4,7 @@ kitty_config:
   links:
     - kitty.conf
     - open-pull-request.py
+    - open-linear-ticket.py
     - themes
     - src: kitty.arch.conf
       rename: kitty.local.conf
