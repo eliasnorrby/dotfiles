@@ -1,3 +1,4 @@
+---@type LazyPluginSpec
 return {
   'zbirenbaum/copilot.lua',
   lazy = true,
@@ -20,6 +21,28 @@ return {
         require('copilot.suggestion').toggle_auto_trigger()
       end,
       desc = 'Toggle Copilot',
+    },
+    {
+      '<leader>Ce',
+      '<cmd>Copilot enable<cr>',
+      desc = 'Enable Copilot suggestion',
+    },
+    {
+      '<leader>Cd',
+      '<cmd>Copilot disable<cr>',
+      desc = 'Disable Copilot suggestion',
+    },
+    {
+      '<C-f>',
+      function()
+        require('copilot.suggestion').dismiss()
+      end,
+      mode = 'i',
+    },
+    {
+      '<C-e>',
+      '<cmd>Copilot enable<cr>',
+      mode = 'i',
     },
   },
   init = function()
