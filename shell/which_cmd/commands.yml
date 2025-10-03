@@ -1,4 +1,16 @@
 keys:
+  - key: f
+    value: fnm
+    keys:
+      - key: u
+        value: use
+        keys:
+          - key: d
+            value: default
+            immediate: true
+      - key: l
+        value: list
+        immediate: true
   - key: g
     value: git
     keys:
@@ -259,7 +271,7 @@ keys:
       - key: p
         value: ps
         immediate: true
-  - key: f
+  - key: F
     name: find
     value: find .
     loop: true
@@ -336,6 +348,8 @@ keys:
           - key: d
             name: development
             value: -D
+      - key: x
+        value: dlx
   - key: t
     value: terraform
     keys:
