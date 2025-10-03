@@ -18,13 +18,23 @@ def get_repository_url():
 
 
 def mark(text, args, Mark, extra_cli_args, *a):
-    for idx, m in enumerate(re.finditer(r"#\d+", text)):
+    for idx, m in enumerate(re.finditer(r"(#\d+|BEMLO-\d+)", text)):
         start, end = m.span()
         mark_text = text[start:end].replace("\n", "").replace("\0", "")
         yield Mark(idx, start, end, mark_text, {})
 
 
 def handle_result(args, data, target_window_id, boss, extra_cli_args, *a):
-    number = data["match"][0][1:]
-    repository_url = get_repository_url()
-    boss.open_url(f"{repository_url}/pull/{number}")
+    match = data["match"][0]
+    if match.startswith("BEMLO-"):
+        # This is a Linear issue ID
+        issue_id = match
+        linear_base_url = "https://linear.app/bemlo"
+        boss.open_url(f"{linear_base_url}/issue/{issue_id}")
+        return
+    if match.startswith("#"):
+        # This is a GitHub issue number
+        if match[1:].isdigit():
+            number = match[1:]
+            repository_url = get_repository_url()
+            boss.open_url(f"{repository_url}/pull/{number}")
