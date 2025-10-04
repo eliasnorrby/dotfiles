@@ -87,6 +87,9 @@ topics:
     - name: which_cmd
       state: present
       config: "{{ which_cmd_config }}"
+    - name: btop
+      state: present
+      config: "{{ btop_config }}"
   dev:
     - name: ansible
       state: present

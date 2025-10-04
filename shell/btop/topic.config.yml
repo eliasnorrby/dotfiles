@@ -1,0 +1,7 @@
+---
+btop_config:
+  path: shell/btop
+  brew_formulas:
+    - btop
+  links:
+    - btop.conf
