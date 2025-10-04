@@ -5,3 +5,4 @@ btop_config:
     - btop
   links:
     - btop.conf
+    - themes

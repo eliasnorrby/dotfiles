@@ -1,0 +1,93 @@
+# Catppuccin Macchiato btop Theme
+# Author: Elias
+# Palette reference: https://catppuccin.com/palette/macchiato
+
+# Main background (leave empty for terminal transparency)
+theme[main_bg]="#24273a"          # base
+
+# Main text color
+theme[main_fg]="#cad3f5"          # text
+
+# Title color for boxes
+theme[title]="#cad3f5"            # text
+
+# Highlight color for keyboard shortcuts
+theme[hi_fg]="#eed49f"            # yellow
+
+# Background color of selected item in processes box
+theme[selected_bg]="#eed49f"      # yellow
+
+# Foreground color of selected item in processes box
+theme[selected_fg]="#24273a"      # base (for contrast)
+
+# Color of inactive/disabled text
+theme[inactive_fg]="#6e738d"      # subtext0
+
+# Text on top of graphs (uptime, net scaling, etc.)
+theme[graph_text]="#cad3f5"       # text
+
+# Background color of percentage meters
+theme[meter_bg]="#6e738d"         # subtext0
+
+# Misc colors (mini cpu graphs, mem details, status text)
+theme[proc_misc]="#c6a0f6"        # mauve
+
+# CPU box outline color
+theme[cpu_box]="#c6a0f6"          # mauve
+
+# Memory/disks box outline color
+theme[mem_box]="#8bd5ca"          # teal
+
+# Net up/down box outline color
+theme[net_box]="#ed8796"          # red
+
+# Processes box outline color
+theme[proc_box]="#eed49f"         # yellow
+
+# Box divider line and small boxes line color
+theme[div_line]="#6e738d"         # subtext0
+
+# Temperature graph colors
+theme[temp_start]="#c6a0f6"       # mauve
+theme[temp_mid]="#f0c6c6"         # flamingo
+theme[temp_end]="#a28dcd"         # lavender
+
+# CPU graph colors
+theme[cpu_start]="#c6a0f6"        # mauve
+theme[cpu_mid]="#f0c6c6"          # flamingo
+theme[cpu_end]="#a28dcd"          # lavender
+
+# Mem/Disk free meter
+theme[free_start]="#8bd5ca"       # teal
+theme[free_mid]="#8bd5ca"         # teal
+theme[free_end]="#7dc4e4"         # sapphire
+
+# Mem/Disk cached meter
+theme[cached_start]="#8bd5ca"     # teal
+theme[cached_mid]="#8bd5ca"       # teal
+theme[cached_end]="#7dc4e4"       # sapphire
+
+# Mem/Disk available meter
+theme[available_start]="#8bd5ca"  # teal
+theme[available_mid]="#8bd5ca"    # teal
+theme[available_end]="#7dc4e4"    # sapphire
+
+# Mem/Disk used meter
+theme[used_start]="#a6da95"       # green
+theme[used_mid]="#a6da95"         # green
+theme[used_end]="#91d7e3"         # sky
+
+# Download graph colors
+theme[download_start]="#ed8796"   # red
+theme[download_mid]="#ee99a0"     # maroon
+theme[download_end]="#f5a97f"     # peach
+
+# Upload graph colors
+theme[upload_start]="#7dc4e4"     # sapphire
+theme[upload_mid]="#8aadf4"       # blue
+theme[upload_end]="#b7bdf8"       # lavender
+
+# Process box gradient (threads, mem, cpu usage)
+theme[process_start]="#eed49f"    # yellow
+theme[process_mid]="#f5a97f"      # peach
+theme[process_end]="#f4dbd6"      # rosewater
