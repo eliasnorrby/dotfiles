@@ -1,0 +1,90 @@
+# Catppuccin Mocha K9s Theme with YAML Anchors
+# https://catppuccin.com/palette/mocha
+
+# 🎨 Palette
+foreground: &foreground "#cdd6f4"
+background: &background default
+
+black: &black "#181825"
+blue: &blue "#89b4fa"
+green: &green "#a6e3a1"
+grey: &grey "#6c7086"
+cyan: &cyan "#94e2d5"
+purple: &purple "#cba6f7"
+red: &red "#f38ba8"
+yellow: &yellow "#f9e2af"
+peach: &peach "#fab387"
+pink: &pink "#f5c2e7"
+lavender: &lavender "#b4befe"
+sky: &sky "#89dceb"
+overlay: &overlay "#585b70"
+
+k9s:
+  # 🌙 General K9s styles
+  body:
+    fgColor: *foreground
+    bgColor: *background
+    logoColor: *purple
+
+  # 📊 Cluster info styles
+  info:
+    fgColor: *blue
+    sectionColor: *lavender
+
+  # 🖼️ Frame styles
+  frame:
+    border:
+      fgColor: *purple
+      focusColor: *yellow
+
+    menu:
+      fgColor: *foreground
+      keyColor: *peach
+      numKeyColor: *pink
+
+    crumbs:
+      fgColor: *black
+      bgColor: *grey
+      activeColor: *yellow
+
+    status:
+      newColor: *green
+      modifyColor: *yellow
+      addColor: *cyan
+      errorColor: *red
+      highlightColor: *peach
+      killColor: *overlay
+      completedColor: *grey
+
+    title:
+      fgColor: *foreground
+      bgColor: *background
+      highlightColor: *pink
+      counterColor: *lavender
+      filterColor: *grey
+
+  # 📋 Specific view styles
+  views:
+    table:
+      fgColor: *foreground
+      bgColor: *background
+      cursorColor: *pink
+      header:
+        fgColor: *blue
+        bgColor: *background
+        sorterColor: *yellow
+
+    yaml:
+      keyColor: *purple
+      colonColor: *yellow
+      valueColor: *cyan
+
+    logs:
+      fgColor: *foreground
+      bgColor: *background
+
+  # 🧠 Prompt styles (e.g. search or command input)
+  prompt:
+    fgColor: *foreground
+    bgColor: *background
+    suggestColor: *grey
