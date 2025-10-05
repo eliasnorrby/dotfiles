@@ -1,4 +1,4 @@
-# Catppuccin Mocha K9s Theme with YAML Anchors
+# Catppuccin Mocha K9s Theme
 # https://catppuccin.com/palette/mocha
 
 # 🎨 Palette
@@ -20,42 +20,68 @@ sky: &sky "#89dceb"
 overlay: &overlay "#585b70"
 
 k9s:
-  # 🌙 General K9s styles
   body:
     fgColor: *foreground
     bgColor: *background
     logoColor: *purple
+    logoColorMsg: *green
+    logoColorInfo: *blue
+    logoColorWarn: *yellow
+    logoColorError: *red
 
-  # 📊 Cluster info styles
+  prompt:
+    fgColor: *foreground
+    bgColor: *background
+    suggestColor: *grey
+    border:
+      command: *blue
+      default: *grey
+
+  help:
+    fgColor: *foreground
+    bgColor: *background
+    sectionColor: *lavender
+    keyColor: *peach
+    numKeyColor: *pink
+
+  dialog:
+    fgColor: *foreground
+    bgColor: *background
+    buttonFgColor: *background
+    buttonBgColor: *blue
+    buttonFocusFgColor: *black
+    buttonFocusBgColor: *yellow
+    labelFgColor: *lavender
+    fieldFgColor: *cyan
+
   info:
     fgColor: *blue
-    sectionColor: *lavender
+    sectionColor: *foreground
+    cpuColor: *green
+    memColor: *cyan
+    k9sRevColor: *peach
 
-  # 🖼️ Frame styles
   frame:
     border:
       fgColor: *purple
       focusColor: *yellow
-
     menu:
       fgColor: *foreground
       keyColor: *peach
       numKeyColor: *pink
-
     crumbs:
       fgColor: *black
       bgColor: *grey
       activeColor: *yellow
-
     status:
       newColor: *green
       modifyColor: *yellow
       addColor: *cyan
+      pendingColor: *blue
       errorColor: *red
       highlightColor: *peach
       killColor: *overlay
       completedColor: *grey
-
     title:
       fgColor: *foreground
       bgColor: *background
@@ -63,28 +89,47 @@ k9s:
       counterColor: *lavender
       filterColor: *grey
 
-  # 📋 Specific view styles
   views:
     table:
       fgColor: *foreground
       bgColor: *background
-      cursorColor: *pink
+      cursorFgColor: *black
+      cursorBgColor: *pink
+      markColor: *yellow
       header:
         fgColor: *blue
         bgColor: *background
         sorterColor: *yellow
 
     yaml:
-      keyColor: *purple
-      colonColor: *yellow
-      valueColor: *cyan
+      keyColor: *blue
+      colonColor: *foreground
+      valueColor: *green
 
     logs:
       fgColor: *foreground
       bgColor: *background
+      indicator:
+        fgColor: *foreground
+        bgColor: *background
+        toggleOnColor: *green
+        toggleOffColor: *overlay
 
-  # 🧠 Prompt styles (e.g. search or command input)
-  prompt:
-    fgColor: *foreground
-    bgColor: *background
-    suggestColor: *grey
+    xray:
+      fgColor: *foreground
+      bgColor: *background
+      cursorColor: *pink
+      cursorTextColor: *black
+      graphicColor: *blue
+
+    picker:
+      mainColor: *cyan
+      focusColor: *yellow
+      shortcutColor: *peach
+
+    charts:
+      bgColor: *background
+      dialBgColor: *overlay
+      chartBgColor: *background
+      focusFgColor: *foreground
+      focusBgColor: *pink
