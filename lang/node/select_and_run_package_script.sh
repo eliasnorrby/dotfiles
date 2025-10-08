@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+RUNNER_SESSION_NAME=runner
+
 main() {
   local script mode=$1
   script=$(select_script)
@@ -49,12 +51,12 @@ select_script() {
 
 run_script_in_main() {
   local script=$1
-  tmux new-window -n runner -t "2nd:0" -k "$(get_window_command "$script")"
+  tmux new-window -n runner -t "${RUNNER_SESSION_NAME}:0" -k "$(get_window_command "$script")"
 }
 
 run_script_in_appended_window() {
   local script=$1
-  tmux new-window -n "$script" -t "2nd:1" -b "$(get_window_command "$script")"
+  tmux new-window -n "$script" -t "${RUNNER_SESSION_NAME}:1" -b "$(get_window_command "$script")"
 }
 
 get_window_command() {
