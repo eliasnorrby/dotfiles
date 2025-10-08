@@ -47,11 +47,11 @@ return {
         vim.fn.jobstart({ 'eslint_d', '--fix', file }, {
           cwd = eslint_root,
           stdout_buffered = true,
-          on_stdout = function(_, data)
-            if data then
-              print(table.concat(data, '\n'))
-            end
-          end,
+          -- on_stdout = function(_, data)
+          --   if data then
+          --     print(table.concat(data, '\n'))
+          --   end
+          -- end,
           on_stderr = function(_, data)
             if data and #data > 0 then
               local output = table.concat(data, '\n')
