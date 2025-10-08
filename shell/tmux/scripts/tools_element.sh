@@ -13,7 +13,7 @@ kubectl_context() {
     namespace=$(kubectl config view -o json \
       | jq -r '.contexts[] | select(.name == "'"$context"'").context.namespace')
     if [ -n "$namespace" ] && [ "$namespace" != "null" ]; then
-      format="$format : $namespace"
+      format="$format:$namespace"
     fi
   fi
   format="$format#[fg=default]"
