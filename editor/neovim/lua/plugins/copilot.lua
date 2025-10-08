@@ -4,6 +4,9 @@ return {
   lazy = true,
   cmd = 'Copilot',
   event = 'InsertEnter',
+  dependencies = {
+    'copilotlsp-nvim/copilot-lsp',
+  },
   opts = {
     suggestion = {
       auto_trigger = true,
@@ -11,6 +14,15 @@ return {
       keymap = {
         accept = false,
         next = '<C-n>',
+      },
+    },
+    nes = {
+      enabled = true,
+      keymap = {
+        accept = '<C-y>',
+        next = false,
+        prev = false,
+        dismiss = '<C-f>',
       },
     },
   },
