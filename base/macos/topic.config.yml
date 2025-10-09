@@ -24,7 +24,6 @@ macos_config:
     - obsidian
     - betterdisplay
     - mimestream
-    - chatgpt
     - rocket
     - mouseless
   mas_apps:

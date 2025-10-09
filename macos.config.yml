@@ -12,6 +12,9 @@ topics:
     - name: slides
       state: present
       config: "{{ slides_config }}"
+    - name: ai
+      state: present
+      config: "{{ ai_config }}"
   base:
     - name: macos
       state: present
