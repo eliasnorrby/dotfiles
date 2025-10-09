@@ -19,6 +19,11 @@ return {
       ['g\\'] = { 'actions.toggle_trash', mode = 'n' },
     },
     use_default_keymaps = false,
+    lsp_file_methods = {
+      enabled = true,
+      timeout_ms = 5000,
+      autosave_changes = true,
+    },
   },
   lazy = true,
   keys = {
