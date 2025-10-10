@@ -32,7 +32,7 @@ return {
       {
         { '<leader>j', group = '+harpoon' },
         {
-          '<C-p>',
+          '<C-b>',
           function()
             toggle_telescope(harpoon:list())
           end,

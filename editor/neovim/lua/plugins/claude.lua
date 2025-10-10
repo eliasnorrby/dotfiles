@@ -7,8 +7,8 @@ return {
   opts = {
     keymaps = {
       toggle = {
-        normal = '<leader>;',
-        terminal = '<C-r>',
+        normal = '<C-p>',
+        terminal = '<C-p>',
         variants = {
           continue = '<leader>acC',
           verbose = '<leader>acV',
