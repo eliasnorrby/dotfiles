@@ -120,7 +120,7 @@ return {
         'lazydev',
       },
       per_filetype = {
-        sql = { 'dadbod', 'snippets', 'buffer' },
+        sql = { 'dadbod', 'snippets' },
       },
       providers = {
         dadbod = { name = 'Dadbod', module = 'vim_dadbod_completion.blink' },
