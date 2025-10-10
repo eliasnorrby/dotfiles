@@ -11,6 +11,34 @@ wk.add({
   { '<leader>R', '<cmd>%bd!<CR>', desc = 'remove all buffers' },
 })
 
+-- file path yanking
+wk.add({
+  {
+    '<leader>fy',
+    function()
+      local git_root = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
+      if vim.v.shell_error ~= 0 then
+        vim.notify('Not in a git repository', vim.log.levels.WARN)
+        return
+      end
+      local abs_path = vim.fn.expand('%:p')
+      local rel_path = vim.fn.fnamemodify(abs_path, ':s?' .. git_root .. '/??')
+      vim.fn.setreg('+', rel_path)
+      vim.notify('Copied: ' .. rel_path, vim.log.levels.INFO)
+    end,
+    desc = 'yank relative path (git root)',
+  },
+  {
+    '<leader>fY',
+    function()
+      local abs_path = vim.fn.expand('%:p')
+      vim.fn.setreg('+', abs_path)
+      vim.notify('Copied: ' .. abs_path, vim.log.levels.INFO)
+    end,
+    desc = 'yank absolute path',
+  },
+})
+
 -- windows
 wk.add({
   { '<leader>wv', '<cmd>vsplit<CR>', desc = 'vertical split' },
