@@ -28,19 +28,19 @@ return {
   },
   keys = {
     {
-      '<leader>tc',
+      '<leader>apt',
       function()
         require('copilot.suggestion').toggle_auto_trigger()
       end,
       desc = 'Toggle Copilot',
     },
     {
-      '<leader>Ce',
+      '<leader>ape',
       '<cmd>Copilot enable<cr>',
       desc = 'Enable Copilot suggestion',
     },
     {
-      '<leader>Cd',
+      '<leader>apd',
       '<cmd>Copilot disable<cr>',
       desc = 'Disable Copilot suggestion',
     },
@@ -58,6 +58,11 @@ return {
     },
   },
   init = function()
+    require('which-key').add({
+      { '<leader>a', group = '+ai' },
+      { '<leader>ap', group = '+copilot' },
+    })
+
     vim.keymap.set('i', ';', function()
       if require('copilot.suggestion').is_visible() then
         require('copilot.suggestion').accept()
