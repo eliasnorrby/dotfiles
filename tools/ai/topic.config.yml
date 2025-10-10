@@ -5,3 +5,4 @@ ai_config:
     - codex
   brew_casks:
     - chatgpt
+    - claude-code
