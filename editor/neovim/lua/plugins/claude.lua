@@ -14,6 +14,7 @@ return {
           verbose = '<leader>acV',
         },
       },
+      scrolling = true,
     },
   },
   init = function()
