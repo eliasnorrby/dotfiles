@@ -8,6 +8,6 @@ generated/
 # Ignore direnv files
 .envrc
 
-# vim: ft=gitignore
-
 **/.claude/settings.local.json
+
+# vim: ft=gitignore
