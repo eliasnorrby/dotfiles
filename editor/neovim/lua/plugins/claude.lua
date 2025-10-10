@@ -23,5 +23,6 @@ return {
       { '<leader>ac', desc = '+claude' },
       { '<leader>acc', '<cmd>ClaudeCode<cr>', desc = 'Claude Code: Open' },
     })
+    vim.api.nvim_set_keymap('t', '<esc>', '<C-\\><C-n>', { noremap = true, silent = true, desc = 'Exit terminal mode' })
   end,
 }
