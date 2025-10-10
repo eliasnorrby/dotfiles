@@ -16,8 +16,8 @@ fi
 # nvim
 if _is_callable nvim ; then
   _msg "-- nvim --"
-  _msg "Running PackerSync..."
-  nvim +'PackerSync' +qall
+  _msg "Running Lazy sync..."
+  nvim --headless "+Lazy! sync" +qa
 fi
 
 # emacs
