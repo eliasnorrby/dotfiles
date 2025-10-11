@@ -5,6 +5,13 @@ return {
     'nvim-lua/plenary.nvim',
   },
   opts = {
+    window = {
+      position = 'float',
+      float = {
+        width = '95%',
+        height = '95%',
+      },
+    },
     keymaps = {
       toggle = {
         normal = '<C-p>',
