@@ -7,3 +7,4 @@ ai_config:
     - chatgpt
     - claude
     - claude-code
+    - coderabbit
