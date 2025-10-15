@@ -8,3 +8,11 @@ ai_config:
     - claude
     - claude-code
     - coderabbit
+  links:
+    - src: claude_editor.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: claude_editor
+    - src: settings.json
+      dest: "{{ claude_home }}/"
+
+claude_home: "~/.claude"

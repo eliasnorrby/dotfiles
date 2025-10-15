@@ -1,0 +1,6 @@
+{
+  "alwaysThinkingEnabled": false,
+  "env": {
+    "VISUAL": "claude_editor"
+  }
+}
