@@ -16,15 +16,15 @@ return {
         next = '<C-n>',
       },
     },
-    nes = {
-      enabled = true,
-      keymap = {
-        accept = '<C-y>',
-        next = false,
-        prev = false,
-        dismiss = '<C-f>',
-      },
-    },
+    -- nes = {
+    --   enabled = true,
+    --   keymap = {
+    --     accept = '<C-y>',
+    --     next = false,
+    --     prev = false,
+    --     dismiss = '<C-f>',
+    --   },
+    -- },
   },
   keys = {
     {
@@ -49,11 +49,6 @@ return {
       function()
         require('copilot.suggestion').dismiss()
       end,
-      mode = 'i',
-    },
-    {
-      '<C-e>',
-      '<cmd>Copilot enable<cr>',
       mode = 'i',
     },
   },
