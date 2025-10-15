@@ -116,6 +116,10 @@ keys:
                 keys:
                   - key: w
                     value: --watch
+                    keys:
+                      - key: n
+                        value: ; notify_me
+                        name: notify
               - key: m
                 value: merge
                 loop: true
