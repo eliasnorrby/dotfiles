@@ -93,6 +93,15 @@ return {
         'fallback',
       },
 
+      -- invoke with snippets only
+      ['<C-Space>'] = {
+        function(cmp)
+          cmp.show({
+            providers = { 'snippets' },
+          })
+        end,
+      },
+
       -- Smart '.' mapping: accept + '.' + continue if in Emmet context
       ['.'] = {
         function(cmp)
