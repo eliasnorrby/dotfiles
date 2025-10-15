@@ -32,5 +32,6 @@ return {
       { '<leader>acr', '<cmd>ClaudeCodeResume<cr>', desc = 'Claude Code: Resume' },
     })
     vim.api.nvim_set_keymap('t', '<esc>', '<C-\\><C-n>', { noremap = true, silent = true, desc = 'Exit terminal mode' })
+    vim.api.nvim_set_keymap('t', '<C-o>', '<esc>', { noremap = true, silent = true, desc = 'Esc' })
   end,
 }
