@@ -8,6 +8,8 @@ ai_config:
     - claude
     - claude-code
     - coderabbit
+  npm_packages:
+    - "@github/copilot"
   links:
     - src: claude_editor.sh
       dest: "{{ xdg_bin_home }}/"
