@@ -37,7 +37,7 @@ return {
           },
         },
         -- lualine_x = {'encoding', 'fileformat', 'filetype'},
-        lualine_x = { '%a', diagnostics, 'filetype' },
+        lualine_x = { '%a', diagnostics, 'copilot', 'filetype' },
         lualine_y = { 'selectioncount', 'progress' },
         lualine_z = { 'location' },
       },

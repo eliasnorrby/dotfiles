@@ -6,6 +6,7 @@ return {
   event = 'InsertEnter',
   dependencies = {
     'copilotlsp-nvim/copilot-lsp',
+    'AndreM222/copilot-lualine',
   },
   opts = {
     suggestion = {
