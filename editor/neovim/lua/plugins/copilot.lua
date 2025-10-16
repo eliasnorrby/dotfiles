@@ -16,6 +16,9 @@ return {
         next = '<C-n>',
       },
     },
+    filetypes = {
+      yaml = true,
+    },
     -- nes = {
     --   enabled = true,
     --   keymap = {
