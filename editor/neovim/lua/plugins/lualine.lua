@@ -19,6 +19,15 @@ return {
     custom_theme.inactive.c.bg = 'NONE'
     custom_theme.inactive.c.fg = default_fg
 
+    local conform_status = {
+      function()
+        return vim.g.disable_autoformat and '󰛌' or '󰉼'
+      end,
+      color = function()
+        return vim.g.disable_autoformat and { fg = '#6e6a86' } or { fg = '#a6da95' }
+      end,
+    }
+
     return {
       options = {
         icons_enabled = true,
@@ -37,7 +46,7 @@ return {
           },
         },
         -- lualine_x = {'encoding', 'fileformat', 'filetype'},
-        lualine_x = { '%a', diagnostics, 'copilot', 'filetype' },
+        lualine_x = { '%a', diagnostics, 'copilot', conform_status, 'filetype' },
         lualine_y = { 'selectioncount', 'progress' },
         lualine_z = { 'location' },
       },
