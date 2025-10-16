@@ -63,6 +63,8 @@ return {
       automatic_enable = true,
     })
 
+    local diagnostics_config = require('config.diagnostics')
+
     vim.lsp.enable('kulula_ls')
 
     vim.lsp.set_log_level('OFF')
@@ -77,10 +79,10 @@ return {
           [vim.diagnostic.severity.INFO] = 'DiagnosticSignInfo',
         },
         text = {
-          [vim.diagnostic.severity.ERROR] = '',
-          [vim.diagnostic.severity.WARN] = '',
-          [vim.diagnostic.severity.HINT] = '󰌶',
-          [vim.diagnostic.severity.INFO] = ' ',
+          [vim.diagnostic.severity.ERROR] = diagnostics_config.icons.error,
+          [vim.diagnostic.severity.WARN] = diagnostics_config.icons.warn,
+          [vim.diagnostic.severity.HINT] = diagnostics_config.icons.hint,
+          [vim.diagnostic.severity.INFO] = diagnostics_config.icons.info,
         },
       },
     })

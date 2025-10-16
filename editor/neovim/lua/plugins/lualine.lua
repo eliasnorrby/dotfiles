@@ -1,11 +1,18 @@
 return {
   'nvim-lualine/lualine.nvim',
   opts = function()
+    local diagnostics_config = require('config.diagnostics')
+
     local diagnostics = {
       'diagnostics',
       sources = { 'nvim_diagnostic' },
       sections = { 'error', 'warn', 'info', 'hint' },
-      symbols = { error = ' ', warn = ' ', hint = '󰌶 ', info = ' ' },
+      symbols = {
+        error = ' ' .. diagnostics_config.icons.error .. ' ',
+        warn = ' ' .. diagnostics_config.icons.warn .. ' ',
+        info = ' ' .. diagnostics_config.icons.info .. ' ',
+        hint = ' ' .. diagnostics_config.icons.hint .. ' ',
+      },
     }
 
     local custom_theme = require('lualine.themes.catppuccin')
