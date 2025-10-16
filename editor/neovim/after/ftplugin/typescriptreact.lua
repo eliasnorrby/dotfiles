@@ -1,4 +1,3 @@
--- Put this somewhere in your config, e.g. lua/react_classname.lua and require it from init.lua
 local M = {}
 
 local function get_lang_from_ft(ft)
