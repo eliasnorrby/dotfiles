@@ -12,6 +12,9 @@ ai_config:
     - src: claude_editor.sh
       dest: "{{ xdg_bin_home }}/"
       rename: claude_editor
+    - src: claude_notification.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: claude_notification
     - src: settings.json
       dest: "{{ claude_home }}/"
 

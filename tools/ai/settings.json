@@ -2,5 +2,18 @@
   "alwaysThinkingEnabled": false,
   "env": {
     "VISUAL": "claude_editor"
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "claude_notification"
+          }
+        ]
+      }
+    ]
   }
 }
