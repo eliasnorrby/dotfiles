@@ -1,7 +1,7 @@
 {
   "alwaysThinkingEnabled": false,
   "env": {
-    "VISUAL": "claude_editor"
+    "VISUAL": "claude_persisted_editor"
   },
   "hooks": {
     "Notification": [
