@@ -1,6 +1,21 @@
 #!/usr/bin/env bash
 
-session="_popup_$(tmux display -p '#S')"
+# Accept optional session name suffix as first argument
+# Usage: tmux_popup [session_suffix] [command...]
+if [[ "$1" == --session=* ]]; then
+  session_suffix="${1#--session=}"
+  shift
+else
+  session_suffix=""
+fi
+
+# Build session name: _popup_<current_session>[_suffix]
+current_session="$(tmux display -p '#S')"
+if [[ -n "$session_suffix" ]]; then
+  session="_popup_${current_session}_${session_suffix}"
+else
+  session="_popup_${current_session}"
+fi
 
 if ! tmux has -t "$session" 2>/dev/null; then
   session_id="$(tmux new-session -dP -s "$session" -F '#{session_id}' "${@}")"
