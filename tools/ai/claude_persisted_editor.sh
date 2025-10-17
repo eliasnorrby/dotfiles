@@ -2,7 +2,6 @@
 
 # Persistent editor wrapper for Claude Code
 # Allows toggling the popup on/off without terminating the editing session
-# Use Ctrl+Q in vim to signal "I'm done editing"
 
 TMPFILE="$1"
 DONEFILE="/tmp/claude_editor_$$.done"
@@ -50,11 +49,17 @@ done
 
 # If we hid the Claude popup, restore it now
 if [[ -f "$CLAUDE_HIDDEN_FLAG" ]]; then
-  # Check if the pane is still running neovim
-  pane_process="$(tmux display-message -p -t "$current_pane" '#{pane_current_command}')"
-  if [[ "$pane_process" =~ nvim ]]; then
-    # Restore the Claude popup by sending C-p
-    tmux send-keys -t "$current_pane" C-p
+  # Check if the original pane still exists and is running neovim
+  if tmux list-panes -a -F '#{pane_id}' | grep -q "^${current_pane}$"; then
+    # Switch to the window containing the pane, then select the pane
+    pane_window="$(tmux display-message -p -t "$current_pane" '#{window_id}')"
+    tmux select-window -t "$pane_window"
+    tmux select-pane -t "$current_pane"
+    pane_process="$(tmux display-message -p -t "$current_pane" '#{pane_current_command}')"
+    if [[ "$pane_process" =~ nvim ]]; then
+      # Restore the Claude popup by sending C-p
+      tmux send-keys -t "$current_pane" C-p
+    fi
   fi
 fi
 
