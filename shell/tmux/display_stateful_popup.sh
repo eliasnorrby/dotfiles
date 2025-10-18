@@ -80,6 +80,7 @@ if $attach_only; then
 
   # Exit silently if session doesn't exist
   if ! tmux has-session -t "$session" 2>/dev/null; then
+    tmux display-message -d 2000 " No session found to attach to." >&2
     exit 0
   fi
 fi
