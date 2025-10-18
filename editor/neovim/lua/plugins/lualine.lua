@@ -28,11 +28,29 @@ return {
 
     local conform_status = {
       function()
-        return vim.g.disable_autoformat and '󰛌' or '󰉼'
+        return '󰉼'
       end,
       color = function()
-        return vim.g.disable_autoformat and { fg = '#6e6a86' } or { fg = '#a6da95' }
+        return vim.g.disable_autoformat and { fg = '#5B6078' } or { fg = '#A6DA95' }
       end,
+    }
+
+    local copilot_status = {
+      'copilot',
+      show_colors = true,
+      symbols = {
+        status = {
+          hl = {
+            -- enabled and sleep are swapped
+            -- https://github.com/AndreM222/copilot-lualine/pull/15
+            enabled = '#CAD3F5',
+            sleep = '#A6DA95',
+            disabled = '#5B6078',
+            warning = '#EED49F',
+            unknown = '#5B6078',
+          },
+        },
+      },
     }
 
     return {
@@ -53,7 +71,7 @@ return {
           },
         },
         -- lualine_x = {'encoding', 'fileformat', 'filetype'},
-        lualine_x = { '%a', diagnostics, { 'copilot', show_colors = true }, conform_status, 'filetype' },
+        lualine_x = { '%a', diagnostics, copilot_status, conform_status, 'filetype' },
         lualine_y = { 'selectioncount', 'progress' },
         lualine_z = { 'location' },
       },
