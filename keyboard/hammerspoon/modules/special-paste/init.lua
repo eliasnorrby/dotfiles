@@ -1,11 +1,11 @@
 local delay = 10000
 
 local function split(input, separator)
-    local result = {}
-    for part in string.gmatch(input, "([^" .. separator .. "]+)") do
-        table.insert(result, part)
-    end
-    return result
+  local result = {}
+  for part in string.gmatch(input, '([^' .. separator .. ']+)') do
+    table.insert(result, part)
+  end
+  return result
 end
 
 local function getIdentifier()
