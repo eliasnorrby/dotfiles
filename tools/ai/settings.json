@@ -4,13 +4,24 @@
     "VISUAL": "claude_persisted_editor"
   },
   "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "claude_notification done"
+          }
+        ]
+      }
+    ],
     "Notification": [
       {
         "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "claude_notification"
+            "command": "claude_notification input_required"
           }
         ]
       }
