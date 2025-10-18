@@ -19,6 +19,7 @@ return {
     },
     filetypes = {
       yaml = true,
+      markdown = true,
     },
     -- nes = {
     --   enabled = true,
