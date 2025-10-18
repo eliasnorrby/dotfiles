@@ -84,12 +84,21 @@ if $attach_only; then
   fi
 fi
 
+# Build the command to execute inside the popup
+# We need to properly quote all remaining arguments
+cmd="create_popup_session"
+for arg in "${create_session_args[@]}"; do
+  cmd="$cmd $(printf '%q' "$arg")"
+done
+for arg in "$@"; do
+  cmd="$cmd $(printf '%q' "$arg")"
+done
+
 # Build the display-popup command
-# Format: display-popup -E -b rounded -T 'title' -S 'fg=color' -w width -h height [display_popup_args] "create_popup_session [create_session_args] [command]"
 tmux display-popup -E -b rounded \
   -T "#[fg=white bold] $title #[fg=default]" \
   -S "fg=$color" \
   -w "$width" \
   -h "$height" \
   "${display_popup_args[@]}" \
-  "create_popup_session ${create_session_args[*]} $*"
+  "$cmd"

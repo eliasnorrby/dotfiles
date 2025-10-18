@@ -36,11 +36,11 @@ fi
 # When popup closes, session stays alive in background
 # VimLeave autocommand touches the done file when nvim exits
 # Using --session=prompt to create a dedicated prompt popup session
-tmux display-popup -E -b rounded -T '#[fg=white bold] Prompt #[fg=default]' -S 'fg=blue' \
-  create_popup_session --session=prompt "nvim" \
-    "+set nonumber norelativenumber" \
-    "+autocmd VimLeave * call writefile([], '$DONEFILE')" \
-    "$TMPFILE"
+display_stateful_popup --title=Prompt --color=blue --session=prompt \
+  "nvim" \
+  "+set nonumber norelativenumber" \
+  "+autocmd VimLeave * call writefile([], '$DONEFILE')" \
+  "$TMPFILE"
 
 # Wait for the done file to be created (Ctrl+Q pressed)
 while [[ ! -f "$DONEFILE" ]]; do
