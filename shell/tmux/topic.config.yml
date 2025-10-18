@@ -27,6 +27,9 @@ tmux_config:
     - src: tmux_active_pane_directory.sh
       dest: "{{ xdg_bin_home }}/"
       rename: tmux_active_pane_directory
-    - src: tmux_popup.sh
+    - src: create_popup_session.sh
       dest: "{{ xdg_bin_home }}/"
-      rename: tmux_popup
+      rename: create_popup_session
+    - src: display_stateful_popup.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: display_stateful_popup
