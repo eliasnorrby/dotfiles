@@ -27,15 +27,14 @@ which_cmd_widget() {
     zle reset-prompt
 }
 zle -N which_cmd_widget
-bindkey '^P' which_cmd_widget
+bindkey '^U' which_cmd_widget
 
 # tmux popup
 which_cmd_tmux_widget() {
   if [[ $LBUFFER == "" ]]; then
-    local result height
-    height=$(~/dev/which-cmd/target/debug/which-cmd height)
+    local result height=10
     # TODO: Use proper path
-    tmux display-popup -S fg=brightblack -T '#[fg=white bold] which-cmd #[fg=default]' -y P -w 95% -h $((height + 2)) -b rounded -EE "~/dev/which-cmd/target/debug/which-cmd build --immediate"
+    tmux display-popup -S fg=brightblack -T '#[fg=white bold] which-cmd #[fg=default]' -y P -w 95% -h $((height + 2)) -b rounded -EE "~/dev/which-cmd/target/debug/which-cmd build --immediate --height ${height}"
     result=$(~/dev/which-cmd/target/debug/which-cmd get)
     if [[ $result != "" ]]; then
       if [[ $result = __IMMEDIATE__* ]]; then
