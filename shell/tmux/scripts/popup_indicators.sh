@@ -37,4 +37,4 @@ if tmux has-session -t "$scratch_popup" 2>/dev/null; then
 fi
 
 # Output the indicators (they'll appear side by side if both are active)
-echo "${prompt_active} ${base_active} ${scratch_active}" | sed 's/^\s*//;s/\s*$//'
+echo " ${prompt_active} ${base_active} ${scratch_active}" | sed -E -e 's/[[:blank:]]+/ /g' -e 's/[[:blank:]]+$//g'
