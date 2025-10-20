@@ -29,11 +29,11 @@ if tmux has-session -t "$terminal_popup" 2>/dev/null; then
 fi
 
 if tmux has-session -t "$prompt_popup" 2>/dev/null; then
-  prompt_active="#[fg=blue] #[fg=default]"
+  prompt_active="#[fg=blue]󰷉 #[fg=default]"
 fi
 
 if tmux has-session -t "$scratch_popup" 2>/dev/null; then
-  scratch_active="#[fg=cyan] #[fg=default]"
+  scratch_active="#[fg=green] #[fg=default]"
 fi
 
 # Output the indicators (they'll appear side by side if both are active)
