@@ -33,3 +33,6 @@ tmux_config:
     - src: display_stateful_popup.sh
       dest: "{{ xdg_bin_home }}/"
       rename: display_stateful_popup
+    - src: toggle_prompt_popup.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: toggle_prompt_popup
