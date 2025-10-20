@@ -479,3 +479,14 @@ keys:
         value: generate
       - key: G
         value: generate --watch
+  - key: w
+    name: window
+    keys:
+      - key: v
+        name: vertical split
+        value: tmux split-window -h
+        immediate: true
+      - key: s
+        name: horizontal split
+        value: tmux split-window -v
+        immediate: true
