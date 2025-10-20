@@ -3,6 +3,7 @@ ai_config:
   path: tools/ai
   brew_formulas:
     - codex
+    - gemini-cli
   brew_casks:
     - chatgpt
     - claude
