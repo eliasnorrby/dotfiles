@@ -363,6 +363,9 @@ keys:
         value: init
       - key: v
         value: validate
+      - key: f
+        value: fmt
+        immediate: true
   - key: b
     value: brew
     keys:
