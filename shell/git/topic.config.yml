@@ -38,6 +38,9 @@ git_config:
     - src: linear_issue_number.sh
       dest: "{{ xdg_bin_home }}/"
       rename: linear_issue_number
+    - src: open_linear_issue.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: open_linear_issue
     - src: branch_todos.sh
       dest: "{{ xdg_bin_home }}/"
       rename: branch_todos

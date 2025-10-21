@@ -117,7 +117,7 @@ boom edit
 boom show
 
 # Apply changes (runs ansible playbook)
-boom apply
+boom deploy
 ```
 
 The CLI provides shortcuts for editing and applying dotfile configurations without navigating to the `_provision` directory.
