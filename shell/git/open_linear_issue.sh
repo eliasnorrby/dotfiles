@@ -11,8 +11,8 @@ main() {
     exit 1
   fi
 
-  local linear_base_url="https://linear.app/bemlo"
-  local url="${linear_base_url}/issue/${issue_id}"
+  # Use Linear's custom URL scheme to open directly in the app
+  local url="linear://bemlo/issue/${issue_id}"
 
   # Open URL using the appropriate command based on platform
   if [[ "$OSTYPE" == "darwin"* ]]; then
