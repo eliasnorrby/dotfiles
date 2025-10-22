@@ -9,7 +9,7 @@
 current_session="$(tmux display -p '#S')"
 
 # Determine the base session name (handle if we're already in a popup)
-if [[ "$current_session" =~ ^_popup_(.+)_(prompt|terminal|scratch)$ ]]; then
+if [[ "$current_session" =~ ^_popup_(.+)_(.+)$ ]]; then
   base_session="${BASH_REMATCH[1]}"
 elif [[ "$current_session" =~ ^_popup_(.+)$ ]]; then
   base_session="${BASH_REMATCH[1]}"
