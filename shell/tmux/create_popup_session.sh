@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
 
 # Accept optional flags and session name suffix
-# Usage: tmux_popup [--session=<suffix>] [--attach-only] [command...]
+# Usage: create_popup_session [--session=<suffix>] [--global] [--attach-only] [command...]
 attach_only=false
 session_suffix=""
+is_global=false
 
 while [[ "$1" == --* ]]; do
   case "$1" in
     --session=*)
       session_suffix="${1#--session=}"
+      shift
+      ;;
+    --global)
+      is_global=true
       shift
       ;;
     --attach-only)
@@ -22,12 +27,33 @@ while [[ "$1" == --* ]]; do
   esac
 done
 
-# Build session name: _popup_<current_session>[_suffix]
+# Get current session and determine base session
 current_session="$(tmux display -p '#S')"
-if [[ -n "$session_suffix" ]]; then
-  session="_popup_${current_session}_${session_suffix}"
+
+# Determine the base session name (handle if we're already in a popup)
+if [[ "$current_session" =~ ^_popup_(.+)_(.+)$ ]]; then
+  base_session="${BASH_REMATCH[1]}"
+elif [[ "$current_session" =~ ^_popup_(.+)$ ]]; then
+  base_session="${BASH_REMATCH[1]}"
 else
-  session="_popup_${current_session}"
+  base_session="$current_session"
+fi
+
+# Build session name
+if $is_global; then
+  # Global popup: _popup_GLOBAL_<suffix>
+  if [[ -n "$session_suffix" ]]; then
+    session="_popup_GLOBAL_${session_suffix}"
+  else
+    session="_popup_GLOBAL"
+  fi
+else
+  # Session-scoped popup: _popup_<base_session>[_suffix]
+  if [[ -n "$session_suffix" ]]; then
+    session="_popup_${base_session}_${session_suffix}"
+  else
+    session="_popup_${base_session}"
+  fi
 fi
 
 if ! tmux has -t "$session" 2>/dev/null; then

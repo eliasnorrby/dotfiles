@@ -5,6 +5,7 @@
 #   --title=<title>        Title for the popup (default: "Popup")
 #   --color=<color>        Border color (default: "white")
 #   --session=<suffix>     Session name suffix for the popup session
+#   --global               Create a global popup shared across all sessions
 #   --attach-only          Only attach to existing session, don't create new one
 #   -d <path>              Working directory (passed to display-popup)
 #   -w <width>             Width (default: 70%)
@@ -15,6 +16,7 @@
 title="Popup"
 color="white"
 session_suffix=""
+is_global=false
 attach_only=false
 width="70%"
 height="70%"
@@ -35,6 +37,11 @@ while [[ $# -gt 0 ]]; do
     --session=*)
       session_suffix="${1#--session=}"
       create_session_args+=("--session=$session_suffix")
+      shift
+      ;;
+    --global)
+      is_global=true
+      create_session_args+=("--global")
       shift
       ;;
     --attach-only)
@@ -72,10 +79,31 @@ done
 # If --attach-only is set, check if session exists before displaying popup
 if $attach_only; then
   current_session="$(tmux display -p '#S')"
-  if [[ -n "$session_suffix" ]]; then
-    session="_popup_${current_session}_${session_suffix}"
+
+  # Determine the base session name (handle if we're already in a popup)
+  if [[ "$current_session" =~ ^_popup_(.+)_(.+)$ ]]; then
+    base_session="${BASH_REMATCH[1]}"
+  elif [[ "$current_session" =~ ^_popup_(.+)$ ]]; then
+    base_session="${BASH_REMATCH[1]}"
   else
-    session="_popup_${current_session}"
+    base_session="$current_session"
+  fi
+
+  # Build session name
+  if $is_global; then
+    # Global popup: _popup_GLOBAL_<suffix>
+    if [[ -n "$session_suffix" ]]; then
+      session="_popup_GLOBAL_${session_suffix}"
+    else
+      session="_popup_GLOBAL"
+    fi
+  else
+    # Session-scoped popup: _popup_<base_session>[_suffix]
+    if [[ -n "$session_suffix" ]]; then
+      session="_popup_${base_session}_${session_suffix}"
+    else
+      session="_popup_${base_session}"
+    fi
   fi
 
   # Exit silently if session doesn't exist
