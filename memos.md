@@ -19,5 +19,3 @@ Things I've worked on but keep forgetting to use.
 | ---------- | ------------------- |
 | <leader>rl | Move argument right |
 | <leader>rh | Move argument left  |
-
-<!-- vim: set nonumber norelativenumber :-->
