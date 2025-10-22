@@ -125,6 +125,9 @@ topics:
     - name: web
       state: present
       config: "{{ web_config }}"
+    - name: db
+      state: present
+      config: "{{ db_config }}"
   lang:
     - name: dart
       state: absent

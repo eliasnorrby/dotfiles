@@ -4,7 +4,6 @@ web_config:
   brew_formulas:
     - httpie
     - stripe
-    - libpg
   brew_taps:
     - stripe/stripe-cli
   brew_casks:
