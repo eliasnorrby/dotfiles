@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Generic smart toggle for stateful popups
-# Usage: toggle_stateful_popup --session=<name> --title=<title> --color=<color> [--global] [--fallback-passthrough] [command...]
+# Usage: toggle_stateful_popup --session=<name> --title=<title> --color=<color> [--global] [--fallback-passthrough] [-w <width>] [-h <height>] [-d <path>] [command...]
 #
 # Behavior:
 # - If popup session exists and is hidden: show it
@@ -15,6 +15,9 @@ title=""
 color="white"
 is_global=false
 fallback_passthrough=false
+width=""
+height=""
+directory=""
 command_args=()
 
 # Parse arguments
@@ -39,6 +42,18 @@ while [[ $# -gt 0 ]]; do
     --fallback-passthrough)
       fallback_passthrough=true
       shift
+      ;;
+    -w)
+      width="$2"
+      shift 2
+      ;;
+    -h)
+      height="$2"
+      shift 2
+      ;;
+    -d)
+      directory="$2"
+      shift 2
       ;;
     --)
       shift
@@ -95,11 +110,21 @@ if tmux has-session -t "$popup_session" 2>/dev/null; then
     tmux detach-client
   else
     # We're not in the popup - show it
+    # Build display options
+    display_opts=(--title="$title" --color="$color" --session="$session_name" --attach-only)
     if $is_global; then
-      display_stateful_popup --title="$title" --color="$color" --session="$session_name" --global --attach-only
-    else
-      display_stateful_popup --title="$title" --color="$color" --session="$session_name" --attach-only
+      display_opts+=(--global)
     fi
+    if [[ -n "$width" ]]; then
+      display_opts+=(-w "$width")
+    fi
+    if [[ -n "$height" ]]; then
+      display_opts+=(-h "$height")
+    fi
+    if [[ -n "$directory" ]]; then
+      display_opts+=(-d "$directory")
+    fi
+    display_stateful_popup "${display_opts[@]}"
   fi
 else
   # Session doesn't exist
@@ -118,10 +143,20 @@ else
     esac
   else
     # Create and show the popup with the command
+    # Build display options
+    display_opts=(--title="$title" --color="$color" --session="$session_name")
     if $is_global; then
-      display_stateful_popup --title="$title" --color="$color" --session="$session_name" --global "${command_args[@]}"
-    else
-      display_stateful_popup --title="$title" --color="$color" --session="$session_name" "${command_args[@]}"
+      display_opts+=(--global)
     fi
+    if [[ -n "$width" ]]; then
+      display_opts+=(-w "$width")
+    fi
+    if [[ -n "$height" ]]; then
+      display_opts+=(-h "$height")
+    fi
+    if [[ -n "$directory" ]]; then
+      display_opts+=(-d "$directory")
+    fi
+    display_stateful_popup "${display_opts[@]}" "${command_args[@]}"
   fi
 fi
