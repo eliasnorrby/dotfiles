@@ -65,6 +65,9 @@ keys:
               - key: u
                 name: untracked
                 value: --include-untracked
+              - key: s
+                name: staged
+                value: --staged
               - key: m
                 name: message
                 value: -m
