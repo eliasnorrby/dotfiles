@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 
 # Generic smart toggle for stateful popups
-# Usage: toggle_stateful_popup --session=<name> --title=<title> --color=<color> [--global] [--fallback-passthrough] [-w <width>] [-h <height>] [-d <path>] [command...]
+# Usage: toggle_stateful_popup --session=<name> --title=<title> --color=<color> [--global] [--fallback <command>] [-w <width>] [-h <height>] [-d <path>] [command...]
 #
 # Behavior:
 # - If popup session exists and is hidden: show it
 # - If popup session exists and is in foreground: hide it
 # - If popup session doesn't exist:
-#   - With --fallback-passthrough: send the keybinding to underlying app
-#   - Without --fallback-passthrough: create and show popup with command
+#   - With --fallback: execute the specified fallback command
+#   - Without --fallback: create and show popup with command
 
 session_name=""
 title=""
 color="white"
 is_global=false
-fallback_passthrough=false
+fallback_command=""
 width=""
 height=""
 directory=""
@@ -39,9 +39,9 @@ while [[ $# -gt 0 ]]; do
       is_global=true
       shift
       ;;
-    --fallback-passthrough)
-      fallback_passthrough=true
-      shift
+    --fallback)
+      fallback_command="$2"
+      shift 2
       ;;
     -w)
       width="$2"
@@ -128,19 +128,9 @@ if tmux has-session -t "$popup_session" 2>/dev/null; then
   fi
 else
   # Session doesn't exist
-  if $fallback_passthrough; then
-    # Get the keybinding that triggered this script
-    # We need to extract it from the command that called us
-    # For now, we'll handle specific known cases
-    case "$session_name" in
-      prompt)
-        tmux send-keys C-p
-        ;;
-      *)
-        echo "Error: Unknown fallback keybinding for session '$session_name'" >&2
-        exit 1
-        ;;
-    esac
+  if [[ -n "$fallback_command" ]]; then
+    # Execute the fallback command
+    eval "$fallback_command"
   else
     # Create and show the popup with the command
     # Build display options
