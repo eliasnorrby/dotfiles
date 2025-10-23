@@ -7,5 +7,8 @@ exec toggle_stateful_popup \
   --session=scratch \
   --title=Scratch \
   --color=cyan \
+  -x R \
+  -w '40%' \
+  -h '90%' \
   -d '#{pane_current_path}' \
   nvim

@@ -18,6 +18,7 @@ fallback_command=""
 width=""
 height=""
 directory=""
+display_popup_args=()
 command_args=()
 
 # Parse arguments
@@ -49,6 +50,14 @@ while [[ $# -gt 0 ]]; do
       ;;
     -h)
       height="$2"
+      shift 2
+      ;;
+    -x)
+      display_popup_args+=("-x" "$2")
+      shift 2
+      ;;
+    -y)
+      display_popup_args+=("-y" "$2")
       shift 2
       ;;
     -d)
@@ -111,7 +120,7 @@ if tmux has-session -t "$popup_session" 2>/dev/null; then
   else
     # We're not in the popup - show it
     # Build display options
-    display_opts=(--title="$title" --color="$color" --session="$session_name" --attach-only)
+    display_opts=(--title="$title" --color="$color" --session="$session_name" --attach-only "${display_popup_args[@]}")
     if $is_global; then
       display_opts+=(--global)
     fi
@@ -134,7 +143,7 @@ else
   else
     # Create and show the popup with the command
     # Build display options
-    display_opts=(--title="$title" --color="$color" --session="$session_name")
+    display_opts=(--title="$title" --color="$color" --session="$session_name" "${display_popup_args[@]}")
     if $is_global; then
       display_opts+=(--global)
     fi

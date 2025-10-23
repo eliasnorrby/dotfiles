@@ -10,6 +10,8 @@
 #   -d <path>              Working directory (passed to display-popup)
 #   -w <width>             Width (default: 70%)
 #   -h <height>            Height (default: 70%)
+#   -x <x-offset>          X offset for the popup
+#   -y <y-offset>          Y offset for the popup
 #   [command...]           Command to run in the popup session
 
 # Default values
@@ -55,6 +57,14 @@ while [[ $# -gt 0 ]]; do
       ;;
     -h)
       height="$2"
+      shift 2
+      ;;
+    -x)
+      display_popup_args+=("-x" "$2")
+      shift 2
+      ;;
+    -y)
+      display_popup_args+=("-y" "$2")
       shift 2
       ;;
     -d)
