@@ -1,8 +1,8 @@
 # which-cmd integration for zsh
 
-which-cmd() {
-  ~/dev/which-cmd/target/debug/which-cmd "$@"
-}
+# which-cmd() {
+#   ~/dev/which-cmd/target/debug/which-cmd "$@"
+# }
 
 # command line variant
 which_cmd_widget() {
@@ -34,8 +34,12 @@ which_cmd_tmux_widget() {
   if [[ $LBUFFER == "" ]]; then
     local result height=10
     # TODO: Use proper path
-    tmux display-popup -S fg=brightblack -T '#[fg=white bold] which-cmd #[fg=default]' -y P -w 95% -h $((height + 2)) -b rounded -EE "~/dev/which-cmd/target/debug/which-cmd build --immediate --height ${height}"
-    result=$(~/dev/which-cmd/target/debug/which-cmd get)
+    tmux display-popup \
+      -S fg=brightblack \
+      -T '#[fg=white bold] which-cmd #[fg=default]' \
+      -y P -w 95% -h $((height + 2)) -b rounded \
+      -EE "which-cmd build --immediate --height ${height}"
+    result=$(which-cmd get)
     if [[ $result != "" ]]; then
       if [[ $result = __IMMEDIATE__* ]]; then
         local cmd
