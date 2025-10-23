@@ -1,9 +1,11 @@
+# vim:commentstring=#%s
 # Files
 data.location=~/.task
 
-# Color theme (uncomment one to use)
-# FIXME: fix dynamic path for MacOS / Arch
-# include /usr/share/doc/task/rc/dark-16.theme
+# Using this theme means taskwarrior will automatically adapt my terminal color theme.
+include dark-16.theme
+
+search.case.sensitive=no
 
 default.project=inbox
 verbose=blank,header,footnote,label,new-id,affected,edit,special,sync,unwait,override,recur #project removed
@@ -19,7 +21,21 @@ urgency.uda.priority.L.coefficient=-0.5
 context.work.read=project:work
 context.work.write=project:work
 
-# vim:commentstring=#%s
 context.dotfiles.read=pro:dotfiles
 context.dotfiles.write=pro:dotfiles
-context=dotfiles
+
+# taskwarrior-tui
+uda.taskwarrior-tui.task-report.show-info=false
+uda.taskwarrior-tui.task-report.auto-insert-double-quotes-on-add=false
+
+# == Styles ===
+# uda.taskwarrior-tui.style.report.selection
+# uda.taskwarrior-tui.style.report.scrollbar
+# uda.taskwarrior-tui.style.report.scrollbar.area
+# uda.taskwarrior-tui.style.calendar.title
+# uda.taskwarrior-tui.style.calendar.today
+uda.taskwarrior-tui.style.navbar=green on background
+uda.taskwarrior-tui.style.command=green on background
+# uda.taskwarrior-tui.style.context.active
+# uda.taskwarrior-tui.style.report.completion-pane
+# uda.taskwarrior-tui.style.report.completion-pane-highlight
