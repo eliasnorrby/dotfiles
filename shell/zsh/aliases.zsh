@@ -41,11 +41,14 @@ alias ipc="myip | copy_cmd"
 
 alias cdot="cd ~/.dotfiles"
 
+alias cdD="cd ~/Downloads"
 alias cdd="cd ~/dev"
 alias cdw="cd ~/work"
-alias cdl="cd ~/learn"
 alias cds="cd ~/sandbox"
 alias cdf="cd ~/forks"
+alias cdc="cd ~/.config"
+alias cdl="cd ~/.local"
+alias cddd="cd ~/.local/share/dotfiles"
 
 if [[ "$(_os)" == "macos" ]] ; then
   alias sudoedit="sudo -e"
