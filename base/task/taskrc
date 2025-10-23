@@ -29,6 +29,9 @@ uda.taskwarrior-tui.task-report.show-info=false
 uda.taskwarrior-tui.task-report.auto-insert-double-quotes-on-add=false
 
 # == Styles ===
+color.blocked=red
+color.blocking=yellow
+
 # uda.taskwarrior-tui.style.report.selection
 # uda.taskwarrior-tui.style.report.scrollbar
 # uda.taskwarrior-tui.style.report.scrollbar.area
