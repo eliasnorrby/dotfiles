@@ -24,6 +24,8 @@ context.work.write=project:work
 context.dotfiles.read=pro:dotfiles
 context.dotfiles.write=pro:dotfiles
 
+report.next.filter=(status:pending or status:waiting) page:limit
+
 # custom started report
 report.started.columns=description
 report.started.labels=Description
