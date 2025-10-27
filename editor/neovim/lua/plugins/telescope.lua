@@ -80,6 +80,11 @@ return {
       { '<leader>.', builtin.find_files, desc = 'Find (non-git) project files' },
       { '<leader>/r', builtin.resume, desc = 'Resume previous picker' },
       { '<leader>//', builtin.live_grep, desc = 'Project grep' },
+      { '<leader>--',
+        function ()
+          vim.notify('Switch keyboard layout to English', vim.log.levels.INFO)
+        end
+      },
       {
         '<leader>/a',
         function()
