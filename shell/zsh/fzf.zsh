@@ -10,7 +10,13 @@ fi
 
 # Customization
 # -------------
-export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | $(get_copy_cmd))+abort' --header 'Press CTRL-Y to copy command into clipboard'"
+export FZF_CTRL_R_OPTS="
+  --preview 'echo {}' 
+  --preview-window down:3:hidden:wrap 
+  --bind 'ctrl-y:execute-silent(echo -n {2..} | $(get_copy_cmd))+abort' 
+  --header 'Press CTRL-Y to copy command into clipboard'
+  --list-label '   History '
+"
 
 if _is_callable fd ; then
   export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
@@ -18,17 +24,32 @@ if _is_callable fd ; then
   export FZF_CTRL_T_COMMAND='fd --type f --hidden --follow --exclude .git'
 fi
 
-_is_callable bat && export FZF_CTRL_T_OPTS="--preview 'bat --color=always {}'"
-_is_callable tree && export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+export FZF_CTRL_T_OPTS='
+  --no-reverse
+  --list-label "   Files "
+'
+
+export FZF_ALT_C_OPTS='
+  --no-reverse
+  --list-label "   Directories "
+'
+
+_is_callable bat && export FZF_CTRL_T_OPTS="$FZF_CTRL_T_OPTS --preview 'bat --color=always {}'"
+_is_callable tree && export FZF_ALT_C_OPTS="$FZF_ALT_C_OPTS --preview 'tree -C {} | head -200'"
 
 export FZF_DEFAULT_OPTS='
   --prompt "λ: "
-  --color fg:7,bg:-1,hl:3,fg+:15,bg+:-1,hl+:4
-  --color info:7,prompt:4,spinner:6,pointer:4,marker:4,gutter:-1
-  --bind  ctrl-a:select-all
+  --color base16
+  --color prompt:1
+  --bind ctrl-a:select-all
+  --bind "?:toggle-preview" 
+  --input-border
+  --list-border
+  --no-border
+  --preview-label " 󰷋 Preview "
 '
 
-export FZF_TMUX_OPTS='-p 70%,70%'
+export FZF_TMUX_OPTS='-p 50%,50%'
 
 ## FZF FUNCTIONS ##
 # -----------------
@@ -90,7 +111,7 @@ npm-widget() {
   else
     runner="npm run"
   fi
-  script=$( jq -r '.scripts' "${package_dir}/package.json" | jq 'keys[]' | sed 's/"//g' | package_dir="$package_dir" fzf_tmux --ansi --reverse \
+  script=$( jq -r '.scripts' "${package_dir}/package.json" | jq 'keys[]' | sed 's/"//g' | package_dir="$package_dir" fzf_tmux --ansi \
     --preview 'jq -r ".scripts[\"$(echo {})\"]" "'"${package_dir}"'/package.json" | bat -l sh --color always --decorations never')
   zle reset-prompt
   [ -z "$script" ] && return
@@ -248,8 +269,9 @@ projects() {
     # # Preview with tree
     local TARGET="$(echo -e "$REPOS" |
       sed "s#$HOME##" |
-      fzf --border --tac \
-      --preview "tree -C -I node_modules -L 3 ${HOME}{}")"
+      fzf --tac \
+        --list-label "   Projects " \
+        --preview "tree -C -I node_modules -L 3 ${HOME}{}")"
 
     if [[ -n "$TARGET" ]] ; then
       cd "${HOME}/${TARGET}"
