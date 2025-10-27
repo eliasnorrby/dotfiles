@@ -24,6 +24,12 @@ context.work.write=project:work
 context.dotfiles.read=pro:dotfiles
 context.dotfiles.write=pro:dotfiles
 
+# custom started report
+report.started.columns=description
+report.started.labels=Description
+report.started.sort=urgency-
+report.started.filter=+ACTIVE
+
 # taskwarrior-tui
 uda.taskwarrior-tui.task-report.show-info=false
 uda.taskwarrior-tui.task-report.auto-insert-double-quotes-on-add=false
