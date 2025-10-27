@@ -23,5 +23,7 @@ ai_config:
       rename: claude_notification
     - src: settings.json
       dest: "{{ claude_home }}/"
+    - src: statusline.sh
+      dest: "{{ claude_home }}/"
 
 claude_home: "~/.claude"
