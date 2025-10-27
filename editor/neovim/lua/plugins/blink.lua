@@ -72,6 +72,10 @@ return {
   ---@module 'blink.cmp'
   ---@type blink.cmp.Config
   opts = {
+    -- Uncomment if enabling noice
+    -- cmdline = {
+    --   enabled = false,
+    -- },
     completion = {
       accept = { auto_brackets = { enabled = true } },
       menu = {

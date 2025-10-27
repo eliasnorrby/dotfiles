@@ -1,3 +1,4 @@
+---@type LazyPluginSpec
 return {
   'folke/noice.nvim',
   event = 'VeryLazy',
@@ -10,10 +11,13 @@ return {
         require('notify').setup({
           background_colour = '#000000',
           top_down = false,
+          merge_duplicates = true,
         })
       end,
     },
   },
+  ---@module 'noice.config'
+  ---@type NoiceConfig
   opts = {
     views = {
       cmdline_popup = {
