@@ -71,6 +71,14 @@ return {
       end
     end)
 
+    vim.keymap.set('i', '<TAB>', function()
+      if require('copilot.suggestion').is_visible() then
+        require('copilot.suggestion').accept_word()
+      else
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<TAB>', true, false, true), 'n', false)
+      end
+    end)
+
     vim.api.nvim_create_autocmd('User', {
       pattern = 'BlinkCmpMenuOpen',
       callback = function()
