@@ -10,7 +10,7 @@ select_state() {
 
 select_pr() {
   local state=$1
-  gh pr list --state="$state" \
+  gh pr list --state="$state" --limit 100 \
     | fzf --ansi --prompt="PR: " --reverse --header-lines 3 --preview 'gh pr view {1}' \
     | awk '{print $1}' | sed 's/^#//'
 }
