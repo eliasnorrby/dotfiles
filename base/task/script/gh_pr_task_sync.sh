@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -eo pipefail
 
 # Colors for output
 RED='\033[0;31m'
@@ -13,6 +13,13 @@ NC='\033[0m' # No Color
 DRY_RUN=false
 REPO=""
 USERNAME=""
+
+# Counters for summary
+TASKS_CREATED=0
+TASKS_UPDATED=0
+TASKS_COMPLETED=0
+TASKS_DELETED=0
+ERRORS=0
 
 # Usage information
 usage() {
@@ -60,8 +67,13 @@ execute_cmd() {
     local cmd="$*"
     if [ "$DRY_RUN" = true ]; then
         log_dry_run "$cmd"
+        return 0
     else
-        eval "$cmd"
+        if eval "$cmd" 2>&1; then
+            return 0
+        else
+            return 1
+        fi
     fi
 }
 
@@ -125,11 +137,25 @@ check_dependencies() {
     fi
 }
 
+# Check GitHub authentication
+check_gh_auth() {
+    log_info "Checking GitHub authentication..." >&2
+    if ! gh auth status &> /dev/null; then
+        log_error "GitHub CLI is not authenticated. Please run: gh auth login"
+        exit 1
+    fi
+}
+
 # Fetch open PRs from GitHub
 fetch_open_prs() {
     log_info "Fetching open PRs from $REPO..." >&2
-    gh pr list --repo "$REPO" --state open \
-        --json number,title,author,reviewRequests,reviews,reviewDecision
+    local prs
+    if ! prs=$(gh pr list --repo "$REPO" --state open \
+        --json number,title,author,reviewRequests,reviews,reviewDecision 2>&1); then
+        log_error "Failed to fetch PRs from $REPO: $prs"
+        return 1
+    fi
+    echo "$prs"
 }
 
 # Get existing tasks for this repo
@@ -177,7 +203,14 @@ create_task() {
     local cmd="task add \"${description}\" ${tags} pr_number:${pr_number} pr_repo:\"${REPO}\" ${wait_clause}"
 
     log_success "Creating task: $description"
-    execute_cmd "$cmd"
+    if execute_cmd "$cmd"; then
+        ((TASKS_CREATED++))
+        return 0
+    else
+        log_error "Failed to create task for PR#$pr_number"
+        ((ERRORS++))
+        return 1
+    fi
 }
 
 # Update task wait status
@@ -188,10 +221,24 @@ update_task_wait() {
 
     if [ "$should_wait" = "true" ] && [ -z "$current_wait" ]; then
         log_success "Adding wait status to task $task_uuid"
-        execute_cmd "task $task_uuid modify wait:later +wait"
+        if execute_cmd "task $task_uuid modify wait:later +wait"; then
+            ((TASKS_UPDATED++))
+            return 0
+        else
+            log_error "Failed to add wait status to task $task_uuid"
+            ((ERRORS++))
+            return 1
+        fi
     elif [ "$should_wait" = "false" ] && [ -n "$current_wait" ]; then
         log_success "Removing wait status from task $task_uuid"
-        execute_cmd "task $task_uuid modify wait: -wait"
+        if execute_cmd "task $task_uuid modify wait: -wait"; then
+            ((TASKS_UPDATED++))
+            return 0
+        else
+            log_error "Failed to remove wait status from task $task_uuid"
+            ((ERRORS++))
+            return 1
+        fi
     fi
 }
 
@@ -201,7 +248,14 @@ complete_task() {
     local pr_number="$2"
 
     log_success "Completing task for PR#$pr_number"
-    execute_cmd "task $task_uuid done"
+    if execute_cmd "task $task_uuid done"; then
+        ((TASKS_COMPLETED++))
+        return 0
+    else
+        log_error "Failed to complete task for PR#$pr_number"
+        ((ERRORS++))
+        return 1
+    fi
 }
 
 # Delete task
@@ -210,7 +264,14 @@ delete_task() {
     local pr_number="$2"
 
     log_success "Deleting task for PR#$pr_number"
-    execute_cmd "echo 'yes' | task $task_uuid delete"
+    if execute_cmd "echo 'yes' | task $task_uuid delete"; then
+        ((TASKS_DELETED++))
+        return 0
+    else
+        log_error "Failed to delete task for PR#$pr_number"
+        ((ERRORS++))
+        return 1
+    fi
 }
 
 # Process a single open PR
@@ -218,11 +279,27 @@ process_open_pr() {
     local pr_json="$1"
     local existing_tasks="$2"
 
-    local pr_number=$(echo "$pr_json" | jq -r '.number')
-    local title=$(echo "$pr_json" | jq -r '.title')
-    local author=$(echo "$pr_json" | jq -r '.author')
-    local review_requests=$(echo "$pr_json" | jq -c '.reviewRequests')
-    local reviews=$(echo "$pr_json" | jq -c '.reviews')
+    # Wrap in error handling to continue processing other PRs if one fails
+    local pr_number
+    if ! pr_number=$(echo "$pr_json" | jq -r '.number' 2>/dev/null); then
+        log_error "Failed to parse PR number from JSON"
+        ((ERRORS++))
+        return 1
+    fi
+
+    local title
+    local author
+    local review_requests
+    local reviews
+
+    if ! title=$(echo "$pr_json" | jq -r '.title' 2>/dev/null) || \
+       ! author=$(echo "$pr_json" | jq -r '.author' 2>/dev/null) || \
+       ! review_requests=$(echo "$pr_json" | jq -c '.reviewRequests' 2>/dev/null) || \
+       ! reviews=$(echo "$pr_json" | jq -c '.reviews' 2>/dev/null); then
+        log_error "Failed to parse PR#$pr_number data"
+        ((ERRORS++))
+        return 1
+    fi
 
     # Determine if this is my PR or a review PR
     local is_my_pr=false
@@ -247,17 +324,17 @@ process_open_pr() {
         fi
 
         if [ -z "$existing_task" ]; then
-            create_task "$pr_number" "$title" "merge" "$needs_wait"
+            create_task "$pr_number" "$title" "merge" "$needs_wait" || true
         else
             # Check if wait status needs updating
             local task_uuid=$(echo "$existing_task" | jq -r '.uuid')
             local current_wait=$(echo "$existing_task" | jq -r '.wait // empty')
-            update_task_wait "$task_uuid" "$needs_wait" "$current_wait"
+            update_task_wait "$task_uuid" "$needs_wait" "$current_wait" || true
         fi
     elif [ "$is_review_pr" = true ]; then
         # Handle PR to review
         if [ -z "$existing_task" ]; then
-            create_task "$pr_number" "$title" "review" "false"
+            create_task "$pr_number" "$title" "review" "false" || true
         fi
     fi
 }
@@ -275,23 +352,35 @@ handle_orphaned_tasks() {
             # This task has no corresponding open PR
             log_info "PR#$pr_number is no longer open, checking status..."
 
-            # Fetch PR details
-            local pr_data=$(gh pr view "$pr_number" --repo "$REPO" --json state,mergedAt 2>/dev/null || echo "{}")
-
-            if [ -z "$pr_data" ] || [ "$pr_data" = "{}" ]; then
+            # Fetch PR details with timeout
+            local pr_data
+            if ! pr_data=$(timeout 5 gh pr view "$pr_number" --repo "$REPO" --json state,mergedAt 2>&1); then
                 log_warning "Could not fetch data for PR#$pr_number"
+                ((ERRORS++))
                 continue
             fi
 
-            local state=$(echo "$pr_data" | jq -r '.state')
-            local merged_at=$(echo "$pr_data" | jq -r '.mergedAt')
+            if [ -z "$pr_data" ] || [ "$pr_data" = "{}" ] || [ "$pr_data" = "null" ]; then
+                log_warning "No data returned for PR#$pr_number"
+                ((ERRORS++))
+                continue
+            fi
+
+            local state
+            local merged_at
+            if ! state=$(echo "$pr_data" | jq -r '.state' 2>/dev/null) || \
+               ! merged_at=$(echo "$pr_data" | jq -r '.mergedAt' 2>/dev/null); then
+                log_warning "Failed to parse PR#$pr_number data"
+                ((ERRORS++))
+                continue
+            fi
 
             local task_uuid=$(echo "$existing_tasks" | jq -r '.[] | select(.pr_number == '$pr_number') | .uuid')
 
             if [ "$state" = "MERGED" ]; then
-                complete_task "$task_uuid" "$pr_number"
+                complete_task "$task_uuid" "$pr_number" || true
             elif [ "$state" = "CLOSED" ]; then
-                delete_task "$task_uuid" "$pr_number"
+                delete_task "$task_uuid" "$pr_number" || true
             fi
         fi
     done
@@ -301,6 +390,7 @@ handle_orphaned_tasks() {
 main() {
     parse_args "$@"
     check_dependencies
+    check_gh_auth
 
     if [ "$DRY_RUN" = true ]; then
         log_warning "Running in DRY-RUN mode. No changes will be made."
@@ -311,7 +401,12 @@ main() {
     echo ""
 
     # Fetch data
-    local open_prs=$(fetch_open_prs)
+    local open_prs
+    if ! open_prs=$(fetch_open_prs); then
+        log_error "Failed to fetch PRs. Exiting."
+        exit 1
+    fi
+
     local existing_tasks=$(get_existing_tasks)
 
     local open_pr_count=$(echo "$open_prs" | jq 'length')
@@ -325,7 +420,7 @@ main() {
     if [ "$open_pr_count" -gt 0 ]; then
         for i in $(seq 0 $((open_pr_count - 1))); do
             local pr_json=$(echo "$open_prs" | jq ".[$i]")
-            process_open_pr "$pr_json" "$existing_tasks"
+            process_open_pr "$pr_json" "$existing_tasks" || true
         done
     fi
 
@@ -336,7 +431,22 @@ main() {
     handle_orphaned_tasks "$existing_tasks" "$open_pr_numbers"
 
     echo ""
+
+    # Print summary
     log_success "Sync complete!"
+    echo ""
+    log_info "Summary:"
+    log_info "  Tasks created:   $TASKS_CREATED"
+    log_info "  Tasks updated:   $TASKS_UPDATED"
+    log_info "  Tasks completed: $TASKS_COMPLETED"
+    log_info "  Tasks deleted:   $TASKS_DELETED"
+
+    if [ "$ERRORS" -gt 0 ]; then
+        log_warning "  Errors:          $ERRORS"
+        exit 1
+    else
+        log_info "  Errors:          $ERRORS"
+    fi
 }
 
 main "$@"
