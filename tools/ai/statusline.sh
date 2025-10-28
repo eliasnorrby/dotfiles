@@ -48,7 +48,10 @@ FG_BRIGHT_MAGENTA='\033[95m'
 FG_BRIGHT_CYAN='\033[96m'
 FG_BRIGHT_WHITE='\033[97m'
 
-# Helper functions for common extractions
+# ============================================================================
+# Data extraction helpers
+# ============================================================================
+
 get_model_name() { echo "$input" | jq -r '.model.display_name'; }
 get_current_dir() { echo "$input" | jq -r '.workspace.current_dir'; }
 get_project_dir() { echo "$input" | jq -r '.workspace.project_dir'; }
@@ -57,7 +60,6 @@ get_duration() { echo "$input" | jq -r '.cost.total_duration_ms'; }
 get_lines_added() { echo "$input" | jq -r '.cost.total_lines_added'; }
 get_lines_removed() { echo "$input" | jq -r '.cost.total_lines_removed'; }
 
-# Git branch detection
 get_git_branch() {
   local project_dir=$(get_project_dir)
   if [[ -f "$project_dir/.git/HEAD" ]]; then
@@ -70,7 +72,13 @@ get_git_branch() {
   fi
 }
 
-# Format duration as human readable
+get_context_percentage() {
+  local ccusage_output="$(echo "$input" | pnpm dlx ccusage statusline 2>/dev/null)"
+  if [[ -n "$ccusage_output" ]]; then
+    echo "$ccusage_output" | grep -oE '\([0-9]+%\)' | tr -d '()'
+  fi
+}
+
 format_duration() {
   local ms=$1
   if [[ "$ms" == "null" ]] || [[ -z "$ms" ]]; then
@@ -87,65 +95,70 @@ format_duration() {
   fi
 }
 
-# Get context usage from ccusage
-ccusage_output="$(echo "$input" | pnpm dlx ccusage statusline 2>/dev/null)"
+# ============================================================================
+# Component functions (each returns a formatted string or empty if N/A)
+# ============================================================================
 
-# Parse context percentage from ccusage output (format: "🧠 50,699 (25%)")
-context_pct=""
-if [[ -n "$ccusage_output" ]]; then
-  context_pct=$(echo "$ccusage_output" | grep -oE '\([0-9]+%\)' | tr -d '()')
-fi
+component_model() {
+  local model=$(get_model_name)
+  if [[ -n "$model" ]] && [[ "$model" != "null" ]]; then
+    echo "${FG_BRIGHT_BLUE}${COLOR_BOLD}  ${model}${COLOR_RESET}"
+  fi
+}
 
-# Build statusline components
-MODEL=$(get_model_name)
-CURRENT_DIR=$(get_current_dir)
-PROJECT_DIR=$(get_project_dir)
-GIT_BRANCH=$(get_git_branch)
-DURATION=$(get_duration)
-LINES_ADDED=$(get_lines_added)
-LINES_REMOVED=$(get_lines_removed)
+component_directory() {
+  local current_dir=$(get_current_dir)
+  if [[ -n "$current_dir" ]] && [[ "$current_dir" != "null" ]]; then
+    local dir_name="${current_dir##*/}"
+    echo "${FG_YELLOW}  ${dir_name}${COLOR_RESET}"
+  fi
+}
 
-# Component array
-components=()
+component_git_branch() {
+  local branch=$(get_git_branch)
+  if [[ -z "$branch" ]]; then
+    return
+  fi
 
-# Model name (bright blue with chip icon)
-components+=("${FG_BRIGHT_BLUE}${COLOR_BOLD}  ${MODEL}${COLOR_RESET}")
-
-# Current directory (yellow with folder icon)
-if [[ "$CURRENT_DIR" != "null" ]] && [[ -n "$CURRENT_DIR" ]]; then
-  DIR_NAME="${CURRENT_DIR##*/}"
-  components+=("${FG_YELLOW}  ${DIR_NAME}${COLOR_RESET}")
-fi
-
-# Git branch with line changes (white branch name with colored stats)
-if [[ -n "$GIT_BRANCH" ]]; then
-  git_component="${FG_BRIGHT_BLACK}${FG_WHITE}󰘬 ${GIT_BRANCH}${COLOR_RESET}"
+  local output="${FG_BRIGHT_BLACK}${FG_WHITE}󰘬 ${branch}${COLOR_RESET}"
 
   # Add line changes to the same component
-  if [[ "$LINES_ADDED" != "null" ]] && [[ "$LINES_ADDED" != "0" ]] && [[ -n "$LINES_ADDED" ]]; then
-    git_component="${git_component} ${FG_GREEN}+${LINES_ADDED}${COLOR_RESET}"
+  local lines_added=$(get_lines_added)
+  local lines_removed=$(get_lines_removed)
+
+  if [[ "$lines_added" != "null" ]] && [[ "$lines_added" != "0" ]] && [[ -n "$lines_added" ]]; then
+    output="${output} ${FG_GREEN}+${lines_added}${COLOR_RESET}"
   fi
-  if [[ "$LINES_REMOVED" != "null" ]] && [[ "$LINES_REMOVED" != "0" ]] && [[ -n "$LINES_REMOVED" ]]; then
-    git_component="${git_component} ${FG_RED}-${LINES_REMOVED}${COLOR_RESET}"
+
+  if [[ "$lines_removed" != "null" ]] && [[ "$lines_removed" != "0" ]] && [[ -n "$lines_removed" ]]; then
+    output="${output} ${FG_RED}-${lines_removed}${COLOR_RESET}"
   fi
 
-  components+=("${git_component}")
-fi
+  echo "$output"
+}
 
-# Duration (dim white with clock icon)
-FORMATTED_DURATION=$(format_duration "$DURATION")
-if [[ -n "$FORMATTED_DURATION" ]]; then
-  components+=("${FG_BRIGHT_BLACK}  ${FORMATTED_DURATION}${COLOR_RESET}")
-fi
+component_duration() {
+  local duration=$(get_duration)
+  local formatted=$(format_duration "$duration")
 
-# Context usage with progress bar
-if [[ -n "$context_pct" ]]; then
+  if [[ -n "$formatted" ]]; then
+    echo "${FG_BRIGHT_BLACK}  ${formatted}${COLOR_RESET}"
+  fi
+}
+
+component_context() {
+  local context_pct=$(get_context_percentage)
+  if [[ -z "$context_pct" ]]; then
+    return
+  fi
+
   # Extract numeric percentage
-  pct_num=$(echo "$context_pct" | tr -d '%')
+  local pct_num=$(echo "$context_pct" | tr -d '%')
 
   # Determine color based on usage
+  local bar_color
   if [[ $pct_num -lt 50 ]]; then
-    bar_color="$FG_BRIGHT_BLACK"
+    bar_color="$FG_BRIGHT_WHITE"
   elif [[ $pct_num -lt 80 ]]; then
     bar_color="$FG_YELLOW"
   else
@@ -153,27 +166,48 @@ if [[ -n "$context_pct" ]]; then
   fi
 
   # Create progress bar (20 characters wide)
-  bar_width=20
-  filled=$((pct_num * bar_width / 100))
-  empty=$((bar_width - filled))
+  local bar_width=20
+  local filled=$((pct_num * bar_width / 100))
+  local empty=$((bar_width - filled))
 
-  bar=""
+  local bar=""
   for ((i = 0; i < filled; i++)); do bar+="█"; done
   for ((i = 0; i < empty; i++)); do bar+="░"; done
 
-  components+=("${FG_BRIGHT_WHITE}  ${bar_color}${bar} ${context_pct}${COLOR_RESET}")
-fi
+  echo "${FG_BRIGHT_WHITE}  ${bar_color}${bar} ${context_pct}${COLOR_RESET}"
+}
 
-# Join components with dim separator
+# ============================================================================
+# Compose statusline
+# ============================================================================
+
+# Define component order here - reorder by changing the sequence
+components=(
+  component_model
+  component_directory
+  component_git_branch
+  component_context
+  component_duration
+)
+
+# Build the statusline by calling each component function
 separator="${FG_BRIGHT_BLACK} │ ${COLOR_RESET}"
 output=""
-for i in "${!components[@]}"; do
-  if [[ $i -eq 0 ]]; then
-    output="${components[$i]}"
-  else
-    output="${output}${separator}${components[$i]}"
+first=true
+
+for component_fn in "${components[@]}"; do
+  component_output=$($component_fn)
+
+  # Only add non-empty components
+  if [[ -n "$component_output" ]]; then
+    if [[ "$first" == "true" ]]; then
+      output="$component_output"
+      first=false
+    else
+      output="${output}${separator}${component_output}"
+    fi
   fi
 done
 
-# Output single line
+# Output the final statusline
 echo -e "$output"
