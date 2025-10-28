@@ -161,7 +161,7 @@ fetch_open_prs() {
 # Get existing tasks for this repo
 get_existing_tasks() {
     log_info "Fetching existing tasks for $REPO..." >&2
-    task project:work +pr pr_repo:"$REPO" export 2>/dev/null || echo "[]"
+    task project:work +pr pr_repo:"$REPO" status:pending or status:waiting export 2>/dev/null || echo "[]"
 }
 
 # Check if PR has approval
@@ -344,10 +344,15 @@ handle_orphaned_tasks() {
     local existing_tasks="$1"
     local open_pr_numbers="$2"
 
-    # Get all task PR numbers
-    local task_pr_numbers=$(echo "$existing_tasks" | jq -r '.[].pr_number' | sort -n)
+    # Get all task PR numbers (filter out null values)
+    local task_pr_numbers=$(echo "$existing_tasks" | jq -r '.[] | select(.pr_number != null) | .pr_number' | sort -n)
 
     for pr_number in $task_pr_numbers; do
+        # Skip if pr_number is empty or invalid
+        if [ -z "$pr_number" ] || [ "$pr_number" = "null" ]; then
+            continue
+        fi
+
         if ! echo "$open_pr_numbers" | grep -q "^${pr_number}$"; then
             # This task has no corresponding open PR
             log_info "PR#$pr_number is no longer open, checking status..."
