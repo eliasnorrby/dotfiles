@@ -3,6 +3,7 @@ macos_config:
   path: base/macos
   brew_formulas:
     - curl
+    - spicetify-cli
   brew_taps:
     - homebrew/cask-versions # for firefox-developer-edition
   brew_casks:
