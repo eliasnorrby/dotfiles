@@ -56,4 +56,8 @@ uda.pr_number.type=numeric
 uda.pr_number.label=PR#
 uda.pr_repo.type=string
 uda.pr_repo.label=Repo
+
+# Taskwarrior-tui shortcut to open PR in browser
+uda.taskwarrior-tui.shortcuts.1=task_open_pr
+
 context=work
