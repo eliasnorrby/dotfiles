@@ -1,1 +1,1 @@
-  path=(/opt/homebrew/opt/libpq/bin $path)
+path=(/opt/homebrew/opt/libpq/bin $path)

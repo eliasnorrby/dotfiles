@@ -2,4 +2,4 @@
 db_config:
   path: dev/db
   brew_formulas:
-    - libpg
+    - libpq
