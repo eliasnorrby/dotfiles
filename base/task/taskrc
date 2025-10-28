@@ -50,3 +50,10 @@ uda.taskwarrior-tui.style.command=green on background
 # uda.taskwarrior-tui.style.context.active
 # uda.taskwarrior-tui.style.report.completion-pane
 # uda.taskwarrior-tui.style.report.completion-pane-highlight
+
+# GitHub PR sync UDAs
+uda.pr_number.type=numeric
+uda.pr_number.label=PR#
+uda.pr_repo.type=string
+uda.pr_repo.label=Repo
+context=work
