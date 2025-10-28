@@ -12,6 +12,24 @@ wk.add({
 })
 
 -- file path yanking
+local function get_line_range()
+  local mode = vim.fn.mode()
+  if mode == 'v' or mode == 'V' or mode == '' then
+    local start_line = vim.fn.line('v')
+    local end_line = vim.fn.line('.')
+    if start_line > end_line then
+      start_line, end_line = end_line, start_line
+    end
+    if start_line == end_line then
+      return '#L' .. start_line
+    else
+      return '#L' .. start_line .. '-L' .. end_line
+    end
+  else
+    return '#L' .. vim.fn.line('.')
+  end
+end
+
 wk.add({
   {
     '<leader>fy',
@@ -36,6 +54,53 @@ wk.add({
       vim.notify('Copied: ' .. abs_path, vim.log.levels.INFO)
     end,
     desc = 'yank absolute path',
+  },
+})
+
+-- file path yanking with line ranges
+wk.add({
+  {
+    mode = { 'n', 'v' },
+    {
+      '<leader>fl',
+      function()
+        local git_root = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
+        if vim.v.shell_error ~= 0 then
+          vim.notify('Not in a git repository', vim.log.levels.WARN)
+          return
+        end
+        local abs_path = vim.fn.expand('%:p')
+        local repo_name = vim.fn.fnamemodify(git_root, ':t')
+        local rel_path = vim.fn.fnamemodify(abs_path, ':s?' .. git_root .. '/??')
+        local line_range = get_line_range()
+        local result = repo_name .. '/' .. rel_path .. line_range
+        vim.fn.setreg('+', result)
+        vim.notify('Copied: ' .. result, vim.log.levels.INFO)
+      end,
+      desc = 'yank path with lines (repo/path)',
+    },
+    {
+      '<leader>fL',
+      function()
+        local abs_path = vim.fn.expand('%:p')
+        local line_range = get_line_range()
+        local result = abs_path .. line_range
+        vim.fn.setreg('+', result)
+        vim.notify('Copied: ' .. result, vim.log.levels.INFO)
+      end,
+      desc = 'yank path with lines (absolute)',
+    },
+    {
+      '<leader>fn',
+      function()
+        local filename = vim.fn.expand('%:t')
+        local line_range = get_line_range()
+        local result = filename .. line_range
+        vim.fn.setreg('+', result)
+        vim.notify('Copied: ' .. result, vim.log.levels.INFO)
+      end,
+      desc = 'yank path with lines (filename only)',
+    },
   },
 })
 
