@@ -2,7 +2,7 @@
 neovim_config:
   path: editor/neovim
   dirname: nvim
-  brew_formulas:
+  brew_formulae:
     - neovim
     - fzf
     - bat

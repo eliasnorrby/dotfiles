@@ -37,7 +37,7 @@ example_config:
       dest: "{{ xdg_bin_home }}" # Custom destination
       rename: newname
       condition: "{{ is_macos }}" # Platform-specific
-  brew_formulas: []              # MacOS homebrew packages
+  brew_formulae: []              # MacOS homebrew packages
   brew_casks: []                 # MacOS homebrew casks
   brew_taps: []                  # MacOS homebrew taps
   pacman_packages: []            # Arch Linux pacman packages

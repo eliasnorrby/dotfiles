@@ -1,7 +1,7 @@
 ---
 zsh_config:
   path: shell/zsh
-  brew_formulas:
+  brew_formulae:
     # essentials
     - zsh
     - fzf

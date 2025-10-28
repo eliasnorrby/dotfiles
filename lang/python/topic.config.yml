@@ -1,5 +1,5 @@
 ---
 python_config:
   path: lang/python
-  brew_formulas:
+  brew_formulae:
     - python

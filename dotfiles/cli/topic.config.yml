@@ -11,7 +11,7 @@ cli_config:
       condition: "{{ is_arch }}"
   npm_packages:
     - '@eliasnorrby/dotfiles-cli'
-  brew_formulas:
+  brew_formulae:
     - ansible
   pacman_packages:
     - ansible

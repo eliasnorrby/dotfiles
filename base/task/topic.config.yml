@@ -18,7 +18,7 @@ task_config:
     - src: script/add_wait_tag.sh
       dest: "{{ xdg_bin_home }}/"
       rename: add_wait_tag
-  brew_formulas:
+  brew_formulae:
     - task
     - taskwarrior-tui
   brew_casks:

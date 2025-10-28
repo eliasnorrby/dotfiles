@@ -7,7 +7,7 @@ ssh_config:
     - src: macos.config
       dest: "~/.ssh/"
       condition: "{{ is_macos }}"
-  brew_formulas:
+  brew_formulae:
     - ssh-copy-id
     - mosh
   pacman_packages:

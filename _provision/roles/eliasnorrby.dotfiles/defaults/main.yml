@@ -19,7 +19,7 @@ topics:
       state: present
       config:
         path: editor/neovim
-        brew_formulas:
+        brew_formulae:
           - neovim
         links:
           - init.lua
@@ -28,7 +28,7 @@ topics:
       state: present
       config:
         path: shell/zsh
-        brew_formulas:
+        brew_formulae:
           - zsh
           - fzf
           - ripgrep

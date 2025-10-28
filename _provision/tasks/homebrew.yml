@@ -7,9 +7,9 @@
 
 - name: install homebrew formulae
   homebrew:
-    name: "{{ brew_formulas }}"
+    name: "{{ brew_formulae }}"
     state: present
-  when: brew_formulas | length > 0
+  when: brew_formulae | length > 0
 
 - name: install homebrew casks
   homebrew_cask:

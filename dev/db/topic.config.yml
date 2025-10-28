@@ -1,5 +1,5 @@
 ---
 db_config:
   path: dev/db
-  brew_formulas:
+  brew_formulae:
     - libpq

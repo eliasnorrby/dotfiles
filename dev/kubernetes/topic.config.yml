@@ -11,7 +11,7 @@ kubernetes_config:
     - src: copy_and_update_kubectl_token.sh
       dest: "{{ xdg_bin_home }}/"
       rename: copy_and_update_kubectl_token
-  brew_formulas:
+  brew_formulae:
     - minikube
     - kubectl
     - kubelogin

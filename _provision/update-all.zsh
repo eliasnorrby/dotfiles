@@ -18,7 +18,7 @@ if [[ "$(_os)" == "macos" ]]; then
   # brew
   brew_log=$(mktemp)
   echo "$SPACE"
-  echo-info "Updating brew formulas..."
+  echo-info "Updating brew formulae..."
   brew update && brew upgrade && brew cleanup | tee $brew_log
   echo-ok "brew updated!"
   echo-info "Wrote logs to $brew_log"

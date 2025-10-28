@@ -4,7 +4,7 @@ dotnet_config:
   # I wish this would work, but I connot make it
   # Just download the official installer instead:
   #   https://dotnet.microsoft.com/download
-  # brew_formulas:
+  # brew_formulae:
   #   - dotnet
   brew_casks:
     - rider

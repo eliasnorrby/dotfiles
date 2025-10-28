@@ -1,7 +1,7 @@
 ---
 photo_config:
   path: hobby/photo
-  brew_formulas:
+  brew_formulae:
     - pngquant
     - webp
     - imagemagick

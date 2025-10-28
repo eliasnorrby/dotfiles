@@ -1,7 +1,7 @@
 ---
 rust_config:
   path: lang/rust
-  brew_formulas:
+  brew_formulae:
     - rustup
   pacman_packages:
     - rustup

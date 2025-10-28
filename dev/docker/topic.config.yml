@@ -1,7 +1,7 @@
 ---
 docker_config:
   path: dev/docker
-  brew_formulas:
+  brew_formulae:
     - hadolint
     - podman
     - skopeo

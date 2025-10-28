@@ -14,7 +14,7 @@ vpn_config:
     - src: alacritty_tmux_vpn_connect.sh
       dest: "{{ xdg_bin_home }}/"
       rename: alacritty_tmux_vpn_connect
-  brew_formulas:
+  brew_formulae:
     - openfortivpn
   brew_casks:
     - nordvpn

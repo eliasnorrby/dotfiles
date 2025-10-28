@@ -1,7 +1,7 @@
 ---
 # minimal config to test playbook
 # Should test
-# - [x] brew_formulas
+# - [x] brew_formulae
 # - [x] brew_casks
 # - [x] brew_taps
 #
@@ -12,7 +12,7 @@
 # - [x] gem_packages
 topics:
   editor:
-    # has brew formulas
+    # has brew formulae
     - name: vim
       state: present
       config: "{{ vim_config }}"

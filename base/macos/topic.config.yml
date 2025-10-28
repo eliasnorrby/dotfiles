@@ -1,7 +1,7 @@
 ---
 macos_config:
   path: base/macos
-  brew_formulas:
+  brew_formulae:
     - curl
     - spicetify-cli
   brew_taps:

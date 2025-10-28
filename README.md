@@ -144,7 +144,7 @@ vim_config:
   path: editor/vim
   links:
     - .vimrc
-  brew_formulas:
+  brew_formulae:
     - vim
 ```
 
@@ -155,7 +155,7 @@ Possible fields in `topic.config.yml`:
 - `path` (required)
 - `links`
 - `become`
-- `brew_formulas`
+- `brew_formulae`
 - `brew_casks`
 - `brew_taps`
 - `pacman_packages`

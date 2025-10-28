@@ -1,7 +1,7 @@
 ---
 bash_config:
   path: shell/bash
-  brew_formulas:
+  brew_formulae:
     - bash
     - shfmt
     - shellcheck

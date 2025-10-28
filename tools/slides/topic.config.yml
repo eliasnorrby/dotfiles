@@ -6,5 +6,5 @@ slides_config:
   aur_packages:
     - slides
     - perl-graph-easy
-  brew_formulas:
+  brew_formulae:
     - slides

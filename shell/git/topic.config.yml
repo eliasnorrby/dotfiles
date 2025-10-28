@@ -44,7 +44,7 @@ git_config:
     - src: branch_todos.sh
       dest: "{{ xdg_bin_home }}/"
       rename: branch_todos
-  brew_formulas:
+  brew_formulae:
     - git
     - tig
     - hub

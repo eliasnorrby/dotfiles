@@ -3,7 +3,7 @@ cicd_config:
   path: dev/cicd
   brew_taps:
     - buildpacks/tap
-  brew_formulas:
+  brew_formulae:
     - tektoncd-cli
     - tfenv
     - terraform-ls

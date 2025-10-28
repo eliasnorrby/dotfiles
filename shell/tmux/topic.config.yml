@@ -1,7 +1,7 @@
 ---
 tmux_config:
   path: shell/tmux
-  brew_formulas:
+  brew_formulae:
     - tmux
   pacman_packages:
     - tmux

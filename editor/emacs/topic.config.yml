@@ -6,7 +6,7 @@ emacs_config:
       dest: "{{ xdg_config_home }}/"
   brew_taps:
     - d12frosted/emacs-plus
-  brew_formulas:
+  brew_formulae:
     - emacs-plus
     - gnupg  # Used by forge
   pacman_packages:
