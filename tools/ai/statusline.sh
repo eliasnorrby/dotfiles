@@ -149,7 +149,41 @@ for i in "${!components[@]}"; do
   fi
 done
 
-line2="$(echo "$input" | pnpm dlx ccusage statusline)"
+# Get context usage from ccusage
+ccusage_output="$(echo "$input" | pnpm dlx ccusage statusline 2>/dev/null)"
+
+# Parse context percentage from ccusage output (format: "🧠 50,699 (25%)")
+context_pct=""
+if [[ -n "$ccusage_output" ]]; then
+  context_pct=$(echo "$ccusage_output" | grep -oE '\([0-9]+%\)' | tr -d '()')
+fi
+
+# Build line 2 with context bar
+line2=""
+if [[ -n "$context_pct" ]]; then
+  # Extract numeric percentage
+  pct_num=$(echo "$context_pct" | tr -d '%')
+
+  # Determine color based on usage
+  if [[ $pct_num -lt 50 ]]; then
+    bar_color="$FG_BRIGHT_BLACK"
+  elif [[ $pct_num -lt 80 ]]; then
+    bar_color="$FG_YELLOW"
+  else
+    bar_color="$FG_RED"
+  fi
+
+  # Create progress bar (20 characters wide)
+  bar_width=20
+  filled=$((pct_num * bar_width / 100))
+  empty=$((bar_width - filled))
+
+  bar=""
+  for ((i = 0; i < filled; i++)); do bar+="█"; done
+  for ((i = 0; i < empty; i++)); do bar+="░"; done
+
+  line2="${FG_BRIGHT_WHITE}  Context: ${bar_color}${bar} ${context_pct}${COLOR_RESET}"
+fi
 
 # Output both lines
 echo -e "$line1"
