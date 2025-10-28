@@ -25,5 +25,8 @@ ai_config:
       dest: "{{ claude_home }}/"
     - src: statusline.sh
       dest: "{{ claude_home }}/"
+    - src: home-claude.md
+      dest: ~/
+      rename: CLAUDE.md
 
 claude_home: "~/.claude"
