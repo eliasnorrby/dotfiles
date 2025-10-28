@@ -53,7 +53,6 @@ get_model_name() { echo "$input" | jq -r '.model.display_name'; }
 get_current_dir() { echo "$input" | jq -r '.workspace.current_dir'; }
 get_project_dir() { echo "$input" | jq -r '.workspace.project_dir'; }
 get_version() { echo "$input" | jq -r '.version'; }
-get_cost() { echo "$input" | jq -r '.cost.total_cost_usd'; }
 get_duration() { echo "$input" | jq -r '.cost.total_duration_ms'; }
 get_lines_added() { echo "$input" | jq -r '.cost.total_lines_added'; }
 get_lines_removed() { echo "$input" | jq -r '.cost.total_lines_removed'; }
@@ -88,12 +87,20 @@ format_duration() {
   fi
 }
 
+# Get context usage from ccusage
+ccusage_output="$(echo "$input" | pnpm dlx ccusage statusline 2>/dev/null)"
+
+# Parse context percentage from ccusage output (format: "🧠 50,699 (25%)")
+context_pct=""
+if [[ -n "$ccusage_output" ]]; then
+  context_pct=$(echo "$ccusage_output" | grep -oE '\([0-9]+%\)' | tr -d '()')
+fi
+
 # Build statusline components
 MODEL=$(get_model_name)
 CURRENT_DIR=$(get_current_dir)
 PROJECT_DIR=$(get_project_dir)
 GIT_BRANCH=$(get_git_branch)
-COST=$(get_cost)
 DURATION=$(get_duration)
 LINES_ADDED=$(get_lines_added)
 LINES_REMOVED=$(get_lines_removed)
@@ -131,35 +138,7 @@ if [[ -n "$FORMATTED_DURATION" ]]; then
   components+=("${FG_BRIGHT_BLACK}  ${FORMATTED_DURATION}${COLOR_RESET}")
 fi
 
-# Cost (magenta with dollar icon)
-if [[ "$COST" != "null" ]] && [[ "$COST" != "0" ]] && [[ -n "$COST" ]]; then
-  # Round to 4 decimal places
-  COST_ROUNDED=$(printf "%.4f" "$COST")
-  components+=("${FG_MAGENTA}\$${COST_ROUNDED}${COLOR_RESET}")
-fi
-
-# Join components with dim separator
-separator="${FG_BRIGHT_BLACK} │ ${COLOR_RESET}"
-line1=""
-for i in "${!components[@]}"; do
-  if [[ $i -eq 0 ]]; then
-    line1="${components[$i]}"
-  else
-    line1="${line1}${separator}${components[$i]}"
-  fi
-done
-
-# Get context usage from ccusage
-ccusage_output="$(echo "$input" | pnpm dlx ccusage statusline 2>/dev/null)"
-
-# Parse context percentage from ccusage output (format: "🧠 50,699 (25%)")
-context_pct=""
-if [[ -n "$ccusage_output" ]]; then
-  context_pct=$(echo "$ccusage_output" | grep -oE '\([0-9]+%\)' | tr -d '()')
-fi
-
-# Build line 2 with context bar
-line2=""
+# Context usage with progress bar
 if [[ -n "$context_pct" ]]; then
   # Extract numeric percentage
   pct_num=$(echo "$context_pct" | tr -d '%')
@@ -182,11 +161,19 @@ if [[ -n "$context_pct" ]]; then
   for ((i = 0; i < filled; i++)); do bar+="█"; done
   for ((i = 0; i < empty; i++)); do bar+="░"; done
 
-  line2="${FG_BRIGHT_WHITE}  Context: ${bar_color}${bar} ${context_pct}${COLOR_RESET}"
+  components+=("${FG_BRIGHT_WHITE}  ${bar_color}${bar} ${context_pct}${COLOR_RESET}")
 fi
 
-# Output both lines
-echo -e "$line1"
-if [[ -n "$line2" ]]; then
-  echo -e "$line2"
-fi
+# Join components with dim separator
+separator="${FG_BRIGHT_BLACK} │ ${COLOR_RESET}"
+output=""
+for i in "${!components[@]}"; do
+  if [[ $i -eq 0 ]]; then
+    output="${components[$i]}"
+  else
+    output="${output}${separator}${components[$i]}"
+  fi
+done
+
+# Output single line
+echo -e "$output"
