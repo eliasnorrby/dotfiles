@@ -6,3 +6,4 @@
     state: link
     src: "{{ homebrew_prefix }}/opt/openjdk/libexec/openjdk.jdk"
     dest: /Library/Java/JavaVirtualMachines/openjdk.jdk
+  tags: ["never", "sudo_enabled"]
