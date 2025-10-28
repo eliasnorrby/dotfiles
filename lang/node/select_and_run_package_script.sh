@@ -41,7 +41,7 @@ select_script() {
   script=$(jq -r '.scripts' "${package_dir}/package.json" \
     | jq 'keys[]' \
     | sed 's/"//g' \
-    | package_dir="$package_dir" fzf --ansi --reverse \
+    | package_dir="$package_dir" fzf --ansi --list-label ' Scripts ' \
       --preview 'jq -r ".scripts[\"$(echo {})\"]" "'"${package_dir}"'/package.json" | bat -l sh --color always --decorations never')
   if [[ -z "$script" ]]; then
     return
