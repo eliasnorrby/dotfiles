@@ -55,6 +55,7 @@ uda.taskwarrior-tui.keyconfig.shortcut2=W
 # === Styles ===
 color.blocked=red
 color.blocking=yellow
+color.tag.wait=yellow
 
 # uda.taskwarrior-tui.style.report.selection
 # uda.taskwarrior-tui.style.report.scrollbar
