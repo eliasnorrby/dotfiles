@@ -140,13 +140,19 @@ fi
 
 # Join components with dim separator
 separator="${FG_BRIGHT_BLACK} │ ${COLOR_RESET}"
-output=""
+line1=""
 for i in "${!components[@]}"; do
   if [[ $i -eq 0 ]]; then
-    output="${components[$i]}"
+    line1="${components[$i]}"
   else
-    output="${output}${separator}${components[$i]}"
+    line1="${line1}${separator}${components[$i]}"
   fi
 done
 
-echo -e "$output"
+line2="$(echo "$input" | pnpm dlx ccusage statusline)"
+
+# Output both lines
+echo -e "$line1"
+if [[ -n "$line2" ]]; then
+  echo -e "$line2"
+fi
