@@ -36,7 +36,23 @@ report.started.filter=+ACTIVE
 uda.taskwarrior-tui.task-report.show-info=false
 uda.taskwarrior-tui.task-report.auto-insert-double-quotes-on-add=false
 
-# == Styles ===
+# GitHub PR sync UDAs
+uda.pr_number.type=numeric
+uda.pr_number.label=PR#
+uda.pr_repo.type=string
+uda.pr_repo.label=Repo
+
+# == Shortcuts ==
+# Taskwarrior-tui shortcut to open PR in browser
+uda.taskwarrior-tui.shortcuts.1=task_open_pr
+uda.taskwarrior-tui.keyconfig.shortcut1=P
+uda.taskwarrior-tui.shortcuts.2=add_wait_tag
+uda.taskwarrior-tui.keyconfig.shortcut2=W
+
+# uda.taskwarrior-tui.background_process=task sync
+# uda.taskwarrior-tui.background_process_period=60
+
+# === Styles ===
 color.blocked=red
 color.blocking=yellow
 
@@ -50,14 +66,5 @@ uda.taskwarrior-tui.style.command=green on background
 # uda.taskwarrior-tui.style.context.active
 # uda.taskwarrior-tui.style.report.completion-pane
 # uda.taskwarrior-tui.style.report.completion-pane-highlight
-
-# GitHub PR sync UDAs
-uda.pr_number.type=numeric
-uda.pr_number.label=PR#
-uda.pr_repo.type=string
-uda.pr_repo.label=Repo
-
-# Taskwarrior-tui shortcut to open PR in browser
-uda.taskwarrior-tui.shortcuts.1=task_open_pr
 
 context=work
