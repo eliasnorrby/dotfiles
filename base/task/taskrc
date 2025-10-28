@@ -49,8 +49,8 @@ uda.taskwarrior-tui.keyconfig.shortcut1=P
 uda.taskwarrior-tui.shortcuts.2=add_wait_tag
 uda.taskwarrior-tui.keyconfig.shortcut2=W
 
-# uda.taskwarrior-tui.background_process=task sync
-# uda.taskwarrior-tui.background_process_period=60
+uda.taskwarrior-tui.background_process=gh_pr_task_sync --repo bemlo/bemlo --username eliasnorrby
+uda.taskwarrior-tui.background_process_period=60
 
 # === Styles ===
 color.blocked=red
