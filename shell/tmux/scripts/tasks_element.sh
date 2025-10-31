@@ -6,6 +6,7 @@ fi
 
 merge_count=$(task count +pr +merge -wait)
 review_count=$(task count +pr +review -wait)
+due_count=$(task count '(due:today or +OVERDUE)')
 next_task=$(task rc.verbose: limit:1 started)
 separator="#[fg=brightblack] • #[fg=default]"
 
@@ -20,6 +21,10 @@ fi
 
 if [[ "$review_count" -gt 0 ]]; then
   components+=("#[fg=yellow]  $review_count#[fg=default]")
+fi
+
+if [[ "$due_count" -gt 0 ]]; then
+  components+=("#[fg=red] $due_count#[fg=default]")
 fi
 
 output=""
