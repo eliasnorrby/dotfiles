@@ -146,6 +146,9 @@ keys:
           - key: b
             value: browse
             immediate: true
+          - key: d
+            value: done
+            immediate: true
   - key: D
     value: date
     keys:

@@ -20,6 +20,8 @@ aliases:
     wait: pr checks --watch
     merge: '!gh auto && sleep 3 && gh wait && git prm'
     url: 'repo view --json url --jq .url'
+    merged: '![ $(gh pr view --json state --jq .state) == "MERGED" ]'
+    done: '!gh merged && git prd && git rt'
 # The path to a unix socket through which send HTTP connections. If blank, HTTP traffic will be handled by net/http.DefaultTransport.
 http_unix_socket:
 # What web browser gh should use when opening URLs. If blank, will refer to environment.
