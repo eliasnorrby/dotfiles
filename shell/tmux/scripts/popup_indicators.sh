@@ -4,7 +4,7 @@
 current_session="$(tmux display -p '#S')"
 
 # If we're in a popup session, extract the original session name
-if [[ "$current_session" =~ ^_popup_(.+)_(prompt|terminal|scratch)$ ]]; then
+if [[ "$current_session" =~ ^_popup_(.+)_(.+)$ ]]; then
   # Extract base session name, stripping any suffix
   original_session="${BASH_REMATCH[1]}"
   current_session="$original_session"
@@ -12,6 +12,12 @@ elif [[ "$current_session" =~ ^_popup_(.+)$ ]]; then
   # Handle base popup without suffix (if any still exist)
   original_session="${BASH_REMATCH[1]}"
   current_session="$original_session"
+fi
+
+# If we extracted "GLOBAL" (from a global popup), find the real base session
+if [[ "$current_session" == "GLOBAL" ]]; then
+  # Get list of attached sessions, filtering out popups and runner
+  current_session="$(tmux list-sessions -F '#{session_name}' | grep -v '^_popup_' | grep -v '^runner$' | head -n1)"
 fi
 
 # Build the expected popup session names
