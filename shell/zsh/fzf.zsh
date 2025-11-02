@@ -111,7 +111,7 @@ npm-widget() {
   else
     runner="npm run"
   fi
-  script=$( jq -r '.scripts' "${package_dir}/package.json" | jq 'keys[]' | sed 's/"//g' | package_dir="$package_dir" fzf_tmux --ansi \
+  script=$( jq -r '.scripts' "${package_dir}/package.json" | jq 'keys[]' | sed 's/"//g' | package_dir="$package_dir" fzf_tmux --list-label '   Scripts ' --ansi \
     --preview 'jq -r ".scripts[\"$(echo {})\"]" "'"${package_dir}"'/package.json" | bat -l sh --color always --decorations never')
   zle reset-prompt
   [ -z "$script" ] && return
@@ -307,8 +307,9 @@ apps() {
     # # Preview with tree
     local TARGET="$(echo -e "$APPS" |
       sed "s#$PWD##" |
-      fzf --border --tac \
-      --preview "tree -C -I node_modules -L 3 {}")"
+      fzf --tac \
+        --list-label "   Apps " \
+        --preview "tree -C -I node_modules -L 3 {}")"
 
     if [[ -n "$TARGET" ]] ; then
       cd "${PWD}/${TARGET}"
