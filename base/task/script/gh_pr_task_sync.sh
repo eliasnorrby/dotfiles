@@ -97,6 +97,11 @@ parse_args() {
       usage
       ;;
     *)
+      # If arg is a uuid, just ignore it. This allows invoking the script using taskwarrior-tuis shortcuts.
+      if [[ "$1" =~ ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$ ]]; then
+        shift
+        continue
+      fi
       log_error "Unknown option: $1"
       usage
       ;;
@@ -175,6 +180,13 @@ is_reviewer() {
   local review_requests="$1"
   local username="$2"
   echo "$review_requests" | jq -r '.[] | select(.login == "'"$username"'") | .login' | grep -q "$username"
+}
+
+# Check if user has already reviewed
+has_user_reviewed() {
+  local reviews="$1"
+  local username="$2"
+  echo "$reviews" | jq -r '.[] | select(.author.login == "'"$username"'") | .author.login' | grep -q "$username"
 }
 
 # Check if PR is authored by user
@@ -309,7 +321,8 @@ process_open_pr() {
     is_my_pr=true
   fi
 
-  if is_reviewer "$review_requests" "$USERNAME"; then
+  # A PR is a "review PR" if you're currently requested OR you've already reviewed
+  if is_reviewer "$review_requests" "$USERNAME" || has_user_reviewed "$reviews" "$USERNAME"; then
     is_review_pr=true
   fi
 
@@ -336,9 +349,21 @@ process_open_pr() {
     fi
   elif [ "$is_review_pr" = true ]; then
     # Handle PR to review
-    if [ -z "$existing_task" ]; then
+    local user_reviewed=false
+    if has_user_reviewed "$reviews" "$USERNAME"; then
+      user_reviewed=true
+    fi
+
+    if [ "$user_reviewed" = true ] && [ -n "$existing_task" ]; then
+      # User has reviewed - complete the task
+      local task_uuid
+      task_uuid=$(echo "$existing_task" | jq -r '.uuid')
+      complete_task "$task_uuid" "$pr_number" || true
+    elif [ "$user_reviewed" = false ] && [ -z "$existing_task" ]; then
+      # User hasn't reviewed yet - create task
       create_task "$pr_number" "$title" "review" "false" || true
     fi
+    # If reviewed but no task exists, or not reviewed but task exists, do nothing
   fi
 }
 
