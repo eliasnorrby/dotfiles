@@ -132,6 +132,9 @@ keys:
                     value: --squash
                     name: Squash
                   - key: a
+                    value: --auto
+                    name: Auto merge
+                  - key: A
                     value: --admin
                     name: Use admin privileges
               - key: v
