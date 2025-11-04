@@ -4,8 +4,8 @@ if ! command -v task >/dev/null 2>&1; then
   exit 0
 fi
 
-merge_count=$(task count +pr +merge -wait)
-review_count=$(task count +pr +review -wait)
+merge_count=$(task count status:pending +pr +merge -wait)
+review_count=$(task count status:pending +pr +review -wait)
 due_count=$(task count '(due:today or +OVERDUE)')
 next_task=$(task rc.verbose: limit:1 started)
 separator="#[fg=brightblack] • #[fg=default]"
