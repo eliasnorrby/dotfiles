@@ -59,6 +59,7 @@ uda.taskwarrior-tui.background_process_period=60
 color.blocked=red
 color.blocking=yellow
 color.scheduled=green
+color.due=magenta
 color.tag.wait=yellow
 
 # uda.taskwarrior-tui.style.report.selection
