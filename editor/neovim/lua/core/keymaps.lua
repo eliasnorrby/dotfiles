@@ -8,7 +8,19 @@ wk.add({
   { '<leader>Q', '<cmd>qall<CR>', desc = 'quit all' },
   { '<leader>x', '<cmd>q!<CR>', desc = 'force quit' },
   { '<leader>X', '<cmd>qall!<CR>', desc = 'force quit all' },
-  { '<leader>R', '<cmd>%bd!<CR>', desc = 'remove all buffers' },
+  {
+    '<leader>R',
+    function()
+      local bufs = vim.api.nvim_list_bufs()
+      for _, buf in ipairs(bufs) do
+        local buftype = vim.api.nvim_get_option_value('buftype', { buf = buf })
+        if buftype ~= 'terminal' and vim.api.nvim_buf_is_valid(buf) then
+          vim.api.nvim_buf_delete(buf, { force = true })
+        end
+      end
+    end,
+    desc = 'remove all buffers (keep terminals)',
+  },
 })
 
 -- file path yanking
