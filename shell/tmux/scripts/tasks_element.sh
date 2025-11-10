@@ -7,7 +7,7 @@ fi
 merge_count=$(task count status:pending +pr +merge -wait)
 review_count=$(task count status:pending +pr +review -wait)
 due_count=$(task count '(due:today or +OVERDUE)')
-next_task=$(task rc.verbose: limit:1 started)
+next_task=$(task rc.verbose: limit:1 started | head -1)
 separator="#[fg=brightblack] • #[fg=default]"
 
 components=()
