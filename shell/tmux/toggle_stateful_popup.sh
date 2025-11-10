@@ -14,6 +14,7 @@ session_name=""
 title=""
 color="white"
 is_global=false
+is_dismiss=false
 fallback_command=""
 width=""
 height=""
@@ -24,6 +25,10 @@ command_args=()
 # Parse arguments
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --dismiss)
+      is_dismiss=true
+      shift
+      ;;
     --session=*)
       session_name="${1#--session=}"
       shift
@@ -81,6 +86,15 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+# Get current session info
+current_session="$(tmux display -p '#S')"
+
+# If --dismiss is set, we don't need a session
+if $is_dismiss; then
+  tmux detach-client
+  exit 0
+fi
+
 # Validate required parameters
 if [[ -z "$session_name" ]]; then
   echo "Error: --session=<name> is required" >&2
@@ -91,9 +105,6 @@ if [[ -z "$title" ]]; then
   echo "Error: --title=<title> is required" >&2
   exit 1
 fi
-
-# Get current session info
-current_session="$(tmux display -p '#S')"
 
 # Determine the base session name (handle if we're already in a popup)
 if [[ "$current_session" =~ ^_popup_(.+)_(.+)$ ]]; then
