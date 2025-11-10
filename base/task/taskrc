@@ -48,7 +48,7 @@ uda.taskwarrior-tui.shortcuts.1=task_open_pr
 uda.taskwarrior-tui.keyconfig.shortcut1=P
 uda.taskwarrior-tui.shortcuts.2=add_wait_tag
 uda.taskwarrior-tui.keyconfig.shortcut2=W
-uda.taskwarrior-tui.shortcuts.3=gh_pr_task_sync --repo bemlo/bemlo --username eliasnorrby
+uda.taskwarrior-tui.shortcuts.3=gh_pr_task_sync --repo bemlo/bemlo --username eliasnorrby --wait
 uda.taskwarrior-tui.keyconfig.shortcut3=R
 
 

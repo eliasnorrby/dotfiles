@@ -93,6 +93,10 @@ parse_args() {
       DRY_RUN=true
       shift
       ;;
+    --wait | -w)
+      WAIT=true
+      shift
+      ;;
     --help | -h)
       usage
       ;;
@@ -484,6 +488,11 @@ main() {
     exit 1
   else
     log_info "  Errors:          $ERRORS"
+  fi
+
+  if [ "$WAIT" = true ]; then
+    log_info "Waiting for user input before exiting..."
+    read -r -p "Press Enter to continue..."
   fi
 }
 
