@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Count active reminders (and clean up stale ones)
+# Count active reminders (and clean up expired ones)
 REMINDERS_DIR="${TMPDIR:-/tmp}/tmux_reminders"
 
 if [[ ! -d "$REMINDERS_DIR" ]]; then
@@ -8,16 +8,15 @@ if [[ ! -d "$REMINDERS_DIR" ]]; then
   exit 0
 fi
 
-# Clean up stale reminder files (where at job no longer exists)
+now=$(date +%s)
+
+# Clean up expired reminder files
 for file in "$REMINDERS_DIR"/reminder_*; do
   if [[ -f "$file" ]]; then
-    # Check if job ID exists (second line of file)
-    job_id=$(sed -n '2p' "$file" 2>/dev/null)
-    if [[ -n "$job_id" ]]; then
-      # Verify job still exists in at queue
-      if ! atq | grep -q "^${job_id}[[:space:]]"; then
-        rm -f "$file"
-      fi
+    target=$(sed -n '2p' "$file" 2>/dev/null)
+    # Remove if target is in the past (already fired)
+    if [[ -n "$target" ]] && ((target < now)); then
+      rm -f "$file"
     fi
   fi
 done

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Simple TUI for managing reminders in a tmux popup
-# Uses 'at' command for reliable scheduling that survives sleep
+# Uses background checker loop that compares wall-clock time
 
 REMINDERS_DIR="${TMPDIR:-/tmp}/tmux_reminders"
 mkdir -p "$REMINDERS_DIR"
@@ -18,18 +18,76 @@ send_notification() {
   terminal-notifier -title "Time's Up!" -message "$message" -timeout 0 -sound default
 }
 
-# Function to parse duration/time into at-compatible format
-parse_time_for_at() {
+# Function to check and fire due reminders
+check_and_fire_reminders() {
+  local now
+  now=$(date +%s)
+
+  if [[ ! -d "$REMINDERS_DIR" ]]; then
+    return
+  fi
+
+  for file in "$REMINDERS_DIR"/reminder_*; do
+    if [[ ! -f "$file" ]]; then
+      continue
+    fi
+
+    local target
+    target=$(sed -n '2p' "$file" 2>/dev/null)
+
+    if [[ -n "$target" ]] && ((now >= target)); then
+      local message
+      message=$(head -n 1 "$file")
+      send_notification "$message"
+      rm -f "$file"
+    fi
+  done
+}
+
+# Background checker process
+start_reminder_checker() {
+  while true; do
+    check_and_fire_reminders
+    sleep 10
+  done &
+  CHECKER_PID=$!
+}
+
+# Kill checker on exit
+cleanup() {
+  if [[ -n "$CHECKER_PID" ]]; then
+    kill "$CHECKER_PID" 2>/dev/null
+  fi
+}
+trap cleanup EXIT INT TERM
+
+# Function to parse duration/time into epoch timestamp
+parse_time_to_epoch() {
   local input="$1"
+  local now
+  now=$(date +%s)
 
   # Check if it's an absolute time in HH:MM format
   if [[ "$input" =~ ^([0-9]{1,2}):([0-9]{2})$ ]]; then
     local hour="${BASH_REMATCH[1]}"
     local minute="${BASH_REMATCH[2]}"
 
+    # Strip leading zeros to avoid octal interpretation
+    hour=$((10#$hour))
+    minute=$((10#$minute))
+
     # Validate hour and minute ranges
     if ((hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59)); then
-      echo "$hour:$minute"
+      # Calculate target time today using perl
+      local target
+      target=$(perl -e "use Time::Local; my (\$sec,\$min,\$hour,\$mday,\$mon,\$year) = localtime(time); print timelocal(0, $minute, $hour, \$mday, \$mon, \$year);")
+
+      # If target is in the past, schedule for tomorrow
+      if ((target <= now)); then
+        target=$((target + 86400))
+      fi
+
+      echo "$target"
       return 0
     else
       return 1
@@ -41,78 +99,65 @@ parse_time_for_at() {
     local num="${BASH_REMATCH[1]}"
     local unit="${BASH_REMATCH[2]}"
 
+    local seconds=0
     case "$unit" in
-      m) echo "now + $num minutes" ;;
-      h) echo "now + $num hours" ;;
-      d) echo "now + $num days" ;;
+      m) seconds=$((num * 60)) ;;
+      h) seconds=$((num * 3600)) ;;
+      d) seconds=$((num * 86400)) ;;
       *) return 1 ;;
     esac
+
+    echo $((now + seconds))
+    return 0
   else
     return 1
   fi
 }
 
-# Function to start a reminder using at
+# Function to start a reminder
 start_reminder() {
   local message="$1"
-  local duration="$2"
+  local time_input="$2"
 
-  local at_time
-  if ! at_time=$(parse_time_for_at "$duration"); then
-    notify_error "Invalid time/duration: \"$duration\""
+  local target_epoch
+  if ! target_epoch=$(parse_time_to_epoch "$time_input"); then
+    notify_error "Invalid time/duration: \"$time_input\""
     return 1
   fi
 
   # Create unique ID for this reminder
-  local reminder_id="reminder_$$_$(date +%s)_$RANDOM"
+  local reminder_id
+  reminder_id="reminder_$$_$(date +%s)_$RANDOM"
   local reminder_file="$REMINDERS_DIR/$reminder_id"
 
-  # Store reminder info with job ID (will be updated after at submission)
-  echo "$message" >"$reminder_file"
+  # Store reminder: line 1 = message, line 2 = target epoch
+  {
+    echo "$message"
+    echo "$target_epoch"
+  } >"$reminder_file"
 
-  # Create a script that will be executed by at
-  local at_script
-  at_script=$(
-    cat <<EOF
-terminal-notifier -title "Time's Up!" -message "$message" -timeout 0 -sound default
-rm -f "$reminder_file"
-EOF
-  )
+  # Inform user
+  local target_time
+  target_time=$(perl -e "use POSIX qw(strftime); print strftime('%H:%M', localtime($target_epoch))")
+  terminal-notifier -title "Reminder Set" -message "I'll remind you to \"$message\" at $target_time." -sound default
 
-  # Submit to at and capture job ID
-  local at_output
-  if at_output=$(echo "$at_script" | at "$at_time" 2>&1); then
-    # Extract job number from at output (e.g., "job 5 at Tue Nov  4 14:00:00 2025")
-    local job_id
-    job_id=$(echo "$at_output" | grep -oE 'job [0-9]+' | grep -oE '[0-9]+')
-
-    # Store job ID in the reminder file for tracking
-    echo "$job_id" >>"$reminder_file"
-
-    # Inform user
-    terminal-notifier -title "Reminder Set" -message "I'll remind you to \"$message\" in $duration." -sound default
-    return 0
-  else
-    notify_error "Failed to schedule reminder: $at_output"
-    rm -f "$reminder_file"
-    return 1
-  fi
+  return 0
 }
 
 # Function to count active reminders
 count_reminders() {
-  # Clean up stale reminder files (where at job no longer exists)
+  local now
+  now=$(date +%s)
+
+  # Clean up expired reminders
   if [[ -d "$REMINDERS_DIR" ]]; then
     for file in "$REMINDERS_DIR"/reminder_*; do
       if [[ -f "$file" ]]; then
-        # Check if job ID exists (second line of file)
-        local job_id
-        job_id=$(sed -n '2p' "$file" 2>/dev/null)
-        if [[ -n "$job_id" ]]; then
-          # Verify job still exists in at queue
-          if ! atq | grep -q "^${job_id}[[:space:]]"; then
-            rm -f "$file"
-          fi
+        local target
+        target=$(sed -n '2p' "$file" 2>/dev/null)
+        # Remove if target is in the past (already fired but file still exists somehow)
+        if [[ -n "$target" ]] && ((target < now)); then
+          rm -f "$file"
         fi
       fi
     done
@@ -139,17 +184,13 @@ list_reminders() {
         ((count++))
         local message
         message=$(head -n 1 "$file")
-        local job_id
-        job_id=$(sed -n '2p' "$file" 2>/dev/null)
+        local target_epoch
+        target_epoch=$(sed -n '2p' "$file" 2>/dev/null)
 
-        # Get scheduled time from atq
-        local time_info=""
-        if [[ -n "$job_id" ]]; then
-          time_info=$(atq | grep "^${job_id}[[:space:]]" | awk '{print $2, $3, $4, $5}')
-        fi
-
-        if [[ -n "$time_info" ]]; then
-          echo "$count. $message (at $time_info)"
+        if [[ -n "$target_epoch" ]]; then
+          local target_time
+          target_time=$(perl -e "use POSIX qw(strftime); print strftime('%a %b %d %H:%M:%S %Y', localtime($target_epoch))")
+          echo "$count. $message (at $target_time)"
         else
           echo "$count. $message"
         fi
@@ -166,18 +207,9 @@ clear_all_reminders() {
   read -r confirm
 
   if [[ "$confirm" =~ ^[Yy]$ ]]; then
-    # Remove all at jobs for reminders
+    # Remove all reminder files
     if [[ -d "$REMINDERS_DIR" ]]; then
-      for file in "$REMINDERS_DIR"/reminder_*; do
-        if [[ -f "$file" ]]; then
-          local job_id
-          job_id=$(sed -n '2p' "$file" 2>/dev/null)
-          if [[ -n "$job_id" ]]; then
-            atrm "$job_id" 2>/dev/null
-          fi
-          rm -f "$file"
-        fi
-      done
+      rm -f "$REMINDERS_DIR"/reminder_*
     fi
 
     echo "All reminders cleared."
@@ -187,6 +219,9 @@ clear_all_reminders() {
     sleep 1
   fi
 }
+
+# Start the background checker
+start_reminder_checker
 
 # Main TUI loop
 clear
@@ -220,14 +255,14 @@ while true; do
       fi
 
       echo -n "When (e.g., 10m, 1h, 14:30): "
-      read -r duration
+      read -r time_input
 
-      if [[ -z "$duration" ]]; then
+      if [[ -z "$time_input" ]]; then
         echo "Cancelled"
         continue
       fi
 
-      start_reminder "$message" "$duration"
+      start_reminder "$message" "$time_input"
       clear
       echo "Reminder set!"
       echo ""
