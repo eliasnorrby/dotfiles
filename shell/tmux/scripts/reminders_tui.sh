@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Simple TUI for managing reminders in a tmux popup
-# Runs in a loop, allowing multiple timers to run concurrently
+# Uses 'at' command for reliable scheduling that survives sleep
 
 REMINDERS_DIR="${TMPDIR:-/tmp}/tmux_reminders"
 mkdir -p "$REMINDERS_DIR"
@@ -18,20 +18,33 @@ send_notification() {
   terminal-notifier -title "Time's Up!" -message "$message" -timeout 0 -sound default
 }
 
-# Function to parse duration into seconds
-parse_duration() {
-  local duration="$1"
+# Function to parse duration/time into at-compatible format
+parse_time_for_at() {
+  local input="$1"
 
-  # Extract number and unit
-  if [[ "$duration" =~ ^([0-9]+)([smhd]?)$ ]]; then
+  # Check if it's an absolute time in HH:MM format
+  if [[ "$input" =~ ^([0-9]{1,2}):([0-9]{2})$ ]]; then
+    local hour="${BASH_REMATCH[1]}"
+    local minute="${BASH_REMATCH[2]}"
+
+    # Validate hour and minute ranges
+    if ((hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59)); then
+      echo "$hour:$minute"
+      return 0
+    else
+      return 1
+    fi
+  fi
+
+  # Otherwise, parse as relative duration
+  if [[ "$input" =~ ^([0-9]+)([mhd])$ ]]; then
     local num="${BASH_REMATCH[1]}"
     local unit="${BASH_REMATCH[2]}"
 
     case "$unit" in
-      s | "") echo "$num" ;;         # seconds (default)
-      m) echo $((num * 60)) ;;       # minutes
-      h) echo $((num * 3600)) ;;     # hours
-      d) echo $((num * 86400)) ;;    # days
+      m) echo "now + $num minutes" ;;
+      h) echo "now + $num hours" ;;
+      d) echo "now + $num days" ;;
       *) return 1 ;;
     esac
   else
@@ -39,14 +52,14 @@ parse_duration() {
   fi
 }
 
-# Function to start a reminder in the background
+# Function to start a reminder using at
 start_reminder() {
   local message="$1"
   local duration="$2"
 
-  local seconds
-  if ! seconds=$(parse_duration "$duration"); then
-    notify_error "Invalid duration: \"$duration\""
+  local at_time
+  if ! at_time=$(parse_time_for_at "$duration"); then
+    notify_error "Invalid time/duration: \"$duration\""
     return 1
   fi
 
@@ -54,31 +67,65 @@ start_reminder() {
   local reminder_id="reminder_$$_$(date +%s)_$RANDOM"
   local reminder_file="$REMINDERS_DIR/$reminder_id"
 
-  # Store reminder info
+  # Store reminder info with job ID (will be updated after at submission)
   echo "$message" >"$reminder_file"
 
-  # Start background process
-  ( 
-    sleep "$seconds"
-    if [[ -f "$reminder_file" ]]; then
-      send_notification "$message"
-      rm -f "$reminder_file"
-    fi
-  ) &
+  # Create a script that will be executed by at
+  local at_script
+  at_script=$(
+    cat <<EOF
+terminal-notifier -title "Time's Up!" -message "$message" -timeout 0 -sound default
+rm -f "$reminder_file"
+EOF
+  )
 
-  # Inform user
-  terminal-notifier -title "Reminder Set" -message "I'll remind you to \"$message\" in $duration." -sound default
+  # Submit to at and capture job ID
+  local at_output
+  if at_output=$(echo "$at_script" | at "$at_time" 2>&1); then
+    # Extract job number from at output (e.g., "job 5 at Tue Nov  4 14:00:00 2025")
+    local job_id
+    job_id=$(echo "$at_output" | grep -oE 'job [0-9]+' | grep -oE '[0-9]+')
 
-  return 0
+    # Store job ID in the reminder file for tracking
+    echo "$job_id" >>"$reminder_file"
+
+    # Inform user
+    terminal-notifier -title "Reminder Set" -message "I'll remind you to \"$message\" in $duration." -sound default
+    return 0
+  else
+    notify_error "Failed to schedule reminder: $at_output"
+    rm -f "$reminder_file"
+    return 1
+  fi
 }
 
 # Function to count active reminders
 count_reminders() {
+  # Clean up stale reminder files (where at job no longer exists)
+  if [[ -d "$REMINDERS_DIR" ]]; then
+    for file in "$REMINDERS_DIR"/reminder_*; do
+      if [[ -f "$file" ]]; then
+        # Check if job ID exists (second line of file)
+        local job_id
+        job_id=$(sed -n '2p' "$file" 2>/dev/null)
+        if [[ -n "$job_id" ]]; then
+          # Verify job still exists in at queue
+          if ! atq | grep -q "^${job_id}[[:space:]]"; then
+            rm -f "$file"
+          fi
+        fi
+      fi
+    done
+  fi
+
   find "$REMINDERS_DIR" -type f -name 'reminder_*' 2>/dev/null | wc -l | tr -d ' '
 }
 
 # Function to list active reminders
 list_reminders() {
+  # First clean up stale entries
+  count_reminders >/dev/null
+
   local count=0
   echo ""
   echo "Active Reminders:"
@@ -91,12 +138,54 @@ list_reminders() {
       if [[ -f "$file" ]]; then
         ((count++))
         local message
-        message=$(cat "$file")
-        echo "$count. $message"
+        message=$(head -n 1 "$file")
+        local job_id
+        job_id=$(sed -n '2p' "$file" 2>/dev/null)
+
+        # Get scheduled time from atq
+        local time_info=""
+        if [[ -n "$job_id" ]]; then
+          time_info=$(atq | grep "^${job_id}[[:space:]]" | awk '{print $2, $3, $4, $5}')
+        fi
+
+        if [[ -n "$time_info" ]]; then
+          echo "$count. $message (at $time_info)"
+        else
+          echo "$count. $message"
+        fi
       fi
     done
   fi
   echo ""
+}
+
+# Function to clear all reminders
+clear_all_reminders() {
+  echo ""
+  echo -n "Are you sure you want to clear ALL reminders? (y/N): "
+  read -r confirm
+
+  if [[ "$confirm" =~ ^[Yy]$ ]]; then
+    # Remove all at jobs for reminders
+    if [[ -d "$REMINDERS_DIR" ]]; then
+      for file in "$REMINDERS_DIR"/reminder_*; do
+        if [[ -f "$file" ]]; then
+          local job_id
+          job_id=$(sed -n '2p' "$file" 2>/dev/null)
+          if [[ -n "$job_id" ]]; then
+            atrm "$job_id" 2>/dev/null
+          fi
+          rm -f "$file"
+        fi
+      done
+    fi
+
+    echo "All reminders cleared."
+    sleep 1
+  else
+    echo "Cancelled."
+    sleep 1
+  fi
 }
 
 # Main TUI loop
@@ -108,13 +197,14 @@ echo ""
 echo "Commands:"
 echo "  [Enter] - Set a new reminder"
 echo "  l       - List active reminders"
+echo "  c       - Clear all reminders"
 echo "  q       - Quit"
 echo ""
 
 while true; do
   list_reminders
 
-  echo -n "Command (Enter/l/q): "
+  echo -n "Command (Enter/l/c/q): "
   read -r cmd
 
   case "$cmd" in
@@ -129,7 +219,7 @@ while true; do
         continue
       fi
 
-      echo -n "Remind me in (e.g., 10m, 5s, 1h): "
+      echo -n "When (e.g., 10m, 1h, 14:30): "
       read -r duration
 
       if [[ -z "$duration" ]]; then
@@ -145,6 +235,12 @@ while true; do
 
     l | L)
       # Just refresh the list (already shown)
+      clear
+      ;;
+
+    c | C)
+      # Clear all reminders
+      clear_all_reminders
       clear
       ;;
 

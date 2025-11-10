@@ -256,6 +256,10 @@ configured manually.
 - Some apps may require Rosetta to run
   - `/usr/sbin/softwareupdate --install-rosetta --agree-to-license`
 - Add Workman-P layout (?)
+- Enable `atrun`:
+  ```bash
+  sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.atrun.plist
+  ```
 
 ### Optional
 
