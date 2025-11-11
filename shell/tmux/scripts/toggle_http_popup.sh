@@ -8,6 +8,6 @@ exec toggle_stateful_popup \
   --title=HTTP \
   --color=magenta \
   -d '#{pane_current_path}' \
-  -w 80% \
-  -h 80% \
+  -w 100% \
+  -h 98% \
   zsh
