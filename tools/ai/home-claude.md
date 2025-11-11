@@ -1,3 +1,7 @@
+## Input
+
+If you need input, you MUST use the "AskUserQuestion" tool.
+
 ## Commits
 
 When committing, ensure the message is at most 72 characters in width.
