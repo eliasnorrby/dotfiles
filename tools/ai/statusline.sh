@@ -65,7 +65,11 @@ get_git_branch() {
   if [[ -f "$project_dir/.git/HEAD" ]]; then
     local ref=$(cat "$project_dir/.git/HEAD")
     if [[ $ref == ref:* ]]; then
-      echo "${ref#ref: refs/heads/}"
+      local branch="${ref#ref: refs/heads/}"
+      if [[ ${#branch} -gt 35 ]]; then
+        branch="${branch:0:35}..."
+      fi
+      echo "$branch"
     else
       echo "${ref:0:7}"  # detached HEAD
     fi
