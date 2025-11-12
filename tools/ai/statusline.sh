@@ -79,7 +79,18 @@ get_git_branch() {
 get_context_percentage() {
   local ccusage_output="$(echo "$input" | pnpm dlx ccusage statusline 2>/dev/null)"
   if [[ -n "$ccusage_output" ]]; then
-    echo "$ccusage_output" | grep -oE '\([0-9]+%\)' | tr -d '()'
+    local percentage=$(echo "$ccusage_output" | grep -oE '\([0-9]+%\)' | tr -d '()')
+    if [[ -n "$percentage" ]]; then
+      # Extract numeric value and add 20
+      local pct_num=$(echo "$percentage" | tr -d '%')
+      if [[ -n "$pct_num" ]]; then
+        local adjusted_pct=$((pct_num + 20))
+        if [[ $adjusted_pct -gt 100 ]]; then
+          adjusted_pct=100
+        fi
+        echo "${adjusted_pct}%"
+      fi
+    fi
   fi
 }
 
