@@ -19,6 +19,7 @@ macos_config:
     - 1password-cli
     - slack
     - spotify
+    - brainfm
     - amethyst
     - balenaetcher
     - fantastical
