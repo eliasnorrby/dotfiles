@@ -31,7 +31,6 @@ This setup script will:
   - xcode command line tools are installed (or verified to have been installed)
   - Dependencies are downloaded (using `homebrew`, `pip`, `ruby` and `npm`)
 - Run the post-install script, wherein:
-
   - `zsh` plugins are installed
   - `vim` plugins are installed
   - `coc-nvim` extensions are installed
@@ -70,12 +69,12 @@ if the topic is enabled. The same is true for aliases defined in `aliases.zsh`.
 ```
 .dotfiles
 └── group
-    ├── topic
+    ├── topic
     │   ├── aliases.zsh
     │   ├── env.zsh
     │   ├── topic.config.yml
-    │   └── topic.tasks.yml
-    └── another-topic
+    │   └── topic.tasks.yml
+    └── another-topic
 ```
 
 _Minimal example of a topic directory layout_
@@ -86,52 +85,52 @@ _Minimal example of a topic directory layout_
 ```
 .dotfiles
 ├── editor
-│   ├── editorconfig
-│   │   └── topic.config.yml
-│   ├── emacs
-│   │   ├── aliases.zsh
-│   │   ├── topic.config.yml
-│   │   ├── doom
-│   │   │   ├── config.el
-│   │   │   ├── init.el
-│   │   │   └── packages.el
-│   │   └── env.zsh
-│   └── vim
-│       ├── aliases.zsh
-│       ├── env.zsh
-│       ├── gvimrc.vim
-│       └── topic.config.yml
+│   ├── editorconfig
+│   │   └── topic.config.yml
+│   ├── emacs
+│   │   ├── aliases.zsh
+│   │   ├── topic.config.yml
+│   │   ├── doom
+│   │   │   ├── config.el
+│   │   │   ├── init.el
+│   │   │   └── packages.el
+│   │   └── env.zsh
+│   └── vim
+│       ├── aliases.zsh
+│       ├── env.zsh
+│       ├── gvimrc.vim
+│       └── topic.config.yml
 └── shell
-   ├── alacritty
-   │   ├── alacritty.yml
-   │   ├── aliases.zsh
-   │   └── topic.config.yml
-   ├── git
-   │   ├── aliases.zsh
-   │   └── topic.config.yml
-   ├── tmux
-   │   ├── aliases.zsh
-   │   ├── env.zsh
-   │   ├── scripts
-   │   │   └── uptime-tmux-status.sh
-   │   ├── tmux-cheatsheet.md
-   │   ├── tmux.conf
-   │   ├── tmux.remote.conf
-   │   ├── tmux.theme.conf
-   │   └── topic.config.yml
-   └── zsh
-       ├── aliases.zsh
-       ├── completion.zsh
-       ├── config.zsh
-       ├── fzf.zsh
-       ├── keybinds.zsh
-       ├── macos.zsh
-       ├── plugins.zsh
-       ├── prompt.zsh
-       ├── remote.zsh
-       ├── utilities.zsh
-       ├── topic.config.yml
-       └── topic.tasks.yml
+   ├── alacritty
+   │   ├── alacritty.yml
+   │   ├── aliases.zsh
+   │   └── topic.config.yml
+   ├── git
+   │   ├── aliases.zsh
+   │   └── topic.config.yml
+   ├── tmux
+   │   ├── aliases.zsh
+   │   ├── env.zsh
+   │   ├── scripts
+   │   │   └── uptime-tmux-status.sh
+   │   ├── tmux-cheatsheet.md
+   │   ├── tmux.conf
+   │   ├── tmux.remote.conf
+   │   ├── tmux.theme.conf
+   │   └── topic.config.yml
+   └── zsh
+       ├── aliases.zsh
+       ├── completion.zsh
+       ├── config.zsh
+       ├── fzf.zsh
+       ├── keybinds.zsh
+       ├── macos.zsh
+       ├── plugins.zsh
+       ├── prompt.zsh
+       ├── remote.zsh
+       ├── utilities.zsh
+       ├── topic.config.yml
+       └── topic.tasks.yml
 ```
 
 </details>
@@ -234,17 +233,19 @@ configured manually.
   - (MacOS) Preferences <kbd>→</kbd> Sharing
   - (Linux) `sudo scutil --set HostName <name-you-want>`
 - Generate ssh keys
+
   ```bash
   ssh-keygen -t ed25519 -C "your_email@example.com"
   gh auth login
   ```
+
   - Docs: [Generate][ssh-github-generate], [Add][ssh-github-add]
 
 ### MacOS
 
 - Start all apps and prepare to grant lots of privileges
   - Start with Karabiner and Hammerspoon to enable app shortcuts
-- Set main Alfred hotkey to <kbd>⌥</kbd> + <kbd>SPACE</kbd>
+- Set main Raycast hotkey to <kbd>⌥</kbd> + <kbd>SPACE</kbd>
 - Set desktop background (assets available in Dropbox)
 - Add additional desktops
 - Enable shortcuts for desktop navigation (Preferences <kbd>→</kbd> Keyboard <kbd>→</kbd> Shortcuts <kbd>→</kbd> Mission Control)
@@ -255,7 +256,6 @@ configured manually.
 - Import iStatMenus settings from `assets/istatmenus`, supply license
 - Some apps may require Rosetta to run
   - `/usr/sbin/softwareupdate --install-rosetta --agree-to-license`
-- Add Workman-P layout (?)
 - Enable `atrun`:
   ```bash
   sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.atrun.plist
