@@ -140,10 +140,10 @@ for i = 1, 5, 1 do
 end
 
 wk.add({
-  { '<leader>o', group = '+options' },
-  { '<leader>ol', group = '+line numbers' },
+  { '<leader>t', group = '+options' },
+  { '<leader>tl', group = '+line numbers' },
   {
-    '<leader>olr',
+    '<leader>tlr',
     function()
       vim.wo.number = true
       vim.wo.relativenumber = true
@@ -151,7 +151,7 @@ wk.add({
     desc = 'relative line numbers',
   },
   {
-    '<leader>oln',
+    '<leader>tln',
     function()
       vim.wo.number = true
       vim.wo.relativenumber = false
@@ -159,7 +159,7 @@ wk.add({
     desc = 'regular line numbers',
   },
   {
-    '<leader>olo',
+    '<leader>tlo',
     function()
       vim.wo.number = false
       vim.wo.relativenumber = false

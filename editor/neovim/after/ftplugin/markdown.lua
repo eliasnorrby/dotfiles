@@ -27,4 +27,4 @@ local toggle_read_mode = function()
   end
 end
 
-vim.keymap.set('n', '<leader>tr', toggle_read_mode, { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>tr', toggle_read_mode, { noremap = true, silent = true, desc = 'Toggle read mode' })

@@ -17,11 +17,11 @@ return {
     local wk = require('which-key')
     wk.add({
       {
-        '<leader>oi',
+        '<leader>ti',
         function()
           indent.enable(not indent.is_enabled())
         end,
-        { desc = 'Toggle indent guides' },
+        desc = 'Toggle indent guides',
       },
     })
   end,
