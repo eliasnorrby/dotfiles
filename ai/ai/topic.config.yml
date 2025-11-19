@@ -1,0 +1,10 @@
+---
+ai_config:
+  path: ai/ai
+  brew_formulae:
+    - codex
+  brew_casks:
+    - chatgpt
+    - coderabbit
+  npm_packages:
+    - "@github/copilot"

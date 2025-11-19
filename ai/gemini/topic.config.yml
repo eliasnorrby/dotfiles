@@ -1,0 +1,5 @@
+---
+gemini_config:
+  path: ai/gemini
+  brew_formulae:
+    - gemini-cli

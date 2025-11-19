@@ -1,16 +1,9 @@
 ---
-ai_config:
-  path: tools/ai
-  brew_formulae:
-    - codex
-    - gemini-cli
+claude_config:
+  path: ai/claude
   brew_casks:
-    - chatgpt
     - claude
     - claude-code
-    - coderabbit
-  npm_packages:
-    - "@github/copilot"
   links:
     - src: claude_editor.sh
       dest: "{{ xdg_bin_home }}/"

@@ -12,6 +12,16 @@ topics:
     - name: slides
       state: present
       config: "{{ slides_config }}"
+  ai:
+    - name: claude
+      state: present
+      config: "{{ claude_config }}"
+    - name: gemini
+      state: present
+      config: "{{ gemini_config }}"
+    - name: general
+      state: present
+      config: "{{ ai_config }}"
   base:
     - name: arch
       state: present
