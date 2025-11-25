@@ -26,7 +26,7 @@ return {
       typescript = { 'prettier' },
       typescriptreact = { 'prettier' },
       yaml = { 'prettier' },
-      toml = { 'prettier' },
+      toml = { 'taplo' },
       markdown = { 'prettier' },
       graphql = { 'prettier' },
       rust = { 'rustfmt', lsp_format = 'fallback' },

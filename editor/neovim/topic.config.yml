@@ -12,6 +12,7 @@ neovim_config:
     - glow
     - stylua
     - pgformatter
+    - taplo
   pacman_packages:
     - neovim
     - fzf
