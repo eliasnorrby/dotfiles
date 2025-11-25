@@ -10,6 +10,14 @@ return {
   ----@type obsidian.config.ClientOpts
   opts = {
     legacy_commands = false, -- use modern command syntax
+    note_id_func = function(title)
+      local date = os.date('%Y-%m-%d')
+      if title then
+        return date .. ' ' .. title
+      else
+        return date
+      end
+    end,
     completion = {
       blink = true,
     },
