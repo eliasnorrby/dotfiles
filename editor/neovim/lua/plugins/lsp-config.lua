@@ -142,6 +142,17 @@ return {
           return
         end
         set_lsp_keymaps(client, bufnr)
+
+        -- Register TypeScript-specific commands
+        if client.name == 'ts_ls' then
+          vim.api.nvim_buf_create_user_command(bufnr, 'OrganizeImports', function()
+            local params = {
+              command = '_typescript.organizeImports',
+              arguments = { vim.api.nvim_buf_get_name(0) },
+            }
+            client.request('workspace/executeCommand', params, nil, bufnr)
+          end, { desc = 'Organize Imports' })
+        end
       end,
     })
   end,
