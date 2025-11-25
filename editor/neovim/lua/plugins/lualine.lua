@@ -55,17 +55,17 @@ return {
 
     local kulala_env = {
       function()
-        local kulala = require('kulala')
-        if not kulala then
+        local loaded = require('lazy.core.config').plugins['kulala.nvim']._.loaded
+        if not loaded then
           return ''
         end
-        local env = kulala.get_selected_env()
+        local env = require('kulala').get_selected_env()
         if not env or env == '' then
           return ''
         end
         return '󰒋 ' .. env
       end,
-      color = { fg = '#A6DA95' },
+      color = { fg = '#939ab7' },
     }
 
     return {
