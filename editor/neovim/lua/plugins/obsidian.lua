@@ -1,5 +1,6 @@
 return {
-  'epwalsh/obsidian.nvim',
+  'obsidian-nvim/obsidian.nvim',
+  version = '*', -- recommended for stable releases
   lazy = true,
   event = {
     'BufReadPre ' .. vim.fn.expand('~') .. '/vaults/*/*.md',
@@ -8,8 +9,18 @@ return {
   ---@module 'obsidian'
   ----@type obsidian.config.ClientOpts
   opts = {
-    disable_frontmatter = true,
-    open_app_foreground = true,
+    legacy_commands = false, -- use modern command syntax
+    completion = {
+      blink = true,
+    },
+    frontmatter = {
+      enabled = false,
+    },
+    open = {
+      func = function(uri)
+        vim.ui.open(uri, { cmd = { 'open', '-a', '/Applications/Obsidian.app' } })
+      end,
+    },
     workspaces = {
       {
         name = 'personal',
@@ -36,14 +47,6 @@ return {
       -- vim.fn.jobstart({"xdg-open", url})  -- linux
       vim.ui.open(url) -- need Neovim 0.10.0+
     end,
-    mappings = {
-      ['<cr>'] = {
-        action = function()
-          return require('obsidian').util.smart_action()
-        end,
-        opts = { buffer = true, expr = true },
-      },
-    },
     templates = {
       folder = '_templates',
       date_format = '%Y-%m-%d',
@@ -56,36 +59,36 @@ return {
     wk.add({
       { '<leader>o', group = 'obsidian' },
       -- Quick access
-      { '<leader><leader>', '<cmd>ObsidianQuickSwitch<cr>', desc = 'Quick switch' },
-      { '<leader>oo', '<cmd>ObsidianOpen<cr>', desc = 'Open in Obsidian app' },
-      { '<leader>os', '<cmd>ObsidianSearch<cr>', desc = 'Search notes' },
-      { '<leader>ob', '<cmd>ObsidianBacklinks<cr>', desc = 'Backlinks' },
-      { '<leader>oL', '<cmd>ObsidianLinks<cr>', desc = 'Links in buffer' },
-      { '<leader>oC', '<cmd>ObsidianTOC<cr>', desc = 'Table of contents' },
+      { '<leader><leader>', '<cmd>Obsidian quick_switch<cr>', desc = 'Quick switch' },
+      { '<leader>oo', '<cmd>Obsidian open<cr>', desc = 'Open in Obsidian app' },
+      { '<leader>os', '<cmd>Obsidian search<cr>', desc = 'Search notes' },
+      { '<leader>ob', '<cmd>Obsidian backlinks<cr>', desc = 'Backlinks' },
+      { '<leader>oL', '<cmd>Obsidian links<cr>', desc = 'Links in buffer' },
+      { '<leader>oC', '<cmd>Obsidian toc<cr>', desc = 'Table of contents' },
 
       -- Note operations
-      { '<leader>on', '<cmd>ObsidianNew<cr>', desc = 'New note' },
-      { '<leader>or', '<cmd>ObsidianRename<cr>', desc = 'Rename note' },
+      { '<leader>on', '<cmd>Obsidian new<cr>', desc = 'New note' },
+      { '<leader>or', '<cmd>Obsidian rename<cr>', desc = 'Rename note' },
 
       -- Linking (visual mode)
-      { '<leader>ol', '<cmd>ObsidianLink<cr>', desc = 'Link to note', mode = 'v' },
-      { '<leader>oN', '<cmd>ObsidianLinkNew<cr>', desc = 'Link to new note', mode = 'v' },
-      { '<leader>oe', '<cmd>ObsidianExtractNote<cr>', desc = 'Extract to note', mode = 'v' },
+      { '<leader>ol', '<cmd>Obsidian link<cr>', desc = 'Link to note', mode = 'v' },
+      { '<leader>oN', '<cmd>Obsidian link_new<cr>', desc = 'Link to new note', mode = 'v' },
+      { '<leader>oe', '<cmd>Obsidian extract_note<cr>', desc = 'Extract to note', mode = 'v' },
 
       -- Daily notes
-      { '<leader>ot', '<cmd>ObsidianToday<cr>', desc = 'Today' },
-      { '<leader>oy', '<cmd>ObsidianYesterday<cr>', desc = 'Yesterday' },
-      { '<leader>om', '<cmd>ObsidianTomorrow<cr>', desc = 'Tomorrow' },
-      { '<leader>od', '<cmd>ObsidianDailies<cr>', desc = 'Browse dailies' },
+      { '<leader>ot', '<cmd>Obsidian today<cr>', desc = 'Today' },
+      { '<leader>oy', '<cmd>Obsidian yesterday<cr>', desc = 'Yesterday' },
+      { '<leader>om', '<cmd>Obsidian tomorrow<cr>', desc = 'Tomorrow' },
+      { '<leader>od', '<cmd>Obsidian dailies<cr>', desc = 'Browse dailies' },
 
       -- Templates & workspace
-      { '<leader>oT', '<cmd>ObsidianTemplate<cr>', desc = 'Insert template' },
-      { '<leader>oF', '<cmd>ObsidianNewFromTemplate<cr>', desc = 'New from template' },
-      { '<leader>ow', '<cmd>ObsidianWorkspace<cr>', desc = 'Switch workspace' },
-      { '<leader>op', '<cmd>ObsidianPasteImg<cr>', desc = 'Paste image' },
+      { '<leader>oT', '<cmd>Obsidian template<cr>', desc = 'Insert template' },
+      { '<leader>oF', '<cmd>Obsidian new_from_template<cr>', desc = 'New from template' },
+      { '<leader>ow', '<cmd>Obsidian workspace<cr>', desc = 'Switch workspace' },
+      { '<leader>op', '<cmd>Obsidian paste_img<cr>', desc = 'Paste image' },
 
       -- Tags
-      { '<leader>og', '<cmd>ObsidianTags<cr>', desc = 'Search tags' },
+      { '<leader>og', '<cmd>Obsidian tags<cr>', desc = 'Search tags' },
     })
   end,
 }
