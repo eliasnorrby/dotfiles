@@ -22,9 +22,9 @@ return {
     'MeanderingProgrammer/markdown.nvim',
     opts = {
       code = {
-        language_border = ' ',
-        language_left = '',
-        language_right = '',
+        language = false,
+        border = 'thin',
+        sign = false,
       },
       overrides = {
         buftype = {
