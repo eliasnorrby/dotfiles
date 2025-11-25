@@ -53,6 +53,21 @@ return {
       },
     }
 
+    local kulala_env = {
+      function()
+        local kulala = require('kulala')
+        if not kulala then
+          return ''
+        end
+        local env = kulala.get_selected_env()
+        if not env or env == '' then
+          return ''
+        end
+        return '󰒋 ' .. env
+      end,
+      color = { fg = '#A6DA95' },
+    }
+
     return {
       options = {
         icons_enabled = true,
@@ -71,7 +86,7 @@ return {
           },
         },
         -- lualine_x = {'encoding', 'fileformat', 'filetype'},
-        lualine_x = { '%a', diagnostics, copilot_status, conform_status, 'filetype' },
+        lualine_x = { '%a', diagnostics, kulala_env, copilot_status, conform_status, 'filetype' },
         lualine_y = { 'selectioncount', 'progress' },
         lualine_z = { 'location' },
       },
