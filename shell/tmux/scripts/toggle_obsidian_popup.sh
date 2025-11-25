@@ -8,7 +8,7 @@ exec toggle_stateful_popup \
   --title=Obsidian \
   --color=purple \
   -x R \
-  -w '40%' \
+  -w '55%' \
   -h '90%' \
   -d "$HOME/vaults/bemlo" \
-  nvim
+  nvim '+set nonu nornu'
