@@ -9,5 +9,6 @@ generated/
 .envrc
 
 **/.claude/settings.local.json
+.local/
 
 # vim: ft=gitignore
