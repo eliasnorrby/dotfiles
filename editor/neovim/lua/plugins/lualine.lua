@@ -99,7 +99,7 @@ return {
             path = 1,
           },
         },
-        lualine_x = { 'location' },
+        lualine_x = { diagnostics, 'location' },
         lualine_y = {},
         lualine_z = {},
       },
