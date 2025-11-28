@@ -27,6 +27,7 @@ scratch_popup="_popup_${current_session}_scratch"
 
 # Global popups
 tasks_popup="_popup_GLOBAL_tasks"
+obsidian_popup="_popup_GLOBAL_obsidian"
 reminders_popup="_popup_GLOBAL_reminders"
 
 # Check if popup sessions exist
@@ -34,6 +35,7 @@ base_active=""
 prompt_active=""
 scratch_active=""
 tasks_active=""
+obsidian_active=""
 reminders_active=""
 
 if tmux has-session -t "$terminal_popup" 2>/dev/null; then
@@ -52,6 +54,10 @@ if tmux has-session -t "$tasks_popup" 2>/dev/null; then
   tasks_active="#[fg=green] #[fg=default]"
 fi
 
+if tmux has-session -t "$obsidian_popup" 2>/dev/null; then
+  obsidian_active="#[fg=#c6a0f6]󰙏 #[fg=default]"
+fi
+
 if tmux has-session -t "$reminders_popup" 2>/dev/null; then
   # Count active reminders
   reminder_count=$("$TMUX_HOME/scripts/count_reminders.sh")
@@ -63,4 +69,4 @@ if tmux has-session -t "$reminders_popup" 2>/dev/null; then
 fi
 
 # Output the indicators (they'll appear side by side if active)
-echo " ${prompt_active} ${base_active} ${scratch_active} ${tasks_active} ${reminders_active}" | sed -E -e 's/[[:blank:]]+/ /g' -e 's/[[:blank:]]+$//g'
+echo " ${prompt_active} ${base_active} ${scratch_active} ${obsidian_active} ${tasks_active} ${reminders_active}" | sed -E -e 's/[[:blank:]]+/ /g' -e 's/[[:blank:]]+$//g'
