@@ -203,6 +203,7 @@ wk.add({
 
 wk.add({
   { '<leader>gt', require('core.extensions').quick_fix_todos, desc = 'quick fix todos' },
+  { '<leader>ym', require('core.extensions').yank_ts_reference, desc = 'yank method ref' },
 })
 
 -- temporary
