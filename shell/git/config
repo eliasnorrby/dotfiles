@@ -44,3 +44,5 @@
 
 [includeIf "gitdir:~/notes/"]
   path = config-notes
+
+# vim: ft=gitconfig
