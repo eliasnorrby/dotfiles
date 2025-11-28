@@ -2,7 +2,9 @@
 gemini_config:
   path: ai/gemini
   brew_formulae:
-    - gemini-cli
+    # - gemini-cli
+  npm_packages:
+    - "@google/gemini-cli"
   links:
     - src: settings.json
       dest: "{{ gemini_home }}/"
