@@ -18,6 +18,14 @@
 [init]
 	defaultBranch = main
 
+[tig "color"] cursor = black green bold
+[tig "color"] cursor-blur = black green
+[tig "color"] title-focus = black blue bold
+[tig "color"] title-blur = black blue
+[tig "color"] delimiter = black magenta
+[tig "color"] date = green default
+[tig "color"] author = blue default
+
 [hub]
   protocol = https
 [github]
