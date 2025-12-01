@@ -23,6 +23,10 @@ wk.add({
   },
 })
 
+wk.add({
+  { '<leader>nt', '<cmd>tabnew<CR>', desc = 'new tab' },
+})
+
 -- file path yanking
 local function get_line_range()
   local mode = vim.fn.mode()
