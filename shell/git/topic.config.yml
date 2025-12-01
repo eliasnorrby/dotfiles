@@ -23,6 +23,9 @@ git_config:
     - src: list_branch_files.sh
       dest: "{{ xdg_bin_home }}/"
       rename: list_branch_files
+    - src: list_ancestor_branches.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: list_ancestor_branches
     - src: watch_branches.sh
       dest: "{{ xdg_bin_home }}/"
       rename: watch_branches
