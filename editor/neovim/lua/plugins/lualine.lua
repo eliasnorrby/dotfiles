@@ -78,14 +78,8 @@ return {
       },
       sections = {
         lualine_a = { 'mode' },
-        lualine_b = {},
-        lualine_c = {
-          {
-            'filename',
-            path = 1,
-          },
-        },
-        -- lualine_x = {'encoding', 'fileformat', 'filetype'},
+        lualine_b = { { 'filename', path = 0 } },
+        lualine_c = {},
         lualine_x = { '%a', diagnostics, kulala_env, copilot_status, conform_status, 'filetype' },
         lualine_y = { 'selectioncount', 'progress' },
         lualine_z = { 'location' },
