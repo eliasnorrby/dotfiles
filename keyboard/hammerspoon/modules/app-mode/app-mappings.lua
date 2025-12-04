@@ -12,7 +12,12 @@ return {
     end,
     { 'shift' },
   },
-  -- { 'e', 'Mimestream' },
+  {
+    'e',
+    function()
+      hs.eventtap.keyStroke({ 'cmd', 'alt', 'shift' }, 'w', 0)
+    end,
+  },
   { 'f', 'Fantastical' },
   {
     'f',

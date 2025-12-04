@@ -28,6 +28,7 @@ macos_config:
     - mimestream
     - rocket
     - mouseless
+    - superwhisper
   mas_apps:
     - id: 950297057
       name: "FuzzyTime"
