@@ -29,11 +29,6 @@ end
 
 AppMode:bind({}, 'space', exitAppMode)
 
--- Open 1Password Quick Search
-AppMode:bind({}, 'p', function()
-  keyUpDown({ 'cmd', 'alt' }, '\\')
-end)
-
 -- Select tmux windows using number keys
 -- These bindings must be matched by bindings in tmux.conf, i.e.
 --   bind-key -n F1 select-window -t 1

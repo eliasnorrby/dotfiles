@@ -3,28 +3,44 @@
 return {
   { 'a', 'Google Meet' },
   { 'b', 'Adobe Lightroom' },
-  { 'c', 'Google Chrome' },      -- "C" for "Chrome"
-  { 'd', 'Drafts' },             -- "D" for "Drafts"
-  -- { 'e', 'Mimestream' },         -- "E" for "Email"
-  { 'f', 'Fantastical' },        -- "F" for "Fantastical"
-  { 'g', 'Things3' },            -- "G" for "GTD"
-  { 'i', 'Insomnia' },           -- "I" for "Insomnia"
+  { 'c', 'Google Chrome' },
+  { 'd', 'Drafts' },
+  {
+    'd',
+    function()
+      hs.execute('open ~/Downloads')
+    end,
+    { 'shift' },
+  },
+  -- { 'e', 'Mimestream' },
+  { 'f', 'Fantastical' },
+  {
+    'f',
+    function()
+      hs.execute('open ~')
+    end,
+    { 'shift' },
+  },
+  { 'g', 'Things3' },
+  { 'i', 'Insomnia' },
   { 'm', 'Microsoft Teams' },
   -- { 'n', '?'},
   { 'o', 'Obsidian' },
-  -- { 'p', '?' },               -- occupied by 1Password shortcut
+  {
+    'p',
+    function()
+      hs.eventtap.keyStroke({ 'cmd', 'alt' }, '\\', 0)
+    end,
+  },
   { 'q', 'ChatGPT' },
   { 'r', 'Alacritty' },
   { 's', 'Emacs' },
-  { 't', 'kitty' },              -- "T" for "Terminal"
+  { 't', 'kitty' },
+  { 't', 'ghostty', { 'shift' } },
   { 'u', 'Spotify' },
   { 'v', 'Notion' },
   { 'w', 'Linear' },
   { 'x', 'Firefox Developer Edition' },
   { 'y', 'DaVinci Resolve' },
   { 'z', 'Slack' },
-
-  { 't', 'ghostty', { 'shift' }},
-  { 'd', function() hs.execute('open ~/Downloads') end, {'shift'} },
-  { 'f', function() hs.execute('open ~') end, {'shift'} },
 }
