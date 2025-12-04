@@ -8,7 +8,7 @@ exec toggle_stateful_popup \
   --title=Scratch \
   --color=cyan \
   -x R \
-  -w '40%' \
+  -w '30%' \
   -h '90%' \
   -d '#{pane_current_path}' \
-  nvim
+  nvim '+set nonu nornu ft=markdown'
