@@ -18,7 +18,7 @@ return {
       ['g.'] = { 'actions.toggle_hidden', mode = 'n' },
       ['g\\'] = { 'actions.toggle_trash', mode = 'n' },
       ['yp'] = { 'actions.yank_entry', mode = 'n' },
-      ['<leader><space>'] = {
+      ['<leader>.'] = {
         function()
           require('telescope.builtin').find_files({
             cwd = require('oil').get_current_dir(),
