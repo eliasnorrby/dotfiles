@@ -32,7 +32,7 @@ return {
     use_default_keymaps = false,
     lsp_file_methods = {
       enabled = true,
-      timeout_ms = 5000,
+      timeout_ms = 10000,
       autosave_changes = true,
     },
   },
