@@ -18,6 +18,13 @@ return {
       hs.eventtap.keyStroke({ 'cmd', 'alt', 'shift' }, 'w', 0)
     end,
   },
+  {
+    'e',
+    function()
+      hs.eventtap.keyStroke({ 'cmd', 'alt', 'shift' }, 'm', 0)
+    end,
+    { 'shift' },
+  },
   { 'f', 'Fantastical' },
   {
     'f',
