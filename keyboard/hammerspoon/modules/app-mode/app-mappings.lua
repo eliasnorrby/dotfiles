@@ -1,3 +1,5 @@
+PausedSpotify = false
+
 -- Keybindings for launching apps in App Mode
 -- h, j, k, l occupied by arrow key mappings
 return {
@@ -15,6 +17,15 @@ return {
   {
     'e',
     function()
+      if hs.spotify.isPlaying() then
+        hs.spotify.pause()
+        PausedSpotify = true
+      elseif PausedSpotify then
+        hs.timer.doAfter(2, function()
+          hs.spotify.play()
+          PausedSpotify = false
+        end)
+      end
       hs.eventtap.keyStroke({ 'cmd', 'alt', 'shift' }, 'w', 0)
     end,
   },
