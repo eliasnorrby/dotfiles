@@ -18,6 +18,8 @@ matches:
     replace: localhost:8000
   - trigger: ;lh1
     replace: localhost:8001
+  - trigger: ;hl1
+    replace: localhost:8001
   - trigger: ;lh3
     replace: localhost:3000
   - trigger: ;lh4
