@@ -10,6 +10,7 @@ return {
       float = {
         width = '95%',
         height = '95%',
+        border = 'double',
       },
     },
     keymaps = {
