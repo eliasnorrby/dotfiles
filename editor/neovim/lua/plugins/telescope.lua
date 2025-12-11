@@ -114,6 +114,14 @@ local changed_branch_files_from_ref = function()
     :find()
 end
 
+local grep_buffer_dir = function()
+  local buffer_dir = vim.fn.expand('%:p:h')
+  require('telescope.builtin').live_grep({
+    cwd = buffer_dir,
+    prompt_title = 'Grep in ' .. vim.fn.fnamemodify(buffer_dir, ':~:.'),
+  })
+end
+
 local grep_hidden_files = function()
   require('telescope.builtin').live_grep({
     vimgrep_arguments = {
@@ -200,6 +208,7 @@ return {
         desc = 'Find GraphQL mutation',
       },
       { '<leader>/.', grep_hidden_files, desc = 'Project grep (hidden files)' },
+      { '<leader>/d', grep_buffer_dir, desc = 'Grep in buffer directory' },
       { '<leader>/w', builtin.grep_string, desc = 'Grep string' },
       { '<leader><cr>', builtin.git_status, desc = 'Find changed files' },
       { '<leader>bb', builtin.buffers, desc = 'Find buffers' },
