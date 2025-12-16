@@ -1,24 +1,15 @@
 ---
 cicd_config:
   path: dev/cicd
-  brew_taps:
-    - buildpacks/tap
   brew_formulae:
-    - tektoncd-cli
     - tfenv
     - terraform-ls
     - tflint
-    - pack
-    - argocd
   brew_casks:
     - ngrok
   pacman_packages:
-    - tekton-cli
     - terraform
-    - argocd
-  npm_packages:
-    - semantic-release-cli
   aur_packages:
-    - pack-cli-bin
+    - tfenv
     - terraform-ls-bin
     - tflint-bin
