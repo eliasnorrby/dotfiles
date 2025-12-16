@@ -58,6 +58,10 @@ topics:
     - name: xkb
       state: absent
       config: "{{ xkb_config }}"
+  display:
+    - name: xorg
+      state: present
+      config: "{{ xorg_config }}"
   panel:
     - name: polybar
       state: absent

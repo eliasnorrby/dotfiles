@@ -2,21 +2,9 @@
 arch_config:
   path: base/arch
   links:
-    - xinput.sh
-    - src: Xresources
-      dest: ~/.Xresources
-    - src: focus_or_run.sh
-      dest: "{{ xdg_bin_home }}/"
-      rename: focus_or_run
     - src: spotifyctl.sh
       dest: "{{ xdg_bin_home }}/"
       rename: spotifyctl
-    - src: power.sh
-      dest: "{{ xdg_bin_home }}/"
-      rename: power
-    - src: reminder.sh
-      dest: "{{ xdg_bin_home }}/"
-      rename: reminder
     - src: gpg.conf
       dest: ~/.gnupg/
     - autostart.sh
@@ -25,14 +13,8 @@ arch_config:
     - unzip
     - chromium
     - discord
-    - xdotool
-    - xorg-xinput
-    - xorg-xev
-    - xsel
     - gucharmap
     - base-devel
-    - rofi
-    - maim
     - udiskie
   aur_packages:
     - google-chrome

@@ -1,0 +1,24 @@
+---
+xorg_config:
+  path: display/xorg
+  links:
+    - xinput.sh
+    - src: Xresources
+      dest: ~/.Xresources
+    - src: focus_or_run.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: focus_or_run
+    - src: power.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: power
+    - src: reminder.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: reminder
+  pacman_packages:
+    - xdotool
+    - xorg-xinput
+    - xorg-xev
+    - xsel
+    - xclip
+    - rofi
+    - maim
