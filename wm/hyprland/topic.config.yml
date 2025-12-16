@@ -1,6 +1,10 @@
 ---
 hyprland_config:
   path: wm/hyprland
+  links:
+    - src: navigate.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: navigate
   pacman_packages:
     - hyprland
     # - hyprpaper
