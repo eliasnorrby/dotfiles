@@ -52,8 +52,7 @@
       user:
         name: "{{ aur_builder_user_name }}"
         group: wheel
-        system: yes
-        create_home: no
+        create_home: yes
       become: yes
     - name: set aur builder sudo rights
       lineinfile:
