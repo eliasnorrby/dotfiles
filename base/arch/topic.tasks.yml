@@ -11,18 +11,39 @@
     - name: check if yay is installed
       shell: command -v yay >/dev/null 2>&1
       register: is_yay_installed
-      changed_when: False
-      failed_when: False
-    - name: clone yay repo
+      changed_when: false
+      failed_when: false
+    - name: clone yay repo to /opt
       git:
         repo: https://aur.archlinux.org/yay.git
-        dest: /tmp/yay
+        dest: /opt/yay
+      become: true
       when: is_yay_installed.rc == 1
-    - name: make yay binary
+    - name: set yay directory ownership
+      file:
+        path: /opt/yay
+        owner: "{{ ansible_user_id }}"
+        group: "{{ ansible_user_id }}"
+        recurse: true
+      become: true
+      when: is_yay_installed.rc == 1
+    - name: build yay package
       shell:
-        cmd: makepkg -si --noconfirm
-        chdir: /tmp/yay
+        cmd: makepkg --noconfirm
+        chdir: /opt/yay
       when: is_yay_installed.rc == 1
+    - name: find built yay package
+      find:
+        paths: /opt/yay
+        patterns: "yay-*.pkg.tar.zst"
+      register: yay_package
+      when: is_yay_installed.rc == 1
+    - name: install yay package
+      pacman:
+        name: "{{ yay_package.files[0].path }}"
+        state: present
+      become: true
+      when: is_yay_installed.rc == 1 and yay_package.files | length > 0
   tags: ["never", "do_pacman"]
 
 - name: setup aur builder
