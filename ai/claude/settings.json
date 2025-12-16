@@ -30,6 +30,5 @@
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"
-  },
-  "alwaysThinkingEnabled": false
+  }
 }
