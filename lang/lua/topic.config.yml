@@ -3,3 +3,5 @@ lua_config:
   path: lang/lua
   brew_formulae:
     - lua
+  pacman_packages:
+    - lua
