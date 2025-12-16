@@ -7,8 +7,6 @@ cicd_config:
     - tflint
   brew_casks:
     - ngrok
-  pacman_packages:
-    - terraform
   aur_packages:
     - tfenv
     - terraform-ls-bin
