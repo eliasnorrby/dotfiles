@@ -28,3 +28,10 @@ local toggle_read_mode = function()
 end
 
 vim.keymap.set('n', '<leader>tr', toggle_read_mode, { noremap = true, silent = true, desc = 'Toggle read mode' })
+
+vim.keymap.set('x', '<leader>`', function()
+  local start_line = vim.fn.line("'<")
+  local end_line = vim.fn.line("'>")
+  vim.api.nvim_buf_set_lines(0, start_line, start_line, false, { '```' })
+  vim.api.nvim_buf_set_lines(0, end_line + 1, end_line + 1, false, { '```' })
+end, { noremap = true, silent = true, desc = 'Wrap in code block' })
