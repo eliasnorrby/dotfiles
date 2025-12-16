@@ -104,9 +104,9 @@ topics:
     - name: zsh
       state: present
       config: "{{ zsh_config }}"
-    - name: which-cmd
+    - name: which_cmd
       state: present
-      config: "{{ which-cmd_config }}"
+      config: "{{ which_cmd_config }}"
     - name: btop
       state: present
       config: "{{ btop_config }}"
