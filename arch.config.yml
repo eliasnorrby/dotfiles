@@ -146,13 +146,13 @@ topics:
       state: absent
       config: "{{ dotnet_config }}"
     - name: lua
-      state: absent
+      state: present
       config: "{{ lua_config }}"
     - name: go
       state: present
       config: "{{ go_config }}"
     - name: java
-      state: present
+      state: absent
       config: "{{ java_config }}"
     - name: node
       state: present
