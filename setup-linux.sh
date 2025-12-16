@@ -3,7 +3,6 @@
 SECONDS=0
 
 # DEFAULTS
-DO_MAS=${DO_MAS:-false}
 ASK_PASS=${ASK_PASS:-true}
 DO_POST_INSTALL=${DO_POST_INSTALL:-true}
 DEBUG=${DEBUG:-false}
@@ -14,10 +13,6 @@ fi
 
 ANSIBLE_TAGS=${ANSIBLE_TAGS:-all,do_pacman,do_packages}
 ANSIBLE_FLAGS=-v
-
-if [[ "$DO_MAS" == true ]]; then
-  ANSIBLE_TAGS="${ANSIBLE_TAGS},do_mas"
-fi
 
 if [[ "$ASK_PASS" == true ]]; then
   # Ask for sudo password (possibly required for homebrew role)
@@ -90,4 +85,3 @@ if [[ "$DO_POST_INSTALL" == true ]]; then
 fi
 
 _msg "Done!"
-
