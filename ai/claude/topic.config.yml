@@ -4,6 +4,8 @@ claude_config:
   brew_casks:
     - claude
     - claude-code
+  aur_packages:
+    - claude-code
   links:
     - src: claude_editor.sh
       dest: "{{ xdg_bin_home }}/"
