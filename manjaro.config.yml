@@ -1,0 +1,168 @@
+---
+topics:
+  dotfiles:
+    - name: cli
+      state: present
+      config: "{{ cli_config }}"
+  projects:
+    - name: notes
+      state: present
+      config: "{{ notes_config }}"
+  tools:
+    - name: slides
+      state: absent
+      config: "{{ slides_config }}"
+  ai:
+    - name: claude
+      state: present
+      config: "{{ claude_config }}"
+    - name: gemini
+      state: absent
+      config: "{{ gemini_config }}"
+    - name: general
+      state: absent
+      config: "{{ ai_config }}"
+  base:
+    - name: arch
+      state: present
+      config: "{{ arch_config }}"
+    - name: font
+      state: present
+      config: "{{ font_config }}"
+    - name: work
+      state: present
+      config: "{{ work_config }}"
+    - name: task
+      state: present
+      config: "{{ task_config }}"
+  editor:
+    - name: neovim
+      state: present
+      config: "{{ neovim_config }}"
+    - name: emacs
+      state: absent
+      config: "{{ emacs_config }}"
+    - name: editorconfig
+      state: present
+      config: "{{ editorconfig_config }}"
+    - name: vscode
+      state: absent
+      config: "{{ vscode_config }}"
+    - name: intellij
+      state: absent
+      config: "{{ intellij_config }}"
+  keyboard:
+    - name: sxhkd
+      state: absent
+      config: "{{ sxhkd_config }}"
+    - name: xkb
+      state: absent
+      config: "{{ xkb_config }}"
+  panel:
+    - name: polybar
+      state: absent
+      config: "{{ polybar_config }}"
+  wm:
+    - name: bspwm
+      state: absent
+      config: "{{ bspwm_config }}"
+    - name: dunst
+      state: absent
+      config: "{{ dunst_config }}"
+    - name: feh
+      state: absent
+      config: "{{ feh_config }}"
+    - name: gtk
+      state: absent
+      config: "{{ gtk_config }}"
+    - name: picom
+      state: absent
+      config: "{{ picom_config }}"
+    - name: rofi
+      state: absent
+      config: "{{ rofi_config }}"
+  terminal:
+    - name: alacritty
+      state: absent
+      config: "{{ alacritty_config }}"
+    - name: kitty
+      state: present
+      config: "{{ kitty_config }}"
+  shell:
+    - name: bash
+      state: present
+      config: "{{ bash_config }}"
+    - name: git
+      state: present
+      config: "{{ git_config }}"
+    - name: ssh
+      state: present
+      config: "{{ ssh_config }}"
+    - name: tmux
+      state: present
+      config: "{{ tmux_config }}"
+    - name: zsh
+      state: present
+      config: "{{ zsh_config }}"
+    - name: which-cmd
+      state: present
+      config: "{{ which-cmd_config }}"
+    - name: btop
+      state: present
+      config: "{{ btop_config }}"
+  dev:
+    - name: ansible
+      state: present
+      config: "{{ ansible_config }}"
+    - name: cicd
+      state: present
+      config: "{{ cicd_config }}"
+    - name: docker
+      state: present
+      config: "{{ docker_config }}"
+    - name: gcloud
+      state: present
+      config: "{{ gcloud_config }}"
+    - name: vagrant
+      state: absent
+      config: "{{ vagrant_config }}"
+    - name: kubernetes
+      state: present
+      config: "{{ kubernetes_config }}"
+    - name: kafka
+      state: absent
+      config: "{{ kafka_config }}"
+    - name: web
+      state: present
+      config: "{{ web_config }}"
+    - name: db
+      state: present
+      config: "{{ db_config }}"
+  lang:
+    - name: dart
+      state: absent
+      config: "{{ dart_config }}"
+    - name: dotnet
+      state: absent
+      config: "{{ dotnet_config }}"
+    - name: lua
+      state: absent
+      config: "{{ lua_config }}"
+    - name: go
+      state: present
+      config: "{{ go_config }}"
+    - name: java
+      state: present
+      config: "{{ java_config }}"
+    - name: node
+      state: present
+      config: "{{ node_config }}"
+    - name: python
+      state: present
+      config: "{{ python_config }}"
+    - name: ruby
+      state: present
+      config: "{{ ruby_config }}"
+    - name: rust
+      state: present
+      config: "{{ rust_config }}"
