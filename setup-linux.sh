@@ -1,14 +1,50 @@
 #!/usr/bin/env bash
 
+# Theoretically, this script can be ran with curl, i.e.
+#
+#   bash <(curl -sL https://raw.githubusercontent.com/eliasnorrby/dotfiles/develop/setup-linux.sh)
+#
+# but it's probably better to download it to take a look first:
+#
+#   curl -sLO https://raw.githubusercontent.com/eliasnorrby/dotfiles/develop/setup-linux.sh
+#   chmod +x setup-linux.sh
+#   ./setup-linux.sh
+#
+# === Configuration ===
+# There are a number of environment variables you can set prior to
+# running this script in order to customize its behaviour.
+#
+# DOTFILES_VERSION=master|develop|... (default: develop)
+#   Select which branch to download a snapshot of.
+# ASK_PASS=true|false (default: true)
+#   Add the -K (--ask-become-pass) flag to ansible-playbook. This may
+#   or may not be needed to properly install homebrew.
+# DO_POST_INSTALL=true|false (default: true)
+#   Choose whether to run the post-install script or not. Mainly used to get
+#   around the time limit for jobs on travis-ci.com.
+#
+# DEBUG=true (default: false)
+#   Make this script more verbose (set -x).
+#
+# Extended example:
+#
+#   DO_POST_INSTALL=false bash <(curl -s https://raw.githubusercontent.com/eliasnorrby/dotfiles/develop/setup-linux.sh)
+
 SECONDS=0
 
 # DEFAULTS
 ASK_PASS=${ASK_PASS:-true}
 DO_POST_INSTALL=${DO_POST_INSTALL:-true}
 DEBUG=${DEBUG:-false}
+PROVISIONING_WORKDIR=${PROVISIONING_WORKDIR:-$(mktemp -d)}
+
+if [[ ! -d "$PROVISIONING_WORKDIR" ]]; then
+  echo "Invalid provisioning workdir: '${PROVISIONING_WORKDIR}'"
+  exit 1
+fi
 
 if [ -z "$DOTFILES_VERSION" ]; then
-  DOTFILES_VERSION=${1:-master}
+  DOTFILES_VERSION=${1:-develop}
 fi
 
 ANSIBLE_TAGS=${ANSIBLE_TAGS:-all,do_pacman,do_packages}
@@ -61,7 +97,7 @@ function print_duration() {
 
 _prompt "Next step: downloading repo"
 
-cd "$(mktemp -d)"
+cd "$PROVISIONING_WORKDIR" || exit 1
 
 get_repo_snapshot
 
