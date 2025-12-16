@@ -2,18 +2,11 @@
 web_config:
   path: dev/web
   brew_formulae:
-    - httpie
     - stripe
   brew_taps:
     - stripe/stripe-cli
   brew_casks:
-    - postman
     - insomnia
-  pacman_packages:
-    - httpie
-  aur_packages:
-    - postman-bin
-    - insomnia-bin
   npm_packages:
     - lorem-ipsum
     - prettier

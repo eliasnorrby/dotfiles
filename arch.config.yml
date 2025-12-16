@@ -10,17 +10,17 @@ topics:
       config: "{{ notes_config }}"
   tools:
     - name: slides
-      state: present
+      state: absent
       config: "{{ slides_config }}"
   ai:
     - name: claude
       state: present
       config: "{{ claude_config }}"
     - name: gemini
-      state: present
+      state: absent
       config: "{{ gemini_config }}"
     - name: general
-      state: present
+      state: absent
       config: "{{ ai_config }}"
   base:
     - name: arch
@@ -40,7 +40,7 @@ topics:
       state: present
       config: "{{ neovim_config }}"
     - name: emacs
-      state: present
+      state: absent
       config: "{{ emacs_config }}"
     - name: editorconfig
       state: present
@@ -49,41 +49,41 @@ topics:
       state: absent
       config: "{{ vscode_config }}"
     - name: intellij
-      state: present
+      state: absent
       config: "{{ intellij_config }}"
   keyboard:
     - name: sxhkd
-      state: present
+      state: absent
       config: "{{ sxhkd_config }}"
     - name: xkb
-      state: present
+      state: absent
       config: "{{ xkb_config }}"
   panel:
     - name: polybar
-      state: present
+      state: absent
       config: "{{ polybar_config }}"
   wm:
     - name: bspwm
-      state: present
+      state: absent
       config: "{{ bspwm_config }}"
     - name: dunst
-      state: present
+      state: absent
       config: "{{ dunst_config }}"
     - name: feh
-      state: present
+      state: absent
       config: "{{ feh_config }}"
     - name: gtk
-      state: present
+      state: absent
       config: "{{ gtk_config }}"
     - name: picom
-      state: present
+      state: absent
       config: "{{ picom_config }}"
     - name: rofi
-      state: present
+      state: absent
       config: "{{ rofi_config }}"
   terminal:
     - name: alacritty
-      state: present
+      state: absent
       config: "{{ alacritty_config }}"
     - name: kitty
       state: present
@@ -130,7 +130,7 @@ topics:
       state: present
       config: "{{ kubernetes_config }}"
     - name: kafka
-      state: present
+      state: absent
       config: "{{ kafka_config }}"
     - name: web
       state: present
