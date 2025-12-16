@@ -3,3 +3,5 @@ db_config:
   path: dev/db
   brew_formulae:
     - libpq
+  pacman_packages:
+    - postgresql
