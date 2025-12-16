@@ -6,6 +6,8 @@ vim.opt.shortmess:append('sI')
 
 vim.opt.path:append('**')
 
+vim.opt.iskeyword:remove('_')
+
 vim.o.clipboard = 'unnamedplus'
 
 vim.o.swapfile = false
