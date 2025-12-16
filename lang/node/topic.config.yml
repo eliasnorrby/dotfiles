@@ -14,6 +14,7 @@ node_config:
     - nodejs
     - npm
     - yarn
+    - pnpm
   aur_packages:
     - fnm-bin
 
