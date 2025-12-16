@@ -67,6 +67,9 @@ topics:
       state: absent
       config: "{{ polybar_config }}"
   wm:
+    - name: hyprland
+      state: present
+      config: "{{ hyprland_config }}"
     - name: bspwm
       state: absent
       config: "{{ bspwm_config }}"
