@@ -38,9 +38,11 @@ zsh_config:
     - pipes.sh
   pacman_packages:
     - zsh
+    - starship
     - fzf
     - fd
     - bat
+    - direnv
     - ripgrep
     - tree
     - jq
