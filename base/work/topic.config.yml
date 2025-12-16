@@ -1,11 +1,6 @@
 ---
 work_config:
   path: base/work
-  links:
-    - src: jira-browse.sh
-      dest: "{{ xdg_bin_home }}/"
-      rename: jira-browse
-      condition: "{{ is_arch }}"
   brew_casks:
     - notion
     - zoom
@@ -14,3 +9,4 @@ work_config:
   aur_packages:
     - teams
     - notion-app
+    - linear-bin
