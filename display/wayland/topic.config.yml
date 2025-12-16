@@ -1,0 +1,9 @@
+---
+wayland_config:
+  path: display/wayland
+  pacman_packages:
+    - wl-clipboard
+    - grim
+    - slurp
+    # - wev
+    # - wlr-randr

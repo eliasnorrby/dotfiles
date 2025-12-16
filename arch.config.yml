@@ -35,6 +35,10 @@ topics:
     - name: task
       state: present
       config: "{{ task_config }}"
+  display:
+    - name: wayland
+      state: present
+      config: "{{ wayland_config }}"
   editor:
     - name: neovim
       state: present
