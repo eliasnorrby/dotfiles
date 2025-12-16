@@ -22,7 +22,6 @@ zsh_config:
     - pandoc
     - mdcat
     - entr
-    - parallel
     - hyperfine
     - direnv
     - csvlens
@@ -39,7 +38,6 @@ zsh_config:
     - pipes.sh
   pacman_packages:
     - zsh
-    - xclip
     - fzf
     - fd
     - bat
@@ -47,11 +45,9 @@ zsh_config:
     - tree
     - jq
     - pandoc
-    - neofetch
     - mdcat
     - entr
-    - parallel
-    - exa
+    - eza
   aur_packages:
     - yq2-bin
   links:
