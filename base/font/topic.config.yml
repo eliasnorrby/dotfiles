@@ -12,9 +12,9 @@ font_config:
     - ttf-font-awesome
     - ttf-iosevka-nerd
   aur_packages:
-    - nerd-fonts-hack
-    - nerd-fonts-mononoki
-    - nerd-fonts-victor-mono
+    - ttf-hack-nerd
+    - ttf-mononoki-nerd
+    - ttf-victor-mono-nerd
     - ttf-devicons
     - ttf-mononoki
     - ttf-material-design-icons-webfont
