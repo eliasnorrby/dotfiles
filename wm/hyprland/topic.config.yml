@@ -2,6 +2,8 @@
 hyprland_config:
   path: wm/hyprland
   links:
+    - hyprland.conf
+    - conf.d
     - src: navigate.sh
       dest: "{{ xdg_bin_home }}/"
       rename: navigate
