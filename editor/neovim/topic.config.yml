@@ -20,6 +20,7 @@ neovim_config:
     - python
     - python-pylint
     - python-black
+    - stylua
   npm_packages:
     - kulala-ls
     - kulala-fmt
