@@ -8,8 +8,7 @@ notes_config:
   pacman_packages:
     - fzf
     - mdcat
-  aur_packages:
-    - yq2-bin
+    - go-yq
   links:
     - src: notes_global_entry.sh
       dest: "{{ xdg_bin_home }}/"

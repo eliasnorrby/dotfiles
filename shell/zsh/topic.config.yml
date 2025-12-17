@@ -50,8 +50,7 @@ zsh_config:
     - mdcat
     - entr
     - eza
-  aur_packages:
-    - yq2-bin
+    - go-yq
   links:
     - src: zshrc
       rename: .zshrc
