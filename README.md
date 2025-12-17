@@ -241,6 +241,12 @@ configured manually.
 
   - Docs: [Generate][ssh-github-generate], [Add][ssh-github-add]
 
+- Switch dotfiles remote to SSH
+
+  ```bash
+  git -C ~/.dotfiles remote set-url origin git@github.com:eliasnorrby/dotfiles.git
+  ```
+
 ### MacOS
 
 - Start all apps and prepare to grant lots of privileges
