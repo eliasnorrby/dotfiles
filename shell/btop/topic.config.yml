@@ -3,6 +3,8 @@ btop_config:
   path: shell/btop
   brew_formulae:
     - btop
+  pacman_packages:
+    - btop
   links:
     - btop.conf
     - themes
