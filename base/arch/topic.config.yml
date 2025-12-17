@@ -2,6 +2,9 @@
 arch_config:
   path: base/arch
   links:
+    - src: toggle_display_brightness.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: toggle_display_brightness
     - src: spotifyctl.sh
       dest: "{{ xdg_bin_home }}/"
       rename: spotifyctl
@@ -22,6 +25,7 @@ arch_config:
     - gucharmap
     - base-devel
     - udiskie
+    - ddcutil
   aur_packages:
     - google-chrome
     - spotify
