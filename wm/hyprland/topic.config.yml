@@ -1,5 +1,6 @@
 ---
 hyprland_config:
+  dirname: hypr
   path: wm/hyprland
   links:
     - hyprland.conf
