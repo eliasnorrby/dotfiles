@@ -1,0 +1,39 @@
+---
+# Workaround for the fact that tasks run before dependencies are installed
+- block:
+    - name: create keyd config directory
+      file:
+        path: /etc/keyd
+        state: directory
+
+    - name: symlink keyd config
+      file:
+        src: "/home/{{ ansible_user_id }}/.dotfiles/keyboard/keyd/default.conf"
+        dest: /etc/keyd/default.conf
+        state: link
+
+    # Workaround for the fact that tasks run before dependencies are installed
+    - name: check if keyd is installed
+      command: which keyd
+      register: keyd_installed
+      ignore_errors: yes
+      changed_when: false
+
+    - name: enable and start keyd service
+      systemd:
+        name: keyd
+        enabled: yes
+        state: started
+      when: keyd_installed.rc == 0
+  become: yes
+  tags: ["never", "sudo_enabled"]
+
+- name: notice about sudo
+  debug:
+    msg: |
+      The tasks for keyd require sudo and have been skipped.
+
+      Please pass the 'sudo_enabled' tag (use the --become flag for the CLI)
+      to run them.
+  when: "'sudo_enabled' not in ansible_run_tags"
+  tags: ["always"]

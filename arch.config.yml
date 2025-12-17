@@ -56,6 +56,9 @@ topics:
       state: absent
       config: "{{ intellij_config }}"
   keyboard:
+    - name: keyd
+      state: present
+      config: "{{ keyd_config }}"
     - name: sxhkd
       state: absent
       config: "{{ sxhkd_config }}"

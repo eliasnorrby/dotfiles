@@ -1,0 +1,5 @@
+---
+keyd_config:
+  path: keyboard/keyd
+  pacman_packages:
+    - keyd
