@@ -8,6 +8,9 @@ hyprland_config:
     - src: navigate.sh
       dest: "{{ xdg_bin_home }}/"
       rename: navigate
+    - src: focus_or_run.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: focus_or_run
   pacman_packages:
     - hyprland
     # - hyprpaper
