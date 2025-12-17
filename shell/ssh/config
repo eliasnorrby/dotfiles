@@ -2,5 +2,5 @@ Include config.d/*
 
 # Put last - first match wins
 Host *
-  # AddKeysToAgent yes
+  AddKeysToAgent yes
   IdentityFile ~/.ssh/id_ed25519
