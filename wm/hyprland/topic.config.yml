@@ -11,6 +11,9 @@ hyprland_config:
     - src: focus_or_run.sh
       dest: "{{ xdg_bin_home }}/"
       rename: focus_or_run
+    - src: launch_on_workspace.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: launch_on_workspace
   pacman_packages:
     - hyprland
     # - hyprpaper
