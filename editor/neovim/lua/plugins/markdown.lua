@@ -5,6 +5,9 @@ return {
     name = 'markdown-tools.nvim',
     ft = 'markdown',
     opts = {
+      mappings = {
+        link_follow = false,
+      },
       on_attach = function(bufnr)
         local wk = require('which-key')
 
