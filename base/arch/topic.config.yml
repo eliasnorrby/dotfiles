@@ -18,14 +18,21 @@ arch_config:
       dest: ~/.gnupg/
     - autostart.sh
   pacman_packages:
+    # base
+    - vim
+    - man-db
+    - man-pages
+    - pacman-contrib
+    - base-devel
+    # tools
     - ranger
     - unzip
-    - chromium
-    - discord
     - gucharmap
-    - base-devel
     - udiskie
     - ddcutil
+    # apps
+    - chromium
+    - discord
     - obsidian
   aur_packages:
     - google-chrome
