@@ -4,6 +4,7 @@ hyprland_config:
   path: wm/hyprland
   links:
     - hyprland.conf
+    - hyprpaper.conf
     - conf.d
     - src: navigate.sh
       dest: "{{ xdg_bin_home }}/"
@@ -16,7 +17,7 @@ hyprland_config:
       rename: launch_on_workspace
   pacman_packages:
     - hyprland
-    # - hyprpaper
+    - hyprpaper
     # - hyprlock
     # - hypridle
     - xdg-desktop-portal-hyprland
