@@ -4,4 +4,5 @@ gcloud_config:
   brew_casks:
     - google-cloud-sdk
   aur_packages:
-    - google-cloud-sdk
+    - google-cloud-cli
+    - google-cloud-cli-gsutil
