@@ -6,6 +6,7 @@ wayland_config:
     - wayland-protocols
     - libinput
     - wl-clipboard
+    - xdg-desktop-portal
     # screenshots
     - grim
     - slurp

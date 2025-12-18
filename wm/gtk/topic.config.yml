@@ -4,5 +4,7 @@ gtk_config:
   dirname: gtk-3.0
   links:
     - settings.ini
+  pacman_packages:
+    - xdg-desktop-portal-gtk
 
 gtk_themes_dir: "~/.themes"
