@@ -15,6 +15,11 @@ fi
 
 if [[ "$(_os)" == "arch" ]]; then
   xdg-user-dirs-update
+  if _is_callable ddcutil ; then
+    _msg "-- ddcutil --"
+    _msg "Loading i2c-dev module..."
+    sudo modprobe i2c-dev
+  fi
 fi
 
 # nvim
