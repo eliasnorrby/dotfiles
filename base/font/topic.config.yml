@@ -2,19 +2,29 @@
 font_config:
   path: base/font
   brew_casks:
+    # monospace / coding
     - font-victor-mono
-    - font-symbols-only-nerd-font
     - font-hack-nerd-font
     - font-iosevka-nerd-font
     - font-mononoki-nerd-font
     - font-victor-mono-nerd-font
+    # icons
+    - font-symbols-only-nerd-font
   pacman_packages:
-    - ttf-font-awesome
+    # system fallbacks
+    - ttf-dejavu # common fallback, extended unicode
+    - noto-fonts # latin/greek/cyrillic coverage
+    - noto-fonts-cjk # chinese/japanese/korean
+    - noto-fonts-emoji # emoji rendering
+    # monospace / coding
     - ttf-iosevka-nerd
+    # icons (for status bars, launchers)
+    - ttf-font-awesome
   aur_packages:
+    # monospace / coding
     - ttf-hack-nerd
     - ttf-mononoki-nerd
     - ttf-victor-mono-nerd
-    - ttf-devicons
-    - ttf-mononoki
-    - ttf-material-design-icons-webfont
+    # icons
+    - ttf-devicons # file type icons
+    - ttf-material-design-icons-webfont # google material design
