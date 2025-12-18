@@ -22,9 +22,12 @@ arch_config:
     - vim
     - man-db
     - man-pages
-    - pacman-contrib
     - base-devel
     - xdg-user-dirs
+    - archlinux-contrib
+    # pacman
+    - pacman-contrib
+    - rebuild-detector
     # tools
     - ranger
     - unzip
@@ -38,6 +41,9 @@ arch_config:
     - discord
     - obsidian
   aur_packages:
+    # pacman
+    - informant
+    # apps
     - google-chrome
     - spotify
     - dropbox
