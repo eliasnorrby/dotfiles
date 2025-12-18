@@ -2,8 +2,12 @@
 wayland_config:
   path: display/wayland
   pacman_packages:
+    - wayland
+    - wayland-protocols
+    - libinput
     - wl-clipboard
+    # screenshots
     - grim
     - slurp
+    # event viewer
     - wev
-    # - wlr-randr
