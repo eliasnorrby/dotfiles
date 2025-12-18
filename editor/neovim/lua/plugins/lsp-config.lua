@@ -45,6 +45,7 @@ return {
       'gopls',
       'graphql',
       'html',
+      'hyprls',
       'jsonls',
       'lua_ls',
       'marksman',
