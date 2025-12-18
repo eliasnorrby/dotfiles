@@ -3,8 +3,14 @@
 ## Extra steps on Arch
 
 ```bash
-# To start the daemon automatically
+# Start the docker daemon manually
 sudo systemctl start docker.service
+sudo systemctl start docker.socket
+
+# To start the daemon on-demand
+sudo systemctl enable docker.socket
+
+# To start the daemon automatically
 sudo systemctl enable docker.service
 
 # To run docker commands as a non-root user
