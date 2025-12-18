@@ -8,7 +8,7 @@ if [[ "$(_os)" == "macos" ]] ; then
   }
 else
   copy_cmd() {
-    xclip -selection clipboard
+    wl-copy
   }
 fi
 
