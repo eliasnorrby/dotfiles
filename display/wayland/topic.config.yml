@@ -5,5 +5,5 @@ wayland_config:
     - wl-clipboard
     - grim
     - slurp
-    # - wev
+    - wev
     # - wlr-randr
