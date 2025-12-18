@@ -21,5 +21,8 @@ hyprland_config:
     # - hyprlock
     # - hypridle
     - xdg-desktop-portal-hyprland
+    # display manager
+    - greetd
+    - greetd-tuigreet
   aur_packages:
     - catppuccin-cursors-macchiato
