@@ -13,6 +13,10 @@ if [[ "$(_os)" == "macos" ]]; then
   tic -x "$DIR/assets/tmux.terminfo"
 fi
 
+if [[ "$(_os)" == "arch" ]]; then
+  xdg-user-dirs-update
+fi
+
 # nvim
 if _is_callable nvim ; then
   _msg "-- nvim --"

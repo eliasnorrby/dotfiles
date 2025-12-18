@@ -24,6 +24,7 @@ arch_config:
     - man-pages
     - pacman-contrib
     - base-devel
+    - xdg-user-dirs
     # tools
     - ranger
     - unzip
