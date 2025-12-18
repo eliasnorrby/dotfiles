@@ -39,6 +39,10 @@ topics:
     - name: wayland
       state: present
       config: "{{ wayland_config }}"
+  gpu:
+    - name: amd
+      state: present
+      config: "{{ amd_config }}"
   editor:
     - name: neovim
       state: present

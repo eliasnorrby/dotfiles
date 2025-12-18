@@ -1,0 +1,11 @@
+---
+amd_config:
+  path: gpu/amd
+  pacman_packages:
+    # opengl
+    - mesa # open-source OpenGL implementation
+    # video acceleration
+    - libva-mesa-driver # VA-API hardware video decode/encode
+    # vulkan
+    - vulkan-radeon # vulkan driver for AMD GPUs
+    - vulkan-icd-loader # vulkan runtime loader
