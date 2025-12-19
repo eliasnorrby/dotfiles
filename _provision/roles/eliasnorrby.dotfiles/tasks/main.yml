@@ -75,6 +75,22 @@
     topic_tasks: "{{ topic_tasks | default([]) + [ {'file_path': item, 'topic_path': item | regex_replace('.*/([^/]+/[^/]+)/topic.tasks.yml$', '\\1')} ] }}"
   loop: "{{ topic_task_files }}"
 
+- name: get a list of topic post_task files
+  block:
+    - find:
+        path: "{{ playbook_dir }}/.."
+        patterns: "topic.post_tasks.yml"
+        file_type: file
+        recurse: true
+      register: found_post_tasks
+    - set_fact:
+        topic_post_task_files: "{{ found_post_tasks.files | map(attribute='path') | list }}"
+
+- name: convert post_task list items to dicts with topic path property
+  set_fact:
+    topic_post_tasks: "{{ topic_post_tasks | default([]) + [ {'file_path': item, 'topic_path': item | regex_replace('.*/([^/]+/[^/]+)/topic.post_tasks.yml$', '\\1')} ] }}"
+  loop: "{{ topic_post_task_files }}"
+
 - name: include topic tasks for present topics
   include_tasks: "{{ outer_item.file_path }}"
   loop: "{{ topic_tasks | default([]) }}"

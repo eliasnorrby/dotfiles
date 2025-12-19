@@ -35,3 +35,5 @@
       tags: ["never", "do_packages", "bootstrap"]
     - include_tasks: tasks/osx-defaults.yml
       tags: ["never", "do_defaults", "bootstrap"]
+    - include_tasks: tasks/post_tasks.yml
+      tags: ["dotfiles", "bootstrap"]
