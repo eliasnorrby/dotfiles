@@ -40,11 +40,14 @@ topics:
       state: present
       config: "{{ wayland_config }}"
     - name: greetd
-      state: present
+      state: absent
       config: "{{ greetd_config }}"
     - name: plymouth
       state: present
       config: "{{ plymouth_config }}"
+    - name: sddm
+      state: present
+      config: "{{ sddm_config }}"
   gpu:
     - name: amd
       state: present

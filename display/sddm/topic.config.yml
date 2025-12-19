@@ -1,0 +1,6 @@
+---
+sddm_config:
+  path: display/sddm
+  pacman_packages:
+    - sddm
+    - qt6-svg # required for themes
