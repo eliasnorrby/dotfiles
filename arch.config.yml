@@ -72,6 +72,9 @@ topics:
     - name: xkb
       state: absent
       config: "{{ xkb_config }}"
+    - name: espanso
+      state: present
+      config: "{{ espanso_config }}"
   panel:
     - name: polybar
       state: absent
