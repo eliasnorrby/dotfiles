@@ -1,23 +1,16 @@
-# This should be a post task
+---
 - block:
-    - name: check if greetd is installed
-      command: which greetd
-      register: greetd_installed
-      ignore_errors: yes
-      changed_when: false
     - name: symlink greetd config
       file:
         src: "/home/{{ ansible_user_id }}/.dotfiles/wm/hyprland/greetd.toml"
         dest: /etc/greetd/config.toml
         state: link
         force: yes
-      when: greetd_installed.rc == 0
     - name: enable greetd service
       systemd:
         name: greetd
         enabled: yes
         daemon_reload: yes
-      when: greetd_installed.rc == 0
   become: yes
   tags: ["never", "sudo_enabled"]
 

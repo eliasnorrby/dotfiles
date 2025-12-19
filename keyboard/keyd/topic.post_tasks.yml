@@ -1,5 +1,4 @@
 ---
-# Workaround for the fact that tasks run before dependencies are installed
 - block:
     - name: create keyd config directory
       file:
@@ -12,19 +11,11 @@
         dest: /etc/keyd/default.conf
         state: link
 
-    # Workaround for the fact that tasks run before dependencies are installed
-    - name: check if keyd is installed
-      command: which keyd
-      register: keyd_installed
-      ignore_errors: yes
-      changed_when: false
-
     - name: enable and start keyd service
       systemd:
         name: keyd
         enabled: yes
         state: started
-      when: keyd_installed.rc == 0
   become: yes
   tags: ["never", "sudo_enabled"]
 
