@@ -42,6 +42,9 @@ topics:
     - name: greetd
       state: present
       config: "{{ greetd_config }}"
+    - name: plymouth
+      state: present
+      config: "{{ plymouth_config }}"
   gpu:
     - name: amd
       state: present

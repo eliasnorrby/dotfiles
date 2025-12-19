@@ -1,0 +1,5 @@
+---
+plymouth_config:
+  path: display/plymouth
+  pacman_packages:
+    - plymouth

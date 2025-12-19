@@ -1,0 +1,44 @@
+---
+- block:
+    - name: add plymouth hook after udev in mkinitcpio.conf
+      replace:
+        path: /etc/mkinitcpio.conf
+        regexp: '(HOOKS=\([^)]*\budev)\b(?! plymouth)'
+        replace: '\1 plymouth'
+      register: mkinitcpio_changed
+
+    - name: regenerate initramfs
+      command: mkinitcpio -P
+      when: mkinitcpio_changed.changed
+
+    - name: find systemd-boot entry
+      find:
+        paths: /boot/loader/entries
+        patterns: "*.conf"
+      register: boot_entries
+
+    - name: add quiet splash to kernel options
+      replace:
+        path: "{{ item.path }}"
+        regexp: '^(options (?!.*quiet splash).*)$'
+        replace: '\1 quiet splash loglevel=3 vt.global_cursor_default=0'
+      loop: "{{ boot_entries.files }}"
+      when: boot_entries.files | length > 0
+  become: yes
+  tags: ["never", "sudo_enabled"]
+
+- name: notice about sudo
+  debug:
+    msg: |
+      Plymouth post-tasks require sudo and have been skipped.
+
+      Please pass the 'sudo_enabled' tag (use the --become flag for the CLI)
+      to run them.
+
+      Manual steps:
+      1. Add 'plymouth' hook after 'udev' in /etc/mkinitcpio.conf
+      2. Run: sudo mkinitcpio -P
+      3. Add 'quiet splash loglevel=3 vt.global_cursor_default=0' to your
+         systemd-boot entry in /boot/loader/entries/*.conf
+  when: "'sudo_enabled' not in ansible_run_tags"
+  tags: ["always"]
