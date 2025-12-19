@@ -1,0 +1,6 @@
+---
+greetd_config:
+  path: display/greetd
+  pacman_packages:
+    - greetd
+    - greetd-tuigreet

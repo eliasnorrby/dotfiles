@@ -39,6 +39,9 @@ topics:
     - name: wayland
       state: present
       config: "{{ wayland_config }}"
+    - name: greetd
+      state: present
+      config: "{{ greetd_config }}"
   gpu:
     - name: amd
       state: present
