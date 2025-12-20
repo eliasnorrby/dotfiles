@@ -7,10 +7,6 @@
         replace: '\1 plymouth'
       register: mkinitcpio_changed
 
-    - name: regenerate initramfs
-      command: mkinitcpio -P
-      when: mkinitcpio_changed.changed
-
     - name: find systemd-boot entry
       find:
         paths: /boot/loader/entries
@@ -24,6 +20,34 @@
         replace: '\1 quiet splash loglevel=3 vt.global_cursor_default=0'
       loop: "{{ boot_entries.files }}"
       when: boot_entries.files | length > 0
+
+    - name: clone catppuccin plymouth theme
+      git:
+        repo: https://github.com/catppuccin/plymouth.git
+        dest: /tmp/catppuccin-plymouth
+        depth: 1
+        force: yes
+
+    - name: copy catppuccin macchiato theme
+      copy:
+        src: /tmp/catppuccin-plymouth/themes/catppuccin-macchiato/
+        dest: /usr/share/plymouth/themes/catppuccin-macchiato/
+        remote_src: yes
+      register: theme_copied
+
+    - name: check current plymouth theme
+      command: plymouth-set-default-theme
+      register: current_theme
+      changed_when: false
+
+    - name: set catppuccin theme
+      command: plymouth-set-default-theme catppuccin-macchiato
+      when: current_theme.stdout != 'catppuccin-macchiato'
+      register: theme_changed
+
+    - name: regenerate initramfs
+      command: mkinitcpio -P
+      when: mkinitcpio_changed.changed or theme_copied.changed or (theme_changed.changed | default(false))
   become: yes
   tags: ["never", "sudo_enabled"]
 
@@ -37,8 +61,10 @@
 
       Manual steps:
       1. Add 'plymouth' hook after 'udev' in /etc/mkinitcpio.conf
-      2. Run: sudo mkinitcpio -P
-      3. Add 'quiet splash loglevel=3 vt.global_cursor_default=0' to your
+      2. Add 'quiet splash loglevel=3 vt.global_cursor_default=0' to your
          systemd-boot entry in /boot/loader/entries/*.conf
+      3. Clone https://github.com/catppuccin/plymouth.git
+      4. Copy themes/catppuccin-macchiato to /usr/share/plymouth/themes/
+      5. Run: sudo plymouth-set-default-theme -R catppuccin-macchiato
   when: "'sudo_enabled' not in ansible_run_tags"
   tags: ["always"]
