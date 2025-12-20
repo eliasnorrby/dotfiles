@@ -4,3 +4,5 @@ sddm_config:
   pacman_packages:
     - sddm
     - qt6-svg # required for themes
+  aur_packages:
+    - catppuccin-sddm-theme-macchiato
