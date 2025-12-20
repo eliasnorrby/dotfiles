@@ -35,19 +35,17 @@
         remote_src: yes
       register: theme_copied
 
-    - name: check current plymouth theme
-      command: plymouth-set-default-theme
-      register: current_theme
-      changed_when: false
-
-    - name: set catppuccin theme
-      command: plymouth-set-default-theme catppuccin-macchiato
-      when: current_theme.stdout != 'catppuccin-macchiato'
-      register: theme_changed
+    - name: symlink plymouth config
+      file:
+        src: "/home/{{ ansible_user_id }}/.dotfiles/display/plymouth/plymouthd.conf"
+        dest: /etc/plymouth/plymouthd.conf
+        state: link
+        force: yes
+      register: config_linked
 
     - name: regenerate initramfs
       command: mkinitcpio -P
-      when: mkinitcpio_changed.changed or theme_copied.changed or (theme_changed.changed | default(false))
+      when: mkinitcpio_changed.changed or theme_copied.changed or config_linked.changed
   become: yes
   tags: ["never", "sudo_enabled"]
 
@@ -65,6 +63,7 @@
          systemd-boot entry in /boot/loader/entries/*.conf
       3. Clone https://github.com/catppuccin/plymouth.git
       4. Copy themes/catppuccin-macchiato to /usr/share/plymouth/themes/
-      5. Run: sudo plymouth-set-default-theme -R catppuccin-macchiato
+      5. Symlink plymouthd.conf to /etc/plymouth/plymouthd.conf
+      6. Run: sudo mkinitcpio -P
   when: "'sudo_enabled' not in ansible_run_tags"
   tags: ["always"]
