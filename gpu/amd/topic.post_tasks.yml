@@ -1,0 +1,35 @@
+---
+- block:
+    - name: add amdgpu to mkinitcpio MODULES for early KMS
+      replace:
+        path: /etc/mkinitcpio.conf
+        regexp: '^MODULES=\((?!.*\bamdgpu\b)([^)]*)\)$'
+        replace: 'MODULES=(amdgpu \1)'
+      register: mkinitcpio_changed
+
+    - name: clean up extra space if MODULES was empty
+      replace:
+        path: /etc/mkinitcpio.conf
+        regexp: '^MODULES=\(amdgpu \)$'
+        replace: 'MODULES=(amdgpu)'
+      when: mkinitcpio_changed.changed
+
+    - name: regenerate initramfs
+      command: mkinitcpio -P
+      when: mkinitcpio_changed.changed
+  become: yes
+  tags: ["never", "sudo_enabled"]
+
+- name: notice about sudo
+  debug:
+    msg: |
+      AMD GPU post-tasks require sudo and have been skipped.
+
+      Please pass the 'sudo_enabled' tag (use the --become flag for the CLI)
+      to run them.
+
+      Manual steps:
+      1. Add 'amdgpu' to MODULES in /etc/mkinitcpio.conf
+      2. Run: sudo mkinitcpio -P
+  when: "'sudo_enabled' not in ansible_run_tags"
+  tags: ["always"]
