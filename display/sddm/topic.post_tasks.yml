@@ -5,12 +5,12 @@
         path: /etc/sddm.conf.d
         state: directory
 
-    - name: configure sddm theme
-      copy:
-        dest: /etc/sddm.conf.d/theme.conf
-        content: |
-          [Theme]
-          Current=catppuccin-macchiato
+    - name: symlink sddm config
+      file:
+        src: "/home/{{ ansible_user_id }}/.dotfiles/display/sddm/sddm.conf"
+        dest: /etc/sddm.conf.d/sddm.conf
+        state: link
+        force: yes
 
     - name: enable sddm service
       systemd:
@@ -28,9 +28,7 @@
       to run them.
 
       Manual steps:
-      1. Create /etc/sddm.conf.d/theme.conf with:
-         [Theme]
-         Current=catppuccin-macchiato
+      1. Symlink sddm.conf to /etc/sddm.conf.d/sddm.conf
       2. sudo systemctl enable sddm
   when: "'sudo_enabled' not in ansible_run_tags"
   tags: ["always"]

@@ -4,5 +4,6 @@ sddm_config:
   pacman_packages:
     - sddm
     - qt6-svg # required for themes
+    - kwin # wayland compositor for greeter
   aur_packages:
     - catppuccin-sddm-theme-macchiato
