@@ -2,5 +2,6 @@
 vt = 7
 
 [default_session]
-command = "tuigreet --time --remember --cmd 'zsh -lc Hyprland &> /dev/null'"
+# Colors reference: https://github.com/ratatui/ratatui/blob/main/ratatui-core/src/style/color.rs
+command = "tuigreet --time --remember --cmd 'zsh -lc Hyprland &> /dev/null' --theme 'text=gray;border=darkgray;action=darkgray;button=gray;prompt=white' --window-padding 2"
 user = "greeter"
