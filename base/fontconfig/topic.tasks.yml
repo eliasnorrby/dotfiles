@@ -1,0 +1,12 @@
+---
+- name: create conf.d directory for fontconfig
+  file:
+    path: "{{ fontconfig_confd }}"
+    state: directory
+
+- name: enable subpixel hinting in freetype2
+  become: true
+  lineinfile:
+    path: /etc/profile.d/freetype2.sh
+    regexp: '^#?(export FREETYPE_PROPERTIES=.*)$'
+    line: 'export FREETYPE_PROPERTIES="truetype:interpreter-version=40"'

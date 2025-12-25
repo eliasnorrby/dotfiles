@@ -1,0 +1,13 @@
+---
+fontconfig_config:
+  path: base/fontconfig
+  links:
+    - src: fonts.conf
+    - absolute: /usr/share/fontconfig/conf.avail/10-sub-pixel-rgb.conf
+      dest: "{{ fontconfig_confd }}"
+    - absolute: /usr/share/fontconfig/conf.avail/10-hinting-slight.conf
+      dest: "{{ fontconfig_confd }}"
+    - absolute: /usr/share/fontconfig/conf.avail/11-lcdfilter-default.conf
+      dest: "{{ fontconfig_confd }}"
+
+fontconfig_confd: "{{ xdg_config_home }}/fontconfig/conf.d/"

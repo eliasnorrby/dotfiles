@@ -29,6 +29,9 @@ topics:
     - name: font
       state: present
       config: "{{ font_config }}"
+    - name: fontconfig
+      state: present
+      config: "{{ fontconfig_config }}"
     - name: work
       state: present
       config: "{{ work_config }}"
