@@ -25,6 +25,7 @@ arch_config:
     - base-devel
     - xdg-user-dirs
     - archlinux-contrib
+    - sound-theme-freedesktop
     # pacman
     - pacman-contrib
     - rebuild-detector
