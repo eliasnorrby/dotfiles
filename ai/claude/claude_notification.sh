@@ -40,21 +40,27 @@ fi
 
 bell
 
-# Set notification message and sound based on type
+# Set notification message and sound based on type and platform
 if [[ "$notification_type" == "done" ]]; then
   message="Claude is done."
-  sound="/System/Library/Sounds/Funk.aiff"
+  macos_sound="/System/Library/Sounds/Funk.aiff"
+  linux_sound="/usr/share/sounds/freedesktop/stereo/dialog-information.oga"
 else
   message="Claude needs your input to continue."
-  sound="/System/Library/Sounds/Hero.aiff"
+  macos_sound="/System/Library/Sounds/Hero.aiff"
+  linux_sound="/usr/share/sounds/freedesktop/stereo/dialog-warning.oga"
 fi
 
 # Send notification
 if command -v terminal-notifier >/dev/null 2>&1; then
   terminal-notifier -title "Claude" -message "$message"
+elif command -v notify-send >/dev/null 2>&1; then
+  notify-send "Claude" "$message"
 fi
 
 # Play sound
 if command -v afplay >/dev/null 2>&1; then
-  afplay -v 3 "$sound"
+  afplay -v 3 "$macos_sound"
+elif command -v paplay >/dev/null 2>&1 && [[ -f "$linux_sound" ]]; then
+  paplay "$linux_sound"
 fi
