@@ -1,0 +1,9 @@
+---
+mako_config:
+  path: wm/mako
+  links:
+    - config
+    - theme
+  pacman_packages:
+    - mako
+    - libnotify # for notify-send

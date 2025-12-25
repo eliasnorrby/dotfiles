@@ -95,6 +95,9 @@ topics:
     - name: dunst
       state: absent
       config: "{{ dunst_config }}"
+    - name: mako
+      state: present
+      config: "{{ mako_config }}"
     - name: feh
       state: absent
       config: "{{ feh_config }}"
