@@ -1,4 +1,4 @@
-# FIXME: Resolve path on linux / macos
 imports:
   - "/Users/elias/work/bemlo/espanso/match/interview.yml"
   - "/Users/elias/work/bemlo/espanso/match/dev.yml"
+  - "/Users/elias/.local/share/espanso/match/local.yml"

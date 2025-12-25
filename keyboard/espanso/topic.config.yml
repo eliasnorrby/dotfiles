@@ -7,3 +7,11 @@ espanso_config:
   links:
     - match
     - config
+    - src: imports_macos.yml
+      dest: "{{ dotfiles }}/keyboard/espanso/match/os_imports.yml"
+      rename: imports.yml
+      condition: "{{ is_macos }}"
+    - src: imports_arch.yml
+      dest: "{{ dotfiles }}/keyboard/espanso/match/os_imports.yml"
+      rename: imports.yml
+      condition: "{{ is_arch }}"

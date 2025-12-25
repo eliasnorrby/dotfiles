@@ -1,0 +1,4 @@
+imports:
+  - "/home/elias/work/bemlo/espanso/match/interview.yml"
+  - "/home/elias/work/bemlo/espanso/match/dev.yml"
+  - "/home/elias/.local/share/espanso/match/local.yml"

@@ -1,0 +1,14 @@
+---
+- name: create local dir
+  file:
+    state: directory
+    path: "{{ xdg_data_home }}/espanso/match"
+- name: check if local espanso match file exists
+  stat:
+    path: "{{ xdg_data_home }}/espanso/match/local.yml"
+  register: espanso_local_match_file
+- name: create local espanso match file
+  copy:
+    dest: "{{ xdg_data_home }}/espanso/match/local.yml"
+    content: "# Add your local espanso matches here"
+  when: not espanso_local_match_file.stat.exists
