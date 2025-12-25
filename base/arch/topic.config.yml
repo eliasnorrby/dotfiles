@@ -35,8 +35,6 @@ arch_config:
     - gucharmap
     - udiskie
     - ddcutil
-    # desktop infrastructure
-    - polkit-gnome # authentication agent for privilege escalation prompts
     # apps
     - chromium
     - discord

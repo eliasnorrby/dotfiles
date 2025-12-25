@@ -23,6 +23,7 @@ hyprland_config:
     - hyprpaper
     # - hyprlock
     # - hypridle
+    - hyprpolkitagent
     - xdg-desktop-portal-hyprland
   aur_packages:
     - catppuccin-cursors-macchiato
