@@ -5,6 +5,8 @@ hyprland_config:
   links:
     - hyprland.conf
     - hyprpaper.conf
+    - hyprlock.conf
+    - hypridle.conf
     - conf.d
     - src: navigate.sh
       dest: "{{ xdg_bin_home }}/"
@@ -21,8 +23,8 @@ hyprland_config:
   pacman_packages:
     - hyprland
     - hyprpaper
-    # - hyprlock
-    # - hypridle
+    - hyprlock
+    - hypridle
     - hyprpolkitagent
     - xdg-desktop-portal-hyprland
   aur_packages:
