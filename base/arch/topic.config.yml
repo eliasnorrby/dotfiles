@@ -26,6 +26,7 @@ arch_config:
     - xdg-user-dirs
     - archlinux-contrib
     - sound-theme-freedesktop
+    - pavucontrol
     # pacman
     - pacman-contrib
     - rebuild-detector
