@@ -27,10 +27,10 @@ main() {
 
 map_dir() {
   case $dir in
-    l|left)    hypr_dir=l   tmux_select_dir=L   tmux_lookup_dir=left     vim_key=h   ;;
-    r|right)   hypr_dir=r   tmux_select_dir=R   tmux_lookup_dir=right    vim_key=l   ;;
-    u|up)      hypr_dir=u   tmux_select_dir=U   tmux_lookup_dir=top      vim_key=k   ;;
-    d|down)    hypr_dir=d   tmux_select_dir=D   tmux_lookup_dir=bottom   vim_key=j   ;;
+    l | left)  hypr_dir=l   tmux_select_dir=L   tmux_lookup_dir=left     vim_key=h   ;;
+    r | right) hypr_dir=r   tmux_select_dir=R   tmux_lookup_dir=right    vim_key=l   ;;
+    u | up)    hypr_dir=u   tmux_select_dir=U   tmux_lookup_dir=top      vim_key=k   ;;
+    d | down)  hypr_dir=d   tmux_select_dir=D   tmux_lookup_dir=bottom   vim_key=j   ;;
     *)
       echo "Invalid dir: $dir"
       exit 1
@@ -39,7 +39,7 @@ map_dir() {
 }
 
 hyprland_select() {
-  hyprctl dispatch movefocus $hypr_dir
+  hyprctl --instance 0 dispatch movefocus $hypr_dir
 }
 
 tmux_select() {
@@ -51,7 +51,7 @@ vim_in_tmux_select() {
 }
 
 is_tmux() {
-  active_class=$(hyprctl activewindow -j | jq -r '.class')
+  active_class=$(hyprctl --instance 0 activewindow -j | jq -r '.class')
   echo "$active_class" | grep -qE 'Tmux(Alacritty|Kitty)'
 }
 
