@@ -2,8 +2,11 @@
   "layer": "top",
   "position": "top",
   "height": 30,
+  "margin-top": 10,
+  "margin-right": 10,
+  "margin-left": 10,
+  "margin-bottom": 2,
   "spacing": 4,
-
   "modules-left": [
     "hyprland/workspaces"
   ],
@@ -16,53 +19,75 @@
     "network",
     "cpu",
     "memory",
-    "tray"
+    "tray",
+    "custom/power"
   ],
-
   "hyprland/workspaces": {
     "format": "{id}",
     "on-click": "activate"
   },
-
   "hyprland/language": {
     "format": "{}",
     "format-en": "EN",
     "format-se": "SE"
   },
-
   "clock": {
     "format": "{:%H:%M}",
     "format-alt": "{:%Y-%m-%d %H:%M}",
     "tooltip-format": "<tt>{calendar}</tt>"
   },
-
   "cpu": {
-    "format": " {usage}%",
+    "format": " {usage}%",
     "interval": 5
   },
-
   "memory": {
-    "format": " {percentage}%",
+    "format": " {percentage}%",
     "interval": 5
   },
-
   "network": {
-    "format-wifi": " {signalStrength}%",
-    "format-ethernet": "",
-    "format-disconnected": "󰖪",
+    "format": " {bandwidthUpBytes}  {bandwidthUpBytes}",
+    // "format-wifi": " {signalStrength}%",
+    // "format-ethernet": " {ipaddr}/{cidr}",
+    "format-disconnected": "󰖪 ",
     "tooltip-format": "{ifname}: {ipaddr}"
   },
-
   "pulseaudio": {
+    "scroll-step": 5, // %, can be a float
+    // "format": "{volume}% {icon} {format_source}",
     "format": "{icon} {volume}%",
-    "format-muted": "󰝟",
+    "format-bluetooth": "{volume}% {icon} {format_source}",
+    "format-bluetooth-muted": " {icon} {format_source}",
+    "format-muted": " {format_source}",
+    "format-source": "{volume}% ",
+    "format-source-muted": "",
     "format-icons": {
-      "default": ["", "", ""]
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": [
+        "",
+        "",
+        ""
+      ]
     },
     "on-click": "pavucontrol"
   },
-
   "tray": {
     "spacing": 10
+  },
+  "custom/power": {
+    "format": "⏻ ",
+    "tooltip": false,
+    "menu": "on-click",
+    "menu-file": "$HOME/.config/waybar/power_menu.xml", // Menu file in resources folder
+    "menu-actions": {
+      "shutdown": "shutdown",
+      "reboot": "reboot",
+      "suspend": "systemctl suspend",
+      "hibernate": "systemctl hibernate"
+    }
   }
 }

@@ -4,5 +4,7 @@ waybar_config:
   links:
     - config.jsonc
     - style.css
+    - power_menu.xml
   pacman_packages:
     - waybar
+    - otf-font-awesome
