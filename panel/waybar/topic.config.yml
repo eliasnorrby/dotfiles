@@ -1,0 +1,8 @@
+---
+waybar_config:
+  path: panel/waybar
+  links:
+    - config.jsonc
+    - style.css
+  pacman_packages:
+    - waybar

@@ -1,0 +1,72 @@
+/* Catppuccin Macchiato */
+@define-color base #24273a;
+@define-color mantle #1e2030;
+@define-color surface0 #363a4f;
+@define-color surface1 #494d64;
+@define-color text #cad3f5;
+@define-color subtext0 #a5adcb;
+@define-color peach #f5a97f;
+@define-color green #a6da95;
+@define-color red #ed8796;
+@define-color blue #8aadf4;
+
+* {
+  font-family: "Noto Sans", "Font Awesome 6 Free";
+  font-size: 13px;
+}
+
+window#waybar {
+  background-color: @base;
+  color: @text;
+}
+
+#workspaces button {
+  padding: 0 8px;
+  color: @subtext0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+}
+
+#workspaces button:hover {
+  background: @surface0;
+}
+
+#workspaces button.active {
+  color: @peach;
+}
+
+#workspaces button.urgent {
+  color: @red;
+}
+
+#clock,
+#cpu,
+#memory,
+#network,
+#pulseaudio,
+#language,
+#tray {
+  padding: 0 10px;
+  color: @text;
+}
+
+#clock {
+  color: @peach;
+}
+
+#pulseaudio.muted {
+  color: @subtext0;
+}
+
+#network.disconnected {
+  color: @red;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+}
