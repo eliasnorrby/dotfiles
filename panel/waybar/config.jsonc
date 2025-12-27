@@ -92,6 +92,7 @@
     "menu": "on-click",
     "menu-file": "$HOME/.config/waybar/power_menu.xml", // Menu file in resources folder
     "menu-actions": {
+      "reload": "reload_services",
       "shutdown": "shutdown",
       "reboot": "reboot",
       "suspend": "systemctl suspend",

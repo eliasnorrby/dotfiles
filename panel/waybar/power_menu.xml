@@ -2,6 +2,11 @@
 <interface>
   <object class="GtkMenu" id="menu">
     <child>
+      <object class="GtkMenuItem" id="reload">
+        <property name="label">Reload</property>
+      </object>
+    </child>
+    <child>
       <object class="GtkMenuItem" id="suspend">
         <property name="label">Suspend</property>
       </object>
