@@ -32,9 +32,10 @@
     }
   },
   "hyprland/language": {
-    "format": "{}",
+    "format": "  {}",
     "format-en": "EN",
-    "format-se": "SE"
+    "format-se": "SE",
+    "on-click": "hyprctl switchxkblayout all next"
   },
   "clock": {
     "format": "{:%H:%M}",
