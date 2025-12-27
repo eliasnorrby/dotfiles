@@ -39,7 +39,7 @@ map_dir() {
 }
 
 hyprland_select() {
-  hyprctl --instance 0 dispatch movefocus $hypr_dir
+  hyprctl dispatch movefocus $hypr_dir
 }
 
 tmux_select() {
@@ -51,7 +51,7 @@ vim_in_tmux_select() {
 }
 
 is_tmux() {
-  active_class=$(hyprctl --instance 0 activewindow -j | jq -r '.class')
+  active_class=$(hyprctl activewindow -j | jq -r '.class')
   echo "$active_class" | grep -qE 'Tmux(Alacritty|Kitty)'
 }
 
