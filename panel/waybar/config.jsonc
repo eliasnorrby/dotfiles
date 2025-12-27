@@ -10,7 +10,9 @@
   "modules-left": [
     "hyprland/workspaces"
   ],
-  "modules-center": [],
+  "modules-center": [
+    "custom/pacman"
+  ],
   "modules-right": [
     "hyprland/language",
     "pulseaudio",
@@ -98,5 +100,14 @@
       "suspend": "systemctl suspend",
       "hibernate": "systemctl hibernate"
     }
+  },
+  "custom/pacman": {
+    "format": " {text}",
+    "exec": "checkupdates | wc -l",
+    "interval": 1800,
+    "tooltip": true,
+    "tooltip-format": "System updates available",
+    "exec-if": "exit 0",
+    "signal": 8
   }
 }

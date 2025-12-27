@@ -74,7 +74,8 @@ window#waybar {
 #pulseaudio,
 #language,
 #tray,
-#custom-power {
+#custom-power,
+#custom-pacman {
   border-radius: 10px;
   background-color: rgba(36, 39, 58, 0.7);
   padding: 0 10px;
@@ -105,7 +106,8 @@ window#waybar {
 #network:hover,
 #pulseaudio:hover,
 #language:hover,
-#tray:hover {
+#tray:hover,
+#custom-pacman:hover {
   background-color: rgba(73, 77, 100, 0.7);
   transition: all 0.3s linear;
 }
@@ -128,6 +130,10 @@ window#waybar {
 
 #memory {
   color: @maroon;
+}
+
+#custom-pacman {
+  color: @yellow;
 }
 
 #custom-power {
