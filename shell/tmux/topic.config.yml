@@ -11,6 +11,10 @@ tmux_config:
     - tmux.theme.conf
     - scripts
     - extensions
+    - src: tmux_set_env.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: tmux_set_env
+      condition: "{{ is_arch }}"
     - src: tmux_switch_session.sh
       dest: "{{ xdg_bin_home }}/"
       rename: tmux_switch_session
