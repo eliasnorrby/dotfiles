@@ -27,9 +27,9 @@
 @define-color crust #181926;
 
 * {
-  font-family: "Mononoki Nerd Font", "Font Awesome 7 Free";
+  font-family: "JetBrains Mono NL", "Font Awesome 7 Free";
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .modules-left,
