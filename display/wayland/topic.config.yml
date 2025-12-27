@@ -12,3 +12,6 @@ wayland_config:
     - slurp
     # event viewer
     - wev
+    # Qt Wayland support
+    - qt5-wayland
+    - qt6-wayland
