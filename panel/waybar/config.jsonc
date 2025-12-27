@@ -102,8 +102,8 @@
     }
   },
   "custom/pacman": {
-    "format": " {text}",
-    "exec": "checkupdates | wc -l",
+    "format": "{}",
+    "exec": "check_updates",
     "interval": 1800,
     "tooltip": true,
     "tooltip-format": "System updates available",

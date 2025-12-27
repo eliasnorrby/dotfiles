@@ -5,6 +5,9 @@ waybar_config:
     - config.jsonc
     - style.css
     - power_menu.xml
+    - src: scripts/check_updates.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: check_updates
   pacman_packages:
     - waybar
     - otf-font-awesome
