@@ -32,11 +32,10 @@
   font-weight: 600;
 }
 
-.modules-left,
-.modules-right {
+.modules-left {
   border-radius: 10px;
-  background-color: rgba(36, 39, 58, 0.5);
-  border: 1px solid @lavendar;
+  background-color: rgba(36, 39, 58, 0.7);
+  /* border: 1px solid @lavendar; */
   /* border: none; */
 }
 
@@ -46,19 +45,22 @@ window#waybar {
 }
 
 #workspaces button {
-  padding: 0 8px;
+  padding: 0 10px;
+  padding-left: 12px;
   color: @subtext0;
   background: transparent;
   border: none;
-  border-radius: 0;
+  border-radius: 10px;
 }
 
 #workspaces button:hover {
-  background: @surface0;
+  color: @sky;
+  transition: all 0.3s linear;
 }
 
 #workspaces button.active {
-  color: @peach;
+  background-color: @sky;
+  color: @mantle;
 }
 
 #workspaces button.urgent {
@@ -73,12 +75,25 @@ window#waybar {
 #language,
 #tray,
 #custom-power {
+  border-radius: 10px;
+  border: 1px solid rgba(36, 39, 58, 0.7);
+  background-color: rgba(36, 39, 58, 0.7);
   padding: 0 8px;
+  margin: 0 4px;
   color: @text;
 }
 
-#clock {
-  /* color: @peach; */
+#clock:hover,
+#cpu:hover,
+#memory:hover,
+#network:hover,
+#pulseaudio:hover,
+#language:hover,
+#tray:hover,
+#custom-power:hover {
+  border: 1px solid @sky;
+  transition: all 0.3s linear;
+}
 
 #custom-power {
   background-color: @peach;
