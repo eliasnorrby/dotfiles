@@ -22,8 +22,14 @@
     "custom/power"
   ],
   "hyprland/workspaces": {
-    "format": "{id}",
-    "on-click": "activate"
+    "format": "{windows}",
+    "on-click": "activate",
+    "window-rewrite-default": "• ",
+    "window-rewrite": {
+      "class<TmuxKitty>": " ",
+      "class<google-chrome>": " ",
+      "class<slack>": " "
+    }
   },
   "hyprland/language": {
     "format": "{}",
