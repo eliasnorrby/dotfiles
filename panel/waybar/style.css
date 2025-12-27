@@ -79,6 +79,17 @@ window#waybar {
 
 #clock {
   /* color: @peach; */
+
+#custom-power {
+  background-color: @peach;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: @mantle;
+  border: none;
+}
+
+#custom-power:hover {
+  background-color: @maroon;
 }
 
 #pulseaudio.muted {
