@@ -34,7 +34,7 @@
     }
   },
   "hyprland/language": {
-    "format": "  {}",
+    "format": " {}",
     "format-en": "EN",
     "format-se": "SE",
     "on-click": "hyprctl switchxkblayout all next"
@@ -49,7 +49,7 @@
     "interval": 5
   },
   "memory": {
-    "format": " {percentage}%",
+    "format": " {percentage}%",
     "interval": 5
   },
   "network": {
