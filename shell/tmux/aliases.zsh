@@ -38,3 +38,8 @@ ftmk() {
   fi
   session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux kill-session -t "$session" || echo "No session found to delete."
 }
+
+# reload tmux environment
+trl() {
+  eval "$(tmux show-environment -s)"
+}

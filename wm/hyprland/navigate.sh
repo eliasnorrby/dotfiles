@@ -51,6 +51,7 @@ vim_in_tmux_select() {
 }
 
 is_tmux() {
+  eval "$(tmux show-environment -s)"
   active_class=$(hyprctl activewindow -j | jq -r '.class')
   echo "$active_class" | grep -qE 'Tmux(Alacritty|Kitty)'
 }
