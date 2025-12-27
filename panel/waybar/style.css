@@ -76,11 +76,27 @@ window#waybar {
 #tray,
 #custom-power {
   border-radius: 10px;
-  border: 1px solid rgba(36, 39, 58, 0.7);
   background-color: rgba(36, 39, 58, 0.7);
-  padding: 0 8px;
+  padding: 0 10px;
   margin: 0 4px;
   color: @text;
+}
+
+#network {
+  border-radius: 10px 0 0 10px;
+  margin-left: 4px;
+  margin-right: 0px;
+}
+
+#cpu {
+  margin: 0;
+  border-radius: 0;
+}
+
+#memory {
+  border-radius: 0 10px 10px 0;
+  margin-left: 0px;
+  margin-right: 4px;
 }
 
 #clock:hover,
@@ -90,7 +106,7 @@ window#waybar {
 #pulseaudio:hover,
 #language:hover,
 #tray:hover {
-  border: 1px solid @overlay0;
+  background-color: rgba(73, 77, 100, 0.7);
   transition: all 0.3s linear;
 }
 
