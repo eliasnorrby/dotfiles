@@ -28,7 +28,9 @@
     "window-rewrite": {
       "class<TmuxKitty>": " ",
       "class<google-chrome>": " ",
-      "class<slack>": " "
+      "class<slack>": " ",
+      "class<spotify>": " ",
+      "class<1password>": " "
     }
   },
   "hyprland/language": {
