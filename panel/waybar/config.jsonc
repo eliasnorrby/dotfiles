@@ -10,9 +10,7 @@
   "modules-left": [
     "hyprland/workspaces"
   ],
-  "modules-center": [
-    "clock"
-  ],
+  "modules-center": [],
   "modules-right": [
     "hyprland/language",
     "pulseaudio",
@@ -20,6 +18,7 @@
     "cpu",
     "memory",
     "tray",
+    "clock",
     "custom/power"
   ],
   "hyprland/workspaces": {
