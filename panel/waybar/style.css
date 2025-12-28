@@ -43,6 +43,7 @@ window#waybar {
 }
 
 #workspaces button {
+  margin-right: 8px;
   padding: 0 10px;
   padding-left: 12px;
   color: @subtext0;
