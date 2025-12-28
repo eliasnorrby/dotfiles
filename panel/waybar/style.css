@@ -61,6 +61,7 @@ window#waybar {
 #workspaces button.active {
   background-color: @mauve;
   color: @mantle;
+  transition: all 0.3s linear;
 }
 
 #workspaces button.urgent {
@@ -81,6 +82,7 @@ window#waybar {
   padding: 0 10px;
   margin: 0 4px;
   color: @text;
+  transition: all 0.3s linear;
 }
 
 #network {
