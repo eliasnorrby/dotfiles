@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Chrome Personal
+Comment=Google Chrome (Personal Profile)
+Exec=google-chrome-stable --class=ChromePersonal
+Icon=google-chrome
+Terminal=false
+Type=Application
+Categories=Network;WebBrowser;
+StartupWMClass=ChromePersonal

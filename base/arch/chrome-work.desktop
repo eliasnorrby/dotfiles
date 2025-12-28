@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Chrome Work
+Comment=Google Chrome (Work Profile)
+Exec=google-chrome-stable --class=ChromeWork --user-data-dir=~/.config/google-chrome-work
+Icon=google-chrome
+Terminal=false
+Type=Application
+Categories=Network;WebBrowser;
+StartupWMClass=ChromeWork

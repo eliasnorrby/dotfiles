@@ -8,12 +8,10 @@ arch_config:
     - src: spotifyctl.sh
       dest: "{{ xdg_bin_home }}/"
       rename: spotifyctl
-    - src: chrome_personal.sh
-      dest: "{{ xdg_bin_home }}/"
-      rename: chrome_personal
-    - src: chrome_work.sh
-      dest: "{{ xdg_bin_home }}/"
-      rename: chrome_work
+    - src: chrome-personal.desktop
+      dest: "{{ xdg_applications_dir }}/"
+    - src: chrome-work.desktop
+      dest: "{{ xdg_applications_dir }}/"
     - src: gpg.conf
       dest: ~/.gnupg/
     - autostart.sh
