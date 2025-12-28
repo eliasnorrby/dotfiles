@@ -1,0 +1,61 @@
+keys:
+  - key: a
+    name: apps
+    keys:
+      - key: t
+        name: terminal
+        value: kitty
+  - key: r
+    name: reload
+    keys:
+      - key: h
+        name: hyprland
+        value: hyprctl reload
+      - key: w
+        name: waybar
+        value: pkill -USR2 waybar
+      - key: m
+        name: mako
+        value: makoctl reload
+      - key: a
+        name: all
+        value: reload_services
+  - key: t
+    name: toggle
+    keys:
+      - key: w
+        name: waybar
+        value: pkill -USR1 waybar
+      - key: b
+        name: brightness
+        value: toggle_display_brightness
+      - key: l
+        name: layout
+        value: hyprctl switchxkblayout all next
+  - key: s
+    name: screenshot
+    keys:
+      - key: f
+        name: full
+        value: grim - | wl-copy
+      - key: a
+        name: area
+        value: grim -g "$(slurp)" | wl-copy
+  - key: l
+    name: lock
+    value: loginctl lock-session
+  - key: p
+    name: power
+    keys:
+      - key: s
+        name: suspend
+        value: systemctl suspend
+      - key: h
+        name: hibernate
+        value: systemctl hibernate
+      - key: r
+        name: reboot
+        value: systemctl reboot
+      - key: o
+        name: shutdown
+        value: systemctl poweroff

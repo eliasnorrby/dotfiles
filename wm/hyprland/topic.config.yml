@@ -9,6 +9,7 @@ hyprland_config:
     - hypridle.conf
     - hyprtoolkit.conf
     - catppuccin-macchiato.conf
+    - commands.yml
     - conf.d
     - src: navigate.sh
       dest: "{{ xdg_bin_home }}/"
