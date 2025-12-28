@@ -35,7 +35,8 @@
       "class<ChromePersonal>": " ",
       "class<Slack>": " ",
       "class<spotify>": " ",
-      "class<1password>": " "
+      "class<1password>": " ",
+      "class<obsidian>": ""
     }
   },
   "hyprland/language": {
