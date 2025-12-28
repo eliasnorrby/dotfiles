@@ -5,6 +5,8 @@
 #
 # Mode 1: Focuses window with matching class, or runs program if not found.
 # Mode 2: Parses .desktop file for class and exec command.
+#
+# Special workspace handling: If window is in a special workspace, toggles it.
 
 APPLICATIONS_DIR="$HOME/.local/share/applications"
 
@@ -38,9 +40,23 @@ else
   EXEC_CMD="$PROGRAM $*"
 fi
 
-# Check if window exists (search both class and initialClass)
-if hyprctl clients -j | jq -e ".[] | select(.class == \"$CLASS\" or .initialClass == \"$CLASS\")" > /dev/null 2>&1; then
-  hyprctl dispatch focuswindow "class:$CLASS"
-else
+# Check if window exists and get its workspace
+WINDOW_INFO=$(hyprctl clients -j | jq -r ".[] | select(.class == \"$CLASS\" or .initialClass == \"$CLASS\") | .workspace.name" | head -1)
+
+if [ -z "$WINDOW_INFO" ]; then
+  # Window doesn't exist - launch it
   eval "$EXEC_CMD"
+  exit
+fi
+
+# Check if this window is currently focused
+ACTIVE_CLASS=$(hyprctl activewindow -j | jq -r '.class')
+
+if [ "$ACTIVE_CLASS" = "$CLASS" ] && echo "$WINDOW_INFO" | grep -q '^special:'; then
+  # Focused and in special workspace - hide it
+  SPECIAL_NAME=$(echo "$WINDOW_INFO" | sed 's/^special://')
+  hyprctl dispatch togglespecialworkspace "$SPECIAL_NAME"
+else
+  # Not focused - just focus (works for both regular and special workspaces)
+  hyprctl dispatch focuswindow "class:$CLASS"
 fi
