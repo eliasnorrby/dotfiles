@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Taskwarrior TUI
+Comment=Terminal UI for Taskwarrior
+Exec=kitty --class TaskwarriorTui -e taskwarrior-tui
+Icon=task
+Terminal=false
+Type=Application
+Categories=Office;ProjectManagement;
+StartupWMClass=TaskwarriorTui
