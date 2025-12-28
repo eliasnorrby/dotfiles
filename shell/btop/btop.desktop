@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Btop
+Comment=Resource monitor
+Exec=kitty --class BtopKitty -e btop
+Icon=btop
+Terminal=false
+Type=Application
+Categories=System;Monitor;
+StartupWMClass=BtopKitty

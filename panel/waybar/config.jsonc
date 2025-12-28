@@ -36,7 +36,8 @@
       "class<Slack>": " ",
       "class<spotify>": " ",
       "class<1password>": " ",
-      "class<obsidian>": ""
+      "class<obsidian>": "",
+      "class<BtopKitty>": ""
     }
   },
   "hyprland/language": {
@@ -52,18 +53,21 @@
   },
   "cpu": {
     "format": " {usage}%",
-    "interval": 5
+    "interval": 5,
+    "on-click": "focus_or_run btop.desktop"
   },
   "memory": {
     "format": " {percentage}%",
-    "interval": 5
+    "interval": 5,
+    "on-click": "focus_or_run btop.desktop"
   },
   "network": {
     "format": " {bandwidthUpBytes}  {bandwidthUpBytes}",
     // "format-wifi": " {signalStrength}%",
     // "format-ethernet": " {ipaddr}/{cidr}",
     "format-disconnected": "󰖪 ",
-    "tooltip-format": "{ifname}: {ipaddr}"
+    "tooltip-format": "{ifname}: {ipaddr}",
+    "on-click": "focus_or_run btop.desktop"
   },
   "pulseaudio": {
     "scroll-step": 5, // %, can be a float
