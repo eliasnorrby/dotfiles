@@ -31,3 +31,6 @@ neovim_config:
     - init.lua
     - lua
     - after
+    - src: scratch.desktop
+      dest: "{{ xdg_applications_dir }}/"
+      condition: "{{ is_arch }}"
