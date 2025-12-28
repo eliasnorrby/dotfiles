@@ -131,7 +131,7 @@ window#waybar {
 }
 
 #memory {
-  color: @maroon;
+  color: @pink;
 }
 
 #custom-pacman {
