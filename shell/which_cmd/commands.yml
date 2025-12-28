@@ -376,7 +376,7 @@ keys:
       - key: f
         value: fmt
         immediate: true
-  - key: b
+  - key: h
     value: brew
     keys:
       - key: i
@@ -503,3 +503,13 @@ keys:
         name: horizontal split
         value: tmux split-window -v
         immediate: true
+  - key: b
+    value: boom
+    keys:
+      - key: d
+        value: deploy
+        repeatable: true
+        keys:
+          - key: t
+            value: --topic
+            name: topic
