@@ -54,12 +54,12 @@ window#waybar {
 }
 
 #workspaces button:hover {
-  color: @sky;
+  color: @mauve;
   transition: all 0.3s linear;
 }
 
 #workspaces button.active {
-  background-color: @sky;
+  background-color: @mauve;
   color: @mantle;
 }
 
