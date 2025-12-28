@@ -27,6 +27,8 @@
     "format": "{windows}",
     "on-click": "activate",
     "window-rewrite-default": "• ",
+    // "format-window-separator": "",
+    // "window-rewrite-default": "",
     "window-rewrite": {
       "class<TmuxKitty>": " ",
       "class<ChromeWork>": " ",
