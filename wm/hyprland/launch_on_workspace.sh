@@ -18,7 +18,7 @@ hyprctl dispatch workspace "$WORKSPACE"
 
 # Check if window with class exists on this workspace
 if hyprctl clients -j | jq -e ".[] | select(.workspace.id == $WORKSPACE and (.class == \"$CLASS\" or .initialClass == \"$CLASS\"))" >/dev/null  2>&1; then
-  : # hyprctl dispatch focuswindow "class:$CLASS"
+  hyprctl dispatch focuswindow "class:$CLASS"
 else
   if command -v "$PROGRAM" >/dev/null  2>&1; then
     exec "$PROGRAM" "$@"

@@ -29,8 +29,9 @@
     "window-rewrite-default": "• ",
     "window-rewrite": {
       "class<TmuxKitty>": " ",
-      "class<google-chrome>": " ",
-      "class<slack>": " ",
+      "class<ChromeWork>": " ",
+      "class<ChromePersonal>": " ",
+      "class<Slack>": " ",
       "class<spotify>": " ",
       "class<1password>": " "
     }

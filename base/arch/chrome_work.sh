@@ -1,2 +1,2 @@
 #!/bin/sh
-google-chrome-stable --profile-directory="Profile 1" &
+google-chrome-stable --class=ChromeWork --user-data-dir=~/.config/google-chrome-work &
