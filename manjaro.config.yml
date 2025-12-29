@@ -10,17 +10,17 @@ topics:
       config: "{{ notes_config }}"
   tools:
     - name: slides
-      state: absent
+      state: present
       config: "{{ slides_config }}"
   ai:
     - name: claude
       state: present
       config: "{{ claude_config }}"
     - name: gemini
-      state: absent
+      state: present
       config: "{{ gemini_config }}"
     - name: general
-      state: absent
+      state: present
       config: "{{ ai_config }}"
   base:
     - name: arch
@@ -40,7 +40,7 @@ topics:
       state: present
       config: "{{ neovim_config }}"
     - name: emacs
-      state: absent
+      state: present
       config: "{{ emacs_config }}"
     - name: editorconfig
       state: present
@@ -49,45 +49,41 @@ topics:
       state: absent
       config: "{{ vscode_config }}"
     - name: intellij
-      state: absent
+      state: present
       config: "{{ intellij_config }}"
   keyboard:
     - name: sxhkd
-      state: absent
+      state: present
       config: "{{ sxhkd_config }}"
     - name: xkb
-      state: absent
-      config: "{{ xkb_config }}"
-  display:
-    - name: xorg
       state: present
-      config: "{{ xorg_config }}"
+      config: "{{ xkb_config }}"
   panel:
     - name: polybar
-      state: absent
+      state: present
       config: "{{ polybar_config }}"
   wm:
     - name: bspwm
-      state: absent
+      state: present
       config: "{{ bspwm_config }}"
     - name: dunst
-      state: absent
+      state: present
       config: "{{ dunst_config }}"
     - name: feh
-      state: absent
+      state: present
       config: "{{ feh_config }}"
     - name: gtk
-      state: absent
+      state: present
       config: "{{ gtk_config }}"
     - name: picom
-      state: absent
+      state: present
       config: "{{ picom_config }}"
     - name: rofi
-      state: absent
+      state: present
       config: "{{ rofi_config }}"
   terminal:
     - name: alacritty
-      state: absent
+      state: present
       config: "{{ alacritty_config }}"
     - name: kitty
       state: present
@@ -134,7 +130,7 @@ topics:
       state: present
       config: "{{ kubernetes_config }}"
     - name: kafka
-      state: absent
+      state: present
       config: "{{ kafka_config }}"
     - name: web
       state: present
