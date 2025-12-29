@@ -1,0 +1,14 @@
+---
+- name: ensure pacman hooks directory exists
+  file:
+    path: /etc/pacman.d/hooks
+    state: directory
+    mode: "0755"
+  become: yes
+
+- name: install waybar updates hook
+  copy:
+    src: "{{ dotfiles }}/panel/waybar/hooks/waybar-updates.hook"
+    dest: /etc/pacman.d/hooks/waybar-updates.hook
+    mode: "0644"
+  become: yes
