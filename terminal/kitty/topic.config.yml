@@ -16,6 +16,8 @@ kitty_config:
     - src: get_pr_repository_url.sh
       dest: "{{ xdg_bin_home }}/"
       rename: get_pr_repository_url
+    - src: runner.desktop
+      dest: "{{ xdg_applications_dir }}/"
   brew_casks:
     - kitty
   pacman_packages:

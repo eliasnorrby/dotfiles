@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Runner
+Comment=Secondary terminal for long running processes
+Exec=kitty --class RunnerKitty -e zsh -i -c tmux_attach_runner
+Icon=btop
+Terminal=false
+Type=Application
+Categories=System;
+StartupWMClass=RunnerKitty
+

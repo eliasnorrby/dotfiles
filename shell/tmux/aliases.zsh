@@ -10,6 +10,13 @@ tmux_attach_default() {
 }
 alias ta="tmux_attach_default"
 
+tmux_attach_runner() {
+  if tmux list-sessions -F '#S #{?session_attached,attached,not attached}' | grep -q 'runner attached'; then
+    return
+  fi
+  tmux attach -t runner 2>/dev/null || tmux new -s runner
+}
+
 tn() {
   if [[ $# -eq 0 ]] ; then
     echo 'Error: must specify a session name'
