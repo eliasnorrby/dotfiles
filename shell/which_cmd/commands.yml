@@ -508,8 +508,14 @@ keys:
     keys:
       - key: d
         value: deploy
-        repeatable: true
+        loop: true
         keys:
           - key: t
             value: --topic
             name: topic
+          - key: b
+            value: --become
+            name: become
+          - key: o
+            value: --operations
+            name: operations
