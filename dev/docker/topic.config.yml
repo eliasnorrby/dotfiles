@@ -3,10 +3,12 @@ docker_config:
   path: dev/docker
   brew_formulae:
     - hadolint
+    - lazydocker
   brew_casks:
     - docker
   pacman_packages:
     - docker
     - docker-compose
+    - lazydocker
   aur_packages:
     - hadolint-bin
