@@ -1,10 +1,4 @@
 ---
-- name: create espanso systemd override dir
-  file:
-    state: directory
-    path: "{{ espanso_systemd_override_dir }}"
-  when: is_arch
-
 - name: create local dir
   file:
     state: directory

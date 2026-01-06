@@ -7,7 +7,7 @@
   file:
     state: directory
     path: "{{ gtk_4_dir }}"
-- name: create override dir
+- name: create environment.d dir
   file:
     state: directory
-    path: "{{ gtk_systemd_override_dir }}"
+    path: "{{ environment_d_dir }}"
