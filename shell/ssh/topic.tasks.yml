@@ -8,3 +8,18 @@
   file:
     state: directory
     path: "~/.ssh/config.d"
+
+- name: create ssh-askpass directory
+  file:
+    state: directory
+    path: /usr/lib/ssh
+  become: yes
+  when: is_arch
+
+- name: symlink lxqt-openssh-askpass
+  file:
+    state: link
+    src: /usr/bin/lxqt-openssh-askpass
+    dest: /usr/lib/ssh/ssh-askpass
+  become: yes
+  when: is_arch

@@ -12,3 +12,4 @@ ssh_config:
     - mosh
   pacman_packages:
     - mosh
+    - lxqt-openssh-askpass
