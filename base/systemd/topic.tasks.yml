@@ -1,0 +1,5 @@
+---
+- name: create environment.d dir
+  file:
+    state: directory
+    path: "{{ environment_d_dir }}"

@@ -38,6 +38,9 @@ topics:
     - name: task
       state: present
       config: "{{ task_config }}"
+    - name: systemd
+      state: present
+      config: "{{ systemd_config }}"
   display:
     - name: wayland
       state: present
@@ -110,6 +113,9 @@ topics:
     - name: gtk
       state: present
       config: "{{ gtk_config }}"
+    - name: qt
+      state: present
+      config: "{{ qt_config }}"
     - name: picom
       state: absent
       config: "{{ picom_config }}"

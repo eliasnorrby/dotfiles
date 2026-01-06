@@ -1,0 +1,12 @@
+---
+qt_config:
+  path: wm/qt
+  dirname: qt6ct
+  links:
+    - qt6ct.conf
+    - src: qt-environment.conf
+      dest: "{{ environment_d_dir }}/"
+  pacman_packages:
+    - qt6ct
+
+environment_d_dir: "{{ xdg_config_home }}/environment.d"
