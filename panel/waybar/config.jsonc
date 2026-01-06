@@ -27,7 +27,7 @@
     "format": "{windows}",
     "on-click": "activate",
     "window-rewrite-default": "•",
-    // "format-window-separator": "",
+    "format-window-separator": "",
     // "window-rewrite-default": "",
     "window-rewrite": {
       "class<TmuxKitty>": " ",
@@ -37,7 +37,8 @@
       "class<spotify>": " ",
       "class<1password>": " ",
       "class<obsidian>": "",
-      "class<BtopKitty>": ""
+      "class<BtopKitty>": "",
+      "class<WhichCmd>": ""
     }
   },
   "hyprland/language": {
