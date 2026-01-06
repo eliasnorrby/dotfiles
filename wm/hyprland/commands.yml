@@ -14,6 +14,9 @@ keys:
       - key: w
         name: waybar
         value: pkill -USR2 waybar
+      - key: p
+        name: pacman updates
+        value: pkill -RTMIN+8 waybar
       - key: m
         name: mako
         value: makoctl reload
