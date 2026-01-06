@@ -1,10 +1,18 @@
 ---
 gtk_config:
   path: wm/gtk
-  dirname: gtk-3.0
   links:
-    - settings.ini
+    - src: settings.ini
+      dest: "{{ gtk_3_dir }}/"
+    - src: settings.ini
+      dest: "{{ gtk_4_dir }}/"
+    - src: xdg-desktop-portal-gtk-override.conf
+      dest: "{{ gtk_systemd_override_dir }}/"
+      rename: override.conf
   pacman_packages:
     - xdg-desktop-portal-gtk
 
 gtk_themes_dir: "~/.themes"
+gtk_3_dir: "{{ xdg_config_home }}/gtk-3.0"
+gtk_4_dir: "{{ xdg_config_home }}/gtk-4.0"
+gtk_systemd_override_dir: "{{ xdg_config_home }}/systemd/user/xdg-desktop-portal-gtk.service.d"

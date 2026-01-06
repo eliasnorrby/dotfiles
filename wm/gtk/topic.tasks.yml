@@ -1,0 +1,13 @@
+---
+- name: create gtk-3 dir
+  file:
+    state: directory
+    path: "{{ gtk_3_dir }}"
+- name: create gtk-4 dir
+  file:
+    state: directory
+    path: "{{ gtk_4_dir }}"
+- name: create override dir
+  file:
+    state: directory
+    path: "{{ gtk_systemd_override_dir }}"
