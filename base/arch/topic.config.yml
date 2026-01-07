@@ -25,6 +25,7 @@ arch_config:
     - archlinux-contrib
     - sound-theme-freedesktop
     - pavucontrol
+    - playerctl
     # pacman
     - pacman-contrib
     - rebuild-detector
