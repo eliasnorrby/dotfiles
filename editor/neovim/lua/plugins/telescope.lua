@@ -8,6 +8,12 @@ local project_files = function()
   end
 end
 
+vim.api.nvim_create_user_command('ProjectFiles', function()
+  vim.schedule(project_files)
+end, {
+  desc = 'Find project files (git or non-git)',
+})
+
 -- credit: https://github.com/nvim-telescope/telescope.nvim/issues/758
 local changed_branch_files = function()
   local previewers = require('telescope.previewers')
