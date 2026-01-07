@@ -7,6 +7,6 @@ work_config:
     - microsoft-teams
     - linear-linear
   aur_packages:
-    - teams
+    - teams-for-linux-bin
     - notion-app
     - linear-bin
