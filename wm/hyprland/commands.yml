@@ -41,9 +41,12 @@ keys:
       - key: f
         name: full
         value: grim - | wl-copy
-      - key: a
-        name: area
+      - key: r
+        name: region
         value: grim -g "$(slurp)" | wl-copy
+      - key: a
+        name: annotated
+        value: flameshot gui
   - key: l
     name: lock
     value: loginctl lock-session

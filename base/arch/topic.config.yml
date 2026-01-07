@@ -34,6 +34,7 @@ arch_config:
     - gucharmap
     - udiskie
     - ddcutil
+    - flameshot
     # apps
     - chromium
     - discord
