@@ -5,6 +5,13 @@ keys:
       - key: t
         name: terminal
         value: kitty
+
+  - key: h
+    name: hypr
+    keys:
+      - key: c
+        name: clients
+        value: kitty -e browse_clients
   - key: r
     name: reload
     keys:

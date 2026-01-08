@@ -26,6 +26,9 @@ hyprland_config:
     - src: reload_services.sh
       dest: "{{ xdg_bin_home }}/"
       rename: reload_services
+    - src: browse_clients.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: browse_clients
   pacman_packages:
     - hyprland
     - hyprpaper
