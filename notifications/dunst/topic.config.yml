@@ -1,6 +1,6 @@
 ---
 dunst_config:
-  path: wm/dunst
+  path: notifications/dunst
   links:
     - dunstrc
     - launch.sh

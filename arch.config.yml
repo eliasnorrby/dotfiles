@@ -94,6 +94,13 @@ topics:
     - name: waybar
       state: present
       config: "{{ waybar_config }}"
+  notifications:
+    - name: dunst
+      state: absent
+      config: "{{ dunst_config }}"
+    - name: mako
+      state: present
+      config: "{{ mako_config }}"
   wm:
     - name: hyprland
       state: present
@@ -101,12 +108,6 @@ topics:
     - name: bspwm
       state: absent
       config: "{{ bspwm_config }}"
-    - name: dunst
-      state: absent
-      config: "{{ dunst_config }}"
-    - name: mako
-      state: present
-      config: "{{ mako_config }}"
     - name: feh
       state: absent
       config: "{{ feh_config }}"

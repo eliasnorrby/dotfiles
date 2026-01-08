@@ -1,6 +1,6 @@
 ---
 mako_config:
-  path: wm/mako
+  path: notifications/mako
   links:
     - config
     - theme
