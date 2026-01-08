@@ -27,6 +27,9 @@ keys:
       - key: m
         name: mako
         value: makoctl reload
+      - key: s
+        name: swaync
+        value: swaync-client --reload && swaync-client --reload-css
       - key: a
         name: all
         value: reload_services
