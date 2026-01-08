@@ -10,6 +10,8 @@ wayland_config:
     # screenshots
     - grim
     - slurp
+    # screen recording
+    - wf-recorder
     # event viewer
     - wev
     # Qt Wayland support

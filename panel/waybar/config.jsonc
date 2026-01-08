@@ -14,6 +14,7 @@
     "custom/pacman"
   ],
   "modules-right": [
+    "custom/recorder",
     "hyprland/language",
     "pulseaudio",
     "network",
@@ -142,5 +143,12 @@
     "on-click": "swaync-client -t -sw",
     "on-click-right": "swaync-client -d -sw",
     "escape": true
+  },
+  "custom/recorder": {
+    "format": "{}",
+    "exec-if": "which wf-recorder",
+    "exec": "pgrep wf-recorder >/dev/null && echo ",
+    "on-click": "pkill wf-recorder",
+    "interval": 1
   }
 }

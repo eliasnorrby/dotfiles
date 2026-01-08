@@ -60,6 +60,18 @@ keys:
       - key: a
         name: annotated
         value: sleep 0.2 && flameshot gui
+  - key: v
+    name: screen recording
+    keys:
+      - key: f
+        name: full
+        value: wf-recorder --file ~/Videos/screen-$(date +%Y%m%d-%H%M%S).mp4
+      - key: r
+        name: region
+        value: wf-recorder -g "$(slurp)" --file ~/Videos/screen-$(date +%Y%m%d-%H%M%S).mp4
+      - key: s
+        name: stop
+        value: pkill wf-recorder
   - key: l
     name: lock
     value: loginctl lock-session

@@ -78,6 +78,7 @@ window#waybar {
 #tray,
 #custom-power,
 #custom-notification,
+#custom-recorder,
 #custom-pacman {
   border-radius: 10px;
   background-color: rgba(36, 39, 58, 0.7);
@@ -85,6 +86,11 @@ window#waybar {
   margin: 0 4px;
   color: @text;
   transition: all 0.3s linear;
+}
+
+#custom-recorder {
+  background-color: @text;
+  color: @mantle;
 }
 
 #custom-notification {
@@ -116,6 +122,7 @@ window#waybar {
 #language:hover,
 #tray:hover,
 #custom-notification:hover,
+#custom-recorder:hover,
 #custom-pacman:hover {
   background-color: rgba(73, 77, 100, 0.7);
   transition: all 0.3s linear;
