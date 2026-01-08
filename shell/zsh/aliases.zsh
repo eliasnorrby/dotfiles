@@ -40,6 +40,10 @@ alias myip="curl -s api.ipify.org"
 alias ipc="myip | copy_cmd"
 
 alias cdot="cd ~/.dotfiles"
+function cde() {
+  cd ~/.dotfiles || return 1
+  nvim +ProjectFiles
+}
 
 alias cdD="cd ~/Downloads"
 alias cdd="cd ~/dev"

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Dotfiles
+Comment=Dotfiles Management Terminal
+Exec=kitty --class DotfilesKitty -e zsh -i -c cde
+Icon=terminal-kitty
+Terminal=false
+Type=Application
+Categories=System;
+StartupWMClass=DotfilesKitty

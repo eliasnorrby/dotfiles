@@ -18,6 +18,10 @@ kitty_config:
       rename: get_pr_repository_url
     - src: runner.desktop
       dest: "{{ xdg_applications_dir }}/"
+      condition: "{{ is_arch }}"
+    - src: dotfiles.desktop
+      dest: "{{ xdg_applications_dir }}/"
+      condition: "{{ is_arch }}"
   brew_casks:
     - kitty
   pacman_packages:
