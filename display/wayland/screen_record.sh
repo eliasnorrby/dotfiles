@@ -12,15 +12,18 @@ start_recording() {
   # Store start time
   date +%s >"$START_FILE"
 
-  # Start recording
+  # Start recording (blocks until stopped)
   if [[ -n "$geometry" ]]; then
     wf-recorder -g "$geometry" --file "$output_file"
   else
     wf-recorder --file "$output_file"
   fi
 
-  # Clean up on exit
+  # Clean up and copy to clipboard
   rm -f "$START_FILE"
+  if [[ -f "$output_file" ]]; then
+    echo "file://$output_file" | wl-copy -t text/uri-list
+  fi
 }
 
 case "$1" in
