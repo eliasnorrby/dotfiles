@@ -32,6 +32,10 @@ bindkey '^U' which_cmd_widget
 # tmux popup
 which_cmd_tmux_widget() {
   if [[ $LBUFFER == "" ]]; then
+    if ! [[ -n $TMUX ]]; then
+      zle which_cmd_widget
+      return
+    fi
     local result height=10
     # TODO: Use proper path
     tmux display-popup \
