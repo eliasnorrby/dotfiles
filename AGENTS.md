@@ -234,4 +234,4 @@ When modifying topic configurations:
 
 These scripts are general utilities and not automatically symlinked unless declared in a topic.
 
-When writing shell scripts, use a 2 space indent. Lint these files with shellcheck and format them with shfmt before committing.
+When writing shell scripts, use a 2 space indent. Lint these files with shellcheck and format them with shfmt before committing. Do not pass any flags to shfmt as it relies on editorconfig for configuration.
