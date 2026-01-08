@@ -59,7 +59,10 @@ keys:
         value: grim -g "$(slurp)" - | tee ~/Pictures/Screenshots/screenshot-$(date +%Y%m%d-%H%M%S).png | wl-copy
       - key: a
         name: annotated
-        value: sleep 0.2 && flameshot gui
+        value: grim -g "$(slurp)" - | satty --filename -
+      - key: q
+        name: flameshot
+        value: flameshot gui
   - key: v
     name: screen recording
     keys:

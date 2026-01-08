@@ -5,6 +5,8 @@ wayland_config:
     - src: screen_record.sh
       dest: "{{ xdg_bin_home }}/"
       rename: screen_record
+    - src: satty
+      dest: "{{ xdg_config_home }}/"
   pacman_packages:
     - wayland
     - wayland-protocols
@@ -14,6 +16,7 @@ wayland_config:
     # screenshots
     - grim
     - slurp
+    - satty
     # screen recording
     - wf-recorder
     # event viewer

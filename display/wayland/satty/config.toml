@@ -1,0 +1,7 @@
+[general]
+fullscreen = true
+early-exit = true
+copy-command = "wl-copy"
+output-filename = "~/Pictures/Screenshots/screenshot-%Y%m%d-%H%M%S.png"
+save-after-copy = true
+initial-tool = "arrow"
