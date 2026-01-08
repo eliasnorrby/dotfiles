@@ -3,7 +3,7 @@
 
 RUNTIME_DIR="${XDG_RUNTIME_DIR:-/tmp}"
 START_FILE="$RUNTIME_DIR/screen_record.start"
-OUTPUT_DIR="$HOME/Videos"
+OUTPUT_DIR="$HOME/Videos/Recordings"
 
 start_recording() {
   local geometry="$1"

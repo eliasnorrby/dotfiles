@@ -1,0 +1,12 @@
+---
+- block:
+    - name: create screenshots directory
+      file:
+        state: directory
+        path: "~/Pictures/Screenshots"
+
+    - name: create recordings directory
+      file:
+        state: directory
+        path: "~/Videos/Recordings"
+  when: is_arch

@@ -53,10 +53,10 @@ keys:
     keys:
       - key: f
         name: full
-        value: sleep 0.2 && grim - | wl-copy
+        value: sleep 0.2 && grim - | tee ~/Pictures/Screenshots/screenshot-$(date +%Y%m%d-%H%M%S).png | wl-copy
       - key: r
         name: region
-        value: grim -g "$(slurp)" - | wl-copy
+        value: grim -g "$(slurp)" - | tee ~/Pictures/Screenshots/screenshot-$(date +%Y%m%d-%H%M%S).png | wl-copy
       - key: a
         name: annotated
         value: sleep 0.2 && flameshot gui
