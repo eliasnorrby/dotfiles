@@ -1,6 +1,10 @@
 ---
 wayland_config:
   path: display/wayland
+  links:
+    - src: screen_record.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: screen_record
   pacman_packages:
     - wayland
     - wayland-protocols

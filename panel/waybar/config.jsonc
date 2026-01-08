@@ -146,9 +146,10 @@
   },
   "custom/recorder": {
     "format": "{}",
-    "exec-if": "which wf-recorder",
-    "exec": "pgrep wf-recorder >/dev/null && echo ",
-    "on-click": "pkill wf-recorder",
+    "return-type": "json",
+    "exec-if": "screen_record status",
+    "exec": "screen_record panel",
+    "on-click": "screen_record stop",
     "interval": 1
   }
 }

@@ -65,13 +65,13 @@ keys:
     keys:
       - key: f
         name: full
-        value: wf-recorder --file ~/Videos/screen-$(date +%Y%m%d-%H%M%S).mp4
+        value: screen_record fullscreen
       - key: r
         name: region
-        value: wf-recorder -g "$(slurp)" --file ~/Videos/screen-$(date +%Y%m%d-%H%M%S).mp4
+        value: screen_record region
       - key: s
         name: stop
-        value: pkill wf-recorder
+        value: screen_record stop
   - key: l
     name: lock
     value: loginctl lock-session
