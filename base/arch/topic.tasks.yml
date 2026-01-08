@@ -11,6 +11,11 @@
     state: directory
     path: ~/vaults
 
+- name: create flameshot config dir
+  file:
+    state: directory
+    path: ~/.config/flameshot
+
 - name: install yay
   block:
     - name: check if yay is installed

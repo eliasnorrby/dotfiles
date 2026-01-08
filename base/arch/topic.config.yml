@@ -14,6 +14,8 @@ arch_config:
       dest: "{{ xdg_applications_dir }}/"
     - src: gpg.conf
       dest: ~/.gnupg/
+    - src: flameshot.ini
+      dest: ~/.config/flameshot/
     - autostart.sh
   pacman_packages:
     # base
