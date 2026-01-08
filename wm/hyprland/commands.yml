@@ -45,6 +45,9 @@ keys:
       - key: l
         name: layout
         value: hyprctl switchxkblayout all next
+      - key: d
+        name: dnd
+        value: swaync-client --toggle-dnd
   - key: s
     name: screenshot
     keys:
