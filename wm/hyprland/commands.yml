@@ -50,7 +50,7 @@ keys:
         value: sleep 0.2 && grim - | wl-copy
       - key: r
         name: region
-        value: grim -g "$(slurp)" | wl-copy
+        value: grim -g "$(slurp)" - | wl-copy
       - key: a
         name: annotated
         value: sleep 0.2 && flameshot gui
