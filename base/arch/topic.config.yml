@@ -34,6 +34,7 @@ arch_config:
     # tools
     - ranger
     - python-pillow # for image previews in ranger
+    - yazi
     - unzip
     - gucharmap
     - udiskie
