@@ -15,7 +15,9 @@ arch_config:
     - src: gpg.conf
       dest: ~/.gnupg/
     - src: flameshot.ini
-      dest: ~/.config/flameshot/
+      dest: "{{ xdg_config_home }}/flameshot/"
+    - src: mimeapps.list
+      dest: "{{ xdg_config_home }}/"
     - autostart.sh
   pacman_packages:
     # base
@@ -57,5 +59,6 @@ arch_config:
     - 1password
     - 1password-cli
     - slack-desktop
+    - losslesscut-bin
 
 aur_builder_user_name: aur_builder
