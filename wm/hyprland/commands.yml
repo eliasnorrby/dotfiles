@@ -12,6 +12,9 @@ keys:
       - key: c
         name: clients
         value: kitty -e browse_clients
+      - key: e
+        name: exit
+        value: hyprctl dispatch exit
   - key: r
     name: reload
     keys:
