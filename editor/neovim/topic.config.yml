@@ -21,6 +21,7 @@ neovim_config:
     - python-pylint
     - python-black
     - stylua
+    - pgformatter
   npm_packages:
     - kulala-ls
     - kulala-fmt
