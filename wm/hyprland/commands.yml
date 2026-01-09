@@ -1,4 +1,7 @@
 keys:
+  - key: p
+    name: special paste
+    value: special_paste
   - key: a
     name: apps
     keys:
@@ -87,7 +90,7 @@ keys:
   - key: l
     name: lock
     value: loginctl lock-session
-  - key: p
+  - key: P
     name: power
     keys:
       - key: s

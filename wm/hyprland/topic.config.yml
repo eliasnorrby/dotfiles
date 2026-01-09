@@ -29,6 +29,9 @@ hyprland_config:
     - src: browse_clients.sh
       dest: "{{ xdg_bin_home }}/"
       rename: browse_clients
+    - src: special_paste.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: special_paste
   pacman_packages:
     - hyprland
     - hyprpaper
@@ -37,5 +40,6 @@ hyprland_config:
     - hyprlauncher
     - hyprpolkitagent
     - xdg-desktop-portal-hyprland
+    - wtype
   aur_packages:
     - catppuccin-cursors-macchiato
