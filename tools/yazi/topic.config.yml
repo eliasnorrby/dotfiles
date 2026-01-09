@@ -1,0 +1,11 @@
+---
+yazi_config:
+  path: tools/yazi
+  links:
+    - keymap.toml
+    - src: capture_picker.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: capture_picker
+  pacman_packages:
+    - yazi
+    - ffmpeg  # video previews

@@ -12,6 +12,9 @@ topics:
     - name: slides
       state: absent
       config: "{{ slides_config }}"
+    - name: yazi
+      state: present
+      config: "{{ yazi_config }}"
   ai:
     - name: claude
       state: present

@@ -36,9 +36,6 @@ arch_config:
     # tools
     - ranger
     - python-pillow # for image previews in ranger
-    - yazi
-    - ffmpeg # for video previews in yazi
-    # - poppler # for pdf previews in yazi
     - unzip
     - gucharmap
     - udiskie
