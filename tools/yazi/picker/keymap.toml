@@ -1,6 +1,6 @@
 [[mgr.prepend_keymap]]
 on   = "<Enter>"
-run  = ["shell -- echo -n 'file://'$0 | wl-copy -t text/uri-list", "quit"]
+run  = "shell --orphan -- echo -n 'file://'$0 | wl-copy -t text/uri-list && ya emit quit"
 desc = "Copy file:// URL to clipboard and quit"
 
 [[mgr.prepend_keymap]]
