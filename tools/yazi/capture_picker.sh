@@ -7,4 +7,5 @@ DIR="${2:-$HOME}"
 
 [ ! -d "$DIR" ] && mkdir -p "$DIR"
 
+export YAZI_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/yazi-picker"
 exec kitty --class "$CLASS" -e yazi "$DIR"

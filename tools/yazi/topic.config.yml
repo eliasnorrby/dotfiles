@@ -2,7 +2,9 @@
 yazi_config:
   path: tools/yazi
   links:
-    - keymap.toml
+    - src: picker
+      dest: "{{ xdg_config_home }}/"
+      rename: yazi-picker
     - src: capture_picker.sh
       dest: "{{ xdg_bin_home }}/"
       rename: capture_picker
