@@ -2,3 +2,8 @@
 on   = "<Enter>"
 run  = ["shell -- echo -n 'file://'$0 | wl-copy -t text/uri-list", "quit"]
 desc = "Copy file:// URL to clipboard and quit"
+
+[[mgr.prepend_keymap]]
+on   = "o"
+run  = "open"
+desc = "Open file"
