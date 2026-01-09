@@ -43,6 +43,7 @@ arch_config:
     - ddcutil
     - flameshot
     # apps
+    - mpv
     - chromium
     - discord
     - obsidian
