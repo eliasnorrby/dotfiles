@@ -66,6 +66,9 @@ keys:
       - key: q
         name: flameshot
         value: flameshot gui
+      - key: p
+        name: pick
+        value: capture_picker CapturePicker ~/Pictures/Screenshots
   - key: v
     name: screen recording
     keys:
@@ -78,6 +81,9 @@ keys:
       - key: s
         name: stop
         value: screen_record stop
+      - key: p
+        name: pick
+        value: capture_picker CapturePicker ~/Videos/Recordings
   - key: l
     name: lock
     value: loginctl lock-session

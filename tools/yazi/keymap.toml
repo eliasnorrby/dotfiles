@@ -1,7 +1,4 @@
-[[manager.prepend_keymap]]
-on   = ["<Enter>"]
-run  = [
-  "shell 'echo -n \"file://$1\" | wl-copy' --confirm",
-  "quit",
-]
+[[mgr.prepend_keymap]]
+on   = "<Enter>"
+run  = ["shell -- echo -n 'file://'$0 | wl-copy -t text/uri-list", "quit"]
 desc = "Copy file:// URL to clipboard and quit"
