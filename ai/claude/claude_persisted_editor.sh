@@ -16,7 +16,7 @@ trap cleanup EXIT
 
 # If not in tmux, just use regular nvim
 if [[ -z "$TMUX" ]]; then
-  nvim "$TMPFILE"
+  nvim '+set nonumber norelativenumber' "$TMPFILE"
   exit 0
 fi
 
