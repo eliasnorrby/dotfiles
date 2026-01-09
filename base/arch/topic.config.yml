@@ -33,6 +33,7 @@ arch_config:
     - rebuild-detector
     # tools
     - ranger
+    - python-pillow # for image previews in ranger
     - unzip
     - gucharmap
     - udiskie
