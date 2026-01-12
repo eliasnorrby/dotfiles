@@ -46,11 +46,12 @@ zsh_config:
     - ripgrep
     - tree
     - jq
-    - pandoc
     - mdcat
     - entr
     - eza
     - go-yq
+  aur_packages:
+    - pandoc-bin
   links:
     - src: zshrc
       rename: .zshrc

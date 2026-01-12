@@ -7,4 +7,5 @@ bash_config:
     - shellcheck
   pacman_packages:
     - shfmt
-    - shellcheck
+  aur_packages:
+    - shellcheck-bin
