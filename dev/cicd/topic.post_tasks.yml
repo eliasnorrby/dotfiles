@@ -1,0 +1,10 @@
+---
+- name: set tfenv versions directory ownership
+  file:
+    path: /var/lib/tfenv/versions
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    recurse: true
+    state: directory
+  become: true
+  when: is_arch
