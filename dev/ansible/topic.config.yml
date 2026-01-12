@@ -3,9 +3,9 @@ ansible_config:
   path: dev/ansible
   brew_formulae:
     - ansible
-    - molecule
+    # - molecule
     - yamllint
   pacman_packages:
     - ansible
-    - molecule
+    # - molecule
     - yamllint
