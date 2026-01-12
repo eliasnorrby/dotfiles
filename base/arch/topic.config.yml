@@ -19,6 +19,9 @@ arch_config:
     - src: mimeapps.list
       dest: "{{ xdg_config_home }}/"
     - autostart.sh
+    - src: makepkg.conf
+      dest: ~/
+      rename: .makepkg.conf
   pacman_packages:
     # base
     - vim
