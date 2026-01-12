@@ -5,7 +5,7 @@ return {
   cmd = 'Copilot',
   event = 'InsertEnter',
   dependencies = {
-    'copilotlsp-nvim/copilot-lsp',
+    -- 'copilotlsp-nvim/copilot-lsp',
     'AndreM222/copilot-lualine',
   },
   opts = {
