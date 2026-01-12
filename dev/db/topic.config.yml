@@ -3,5 +3,8 @@ db_config:
   path: dev/db
   brew_formulae:
     - libpq
+    - duckdb
   pacman_packages:
     - postgresql
+  aur_packages:
+    - duckdb-bin
