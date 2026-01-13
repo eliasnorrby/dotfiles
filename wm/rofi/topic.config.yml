@@ -5,6 +5,9 @@ rofi_config:
     - catppuccin-default.rasi
     - catppuccin-macchiato.rasi
     - config.rasi
+    - src: cliphist_rofi_img.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: cliphist_rofi_img
   pacman_packages:
     - rofi
     - cliphist
