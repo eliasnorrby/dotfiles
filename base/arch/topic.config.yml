@@ -30,6 +30,8 @@ arch_config:
       rename: .makepkg.conf
   pacman_packages:
     # base
+    - earlyoom
+    - systembus-notify # earlyoom notifications
     - vim
     - man-db
     - man-pages

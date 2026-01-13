@@ -1,0 +1,19 @@
+---
+- name: configure earlyoom
+  block:
+    - name: set earlyoom options
+      copy:
+        dest: /etc/default/earlyoom
+        content: |
+          # Enable notifications via d-bus (requires systembus-notify)
+          # Kill when <10% RAM and <5% swap available
+          # Prefer killing node processes (most LSPs)
+          EARLYOOM_ARGS="-n -m 10 -s 5 --prefer '^node$'"
+      become: true
+    - name: enable earlyoom service
+      systemd:
+        name: earlyoom
+        enabled: true
+        state: started
+      become: true
+  tags: ["never", "do_pacman"]
