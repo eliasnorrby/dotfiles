@@ -1,9 +1,10 @@
 [Desktop Entry]
 Name=Chrome Work
 Comment=Google Chrome (Work Profile)
-Exec=google-chrome-stable --class=ChromeWork --user-data-dir=~/.config/google-chrome-work
-Icon=google-chrome
+Exec=google-chrome-stable --class=ChromeWork --user-data-dir=~/.config/google-chrome-work %U
+Icon=chromium
 Terminal=false
 Type=Application
 Categories=Network;WebBrowser;
 StartupWMClass=ChromeWork
+MimeType=application/pdf;application/rdf+xml;application/rss+xml;application/xhtml+xml;application/xhtml_xml;application/xml;image/gif;image/jpeg;image/png;image/webp;text/html;text/xml;x-scheme-handler/http;x-scheme-handler/https;
