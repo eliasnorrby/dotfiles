@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Chrome Personal
 Comment=Google Chrome (Personal Profile)
-Exec=google-chrome-stable --class=ChromePersonal %U
+Exec=chrome-personal %U
 Icon=google-chrome
 Terminal=false
 Type=Application

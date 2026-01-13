@@ -12,6 +12,12 @@ arch_config:
       dest: "{{ xdg_applications_dir }}/"
     - src: chrome-work.desktop
       dest: "{{ xdg_applications_dir }}/"
+    - src: chrome-personal.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: chrome-personal
+    - src: chrome-work.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: chrome-work
     - src: gpg.conf
       dest: ~/.gnupg/
     - src: flameshot.ini
