@@ -1,5 +1,7 @@
 [mgr]
 ratio = [0, 1, 2]
+sort_by = "mtime"
+sort_reverse = true
 
 [preview]
 max_width = 1920
