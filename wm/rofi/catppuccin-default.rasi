@@ -21,7 +21,7 @@
   selected-active-background:  @peach;
   active-background:           @background;
   selected-normal-background:  @peach;
-  alternate-normal-background: @lightbg;
+  alternate-normal-background: transparent;
   foreground:                  @text;
   selected-urgent-foreground:  @background;
   normal-foreground:           @foreground;
@@ -87,7 +87,7 @@ element-icon {
 }
 window {
     padding:          16px;
-    background-color: #24273aee;
+    background-color: #24273aae;
     border:           2px;
     border-radius:    12px;
 }
