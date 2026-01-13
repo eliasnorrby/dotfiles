@@ -2,6 +2,8 @@
 rofi_config:
   path: wm/rofi
   links:
+    - catppuccin-default.rasi
+    - catppuccin-macchiato.rasi
     - config.rasi
   pacman_packages:
     - rofi

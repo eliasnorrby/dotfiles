@@ -2,4 +2,4 @@ configuration {
   font: "mononoki Nerd Font 13";
 }
 
-@theme "/usr/share/rofi/themes/Arc-Dark.rasi"
+@theme "catppuccin-default"
