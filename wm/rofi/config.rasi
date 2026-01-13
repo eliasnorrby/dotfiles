@@ -1,5 +1,5 @@
 configuration {
-  font: "mononoki Nerd Font 13";
+  font: "JetBrains Mono NL 13";
 }
 
 @theme "catppuccin-default"
