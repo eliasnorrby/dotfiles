@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Handlr
+Comment=Handlr
+Exec=handlr open %U
+Icon=task
+Terminal=false
+Type=Application
+Categories=System;

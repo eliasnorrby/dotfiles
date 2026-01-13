@@ -1,0 +1,13 @@
+enable_selector = true
+selector = "handlr-selector"
+
+# Work domains - auto-route to work browser
+[[handlers]]
+exec = "chrome-work %U"
+terminal = false
+regexes = ['https?://github\.com/bemlo(/.*)?']
+
+[[handlers]]
+exec = "chrome-personal %U"
+terminal = false
+regexes = ['https?://github\.com/eliasnorrby(/.*)?']

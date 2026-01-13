@@ -127,8 +127,11 @@ topics:
       state: absent
       config: "{{ picom_config }}"
     - name: rofi
-      state: absent
+      state: present
       config: "{{ rofi_config }}"
+    - name: handlr
+      state: present
+      config: "{{ handlr_config }}"
   terminal:
     - name: alacritty
       state: absent

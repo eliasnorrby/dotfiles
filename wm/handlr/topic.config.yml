@@ -1,0 +1,12 @@
+---
+handlr_config:
+  path: wm/handlr
+  links:
+    - handlr.toml
+    - src: handlr.desktop
+      dest: "{{ xdg_applications_dir }}/"
+    - src: handlr-selector.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: handlr-selector
+  pacman_packages:
+    - handlr-regex
