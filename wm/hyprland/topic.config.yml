@@ -37,7 +37,6 @@ hyprland_config:
     - hyprpaper
     - hyprlock
     - hypridle
-    - hyprlauncher
     - hyprpolkitagent
     - xdg-desktop-portal-hyprland
     - wtype
