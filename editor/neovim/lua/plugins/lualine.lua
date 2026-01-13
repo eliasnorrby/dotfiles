@@ -35,9 +35,13 @@ return {
       end,
     }
 
-    local copilot_status = {
+    -- For zbirenbaum/copilot.lua with AndreM222/copilot-lualine
+    local copilot_lua_status = {
       'copilot',
       show_colors = true,
+      cond = function()
+        return package.loaded['copilot'] ~= nil
+      end,
       symbols = {
         status = {
           hl = {
@@ -51,6 +55,34 @@ return {
           },
         },
       },
+    }
+
+    -- For github/copilot.vim
+    local copilot_vim_status = {
+      function()
+        return ''
+      end,
+      cond = function()
+        return vim.g.loaded_copilot ~= nil
+      end,
+      color = function()
+        local colors = {
+          enabled = '#A6DA95',
+          disabled = '#5B6078',
+          warning = '#EED49F',
+        }
+
+        if vim.g.copilot_enabled == false or vim.b.copilot_enabled == false then
+          return { fg = colors.disabled }
+        end
+
+        local ok, enabled = pcall(vim.fn['copilot#Enabled'])
+        if ok and enabled == 1 then
+          return { fg = colors.enabled }
+        else
+          return { fg = colors.warning }
+        end
+      end,
     }
 
     local kulala_env = {
@@ -80,7 +112,15 @@ return {
         lualine_a = { 'mode' },
         lualine_b = { { 'filename', path = 0 } },
         lualine_c = {},
-        lualine_x = { '%a', diagnostics, kulala_env, copilot_status, conform_status, 'filetype' },
+        lualine_x = {
+          '%a',
+          diagnostics,
+          kulala_env,
+          copilot_lua_status,
+          copilot_vim_status,
+          conform_status,
+          'filetype',
+        },
         lualine_y = { 'selectioncount', 'progress' },
         lualine_z = { 'location' },
       },
