@@ -33,6 +33,7 @@ arch_config:
     - sound-theme-freedesktop
     - pavucontrol
     - playerctl
+    - libappindicator # tray support for dropbox, among others
     # pacman
     - pacman-contrib
     - rebuild-detector
