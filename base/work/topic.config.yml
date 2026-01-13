@@ -8,5 +8,5 @@ work_config:
     - linear-linear
   aur_packages:
     - teams-for-linux-bin
-    - notion-app-enhanced
+    - notion-app-electron
     - linear-bin
