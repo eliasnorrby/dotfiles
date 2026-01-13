@@ -32,19 +32,23 @@
     // "format-window-separator": "",
     // "window-rewrite-default": "",
     "window-rewrite": {
+      "class<kitty>": "",
       "class<TmuxKitty>": " ",
       "class<DotfilesKitty>": "",
       "class<ChromeWork>": " ",
       "class<ChromePersonal>": " ",
       "class<Slack>": " ",
       "class<teams-for-linux>": "",
-      "class<chromium>": " ",
       "class<spotify>": " ",
       "class<1password>": "",
       "class<obsidian>": "",
       "class<Notion>": "",
       "class<BtopKitty>": "",
       "class<Claude>": "",
+      // pwas
+      "class<chrome-kjgfgldnnfoeklkmfkjfagphfepbbdan-Default>": "", // google meet
+      "class<chrome-bgdbmehlmdmddlgneophbcddadgknlpm-Default>": " ", // linear
+      // misc
       "class<WhichCmd>": ""
     }
   },
