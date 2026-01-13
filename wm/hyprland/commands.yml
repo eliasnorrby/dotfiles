@@ -9,6 +9,15 @@ keys:
         name: terminal
         value: kitty
 
+  - key: d
+    name: docker
+    keys:
+      - key: l
+        name: lazydocker
+        value: kitty -e lazydocker
+      - key: p
+        name: ps
+        value: docker ps
   - key: h
     name: hypr
     keys:
