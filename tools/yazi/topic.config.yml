@@ -2,12 +2,18 @@
 yazi_config:
   path: tools/yazi
   links:
-    - src: picker
-      dest: "{{ xdg_config_home }}/"
-      rename: yazi-picker
+    - src: picker/keymap.toml
+      dest: "{{ yazi_picker_home }}/"
+      rename: keymap.toml
+    - src: picker/yazi.toml
+      dest: "{{ yazi_picker_home }}/"
+      rename: yazi.toml
     - src: capture_picker.sh
       dest: "{{ xdg_bin_home }}/"
       rename: capture_picker
   pacman_packages:
     - yazi
-    - ffmpeg  # video previews
+    - ffmpeg # video previews
+
+yazi_picker_home: "{{ xdg_config_home }}/yazi-picker"
+yazi_theme_url: https://raw.githubusercontent.com/catppuccin/yazi/main/themes/macchiato/catppuccin-macchiato-blue.toml

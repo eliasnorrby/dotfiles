@@ -1,0 +1,27 @@
+---
+- name: create yazi-picker config directory
+  file:
+    state: directory
+    path: "{{ yazi_picker_home }}"
+
+- name: check if yazi theme exists
+  stat:
+    path: "{{ xdg_config_home }}/yazi/theme.toml"
+  register: yazi_theme
+- name: download catppuccin macchiato theme for yazi
+  get_url:
+    url: "{{ yazi_theme_url }}"
+    dest: "{{ xdg_config_home }}/yazi/theme.toml"
+    mode: "0644"
+  when: not yazi_theme.stat.exists
+
+- name: check if yazi picker theme exists
+  stat:
+    path: "{{ yazi_picker_home }}/theme.toml"
+  register: yazi_picker_theme
+- name: download catppuccin macchiato theme for yazi picker
+  get_url:
+    url: "{{ yazi_theme_url }}"
+    dest: "{{ yazi_picker_home }}/theme.toml"
+    mode: "0644"
+  when: not yazi_picker_theme.stat.exists
