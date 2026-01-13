@@ -7,3 +7,5 @@ rofi_config:
     - config.rasi
   pacman_packages:
     - rofi
+    - cliphist
+    - gawk
