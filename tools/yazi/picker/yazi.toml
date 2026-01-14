@@ -2,6 +2,7 @@
 ratio = [0, 1, 2]
 sort_by = "mtime"
 sort_reverse = true
+linemode = "size"
 
 [preview]
 max_width = 1920
