@@ -31,9 +31,9 @@ return {
     },
     use_default_keymaps = false,
     lsp_file_methods = {
-      enabled = true,
-      timeout_ms = 10000,
-      autosave_changes = true,
+      enabled = false,
+      timeout_ms = 1000,
+      autosave_changes = false,
     },
   },
   lazy = true,
