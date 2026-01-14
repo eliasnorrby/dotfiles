@@ -1,4 +1,16 @@
 keys:
+  - key: a
+    name: apps
+    keys:
+      - key: k
+        name: k9s
+        value: tmux new-window -n k9s 'k9s --logoless'
+      - key: b
+        name: bash repl
+        value: tmux new-window -n bash 'bash_repl'
+      - key: j
+        name: jq repl
+        value: tmux new-window -n jq 'jq_repl'
   - key: p
     name: pane
     keys:
@@ -12,3 +24,12 @@ keys:
         name: swap-window
         value: tmux swap-window -t
         input: Number
+  - key: t
+    name: toggle
+    keys:
+      - key: s
+        name: status
+        value: $TMUX_HOME/scripts/toggle_status.sh
+  - key: h
+    name: help
+    value: tmux display-popup -b rounded -d "$HOME/.dotfiles" -w '85%' -h '85%' -T " Memos " 'mdcat memos.md'
