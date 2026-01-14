@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Notification script for OpenCode session events.
-# Usage: opencode_notification <done|error>
+# Usage: opencode_notification <done|error|input_required|permission>
 
 bell() {
   # If running inside tmux, write bell directly to the pane's TTY
@@ -21,15 +21,15 @@ bell() {
 }
 
 if [ $# -ne 1 ]; then
-  echo "Usage: $0 <done|error>" >&2
+  echo "Usage: $0 <done|error|input_required|permission>" >&2
   exit 1
 fi
 
 notification_type="$1"
 
-if [[ "$notification_type" != "done" && "$notification_type" != "error" ]]; then
+if [[ "$notification_type" != "done" && "$notification_type" != "error" && "$notification_type" != "input_required" && "$notification_type" != "permission" ]]; then
   echo "Error: Invalid notification type '$notification_type'" >&2
-  echo "Usage: $0 <done|error>" >&2
+  echo "Usage: $0 <done|error|input_required|permission>" >&2
   exit 1
 fi
 
@@ -39,6 +39,14 @@ if [[ "$notification_type" == "done" ]]; then
   message="OpenCode session completed."
   macos_sound="/System/Library/Sounds/Funk.aiff"
   linux_sound="/usr/share/sounds/freedesktop/stereo/dialog-information.oga"
+elif [[ "$notification_type" == "input_required" ]]; then
+  message="OpenCode needs your input."
+  macos_sound="/System/Library/Sounds/Hero.aiff"
+  linux_sound="/usr/share/sounds/freedesktop/stereo/dialog-warning.oga"
+elif [[ "$notification_type" == "permission" ]]; then
+  message="OpenCode needs permission to continue."
+  macos_sound="/System/Library/Sounds/Glass.aiff"
+  linux_sound="/usr/share/sounds/freedesktop/stereo/dialog-warning.oga"
 else
   message="OpenCode session error."
   macos_sound="/System/Library/Sounds/Basso.aiff"
