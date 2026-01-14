@@ -1,5 +1,6 @@
 return {
   'jackMort/ChatGPT.nvim',
+  enabled = false,
   lazy = true,
   opts = {
     api_key_cmd = 'op read op://work/OpenAI_ChatGPT_nvim_key/credential --no-newline',

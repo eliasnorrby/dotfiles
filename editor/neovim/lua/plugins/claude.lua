@@ -1,6 +1,7 @@
 ---@type LazyPluginSpec
 return {
   'greggh/claude-code.nvim',
+  enabled = false,
   dependencies = {
     'nvim-lua/plenary.nvim',
   },

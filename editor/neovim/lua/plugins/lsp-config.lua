@@ -38,6 +38,7 @@ return {
   config = function()
     local servers = {
       'bashls',
+      'copilot',
       'cssls',
       'diagnosticls',
       'dockerls',
@@ -69,6 +70,8 @@ return {
     vim.lsp.enable('kulula_ls')
 
     vim.lsp.set_log_level('OFF')
+
+    vim.lsp.enable('copilot')
 
     vim.diagnostic.config({
       float = { border = 'rounded' },
