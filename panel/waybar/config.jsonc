@@ -20,7 +20,7 @@
     "network",
     "cpu",
     "memory",
-    "tray",
+    // "tray",
     "clock",
     "custom/notification",
     "custom/power"
