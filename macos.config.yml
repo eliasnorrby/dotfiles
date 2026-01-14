@@ -16,6 +16,9 @@ topics:
     - name: claude
       state: present
       config: "{{ claude_config }}"
+    - name: opencode
+      state: present
+      config: "{{ opencode_config }}"
     - name: gemini
       state: present
       config: "{{ gemini_config }}"

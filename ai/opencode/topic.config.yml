@@ -1,0 +1,12 @@
+---
+opencode_config:
+  path: ai/opencode
+  aur_packages:
+    - opencode-bin
+  links:
+    - src: opencode_notification.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: opencode_notification
+    - src: plugin
+      dest: "{{ xdg_config_home }}/opencode/"
+      rename: plugin

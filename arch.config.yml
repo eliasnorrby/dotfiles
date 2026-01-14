@@ -25,6 +25,9 @@ topics:
     - name: general
       state: absent
       config: "{{ ai_config }}"
+    - name: opencode
+      state: present
+      config: "{{ opencode_config }}"
   base:
     - name: arch
       state: present
