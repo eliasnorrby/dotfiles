@@ -11,6 +11,7 @@ tmux_config:
     - tmux.theme.conf
     - scripts
     - extensions
+    - commands.yml
     - src: tmux_set_env.sh
       dest: "{{ xdg_bin_home }}/"
       rename: tmux_set_env

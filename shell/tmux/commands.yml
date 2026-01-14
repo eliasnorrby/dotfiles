@@ -1,0 +1,14 @@
+keys:
+  - key: p
+    name: pane
+    keys:
+      - key: b
+        name: break-pane
+        value: tmux break-pane
+  - key: w
+    name: window
+    keys:
+      - key: s
+        name: swap-window
+        value: tmux swap-window -t
+        input: Number
