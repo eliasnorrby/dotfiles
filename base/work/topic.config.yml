@@ -8,4 +8,3 @@ work_config:
     - linear-linear
   aur_packages:
     - notion-app-electron
-    - linear-bin
