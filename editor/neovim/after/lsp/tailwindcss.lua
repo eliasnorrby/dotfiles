@@ -1,4 +1,10 @@
 return {
+  filetypes = {
+    'html',
+    'css',
+    'javascriptreact',
+    'typescriptreact',
+  },
   settings = {
     tailwindCSS = {
       classAttributes = { 'class', 'className', 'class:list', 'classList', 'ngClass', 'div*' },
