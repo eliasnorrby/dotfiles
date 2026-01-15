@@ -1,7 +1,7 @@
 ---@type LazyPluginSpec
 return {
   'github/copilot.vim',
-  enabled = true,
+  enabled = false,
   lazy = true,
   cmd = 'Copilot',
   event = 'InsertEnter',

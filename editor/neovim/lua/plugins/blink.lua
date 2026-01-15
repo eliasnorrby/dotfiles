@@ -118,7 +118,18 @@ return {
 
       ['<C-e>'] = false,
 
-      ['<Tab>'] = { 'snippet_forward', 'select_next', 'fallback' },
+      ['<Tab>'] = {
+        'snippet_forward',
+        function() -- sidekick next edit suggestion
+          return require('sidekick').nes_jump_or_apply()
+        end,
+        -- TODO: investigate after release in v0.12
+        -- function() -- if you are using Neovim's native inline completions
+        --   return vim.lsp.inline_completion.get()
+        -- end,
+        'select_next',
+        'fallback',
+      },
       ['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' },
       ['<C-d>'] = { 'show_documentation', 'hide_documentation', 'fallback' },
       ['<C-f>'] = { 'hide', 'fallback' },

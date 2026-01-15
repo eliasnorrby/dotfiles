@@ -38,7 +38,8 @@ return {
   config = function()
     local servers = {
       'bashls',
-      'copilot',
+      -- rely on lsp bundled with copilot.lua
+      -- 'copilot',
       'cssls',
       'diagnosticls',
       'dockerls',
@@ -71,6 +72,7 @@ return {
 
     vim.lsp.set_log_level('OFF')
 
+    -- need to enable here for sidekick's nes to work
     vim.lsp.enable('copilot')
 
     vim.diagnostic.config({

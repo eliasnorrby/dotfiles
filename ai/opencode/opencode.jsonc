@@ -2,5 +2,8 @@
   "$schema": "https://opencode.ai/config.json",
   "plugin": [
     "@mohak34/opencode-notifier@latest"
-  ]
+  ],
+  "keybinds": {
+    "command_list": "<leader>p"
+  }
 }
