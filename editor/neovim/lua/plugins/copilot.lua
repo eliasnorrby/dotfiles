@@ -95,11 +95,10 @@ return {
       end,
     })
 
-    -- disable by default in react
     vim.api.nvim_create_autocmd('FileType', {
-      pattern = 'typescriptreact',
+      pattern = { 'markdown', 'http', 'typescriptreact' },
       callback = function()
-        require('copilot.suggestion').toggle_auto_trigger()
+        vim.b.copilot_enabled = false
       end,
     })
   end,
