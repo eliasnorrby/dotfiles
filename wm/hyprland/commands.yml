@@ -104,7 +104,7 @@ keys:
     keys:
       - key: s
         name: suspend
-        value: sleep 0.2 && systemctl suspend
+        value: sleep 0.2 && safe-suspend
       - key: h
         name: hibernate
         value: systemctl hibernate

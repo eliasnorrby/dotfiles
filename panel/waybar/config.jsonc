@@ -117,7 +117,7 @@
       "reload": "reload_services",
       "shutdown": "shutdown",
       "reboot": "reboot",
-      "suspend": "systemctl suspend",
+      "suspend": "safe-suspend",
       "hibernate": "systemctl hibernate"
     }
   },

@@ -8,6 +8,9 @@ arch_config:
     - src: spotifyctl.sh
       dest: "{{ xdg_bin_home }}/"
       rename: spotifyctl
+    - src: safe-suspend.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: safe-suspend
     - src: chrome-personal.desktop
       dest: "{{ xdg_applications_dir }}/"
     - src: chrome-work.desktop
