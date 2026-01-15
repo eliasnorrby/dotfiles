@@ -45,10 +45,8 @@ return {
       symbols = {
         status = {
           hl = {
-            -- enabled and sleep are swapped
-            -- https://github.com/AndreM222/copilot-lualine/pull/15
-            enabled = '#CAD3F5',
-            sleep = '#A6DA95',
+            enabled = '#A6DA95',
+            sleep = '#CAD3F5',
             disabled = '#5B6078',
             warning = '#EED49F',
             unknown = '#5B6078',
