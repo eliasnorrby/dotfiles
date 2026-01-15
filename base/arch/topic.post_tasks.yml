@@ -17,3 +17,47 @@
         state: started
       become: true
   tags: ["never", "do_pacman"]
+
+- name: configure swap (zram + swapfile)
+  block:
+    - name: configure zram-generator (16GB, zstd)
+      copy:
+        dest: /etc/systemd/zram-generator.conf
+        content: |
+          # Tuned for 32GB RAM systems
+          [zram0]
+          zram-size = 16384
+          compression-algorithm = zstd
+
+    - name: reload systemd and restart zram
+      systemd:
+        daemon_reload: true
+        name: systemd-zram-setup@zram0.service
+        state: restarted
+
+    - name: create and format swapfile (32GB)
+      command: mkswap -U clear --size 32G --file /swapfile
+      args:
+        creates: /swapfile
+
+    - name: add swapfile to fstab
+      lineinfile:
+        path: /etc/fstab
+        line: '/swapfile none swap defaults,pri=10 0 0'
+        state: present
+
+    - name: enable swapfile
+      command: swapon --priority=10 /swapfile
+      register: swapon_result
+      failed_when: swapon_result.rc != 0 and 'busy' not in swapon_result.stderr
+
+  become: true
+  tags: ["never", "sudo_enabled"]
+
+- name: notice about sudo (swap)
+  debug:
+    msg: |
+      The swap configuration tasks require sudo and have been skipped.
+      Run with --tags sudo_enabled --become to apply them.
+  when: "'sudo_enabled' not in ansible_run_tags"
+  tags: ["always"]
