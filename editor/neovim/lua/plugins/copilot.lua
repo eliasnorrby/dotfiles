@@ -96,7 +96,7 @@ return {
     })
 
     vim.api.nvim_create_autocmd('FileType', {
-      pattern = { 'markdown', 'http', 'typescriptreact' },
+      pattern = { 'markdown', 'http', 'typescriptreact', 'gitcommit' },
       callback = function()
         vim.b.copilot_enabled = false
       end,
