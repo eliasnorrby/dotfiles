@@ -9,6 +9,7 @@ return {
     input = { enabled = true },
     picker = { enabled = true },
     notifier = { enabled = true },
+    words = { enabled = true },
   },
   keys = {
     {
