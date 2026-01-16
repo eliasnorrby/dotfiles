@@ -1,6 +1,7 @@
 ---@type LazyPluginSpec
 return {
   'hinell/lsp-timeout.nvim',
+  enabled = false,
   dependencies = { 'neovim/nvim-lspconfig' },
   init = function()
     local default_timeout = 1000 * 60 * 5 -- 5 minutes
