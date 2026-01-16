@@ -10,5 +10,6 @@ rofi_config:
       rename: cliphist_rofi_img
   pacman_packages:
     - rofi
+    - rofi-calc
     - cliphist
     - gawk
