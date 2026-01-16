@@ -4,6 +4,7 @@
     "@mohak34/opencode-notifier@latest"
   ],
   "keybinds": {
-    "command_list": "<leader>p"
+    "command_list": "<leader>p",
+    "editor_open": "ctrl+g"
   }
 }

@@ -8,7 +8,7 @@ return {
     cli = {
       win = {
         keys = {
-          prompt = { '<c-g>', 'prompt', mode = 't', desc = 'insert prompt or context' },
+          prompt = { '<c-r>', 'prompt', mode = 't', desc = 'insert prompt or context' },
         },
       },
     },
