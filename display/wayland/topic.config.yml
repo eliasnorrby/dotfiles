@@ -24,3 +24,5 @@ wayland_config:
     # Qt Wayland support
     - qt5-wayland
     - qt6-wayland
+    # automation
+    - ydotool

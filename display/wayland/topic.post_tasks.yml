@@ -1,0 +1,25 @@
+---
+- name: add user to input group
+  user:
+    name: "{{ ansible_user_id }}"
+    groups: input
+    append: yes
+  become: yes
+  tags: ["never", "sudo_enabled"]
+
+- name: enable and start ydotool service
+  systemd:
+    name: ydotool
+    scope: user
+    enabled: yes
+    state: started
+
+- name: notice about sudo
+  debug:
+    msg: |
+      The tasks for ydotool require sudo and have been skipped.
+
+      Please pass the 'sudo_enabled' tag (use the --become flag for the CLI)
+      to run them.
+  when: "'sudo_enabled' not in ansible_run_tags"
+  tags: ["always"]
