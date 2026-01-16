@@ -1,0 +1,8 @@
+---
+- name: enable hyprvoice service
+  systemd:
+    name: hyprvoice
+    scope: user
+    enabled: yes
+    state: started
+  when: is_arch

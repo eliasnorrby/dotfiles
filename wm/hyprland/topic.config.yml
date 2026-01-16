@@ -45,3 +45,4 @@ hyprland_config:
     - wtype
   aur_packages:
     - catppuccin-cursors-macchiato
+    - hyprvoice-bin
