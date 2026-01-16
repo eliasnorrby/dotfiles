@@ -114,3 +114,6 @@ keys:
       - key: o
         name: shutdown
         value: systemctl poweroff
+  - key: "-"
+    name: dash
+    value: wtype '\–'
