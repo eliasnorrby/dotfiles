@@ -32,6 +32,9 @@ hyprland_config:
     - src: special_paste.sh
       dest: "{{ xdg_bin_home }}/"
       rename: special_paste
+    - src: send_home.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: send_home
   pacman_packages:
     - hyprland
     - hyprpaper
