@@ -35,9 +35,6 @@ hyprland_config:
     - src: send_home.sh
       dest: "{{ xdg_bin_home }}/"
       rename: send_home
-    - src: kill_pwas.sh
-      dest: "{{ xdg_bin_home }}/"
-      rename: kill_pwas
   pacman_packages:
     - hyprland
     - hyprpaper
