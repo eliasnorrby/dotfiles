@@ -5,7 +5,7 @@ selector = "handlr-selector"
 [[handlers]]
 exec = "chrome-work %U"
 terminal = false
-regexes = ['https?://github\.com/bemlo(/.*)?']
+regexes = ['https?://github\.com/bemlo(/.*)?','https?://app\.bemlo\.com(/.*)?']
 
 [[handlers]]
 exec = "chrome-personal %U"
