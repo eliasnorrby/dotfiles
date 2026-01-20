@@ -1,6 +1,10 @@
 ---
 macos_config:
   path: base/macos
+  links:
+    - src: notify-send.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: notify-send
   brew_formulae:
     - curl
     - spicetify-cli
