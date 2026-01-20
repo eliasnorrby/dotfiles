@@ -4,7 +4,7 @@
 # Prevents crashes caused by insufficient memory for GPU VRAM eviction.
 
 # Minimum available memory required (in MB)
-MIN_AVAILABLE_MB=6000
+MIN_AVAILABLE_MB=4000
 
 available_kb=$(grep MemAvailable /proc/meminfo | awk '{print $2}')
 available_mb=$((available_kb / 1024))
