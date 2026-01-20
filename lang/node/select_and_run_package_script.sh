@@ -61,7 +61,19 @@ run_script_in_appended_window() {
 
 get_window_command() {
   local script=$1
-  echo "eval '$script' && sleep 2 || exec zsh"
+  cat <<EOF
+eval '$script'
+if [ \$? -eq 0 ]; then
+  if command -v notify-send >/dev/null 2>&1; then
+    notify-send '🟢 Success' "'$script' ran successfully."
+  fi
+else
+  if command -v notify-send >/dev/null 2>&1; then
+    notify-send '🔴 Failure' "'$script' ran with errors."
+  fi
+  exec zsh
+fi
+EOF
 }
 
 main "$@"
