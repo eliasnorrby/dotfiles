@@ -48,6 +48,9 @@ keys:
       - key: a
         name: all
         value: reload_services
+      - key: c
+        name: claude
+        value: pkill -USR1 waybar && sleep 0.2 && pkill -USR1 waybar
   - key: t
     name: toggle
     keys:
