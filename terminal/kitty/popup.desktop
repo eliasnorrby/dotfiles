@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Popup Terminal
+Comment=Slim floating terminal for quick commands
+Exec=kitty --class PopupKitty -o 'map escape close_window'
+Icon=utilities-terminal
+Terminal=false
+Type=Application
+Categories=System;
+StartupWMClass=PopupKitty

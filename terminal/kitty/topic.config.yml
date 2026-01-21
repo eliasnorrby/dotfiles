@@ -22,6 +22,9 @@ kitty_config:
     - src: dotfiles.desktop
       dest: "{{ xdg_applications_dir }}/"
       condition: "{{ is_arch }}"
+    - src: popup.desktop
+      dest: "{{ xdg_applications_dir }}/"
+      condition: "{{ is_arch }}"
   brew_casks:
     - kitty
   pacman_packages:
