@@ -519,3 +519,27 @@ keys:
           - key: o
             value: --operations
             name: operations
+  - key: m
+    name: pacman
+    keys:
+      - key: s
+        name: install
+        value: sudo pacman -S
+      - key: q
+        name: query
+        value: pacman -Qs
+      - key: S
+        name: system update
+        value: sudo pacman -Syu
+      - key: r
+        name: remove
+        value: sudo pacman -Rs
+      - key: c
+        name: check
+        keys:
+          - key: s
+            name: services
+            value: sudo checkservices
+          - key: r
+            name: rebuild
+            value: checkrebuild
