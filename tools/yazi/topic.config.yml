@@ -1,7 +1,9 @@
 ---
 yazi_config:
   path: tools/yazi
+  dirname: yazi
   links:
+    - keymap.toml
     - src: picker/keymap.toml
       dest: "{{ yazi_picker_home }}/"
       rename: keymap.toml

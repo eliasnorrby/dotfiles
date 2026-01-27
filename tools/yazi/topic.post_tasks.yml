@@ -1,0 +1,9 @@
+---
+- name: check if yazi smart-enter plugin is installed
+  command: ya pkg list
+  register: yazi_plugins
+  changed_when: false
+
+- name: install yazi smart-enter plugin
+  command: ya pkg add yazi-rs/plugins:smart-enter
+  when: "'smart-enter' not in yazi_plugins.stdout"
