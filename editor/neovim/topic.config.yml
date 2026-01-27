@@ -35,3 +35,6 @@ neovim_config:
     - src: scratch.desktop
       dest: "{{ xdg_applications_dir }}/"
       condition: "{{ is_arch }}"
+    - src: obsidian-popup.desktop
+      dest: "{{ xdg_applications_dir }}/"
+      condition: "{{ is_arch }}"

@@ -6,6 +6,9 @@ return {
     'BufReadPre ' .. vim.fn.expand('~') .. '/vaults/*/*.md',
     'BufNewFile ' .. vim.fn.expand('~') .. '/vaults/*/*.md',
   },
+  cmd = {
+    'Obsidian',
+  },
   ---@module 'obsidian'
   ----@type obsidian.config.ClientOpts
   opts = {
