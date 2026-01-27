@@ -4,6 +4,18 @@
     state: directory
     path: "{{ yazi_picker_home }}"
 
+- name: create xdg-desktop-portal config directory
+  file:
+    state: directory
+    path: "{{ xdg_portal_home }}"
+  when: is_arch
+
+- name: create termfilechooser config directory
+  file:
+    state: directory
+    path: "{{ termfilechooser_home }}"
+  when: is_arch
+
 - name: check if yazi theme exists
   stat:
     path: "{{ xdg_config_home }}/yazi/theme.toml"

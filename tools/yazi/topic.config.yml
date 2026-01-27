@@ -11,9 +11,20 @@ yazi_config:
     - src: capture_picker.sh
       dest: "{{ xdg_bin_home }}/"
       rename: capture_picker
+    - src: portals.conf
+      dest: "{{ xdg_portal_home }}/"
+      condition: "{{ is_arch }}"
+    - src: termfilechooser_config
+      dest: "{{ termfilechooser_home }}/"
+      rename: config
+      condition: "{{ is_arch }}"
   pacman_packages:
     - yazi
     - ffmpeg # video previews
+  aur_packages:
+    - xdg-desktop-portal-termfilechooser-hunkyburrito-git
 
 yazi_picker_home: "{{ xdg_config_home }}/yazi-picker"
+xdg_portal_home: "{{ xdg_config_home }}/xdg-desktop-portal"
+termfilechooser_home: "{{ xdg_config_home }}/xdg-desktop-portal-termfilechooser"
 yazi_theme_url: https://raw.githubusercontent.com/catppuccin/yazi/main/themes/macchiato/catppuccin-macchiato-blue.toml
