@@ -117,6 +117,12 @@ keys:
       - key: o
         name: shutdown
         value: systemctl poweroff
+  - key: m
+    name: meta
+    keys:
+      - key: m
+        name: markdown table
+        value: wl-paste | pnpm dlx tablemark-cli - | wl-copy
   - key: "-"
     name: dash
     value: wtype '\–'
