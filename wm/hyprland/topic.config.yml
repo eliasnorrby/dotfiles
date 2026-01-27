@@ -35,6 +35,9 @@ hyprland_config:
     - src: send_home.sh
       dest: "{{ xdg_bin_home }}/"
       rename: send_home
+    - src: hyprvoice_toggle.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: hyprvoice_toggle
   pacman_packages:
     - hyprland
     - hyprpaper
