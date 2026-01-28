@@ -280,7 +280,7 @@ projects() {
 
 }
 
-alias z=projects
+alias Z=projects
 
 apps() {
   cd "$(git rev-parse --show-toplevel)" || return 1

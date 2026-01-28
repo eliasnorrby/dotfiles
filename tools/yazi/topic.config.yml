@@ -23,6 +23,7 @@ yazi_config:
   pacman_packages:
     - yazi
     - ffmpeg # video previews
+    - zoxide
   aur_packages:
     - xdg-desktop-portal-termfilechooser-hunkyburrito-git
 
