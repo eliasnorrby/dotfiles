@@ -38,6 +38,9 @@ hyprland_config:
     - src: hyprvoice_toggle.sh
       dest: "{{ xdg_bin_home }}/"
       rename: hyprvoice_toggle
+    - src: toggle_espanso.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: toggle_espanso
   pacman_packages:
     - hyprland
     - hyprpaper

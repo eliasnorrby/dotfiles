@@ -66,6 +66,9 @@ keys:
       - key: d
         name: dnd
         value: swaync-client --toggle-dnd
+      - key: e
+        name: espanso
+        value: toggle_espanso
   - key: s
     name: screenshot
     keys:
