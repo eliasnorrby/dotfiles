@@ -4,6 +4,11 @@ run  = "shell --orphan -- echo -n 'file://'$0 | wl-copy -t text/uri-list && ya e
 desc = "Copy file:// URL to clipboard and quit"
 
 [[mgr.prepend_keymap]]
+on   = "<C-y>"
+run  = "shell --orphan -- wl-copy -t \"$(file -b --mime-type \"$0\")\" < \"$0\" && ya emit quit"
+desc = "Copy binary data to clipboard and quit"
+
+[[mgr.prepend_keymap]]
 on   = "o"
 run  = "open"
 desc = "Open file"
