@@ -1,4 +1,4 @@
 [filechooser]
 cmd=yazi-wrapper.sh
 default_dir=$HOME
-env=TERMCMD=kitty --title 'File Picker'
+env=TERMCMD=kitty --title file-picker
