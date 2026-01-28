@@ -10,6 +10,7 @@ return {
         keys = {
           prompt = { '<c-r>', 'prompt', mode = 't', desc = 'insert prompt or context' },
         },
+        layout = 'float',
       },
     },
   },
