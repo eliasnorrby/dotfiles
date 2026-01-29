@@ -16,7 +16,7 @@ get_copy_cmd() {
   if [[ "$(_os)" == "macos" ]] ; then
     echo "pbcopy"
   else
-    echo "xsel -b"
+    echo "wl-copy"
   fi
 }
 
