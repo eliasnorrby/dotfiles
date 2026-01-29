@@ -58,7 +58,6 @@ arch_config:
     - flameshot
     # apps
     - mpv
-    - chromium
     - discord
     - obsidian
   aur_packages:
