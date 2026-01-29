@@ -3,6 +3,7 @@ yazi_config:
   path: tools/yazi
   dirname: yazi
   links:
+    - yazi.toml
     - keymap.toml
     - src: picker/keymap.toml
       dest: "{{ yazi_picker_home }}/"
@@ -23,7 +24,9 @@ yazi_config:
   pacman_packages:
     - yazi
     - ffmpeg # video previews
+    - poppler # pdf previews
     - zoxide
+    - nnn
   aur_packages:
     - xdg-desktop-portal-termfilechooser-hunkyburrito-git
 
