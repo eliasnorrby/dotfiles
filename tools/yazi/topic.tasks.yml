@@ -1,4 +1,8 @@
 ---
+- name: create yazi config directory
+  file:
+    state: directory
+    path: "{{ xdg_config_home }}/yazi"
 - name: create yazi-picker config directory
   file:
     state: directory

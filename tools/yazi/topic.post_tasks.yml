@@ -7,3 +7,7 @@
 - name: install yazi smart-enter plugin
   command: ya pkg add yazi-rs/plugins:smart-enter
   when: "'smart-enter' not in yazi_plugins.stdout"
+
+- name: install yazi toggle-pane plugin
+  command: ya pkg add yazi-rs/plugins:toggle-pane
+  when: "'toggle-pane' not in yazi_plugins.stdout"
