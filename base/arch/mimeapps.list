@@ -1,4 +1,5 @@
 [Default Applications]
+application/pdf=org.pwmt.zathura.desktop;
 audio/flac=mpv.desktop;
 audio/mpeg=mpv.desktop;
 audio/ogg=mpv.desktop;

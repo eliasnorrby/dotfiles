@@ -1,0 +1,8 @@
+---
+zathura_config:
+  path: tools/zathura
+  links:
+    - zathurarc
+  pacman_packages:
+    - zathura
+    - zathura-pdf-poppler

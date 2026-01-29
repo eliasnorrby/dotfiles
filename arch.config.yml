@@ -15,6 +15,9 @@ topics:
     - name: yazi
       state: present
       config: "{{ yazi_config }}"
+    - name: zathura
+      state: present
+      config: "{{ zathura_config }}"
   ai:
     - name: claude
       state: present

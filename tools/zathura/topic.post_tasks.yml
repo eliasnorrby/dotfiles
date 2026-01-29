@@ -1,0 +1,11 @@
+---
+- name: check if zathura theme exists
+  stat:
+    path: "{{ xdg_config_home }}/zathura/catppuccin-macchiato"
+  register: zathura_theme
+- name: download catppuccin macchiato theme for zathura
+  get_url:
+    url: https://raw.githubusercontent.com/catppuccin/zathura/refs/heads/main/themes/catppuccin-macchiato
+    dest: "{{ xdg_config_home }}/zathura/catppuccin-macchiato"
+    mode: "0644"
+  when: not zathura_theme.stat.exists
