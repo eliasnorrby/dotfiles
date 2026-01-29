@@ -1,5 +1,5 @@
 [mgr]
-ratio = [1, 2, 2]
+ratio = [0, 1, 2]
 
 [preview]
 max_width = 1920
