@@ -11,9 +11,9 @@ fi
 # Customization
 # -------------
 export FZF_CTRL_R_OPTS="
-  --preview 'echo {}' 
-  --preview-window down:3:hidden:wrap 
-  --bind 'ctrl-y:execute-silent(echo -n {2..} | $(get_copy_cmd))+abort' 
+  --preview 'echo {}'
+  --preview-window down:3:hidden:wrap
+  --bind 'ctrl-y:execute-silent(echo -n {2..} | $(get_copy_cmd))+abort'
   --header 'Press CTRL-Y to copy command into clipboard'
   --list-label '   History '
 "
@@ -42,7 +42,7 @@ export FZF_DEFAULT_OPTS='
   --color base16
   --color prompt:1
   --bind ctrl-a:select-all
-  --bind "?:toggle-preview" 
+  --bind "?:toggle-preview"
   --input-border
   --list-border
   --no-border
