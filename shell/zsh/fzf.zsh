@@ -178,7 +178,7 @@ gt() {
     --preview 'git show --color=always {} | head -200'
 }
 
-_gitLogLineToHash="echo {} | grep -o '[a-f0-9]\{7\}' | head -1 -c -1"
+_gitLogLineToHash="echo {} | grep -o '[a-f0-9]\{7,9\}' | head -1 -c -1"
 
 # I use gg instead of gh because <c-h> is taken by tmux
 gg() {
