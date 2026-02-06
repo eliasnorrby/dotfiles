@@ -537,6 +537,9 @@ keys:
       - key: c
         name: check
         keys:
+          - key: u
+            name: updates
+            value: checkupdates | column -t
           - key: s
             name: services
             value: sudo checkservices
