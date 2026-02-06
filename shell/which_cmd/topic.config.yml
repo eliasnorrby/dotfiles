@@ -6,4 +6,4 @@ which_cmd_config:
     - commands.yml
     - src: which_cmd_wrapper.sh
       dest: "{{ xdg_bin_home }}/"
-      rename: which-cmd
+      rename: wcmd

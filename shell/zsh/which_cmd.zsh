@@ -1,18 +1,14 @@
 # which-cmd integration for zsh
 
-# which-cmd() {
-#   ~/dev/which-cmd/target/debug/which-cmd "$@"
-# }
-
 # command line variant
 which_cmd_widget() {
     local result
-    # The <$TTY part ensures that which-cmd reads input from the terminal ($TTY) rather than from
+    # The <$TTY part ensures that wcmd reads input from the terminal ($TTY) rather than from
     #   the shell's standard input, which may not be connected to the terminal when running in a
     #   ZLE widget.
-    <$TTY which-cmd build --border --immediate
+    <$TTY wcmd build --border --immediate
     if [[ $? -eq 0 ]]; then
-        result=$(which-cmd get)
+        result=$(wcmd get)
         if [[ $result != "" ]]; then
           if [[ $result = __IMMEDIATE__* ]]; then
             local cmd
@@ -40,10 +36,10 @@ which_cmd_tmux_widget() {
     # TODO: Use proper path
     tmux display-popup \
       -S fg=brightblack \
-      -T '#[fg=white bold] which-cmd #[fg=default]' \
+      -T '#[fg=white bold] wcmd #[fg=default]' \
       -y P -w 95% -h $((height + 2)) -b rounded \
-      -EE "which-cmd build --immediate --height ${height}"
-    result=$(which-cmd get)
+      -EE "wcmd build --immediate --height ${height}"
+    result=$(wcmd get)
     if [[ $result != "" ]]; then
       if [[ $result = __IMMEDIATE__* ]]; then
         local cmd
