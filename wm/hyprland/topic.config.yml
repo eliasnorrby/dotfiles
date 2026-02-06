@@ -38,6 +38,9 @@ hyprland_config:
     - src: hyprvoice_toggle.sh
       dest: "{{ xdg_bin_home }}/"
       rename: hyprvoice_toggle
+    - src: hyprvoice_panel.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: hyprvoice_panel
     - src: toggle_espanso.sh
       dest: "{{ xdg_bin_home }}/"
       rename: toggle_espanso
@@ -52,3 +55,4 @@ hyprland_config:
   aur_packages:
     - catppuccin-cursors-macchiato
     - hyprvoice-bin
+    - whisper.cpp

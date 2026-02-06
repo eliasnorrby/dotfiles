@@ -78,6 +78,7 @@ window#waybar {
 #tray,
 #custom-power,
 #custom-notification,
+#custom-hyprvoice,
 #custom-recorder,
 #custom-pacman {
   border-radius: 10px;
@@ -122,6 +123,7 @@ window#waybar {
 #language:hover,
 #tray:hover,
 #custom-notification:hover,
+#custom-hyprvoice:hover,
 #custom-recorder:hover,
 #custom-pacman:hover {
   background-color: rgba(73, 77, 100, 0.7);
@@ -163,6 +165,18 @@ window#waybar {
 #custom-power:hover {
   background-color: @flamingo;
   transition: all 0.3s linear;
+}
+
+#custom-hyprvoice.active {
+  color: @red;
+  border: 1px solid @red;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.5;
+  }
 }
 
 #pulseaudio.muted {

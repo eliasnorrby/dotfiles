@@ -11,7 +11,7 @@
     "hyprland/workspaces"
   ],
   "modules-center": [
-    "custom/pacman"
+    "custom/hyprvoice"
   ],
   "modules-right": [
     "custom/recorder",
@@ -21,6 +21,7 @@
     "cpu",
     "memory",
     // "tray",
+    "custom/pacman",
     "clock",
     "custom/notification",
     "custom/power"
@@ -156,6 +157,13 @@
     "exec-if": "screen_record status",
     "exec": "screen_record panel",
     "on-click": "screen_record stop",
+    "interval": 1
+  },
+  "custom/hyprvoice": {
+    "format": "{}",
+    "return-type": "json",
+    "exec-if": "systemctl --user is-active hyprvoice.service",
+    "exec": "hyprvoice_panel",
     "interval": 1
   }
 }
