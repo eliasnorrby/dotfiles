@@ -212,3 +212,5 @@ wk.add({
 
 -- temporary
 u.map('n', '<leader>so', vim.cmd.source)
+-- paste surrounded by backticks
+u.map('i', '<C-a>', '`<C-R>+`')
