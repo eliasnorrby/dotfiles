@@ -63,7 +63,7 @@ return {
   { 'u', 'Spotify' },
   { 'v', 'Notion' },
   { 'w', 'Linear' },
-  { 'x', 'Firefox Developer Edition' },
+  { 'x', 'Google Chrome' },
   { 'y', 'DaVinci Resolve' },
   { 'z', 'Slack' },
 }
