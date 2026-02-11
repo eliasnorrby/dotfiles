@@ -84,7 +84,7 @@ get_context_percentage() {
       # Extract numeric value and add 20
       local pct_num=$(echo "$percentage" | tr -d '%')
       if [[ -n "$pct_num" ]]; then
-        local adjusted_pct=$((pct_num + 20))
+        local adjusted_pct=$((pct_num + 0))
         if [[ $adjusted_pct -gt 100 ]]; then
           adjusted_pct=100
         fi
