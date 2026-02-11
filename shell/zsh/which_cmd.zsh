@@ -35,6 +35,7 @@ which_cmd_tmux_widget() {
     local result height=10
     # TODO: Use proper path
     tmux display-popup \
+      -d '#{pane_current_path}' \
       -S fg=brightblack \
       -T '#[fg=white bold] wcmd #[fg=default]' \
       -y P -w 95% -h $((height + 2)) -b rounded \
