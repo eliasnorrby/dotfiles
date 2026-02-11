@@ -48,6 +48,9 @@ keys:
             name: previous branch
             value: "-"
             immediate: true
+          - key: p
+            name: pick
+            choices_command: git branch --format="%(refname:short)"
       - key: p
         value: push
         keys:
@@ -521,6 +524,8 @@ keys:
             name: operations
   - key: m
     name: pacman
+    when:
+      command_exists: pacman
     keys:
       - key: s
         name: install
