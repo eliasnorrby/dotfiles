@@ -44,6 +44,9 @@ hyprland_config:
     - src: toggle_espanso.sh
       dest: "{{ xdg_bin_home }}/"
       rename: toggle_espanso
+    - src: delete_prev_word.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: delete_prev_word
   pacman_packages:
     - hyprland
     - hyprpaper
