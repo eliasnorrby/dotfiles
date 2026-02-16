@@ -54,10 +54,45 @@
   become: true
   tags: ["never", "sudo_enabled"]
 
-- name: notice about sudo (swap)
+- name: configure hibernation (resume from swapfile)
+  block:
+    - name: get root partition UUID
+      command: findmnt -no UUID /
+      register: root_uuid
+      changed_when: false
+
+    - name: get swapfile physical offset
+      shell: filefrag -v /swapfile | awk '$1=="0:" {print substr($4, 1, length($4)-2)}'
+      register: swap_offset
+      changed_when: false
+
+    - name: add resume hook to mkinitcpio.conf
+      replace:
+        path: /etc/mkinitcpio.conf
+        regexp: '(filesystems)(?!\s+resume)'
+        replace: '\1 resume'
+      register: mkinitcpio_changed
+
+    - name: add resume kernel params to boot entries
+      replace:
+        path: "{{ item }}"
+        regexp: '^(options\s+(?!.*resume=).*)$'
+        replace: >-
+          \1 resume=UUID={{ root_uuid.stdout }}
+          resume_offset={{ swap_offset.stdout }}
+      with_fileglob: /boot/loader/entries/*.conf
+
+    - name: regenerate initramfs
+      command: mkinitcpio -P
+      when: mkinitcpio_changed.changed
+
+  become: true
+  tags: ["never", "sudo_enabled"]
+
+- name: notice about sudo (swap & hibernation)
   debug:
     msg: |
-      The swap configuration tasks require sudo and have been skipped.
+      The swap and hibernation tasks require sudo and have been skipped.
       Run with --tags sudo_enabled --become to apply them.
   when: "'sudo_enabled' not in ansible_run_tags"
   tags: ["always"]
