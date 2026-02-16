@@ -28,12 +28,14 @@
           [zram0]
           zram-size = 16384
           compression-algorithm = zstd
+      register: zram_conf
 
     - name: reload systemd and restart zram
       systemd:
         daemon_reload: true
         name: systemd-zram-setup@zram0.service
         state: restarted
+      when: zram_conf.changed
 
     - name: create and format swapfile (32GB)
       command: mkswap -U clear --size 32G --file /swapfile
@@ -46,10 +48,14 @@
         line: '/swapfile none swap defaults,pri=10 0 0'
         state: present
 
+    - name: check if swapfile is active
+      command: swapon --show=NAME --noheadings
+      register: swapon_show
+      changed_when: false
+
     - name: enable swapfile
       command: swapon --priority=10 /swapfile
-      register: swapon_result
-      failed_when: swapon_result.rc != 0 and 'busy' not in swapon_result.stderr
+      when: "'/swapfile' not in swapon_show.stdout"
 
   become: true
   tags: ["never", "sudo_enabled"]
