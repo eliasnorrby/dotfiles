@@ -45,7 +45,7 @@
     - name: add swapfile to fstab
       lineinfile:
         path: /etc/fstab
-        line: '/swapfile none swap defaults,pri=10 0 0'
+        line: "/swapfile none swap defaults,pri=10 0 0"
         state: present
 
     - name: check if swapfile is active
