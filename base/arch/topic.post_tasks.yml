@@ -60,6 +60,24 @@
   become: true
   tags: ["never", "sudo_enabled"]
 
+- name: disable s2idle fallback for suspend
+  block:
+    - name: create sleep.conf.d directory
+      file:
+        path: /etc/systemd/sleep.conf.d
+        state: directory
+    - name: set SuspendState to mem only
+      copy:
+        dest: /etc/systemd/sleep.conf.d/no-s2idle.conf
+        content: |
+          # Prevent fallback to s2idle when S3 is aborted.
+          # The iGPU rejects s2idle (BIOS configured for S3 only),
+          # and the failed attempt leaves the dGPU SMU unrecoverable.
+          [Sleep]
+          SuspendState=mem
+  become: true
+  tags: ["never", "sudo_enabled"]
+
 - name: configure hibernation (resume from swapfile)
   block:
     - name: get root partition UUID
