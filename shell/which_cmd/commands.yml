@@ -82,6 +82,7 @@ keys:
             value: show
       - key: r
         value: rebase
+        loop: true
         keys:
           - key: i
             name: interactive
@@ -93,6 +94,10 @@ keys:
           - key: O
             name: onto
             value: --onto
+            choices_command: git branch --format="%(refname:short)"
+          - key: b
+            name: branch
+            choices_command: git branch --format="%(refname:short)"
           - key: c
             name: continue
             value: --continue
@@ -115,7 +120,14 @@ keys:
             keys:
               - key: c
                 value: create
-                immediate: true
+                keys:
+                  - key: b
+                    value: --base
+                    name: base branch
+                    choices_command: git branch --format="%(refname:short)"
+                  - key: d
+                    value: --draft
+                    name: draft
               - key: C
                 value: checkout
               - key: k
