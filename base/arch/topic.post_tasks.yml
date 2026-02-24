@@ -113,6 +113,15 @@
   become: true
   tags: ["never", "sudo_enabled"]
 
+- name: symlink webcam udev rule
+  file:
+    src: "/home/{{ ansible_user_id }}/.dotfiles/base/arch/99-webcam-no-autosuspend.rules"
+    dest: /etc/udev/rules.d/99-webcam-no-autosuspend.rules
+    state: link
+    force: yes
+  become: true
+  tags: ["never", "sudo_enabled"]
+
 - name: notice about sudo (swap & hibernation)
   debug:
     msg: |
