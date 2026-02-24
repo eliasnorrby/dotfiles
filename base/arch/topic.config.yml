@@ -56,6 +56,7 @@ arch_config:
     - udiskie
     - ddcutil
     - flameshot
+    - kdeconnect
     # apps
     - mpv
     - discord
