@@ -37,7 +37,7 @@
 
     - name: symlink plymouth config
       file:
-        src: "/home/{{ ansible_user_id }}/.dotfiles/display/plymouth/plymouthd.conf"
+        src: "/home/{{ ansible_facts['user_id'] }}/.dotfiles/display/plymouth/plymouthd.conf"
         dest: /etc/plymouth/plymouthd.conf
         state: link
         force: yes

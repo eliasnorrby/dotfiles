@@ -13,7 +13,7 @@
         state: present
     - name: add user to vpn group
       user:
-        name: "{{ ansible_user_id }}"
+        name: "{{ ansible_facts['user_id'] }}"
         groups: "{{ vpn_group_name }}"
         append: yes
     - name: enable passwordless sudo

@@ -2,7 +2,7 @@
 - block:
     - name: symlink greetd config
       file:
-        src: "/home/{{ ansible_user_id }}/.dotfiles/display/greetd/greetd.toml"
+        src: "/home/{{ ansible_facts['user_id'] }}/.dotfiles/display/greetd/greetd.toml"
         dest: /etc/greetd/config.toml
         state: link
         force: yes

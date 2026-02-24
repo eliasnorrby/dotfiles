@@ -115,7 +115,7 @@
 
 - name: symlink webcam udev rule
   file:
-    src: "/home/{{ ansible_user_id }}/.dotfiles/base/arch/99-webcam-no-autosuspend.rules"
+    src: "/home/{{ ansible_facts['user_id'] }}/.dotfiles/base/arch/99-webcam-no-autosuspend.rules"
     dest: /etc/udev/rules.d/99-webcam-no-autosuspend.rules
     state: link
     force: yes
