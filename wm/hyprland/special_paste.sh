@@ -37,7 +37,7 @@ parse_url() {
   if echo "$url" | grep -qE 'linear\.app/[^/]+/issue/[A-Z]+-[0-9]+'; then
     tag=$(echo "$url" | sed -n 's|.*linear\.app/[^/]*/issue/\([A-Z]*-[0-9]*\).*|\1|p')
     if [ -n "$tag" ]; then
-      echo "linear:${tag}:1"
+      echo "linear:${tag}:3"
       return 0
     fi
   fi
