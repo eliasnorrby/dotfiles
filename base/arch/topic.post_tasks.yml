@@ -37,8 +37,8 @@
         state: restarted
       when: zram_conf.changed
 
-    - name: create and format swapfile (32GB)
-      command: mkswap -U clear --size 32G --file /swapfile
+    - name: create and format swapfile (64GB)
+      command: mkswap -U clear --size 64G --file /swapfile
       args:
         creates: /swapfile
 
@@ -104,6 +104,13 @@
         replace: >-
           \1 resume=UUID={{ root_uuid.stdout }}
           resume_offset={{ swap_offset.stdout }}
+      with_fileglob: /boot/loader/entries/*.conf
+
+    - name: update resume_offset in boot entries
+      replace:
+        path: "{{ item }}"
+        regexp: 'resume_offset=\d+'
+        replace: "resume_offset={{ swap_offset.stdout }}"
       with_fileglob: /boot/loader/entries/*.conf
 
     - name: regenerate initramfs
