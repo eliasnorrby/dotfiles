@@ -114,13 +114,13 @@ keys:
         value: sleep 0.2 && safe-suspend
       - key: h
         name: hibernate
-        value: systemctl hibernate
+        value: sleep 1 && systemctl hibernate
       - key: r
         name: reboot
-        value: systemctl reboot
+        value: sleep 1 && systemctl reboot
       - key: o
         name: shutdown
-        value: systemctl poweroff
+        value: sleep 1 && systemctl poweroff
   - key: m
     name: meta
     keys:
