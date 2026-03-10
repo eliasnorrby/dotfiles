@@ -16,7 +16,7 @@ trap cleanup EXIT
 
 # If not in tmux, just use regular nvim
 if [[ -z "$TMUX" ]]; then
-  nvim '+set nonumber norelativenumber' '+normal G$' '+startinsert' "$TMPFILE"
+  nvim '+set nonumber norelativenumber' '+normal G$' "$TMPFILE"
   exit 0
 fi
 
@@ -40,7 +40,7 @@ display_stateful_popup --title=Prompt --color=blue --session=prompt \
   "nvim" \
   "+set nonumber norelativenumber" \
   "+autocmd VimLeave * call writefile([], '$DONEFILE')" \
-  '+normal G$' '+startinsert' \
+  '+normal G$' \
   "$TMPFILE"
 
 # Wait for the done file to be created (Ctrl+Q pressed)
