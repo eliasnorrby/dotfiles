@@ -1,4 +1,4 @@
-# disabled-yaml-language-server: $schema=https://raw.githubusercontent.com/eliasnorrby/which-cmd/main/schema.yml
+# yaml-language-server: $schema=https://raw.githubusercontent.com/eliasnorrby/which-cmd/main/schema.yml
 keys:
   - key: f
     value: fnm
