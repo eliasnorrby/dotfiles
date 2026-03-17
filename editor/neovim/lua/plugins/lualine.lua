@@ -15,7 +15,7 @@ return {
       },
     }
 
-    local custom_theme = require('lualine.themes.catppuccin')
+    local custom_theme = require('lualine.themes.catppuccin-macchiato')
     local default_fg = custom_theme.normal.c.fg
 
     custom_theme.normal.c.bg = 'NONE'
