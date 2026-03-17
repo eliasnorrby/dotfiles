@@ -104,8 +104,11 @@ keys:
         name: pick
         value: capture_picker CapturePicker ~/Videos/Recordings
   - key: l
-    name: lock
-    value: loginctl lock-session
+    name: linear
+    keys:
+      - key: b
+        name: branch
+        value: sleep 0.2 && wtype "git co -b $(wl-paste)"
   - key: P
     name: power
     keys:
@@ -121,6 +124,9 @@ keys:
       - key: o
         name: shutdown
         value: sleep 1 && systemctl poweroff
+      - key: l
+        name: lock
+        value: loginctl lock-session
   - key: m
     name: meta
     keys:
