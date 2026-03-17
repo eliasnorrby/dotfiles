@@ -12,3 +12,8 @@ desc = "Copy binary data to clipboard and quit"
 on   = "o"
 run  = "open"
 desc = "Open file"
+
+[[mgr.prepend_keymap]]
+on   = "a"
+run  = "shell --orphan -- satty --filename \"$0\" && ya emit quit"
+desc = "Annotate with satty"
