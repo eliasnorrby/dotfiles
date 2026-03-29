@@ -8,6 +8,7 @@
   m = merge
   s = status
   c = commit -v
+  cs = "!f() { git add -A && git commit -m 'style: format'; }; f"
   cr = reset --soft HEAD~
   b = branch
   bs = "!branch_status"
