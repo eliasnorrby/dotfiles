@@ -24,5 +24,7 @@ claude_config:
     - src: home-claude.md
       dest: ~/
       rename: CLAUDE.md
+    - src: skills
+      dest: "{{ claude_home }}/"
 
 claude_home: "~/.claude"
