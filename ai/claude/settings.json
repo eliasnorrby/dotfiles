@@ -31,5 +31,8 @@
     "type": "command",
     "command": "~/.claude/statusline.sh"
   },
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "enabledPlugins": {
+    "typescript-lsp@claude-plugins-official": true
+  }
 }
