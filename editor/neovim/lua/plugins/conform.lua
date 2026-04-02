@@ -1,3 +1,14 @@
+local function use_oxfmt(bufnr)
+  return vim.fs.find('.oxfmtrc.json', {
+    path = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)),
+    upward = true,
+  })[1] ~= nil
+end
+
+local function prettier_or_oxfmt(bufnr)
+  return use_oxfmt(bufnr) and { 'oxfmt' } or { 'prettier' }
+end
+
 return {
   'stevearc/conform.nvim',
   event = { 'BufWritePre' },
@@ -20,15 +31,16 @@ return {
   },
   opts = {
     formatters_by_ft = {
-      json = { 'prettier' },
-      javascript = { 'prettier' },
-      javascriptreact = { 'prettier' },
-      typescript = { 'prettier' },
-      typescriptreact = { 'prettier' },
-      yaml = { 'prettier' },
+      json = prettier_or_oxfmt,
+      jsonc = prettier_or_oxfmt,
+      javascript = prettier_or_oxfmt,
+      javascriptreact = prettier_or_oxfmt,
+      typescript = prettier_or_oxfmt,
+      typescriptreact = prettier_or_oxfmt,
+      yaml = prettier_or_oxfmt,
       toml = { 'taplo' },
-      markdown = { 'prettier' },
-      graphql = { 'prettier' },
+      markdown = prettier_or_oxfmt,
+      graphql = prettier_or_oxfmt,
       rust = { 'rustfmt', lsp_format = 'fallback' },
       lua = { 'stylua' },
       python = { 'black' },

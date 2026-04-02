@@ -1,3 +1,10 @@
+local function use_oxlint()
+  return vim.fs.find('.oxlintrc.json', {
+    path = vim.fn.expand('%:p:h'),
+    upward = true,
+  })[1] ~= nil
+end
+
 return {
   'mfussenegger/nvim-lint',
   enabled = true,
@@ -12,6 +19,11 @@ return {
     vim.api.nvim_create_autocmd('BufWritePost', {
       pattern = { '*.ts', '*.tsx', '*.js', '*.jsx' },
       callback = function()
+        if use_oxlint() then
+          require('lint').try_lint('oxlint')
+          return
+        end
+
         local file = vim.fn.expand('%:p') -- full path of the file
 
         -- Traverse upwards to find the nearest .eslintrc.* or package.json

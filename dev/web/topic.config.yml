@@ -10,4 +10,5 @@ web_config:
   npm_packages:
     - lorem-ipsum
     - prettier
+    - oxfmt
     - serve
