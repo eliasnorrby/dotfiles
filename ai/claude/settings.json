@@ -10,7 +10,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ~/.claude/hooks/block-compound-bash.sh"
+            "command": "~/.claude/hooks/block-compound-bash.py"
           }
         ]
       }
