@@ -4,6 +4,17 @@
     "VISUAL": "claude_persisted_editor"
   },
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/block-compound-bash.sh"
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "matcher": "",
@@ -31,8 +42,9 @@
     "type": "command",
     "command": "~/.claude/statusline.sh"
   },
-  "voiceEnabled": true,
   "enabledPlugins": {
     "typescript-lsp@claude-plugins-official": true
-  }
+  },
+  "effortLevel": "medium",
+  "voiceEnabled": true
 }
