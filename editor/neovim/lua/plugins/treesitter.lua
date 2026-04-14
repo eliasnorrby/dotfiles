@@ -1,68 +1,58 @@
----@type LazyPluginSpec
+---@type LazySpec
 return {
-  'nvim-treesitter/nvim-treesitter',
-  main = 'nvim-treesitter.configs',
-  branch = 'master',
-  build = ':TSUpdate',
-  dependencies = {
-    'nvim-treesitter/nvim-treesitter-textobjects',
+  {
+    'nvim-treesitter/nvim-treesitter',
+    branch = 'main',
+    lazy = false,
+    build = ':TSUpdate',
+    config = function()
+      require('nvim-treesitter').install {
+        'bash',
+        'css',
+        'dockerfile',
+        'go',
+        'graphql',
+        'hcl',
+        'vimdoc',
+        'html',
+        'http',
+        'java',
+        'javascript',
+        'jsdoc',
+        'json',
+        'lua',
+        'make',
+        'markdown',
+        'markdown_inline',
+        'php',
+        'prisma',
+        'python',
+        'regex',
+        'rust',
+        'sql',
+        'terraform',
+        'toml',
+        'tsx',
+        'typescript',
+        'vim',
+        'yaml',
+      }
+    end,
   },
-  config = true,
-  opts = {
-    ensure_installed = {
-      'bash',
-      'css',
-      'dockerfile',
-      'go',
-      'graphql',
-      'hcl',
-      'vimdoc',
-      'html',
-      'http',
-      'java',
-      'javascript',
-      'jsdoc',
-      'json',
-      'lua',
-      'make',
-      'markdown',
-      'markdown_inline',
-      'php',
-      'prisma',
-      'python',
-      'regex',
-      'rust',
-      'sql',
-      'terraform',
-      'toml',
-      'tsx',
-      'typescript',
-      'vim',
-      'yaml',
+  {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    branch = 'main',
+    keys = {
+      { '<leader>rl', desc = 'Swap next parameter' },
+      { '<leader>rh', desc = 'Swap previous parameter' },
     },
-    highlight = {
-      enable = true,
-      additional_vim_regex_highlighting = { 'markdown', 'prisma' },
-    },
-    incremental_selection = {
-      enable = true,
-      keymaps = {
-        init_selection = 'gnn',
-        node_incremental = '.',
-        node_decremental = ',',
-        scope_incremental = 'grc',
-      },
-    },
-    textobjects = {
-      swap = {
-        enable = true,
-        swap_next = {
-          ['<leader>rl'] = '@parameter.inner',
-        },
-        swap_previous = {
-          ['<leader>rh'] = '@parameter.inner',
-        },
-      },
-    },
+    config = function()
+      vim.keymap.set('n', '<leader>rl', function()
+        require('nvim-treesitter-textobjects.swap').swap_next('@parameter.inner')
+      end, { desc = 'Swap next parameter' })
+      vim.keymap.set('n', '<leader>rh', function()
+        require('nvim-treesitter-textobjects.swap').swap_previous('@parameter.inner')
+      end, { desc = 'Swap previous parameter' })
+    end,
   },
 }
