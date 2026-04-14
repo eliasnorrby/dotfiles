@@ -9,10 +9,6 @@ return {
       enabled = false,
     },
     cli = {
-      -- mux = {
-      --   enabled = true,
-      --   backend = 'tmux',
-      -- },
       win = {
         keys = {
           prompt = { '<c-r>', 'prompt', mode = 't', desc = 'insert prompt or context' },
