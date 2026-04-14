@@ -47,6 +47,9 @@ git_config:
     - src: branch_todos.sh
       dest: "{{ xdg_bin_home }}/"
       rename: branch_todos
+    - src: prdash.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: prdash
   brew_formulae:
     - git
     - tig
