@@ -13,3 +13,4 @@ x-scheme-handler/about=chrome-personal.desktop;chrome-work.desktop;
 x-scheme-handler/http=handlr.desktop;chrome-personal.desktop;chrome-work.desktop;
 x-scheme-handler/https=handlr.desktop;chrome-personal.desktop;chrome-work.desktop;
 x-scheme-handler/unknown=chrome-personal.desktop;chrome-work.desktop;
+x-scheme-handler/slack=slack.desktop
