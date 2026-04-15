@@ -70,7 +70,7 @@ return {
 
     vim.lsp.enable('kulula_ls')
 
-    vim.lsp.set_log_level('OFF')
+    vim.lsp.log.set_level('OFF')
 
     -- need to enable here for sidekick's nes to work
     vim.lsp.enable('copilot')
