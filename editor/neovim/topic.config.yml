@@ -13,6 +13,7 @@ neovim_config:
     - stylua
     - pgformatter
     - taplo
+    - tree-sitter-cli
   pacman_packages:
     - neovim
     - fzf
