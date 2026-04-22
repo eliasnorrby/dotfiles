@@ -55,7 +55,7 @@ return {
       hs.eventtap.keyStroke({ 'cmd', 'alt' }, '\\', 0)
     end,
   },
-  { 'q', 'ChatGPT' },
+  { 'q', 'Claude' },
   { 'r', 'Alacritty' },
   { 's', 'Emacs' },
   { 't', 'kitty' },
