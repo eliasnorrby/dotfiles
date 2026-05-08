@@ -45,7 +45,7 @@
       "class<obsidian>": "",
       "class<Notion>": "",
       "class<BtopKitty>": "",
-      "class<Claude>": "",
+      "class<com.anthropic.claude-desktop>": "",
       // pwas
       "class<chrome-kjgfgldnnfoeklkmfkjfagphfepbbdan-Default>": "", // google meet
       "class<chrome-bgdbmehlmdmddlgneophbcddadgknlpm-Default>": " ", // linear

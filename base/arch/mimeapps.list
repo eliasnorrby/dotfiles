@@ -14,3 +14,5 @@ x-scheme-handler/http=handlr.desktop;chrome-personal.desktop;chrome-work.desktop
 x-scheme-handler/https=handlr.desktop;chrome-personal.desktop;chrome-work.desktop;
 x-scheme-handler/unknown=chrome-personal.desktop;chrome-work.desktop;
 x-scheme-handler/slack=slack.desktop
+x-scheme-handler/claude-cli=claude-code-url-handler.desktop
+x-scheme-handler/claude=com.anthropic.claude-desktop.desktop
