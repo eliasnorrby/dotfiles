@@ -11,33 +11,65 @@ window_class() {
   hyprctl activewindow -j | jq -r '.class'
 }
 
-# Find workspace for class from windowrules
-# Handles both simple and block formats
+# Find workspace by testing each windowrule's class regex against the given class.
+# Handles both the simple form ("windowrule = match:class PATTERN, workspace N")
+# and the block form ("windowrule { match:class = PATTERN; workspace = N; }").
 workspace_for_class() {
   class="$1"
-  workspace=""
+  awk -v class="$class" '
+    BEGIN { IGNORECASE = 1 }
 
-  # Try simple format first: windowrule = match:class CLASS, workspace N
-  workspace=$(grep -i "match:class.*$class" "$APPS_CONF" | grep -oP 'workspace \K[^\s,]+' | head -1)
-
-  # If not found, try block format
-  if [ -z "$workspace" ]; then
-    workspace=$(awk -v class="$class" '
-      BEGIN { IGNORECASE=1 }
-      /windowrule \{/,/\}/ {
-        if ($0 ~ "match:class[[:space:]]*=[[:space:]]*" class) found=1
-        if (found && /workspace[[:space:]]*=/) {
-          gsub(/.*workspace[[:space:]]*=[[:space:]]*/, "")
-          gsub(/[[:space:]].*/, "")
-          print
+    # Simple format: windowrule = match:class PATTERN, workspace N, ...
+    /^[[:space:]]*windowrule[[:space:]]*=[[:space:]]*match:class[[:space:]]+/ {
+      line = $0
+      sub(/^[[:space:]]*windowrule[[:space:]]*=[[:space:]]*match:class[[:space:]]+/, "", line)
+      pattern = line
+      sub(/,.*/, "", pattern)
+      gsub(/^[[:space:]]+|[[:space:]]+$/, "", pattern)
+      if (match(line, /workspace[[:space:]]+/)) {
+        after = substr(line, RSTART + RLENGTH)
+        sub(/[[:space:]].*/, "", after)
+        sub(/,.*/, "", after)
+        if (pattern != "" && after != "" && class ~ pattern) {
+          print after
           exit
         }
-        if (/\}/) found=0
       }
-    ' "$APPS_CONF")
-  fi
+      next
+    }
 
-  echo "$workspace"
+    # Block format
+    /^[[:space:]]*windowrule[[:space:]]*\{/ {
+      in_block = 1
+      block_pattern = ""
+      block_ws = ""
+      next
+    }
+
+    in_block && /^[[:space:]]*match:class[[:space:]]*=/ {
+      p = $0
+      sub(/^[[:space:]]*match:class[[:space:]]*=[[:space:]]*/, "", p)
+      gsub(/[[:space:]]+$/, "", p)
+      block_pattern = p
+      next
+    }
+
+    in_block && /^[[:space:]]*workspace[[:space:]]*=/ {
+      w = $0
+      sub(/^[[:space:]]*workspace[[:space:]]*=[[:space:]]*/, "", w)
+      gsub(/[[:space:]]+$/, "", w)
+      block_ws = w
+      next
+    }
+
+    in_block && /\}/ {
+      if (block_pattern != "" && block_ws != "" && class ~ block_pattern) {
+        print block_ws
+        exit
+      }
+      in_block = 0
+    }
+  ' "$APPS_CONF"
 }
 
 send_to_workspace() {
