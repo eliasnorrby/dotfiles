@@ -4,17 +4,6 @@
     "VISUAL": "claude_persisted_editor"
   },
   "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/block-compound-bash.py"
-          }
-        ]
-      }
-    ],
     "Stop": [
       {
         "matcher": "",
