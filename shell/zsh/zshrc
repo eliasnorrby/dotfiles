@@ -1,5 +1,3 @@
-# _load "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-
 # =============================================================================
 #                                 Performance
 # =============================================================================
@@ -21,7 +19,6 @@ _load shell/zsh/man_widget.zsh
 _load shell/zsh/fzf.zsh
 
 _load shell/zsh/plugins.zsh
-# _load shell/zsh/p10k.zsh
 _load shell/zsh/starship.zsh
 
 _load_all aliases.zsh

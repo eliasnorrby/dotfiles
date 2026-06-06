@@ -148,7 +148,7 @@ ansible-playbook playbook.yml --check --diff
   - `keybinds.zsh`: key bindings
   - `completion.zsh`: completion system
   - `plugins.zsh`: plugin loading
-  - `p10k.zsh`: powerlevel10k prompt configuration
+  - `starship.zsh`: starship prompt configuration
   - `fzf.zsh`: fuzzy finder integration
 - Environment variables and aliases from all enabled topics are automatically sourced during startup
 
