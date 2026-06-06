@@ -73,5 +73,7 @@
   fa = "!f() { selected=$(git alias | fzf | cut -d '=' -f1); [[ -n $selected ]] && echo git $selected && git $selected; }; f"
   parent = "!git show-branch | grep '*' | grep -v \"$(git rev-parse --abbrev-ref HEAD)\" | head -n1 | sed 's/.*\\[\\(.*\\)\\].*/\\1/' | sed 's/[\\^~].*//' #"
   stack-dump = "!f() { branch=$(git cb); git branch ${branch}_stack; }; f"
+  # 'Worktree Reset': Checkout a fresh branch named after the current worktree
+  wr = "!f() { branch=$(basename $(git rev-parse --show-toplevel)); git branch -D \"$branch\" 2> /dev/null; git checkout -b \"$branch\"; }; f"
 
 # vim: ft=gitconfig

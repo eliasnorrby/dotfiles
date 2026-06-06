@@ -109,6 +109,13 @@ keys:
         keys:
           - key: h
             value: --hard
+      - key: w
+        name: +worktree
+        keys:
+          - key: r
+            name: reset
+            value: wr
+            immediate: true
       - key: h
         name: GitHub
         value: gh
