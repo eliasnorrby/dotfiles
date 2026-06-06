@@ -44,6 +44,23 @@ Further paragraphs come after blank lines.
 - Use a hanging indent
 ```
 
+## PR comments
+
+When you write a comment on a pull request on my behalf — whether posting a new
+comment or replying in an existing thread — open the message with a short
+disclaimer that makes clear *you* composed the text, not me.
+
+Phrase the disclaimer with some nuance based on where the body came from:
+
+- Text you authored on your own (e.g. autonomously addressing review feedback or
+  replying to a thread): `:robot: *Claude says*:`
+- Text that captures something we worked out together (e.g. summarizing a
+  discussion we've had): `:robot: *Claude's summary*:` or similar
+
+The takeaway: when I ask you to write something on my behalf, signal that you
+composed it, and convey whether it's solely your own work or a collaboration —
+without being wordy about it.
+
 ## SQL
 
 Whenever you're writing SQL in a conversation context, that is, when asked for a specific query, always include a documentation comment above the query explaining what it does. Not how it works, just what its aim is.
