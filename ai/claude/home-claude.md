@@ -43,3 +43,7 @@ Further paragraphs come after blank lines.
 
 - Use a hanging indent
 ```
+
+## SQL
+
+Whenever you're writing SQL in a conversation context, that is, when asked for a specific query, always include a documentation comment above the query explaining what it does. Not how it works, just what its aim is.
