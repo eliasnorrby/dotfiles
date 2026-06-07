@@ -27,7 +27,7 @@
 @define-color crust #181926;
 
 * {
-  font-family: "JetBrains Mono NL", "Font Awesome 7 Free";
+  font-family: "JetBrains Mono NL", "Symbols Nerd Font", "Font Awesome 7 Free";
   font-size: 15px;
   font-weight: 600;
 }
