@@ -32,6 +32,9 @@ git_config:
     - src: fuzzy_branch.sh
       dest: "{{ xdg_bin_home }}/"
       rename: fuzzy_branch
+    - src: fuzzy_worktree.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: fuzzy_worktree
     - src: branch_pruner.sh
       dest: "{{ xdg_bin_home }}/"
       rename: branch_pruner
