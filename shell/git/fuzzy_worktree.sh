@@ -13,17 +13,38 @@ is_in_git_repo() {
   git rev-parse HEAD >/dev/null 2>&1
 }
 
+# The path of the main worktree (git lists it first). Other worktrees live, by
+# convention, under <main>/.worktrees.
+main_worktree() {
+  git worktree list | awk '{ print $1; exit }'
+}
+
+# Short display name for a worktree path: the main worktree shows its basename,
+# worktrees under <main>/.worktrees show their name relative to that dir, and
+# anything else falls back to a ~-abbreviated path.
+worktree_label() {
+  local path=$1 main=$2
+  if [ "$path" = "$main" ]; then
+    basename "$path"
+  elif [[ "$path" == "$main/.worktrees/"* ]]; then
+    printf '%s' "${path#"$main"/.worktrees/}"
+  else
+    printf '%s' "${path/#"$HOME"/\~}"
+  fi
+}
+
 # Emit one row per worktree as "<display><TAB><path>". The display column shows
-# an indicator (● tied window / ○ none), the ~-abbreviated path, the branch and,
+# an indicator (● tied window / ○ none), the short worktree name, the branch and,
 # when tied, the window index plus its @issue annotation.
 worktree_rows() {
-  local windows
+  local main=$1 windows
   windows=$(tmux list-windows -F '#{@worktree}::#{window_index}::#{@issue}' 2>/dev/null)
 
   git worktree list | while IFS= read -r line; do
-    local path branch match indicator detail
+    local path branch name match indicator detail
     path=${line%% *}
     branch=$(sed -n 's/.*\[\(.*\)\].*/\1/p' <<<"$line")
+    name=$(worktree_label "$path" "$main")
     match=$(awk -F'::' -v p="$path" '$1 == p { print $2 "\t" $3; exit }' <<<"$windows")
     if [ -n "$match" ]; then
       indicator="●"
@@ -34,7 +55,7 @@ worktree_rows() {
       indicator="○"
       detail="—"
     fi
-    printf '%s  %-34s %-18s %s\t%s\n' "$indicator" "${path/#"$HOME"/\~}" "$branch" "$detail" "$path"
+    printf '%s  %-22s %-34s %s\t%s\n' "$indicator" "$name" "$branch" "$detail" "$path"
   done
 }
 
@@ -54,9 +75,11 @@ go_to_worktree() {
 
 main() {
   is_in_git_repo || return
-  local choice path
-  choice=$(worktree_rows | fzf --ansi --delimiter='\t' --with-nth=1 \
-    --list-label ' Worktrees ' --preview-window right:55% \
+  local main_root title choice path
+  main_root=$(main_worktree)
+  title=${main_root/#"$HOME"/\~}
+  choice=$(worktree_rows "$main_root" | fzf --ansi --delimiter='\t' --with-nth=1 \
+    --list-label " $title " --preview-window right:55% \
     --preview 'git -C {2} log --graph --color --abbrev-commit --pretty="'"$GIT_LOG_FORMAT"'" | head -200') || return
   [ -n "$choice" ] || return
   path=${choice##*$'\t'}
