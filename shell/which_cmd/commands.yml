@@ -114,7 +114,7 @@ keys:
         keys:
           - key: w
             name: switch
-            value: fuzzy_worktree
+            value: gwt
             anchor: true
             immediate: true
           - key: r
