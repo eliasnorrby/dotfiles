@@ -44,3 +44,9 @@ tmux_config:
     - src: toggle_stateful_popup.sh
       dest: "{{ xdg_bin_home }}/"
       rename: toggle_stateful_popup
+    - src: tmux_set_issue.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: tmux_set_issue
+    - src: tmux_start_work.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: tmux_start_work

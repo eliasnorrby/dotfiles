@@ -105,14 +105,31 @@ resolve_github() {
   printf '#%s\t%s' "$number" "$title"
 }
 
+# Usage: tmux_set_issue [-t <window>] [<reference>]
+# <reference> defaults to the clipboard; -t targets a window other than current.
 main() {
-  local clip result issue desc
+  local target="" clip result issue desc tgt
 
-  clip=$(read_clipboard)
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      -t)
+        target=$2
+        shift 2
+        ;;
+      *)
+        clip=$1
+        shift
+        ;;
+    esac
+  done
+
+  if [ -z "${clip:-}" ]; then
+    clip=$(read_clipboard)
+  fi
   clip=${clip#"${clip%%[![:space:]]*}"} # trim leading whitespace
   clip=${clip%"${clip##*[![:space:]]}"} # trim trailing whitespace
   if [ -z "$clip" ]; then
-    notify "Clipboard is empty"
+    notify "No reference given (clipboard empty)"
     exit 1
   fi
 
@@ -134,9 +151,11 @@ main() {
   issue=${result%%$'\t'*}
   desc=${result#*$'\t'}
 
-  tmux set -w @issue "$issue"
-  tmux set -w @desc "$desc"
-  tmux rename-window "$issue"
+  tgt=()
+  [ -n "$target" ] && tgt=(-t "$target")
+  tmux set -w "${tgt[@]}" @issue "$issue"
+  tmux set -w "${tgt[@]}" @desc "$desc"
+  tmux rename-window "${tgt[@]}" "$issue"
   notify "$issue — $desc"
 }
 
