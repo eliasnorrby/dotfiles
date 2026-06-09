@@ -69,7 +69,9 @@ create_worktree() {
   else
     base=$(default_branch)
     [ -n "$base" ] || die "Could not determine a base branch to fork from"
-    git worktree add -b "$branch" "$dir" "$base" \
+    # --no-track: the branch forks off origin/master but must not adopt it as
+    # upstream (git would otherwise auto-track the remote start point).
+    git worktree add --no-track -b "$branch" "$dir" "$base" \
       || die "git worktree add (new branch off $base) failed"
   fi
 }
