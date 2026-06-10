@@ -1,6 +1,7 @@
 ---@type LazyPluginSpec
 return {
   'mistweaverco/kulala.nvim',
+  tag = 'v5.3.4',
   ft = { 'http', 'rest' },
   opts = {
     global_keymaps = true,
