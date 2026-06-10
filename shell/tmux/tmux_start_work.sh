@@ -88,7 +88,9 @@ main() {
   esac
 
   is_in_git_repo || die "Not in a git repository"
-  main_root=$(git rev-parse --show-toplevel)
+  # Anchor at the main worktree (git lists it first), never the current one —
+  # otherwise running this from inside a worktree nests .worktrees under it.
+  main_root=$(main_worktree)
 
   # Worktree directory name: the lowercase Linear id when present (deterministic
   # per-issue path), else the branch minus its author prefix.
