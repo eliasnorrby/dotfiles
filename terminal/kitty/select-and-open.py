@@ -18,6 +18,7 @@ Configuration is available at the top of this file.
 
 import re
 import os
+import platform
 import subprocess
 
 # ============================================================================
@@ -75,8 +76,14 @@ def handle_result(_args, data, _target_window_id, boss, _extra_cli_args, *_rest)
     # Check if it's a Linear issue
     if re.match(LINEAR_ISSUE_PATTERN, match):
         issue_id = match
-        # Use universal link format: linear://{team}/issue/{issue_id}
-        boss.open_url(f"linear://{LINEAR_TEAM}/issue/{issue_id}")
+        if platform.system() == "Darwin":
+            # macOS: linear:// deep link opens the native Linear app directly.
+            url = f"linear://{LINEAR_TEAM}/issue/{issue_id}"
+        else:
+            # Linux: linear:// is unregistered, so emit the universal link and
+            # let handlr route it to the PWA (see wm/handlr/linear-open.sh).
+            url = f"https://linear.app/{LINEAR_TEAM}/issue/{issue_id}"
+        boss.open_url(url)
         return
 
     # Check if it's a GitHub PR
