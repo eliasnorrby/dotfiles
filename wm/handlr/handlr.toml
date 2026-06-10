@@ -11,3 +11,15 @@ regexes = ['https?://github\.com/bemlo(/.*)?','https?://app\.bemlo\.com(/.*)?','
 exec = "chrome-personal %U"
 terminal = false
 regexes = ['https?://github\.com/eliasnorrby(/.*)?']
+
+# Notion - open deep links in the native Notion desktop app
+[[handlers]]
+exec = "notion-open %U"
+terminal = false
+regexes = ['https?://([a-z0-9-]+\.)?notion\.(so|com)(/.*)?']
+
+# Linear - open in the PWA window (no native app / scheme on Linux)
+[[handlers]]
+exec = "linear-open %U"
+terminal = false
+regexes = ['https?://linear\.app(/.*)?']

@@ -8,5 +8,11 @@ handlr_config:
     - src: handlr-selector.sh
       dest: "{{ xdg_bin_home }}/"
       rename: handlr-selector
+    - src: notion-open.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: notion-open
+    - src: linear-open.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: linear-open
   pacman_packages:
     - handlr-regex
