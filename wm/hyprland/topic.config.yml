@@ -44,6 +44,9 @@ hyprland_config:
     - src: toggle_espanso.sh
       dest: "{{ xdg_bin_home }}/"
       rename: toggle_espanso
+    - src: toggle_hypridle.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: toggle_hypridle
     - src: delete_prev_word.sh
       dest: "{{ xdg_bin_home }}/"
       rename: delete_prev_word
