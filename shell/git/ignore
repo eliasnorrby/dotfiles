@@ -10,5 +10,6 @@ generated/
 
 **/.claude/settings.local.json
 .local/
+.worktrees/
 
 # vim: ft=gitignore
