@@ -61,6 +61,9 @@ The takeaway: when I ask you to write something on my behalf, signal that you
 composed it, and convey whether it's solely your own work or a collaboration —
 without being wordy about it.
 
+This applies to PR comments specifically. It is *not* needed for Slack
+messages, which already carry a Claude attribution automatically.
+
 ## SQL
 
 Whenever you're writing SQL in a conversation context, that is, when asked for a specific query, always include a documentation comment above the query explaining what it does. Not how it works, just what its aim is.
