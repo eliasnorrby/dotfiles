@@ -126,6 +126,11 @@ keys:
             value: worktree remove
             # Deletable worktrees (all but the main one, which git lists first).
             choices_command: "git worktree list --porcelain | awk '/^worktree /{ c++; if (c > 1) print $2 }'"
+          - key: D
+            name: delete current
+            value: tmux_remove_worktree
+            anchor: true
+            immediate: true
           - key: r
             name: reset
             value: wr

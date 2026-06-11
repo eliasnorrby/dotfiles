@@ -50,3 +50,6 @@ tmux_config:
     - src: tmux_start_work.sh
       dest: "{{ xdg_bin_home }}/"
       rename: tmux_start_work
+    - src: tmux_remove_worktree.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: tmux_remove_worktree
