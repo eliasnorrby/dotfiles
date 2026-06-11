@@ -223,3 +223,7 @@ topics:
     - name: rust
       state: present
       config: "{{ rust_config }}"
+  hobby:
+    - name: photo
+      state: present
+      config: "{{ photo_config }}"
