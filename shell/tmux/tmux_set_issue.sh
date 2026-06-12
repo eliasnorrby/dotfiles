@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
-# Annotate the current tmux window from an issue/PR reference on the clipboard.
+# Annotate the current tmux window from an issue/PR reference.
 #
-# Detects the source from the clipboard contents and sets the window name
-# (@issue) plus the @desc option used by the pane border and window switcher:
+# The reference comes from the first source that yields one: an explicit
+# argument, the clipboard, or the active pane's git branch (e.g. a Linear
+# branch like elias/bemlo-6993-... -> BEMLO-6993). Its shape picks the
+# resolver, which sets the window name (@issue) plus the @desc option used by
+# the pane border and window switcher:
 #   - Linear issue id or URL (e.g. BEMLO-1234) -> Linear GraphQL API
 #   - GitHub PR/issue URL or #num (e.g. #1234) -> gh, repo inferred from cwd
 #
@@ -21,6 +24,20 @@ read_clipboard() {
     darwin*) pbpaste 2>/dev/null ;;
     *) wl-paste -n 2>/dev/null ;;
   esac
+}
+
+# Print the git branch of the active pane: the target window's when -t is in
+# play, else the current working directory (the `I` binding cd's there). Empty
+# when not in a git repo. Arg: [TARGET_WINDOW].
+read_git_branch() {
+  local target=$1 dir
+  if [ -n "$target" ]; then
+    dir=$(tmux display-message -p -t "$target" '#{pane_current_path}' 2>/dev/null)
+    [ -n "$dir" ] || return 1
+    (cd "$dir" 2>/dev/null && git rev-parse --abbrev-ref HEAD 2>/dev/null)
+  else
+    git rev-parse --abbrev-ref HEAD 2>/dev/null
+  fi
 }
 
 linear_token() {
@@ -105,10 +122,32 @@ resolve_github() {
   printf '#%s\t%s' "$number" "$title"
 }
 
+# Resolve a candidate string to "issue<TAB>desc" on stdout. Returns 0 on
+# success, 2 when the string holds no recognizable reference (the caller may
+# try another source), or 1 when a reference was recognized but could not be
+# resolved (resolve_* has already notified). GitHub URLs are matched before the
+# Linear identifier pattern so a repo name like "repo-2" can't be misread.
+resolve_reference() {
+  local candidate=$1
+  if [[ "$candidate" =~ github\.com/([^/]+)/([^/]+)/(pull|issues)/([0-9]+) ]]; then
+    resolve_github "${BASH_REMATCH[4]}" "${BASH_REMATCH[1]}/${BASH_REMATCH[2]}"
+  elif [[ "$candidate" =~ ^#?([0-9]+)$ ]]; then
+    resolve_github "${BASH_REMATCH[1]}"
+  elif [[ "$candidate" =~ ([A-Za-z]+-[0-9]+) ]]; then
+    local id
+    id=$(printf '%s' "${BASH_REMATCH[1]}" | tr '[:lower:]' '[:upper:]')
+    resolve_linear "$id"
+  else
+    return 2
+  fi
+}
+
 # Usage: tmux_set_issue [-t <window>] [<reference>]
-# <reference> defaults to the clipboard; -t targets a window other than current.
+# <reference> falls back to the clipboard, then the active pane's git branch;
+# -t targets a window other than the current one.
 main() {
-  local target="" clip result issue desc tgt
+  local target="" arg="" result="" issue desc tgt
+  local src candidate trimmed rc
 
   while [ $# -gt 0 ]; do
     case "$1" in
@@ -117,34 +156,35 @@ main() {
         shift 2
         ;;
       *)
-        clip=$1
+        arg=$1
         shift
         ;;
     esac
   done
 
-  if [ -z "${clip:-}" ]; then
-    clip=$(read_clipboard)
-  fi
-  clip=${clip#"${clip%%[![:space:]]*}"} # trim leading whitespace
-  clip=${clip%"${clip##*[![:space:]]}"} # trim trailing whitespace
-  if [ -z "$clip" ]; then
-    notify "No reference given (clipboard empty)"
-    exit 1
-  fi
+  # Try each source in priority order, resolving lazily so an explicit argument
+  # never triggers a clipboard or git lookup. Advance to the next source only
+  # when the current one holds no recognizable reference.
+  for src in arg clipboard branch; do
+    case "$src" in
+      arg) candidate=$arg ;;
+      clipboard) candidate=$(read_clipboard) ;;
+      branch) candidate=$(read_git_branch "$target") ;;
+    esac
+    trimmed=${candidate#"${candidate%%[![:space:]]*}"} # trim leading whitespace
+    trimmed=${trimmed%"${trimmed##*[![:space:]]}"}     # trim trailing whitespace
+    [ -n "$trimmed" ] || continue
+    result=$(resolve_reference "$trimmed")
+    rc=$?
+    [ "$rc" -eq 0 ] && break
+    # A recognized-but-unresolvable reference is a hard error (already
+    # notified); don't mask it by falling through to a lower-priority source.
+    [ "$rc" -eq 1 ] && exit 1
+    result=""
+  done
 
-  # Dispatch by clipboard shape. GitHub URLs are matched before the Linear
-  # identifier pattern so a repo name like "repo-2" can't be misread.
-  if [[ "$clip" =~ github\.com/([^/]+)/([^/]+)/(pull|issues)/([0-9]+) ]]; then
-    result=$(resolve_github "${BASH_REMATCH[4]}" "${BASH_REMATCH[1]}/${BASH_REMATCH[2]}") || exit 1
-  elif [[ "$clip" =~ ^#?([0-9]+)$ ]]; then
-    result=$(resolve_github "${BASH_REMATCH[1]}") || exit 1
-  elif [[ "$clip" =~ ([A-Za-z]+-[0-9]+) ]]; then
-    local id
-    id=$(printf '%s' "${BASH_REMATCH[1]}" | tr '[:lower:]' '[:upper:]')
-    result=$(resolve_linear "$id") || exit 1
-  else
-    notify "No issue/PR reference on the clipboard"
+  if [ -z "$result" ]; then
+    notify "No issue/PR reference found (arg, clipboard, or git branch)"
     exit 1
   fi
 
