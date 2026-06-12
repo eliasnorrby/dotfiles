@@ -25,6 +25,17 @@
           }
         ]
       }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "claude_notification reset"
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
