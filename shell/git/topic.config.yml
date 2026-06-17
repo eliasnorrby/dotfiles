@@ -45,6 +45,9 @@ git_config:
     - src: auto_branch_pruner.sh
       dest: "{{ xdg_bin_home }}/"
       rename: auto_branch_pruner
+    - src: auto_worktree_pruner.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: auto_worktree_pruner
     - src: linear_issue_number.sh
       dest: "{{ xdg_bin_home }}/"
       rename: linear_issue_number

@@ -50,6 +50,8 @@
   # 'Branch Pruner'
   bp = "!branch_pruner"
   abp = "!auto_branch_pruner"
+  # 'Auto Worktree Pruner': remove worktrees for merged/closed PRs
+  awp = "!auto_worktree_pruner"
   # 'Branch Delete': Delete merged branches
   bdelete = "!f() { git branch --merged | grep -Ev '(\\*|master|main|develop)' | xargs -n 1 git branch -d; }; f"
   # Delete squashed branches (https://github.com/not-an-aardvark/git-delete-squashed)
