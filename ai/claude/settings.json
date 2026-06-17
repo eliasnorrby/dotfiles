@@ -43,8 +43,11 @@
     "command": "~/.claude/statusline.sh"
   },
   "enabledPlugins": {
-    "typescript-lsp@claude-plugins-official": true
+    "typescript-lsp@claude-plugins-official": true,
+    "slack@claude-plugins-official": true
   },
-  "effortLevel": "medium",
+  "effortLevel": "xhigh",
+  "theme": "auto",
+  "skipAutoPermissionPrompt": true,
   "voiceEnabled": true
 }
