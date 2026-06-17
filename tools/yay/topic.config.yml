@@ -1,0 +1,5 @@
+---
+yay_config:
+  path: tools/yay
+  links:
+    - config.json
