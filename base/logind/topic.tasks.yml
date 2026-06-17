@@ -1,0 +1,18 @@
+---
+- name: create logind drop-in directory
+  file:
+    path: /etc/systemd/logind.conf.d
+    state: directory
+    mode: "0755"
+  become: true
+  tags: ["never", "sudo_enabled"]
+
+- name: notice about sudo
+  debug:
+    msg: |
+      The tasks for logind require sudo and have been skipped.
+
+      Please pass the 'sudo_enabled' tag (use the --become flag for the CLI)
+      to run them.
+  when: "'sudo_enabled' not in ansible_run_tags"
+  tags: ["always"]

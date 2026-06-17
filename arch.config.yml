@@ -41,6 +41,9 @@ topics:
     - name: fontconfig
       state: present
       config: "{{ fontconfig_config }}"
+    - name: logind
+      state: present
+      config: "{{ logind_config }}"
     - name: work
       state: present
       config: "{{ work_config }}"

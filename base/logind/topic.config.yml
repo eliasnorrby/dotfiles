@@ -1,0 +1,8 @@
+---
+logind_config:
+  path: base/logind
+  # Symlink lands in /etc, so the link step needs elevated privileges.
+  become: true
+  links:
+    - src: power-button.conf
+      dest: "/etc/systemd/logind.conf.d/"
