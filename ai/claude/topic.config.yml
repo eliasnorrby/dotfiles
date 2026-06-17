@@ -24,8 +24,6 @@ claude_config:
     - src: home-claude.md
       dest: ~/
       rename: CLAUDE.md
-    - src: hooks
-      dest: "{{ claude_home }}/"
     - src: skills
       dest: "{{ claude_home }}/"
     - src: agents
