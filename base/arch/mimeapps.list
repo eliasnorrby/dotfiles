@@ -16,3 +16,4 @@ x-scheme-handler/unknown=chrome-personal.desktop;chrome-work.desktop;
 x-scheme-handler/slack=slack.desktop
 x-scheme-handler/claude-cli=claude-code-url-handler.desktop
 x-scheme-handler/claude=claude.desktop
+x-scheme-handler/notion=notion.desktop
