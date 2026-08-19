@@ -43,6 +43,7 @@
     "slack@claude-plugins-official": true
   },
   "effortLevel": "xhigh",
+  "cleanupPeriodDays": 3650,
   "theme": "auto",
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true
