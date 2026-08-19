@@ -137,6 +137,34 @@ return {
       -- capabilities = capabilities,
     })
 
+    -- Plugin-free LSP restart. Collects servers from enabled configs matching
+    -- the buffer's filetype, not just active clients, so it also revives
+    -- servers whose client died (e.g. tsserver OOM crash).
+    vim.api.nvim_create_user_command('LspRestart', function()
+      local bufnr = vim.api.nvim_get_current_buf()
+      local ft = vim.bo[bufnr].filetype
+      local names = {}
+      for _, client in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
+        names[client.name] = true
+      end
+      for name in pairs(vim.lsp._enabled_configs) do
+        local config = vim.lsp.config[name]
+        local filetypes = config and config.filetypes
+        if filetypes and vim.tbl_contains(filetypes, ft) then
+          names[name] = true
+        end
+      end
+      for name in pairs(names) do
+        vim.lsp.enable(name, false)
+      end
+      vim.defer_fn(function()
+        for name in pairs(names) do
+          vim.lsp.enable(name)
+        end
+        vim.notify('Restarted LSP: ' .. table.concat(vim.tbl_keys(names), ', '))
+      end, 500)
+    end, { desc = 'Restart LSP servers for current buffer' })
+
     local lsp_group = vim.api.nvim_create_augroup('UserLspAttach', { clear = true })
     vim.api.nvim_create_autocmd('LspAttach', {
       group = lsp_group,
