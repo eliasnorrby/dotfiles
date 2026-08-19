@@ -1,0 +1,27 @@
+---
+# These run as post_tasks, not topic tasks: topic tasks execute before both
+# the package install and the link step, so sshd would start before the
+# hardening drop-in is in place.
+# 'reloaded' starts the daemon when it is not running and otherwise picks up
+# a changed drop-in without dropping established connections.
+- block:
+    - name: enable and reload sshd
+      ansible.builtin.systemd_service:
+        name: sshd
+        enabled: true
+        state: reloaded
+  become: true
+  when: is_arch
+  tags: ["never", "sudo_enabled"]
+
+- name: notice about sudo
+  debug:
+    msg: |
+      The tasks for sshd require sudo and have been skipped.
+
+      Please pass the 'sudo_enabled' tag (use the --become flag for the CLI)
+      to run them.
+  when:
+    - is_arch
+    - "'sudo_enabled' not in ansible_run_tags"
+  tags: ["always"]

@@ -1,0 +1,33 @@
+---
+# These run as post_tasks, not topic tasks: topic tasks execute before both
+# the package install and the link step, so tailscaled would not exist yet.
+- block:
+    - name: enable and start tailscaled
+      ansible.builtin.systemd_service:
+        name: tailscaled
+        enabled: true
+        state: started
+  become: true
+  when: is_arch
+  tags: ["never", "sudo_enabled"]
+
+- name: notice about sudo
+  debug:
+    msg: |
+      The tasks for tailscale require sudo and have been skipped.
+
+      Please pass the 'sudo_enabled' tag (use the --become flag for the CLI)
+      to run them.
+  when:
+    - is_arch
+    - "'sudo_enabled' not in ansible_run_tags"
+  tags: ["always"]
+
+- name: notice about joining the tailnet
+  debug:
+    msg: |
+      Joining a tailnet is interactive and cannot be provisioned.
+
+      Run 'sudo tailscale up' (Arch) or open the menu bar app (macOS) and
+      authenticate once per machine.
+  tags: ["always"]

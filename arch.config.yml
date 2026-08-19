@@ -56,6 +56,12 @@ topics:
     - name: systemd
       state: present
       config: "{{ systemd_config }}"
+    - name: sshd
+      state: present
+      config: "{{ sshd_config }}"
+    - name: tailscale
+      state: present
+      config: "{{ tailscale_config }}"
   display:
     - name: wayland
       state: present

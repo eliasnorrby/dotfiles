@@ -1,0 +1,9 @@
+---
+sshd_config:
+  path: base/sshd
+  # Symlink lands in /etc, so the link step needs elevated privileges.
+  become: true
+  links:
+    - src: hardening.conf
+      dest: "/etc/ssh/sshd_config.d/"
+      rename: 10-dotfiles.conf

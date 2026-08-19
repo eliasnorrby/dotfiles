@@ -38,6 +38,9 @@ topics:
     - name: task
       state: present
       config: "{{ task_config }}"
+    - name: tailscale
+      state: present
+      config: "{{ tailscale_config }}"
   hobby:
     - name: photo
       state: present

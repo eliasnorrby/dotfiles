@@ -1,0 +1,14 @@
+---
+tailscale_config:
+  path: base/tailscale
+  links:
+    - src: ssh.config
+      dest: "~/.ssh/config.d/"
+      rename: tailscale.config
+    - src: mosh_attach.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: mosh_attach
+  pacman_packages:
+    - tailscale
+  brew_casks:
+    - tailscale-app
