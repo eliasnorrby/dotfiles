@@ -6,6 +6,10 @@ local function use_oxfmt(bufnr)
 end
 
 local function prettier_or_oxfmt(bufnr)
+  local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ':t')
+  if filename == 'package.json' then
+    return {}
+  end
   return use_oxfmt(bufnr) and { 'oxfmt' } or { 'prettier' }
 end
 
