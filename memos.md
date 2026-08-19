@@ -15,7 +15,8 @@ Things I've worked on but keep forgetting to use.
 
 ## Vim
 
-| Shortcut   | Action              |
-| ---------- | ------------------- |
-| <leader>rl | Move argument right |
-| <leader>rh | Move argument left  |
+| Shortcut   | Action                         |
+| ---------- | ------------------------------ |
+| <leader>rl | Move argument right            |
+| <leader>rh | Move argument left             |
+| <C-f>      | Fuzzy filter live grep results |

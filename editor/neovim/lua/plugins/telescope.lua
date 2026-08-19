@@ -167,6 +167,18 @@ return {
           },
         },
       },
+      pickers = {
+        -- Stop grepping and fuzzy filter the current results instead. Bound to
+        -- <C-space> upstream, which collides with the tmux prefix; <C-f> only
+        -- displaces horizontal preview scrolling.
+        live_grep = {
+          mappings = {
+            i = {
+              ['<C-f>'] = require('telescope.actions').to_fuzzy_refine,
+            },
+          },
+        },
+      },
     }
     require('telescope').setup(opts)
     require('telescope').load_extension('fzf')
