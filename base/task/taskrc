@@ -42,6 +42,15 @@ uda.pr_number.label=PR#
 uda.pr_repo.type=string
 uda.pr_repo.label=Repo
 
+# Obsidian note UDAs
+# note:  vault-relative path (no extension) of the task's note. A cache --
+#        the durable link is the `task:` uuid in the note's frontmatter.
+# issue: tracker key (e.g. TEAM-1234), leads the note filename when set.
+uda.note.type=string
+uda.note.label=Note
+uda.issue.type=string
+uda.issue.label=Issue
+
 # == Shortcuts ==
 # Taskwarrior-tui shortcut to open PR in browser
 uda.taskwarrior-tui.shortcuts.1=task_open_pr
@@ -50,6 +59,11 @@ uda.taskwarrior-tui.shortcuts.2=add_wait_tag
 uda.taskwarrior-tui.keyconfig.shortcut2=W
 uda.taskwarrior-tui.shortcuts.3=gh_pr_task_sync --repo bemlo/bemlo --username eliasnorrby --wait
 uda.taskwarrior-tui.keyconfig.shortcut3=R
+# N is taken by taskwarrior-tui's search-previous, so notes open on O.
+# The vault map is passed here rather than read from env.zsh: the TUI is
+# usually launched from the .desktop entry, which never sources a shell.
+uda.taskwarrior-tui.shortcuts.4=task_note --vault-map work=bemlo
+uda.taskwarrior-tui.keyconfig.shortcut4=O
 
 
 uda.taskwarrior-tui.background_process=gh_pr_task_sync --repo bemlo/bemlo --username eliasnorrby
