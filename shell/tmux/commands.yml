@@ -24,6 +24,10 @@ keys:
         name: swap-window
         value: tmux swap-window -t
         input: Number
+      - key: m
+        name: move-window
+        value: $TMUX_HOME/scripts/tmux_move_window.sh
+        choices_command: tmux list-sessions -F '#{session_name}' -f '#{?#{m:_*,#{session_name}},0,1}'
   - key: t
     name: toggle
     keys:
