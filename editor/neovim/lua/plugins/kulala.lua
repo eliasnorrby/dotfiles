@@ -7,6 +7,11 @@ return {
     global_keymaps = true,
     global_keymaps_prefix = '<leader>h',
     kulala_keymaps_prefix = '',
+    custom_dynamic_variables = {
+      ['$entra_assertion'] = function()
+        return require('config.entra_assertion').build()
+      end,
+    },
   },
   keys = {
     {
