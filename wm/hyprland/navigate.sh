@@ -38,7 +38,33 @@ map_dir() {
   esac
 }
 
+# Signature of the compositor the *current* tmux client belongs to. tmux
+# refreshes this per session on attach via `update-environment`, so a local
+# Hyprland terminal exports it while an ssh/mosh client marks it unset —
+# which makes it a reliable "is this client local?" test.
+#
+# Read the value out rather than eval'ing the session environment into this
+# shell: the eval applies the `unset` too, which cleared the ambient
+# signature and left every hyprctl call below failing when attached remotely.
+signature_filter='s/^HYPRLAND_INSTANCE_SIGNATURE="\(.*\)"; export.*/\1/p'
+
+client_hyprland_signature() {
+  tmux show-environment -s 2>/dev/null | sed -n "$signature_filter"
+}
+
 hyprland_select() {
+  # From inside tmux, only hand focus over to the compositor when the attached
+  # client is a local Hyprland terminal. Over ssh/mosh there is no window to
+  # move to, and dispatching would shift focus on the workstation's physical
+  # display instead. Prefer the client's signature over the ambient one, which
+  # goes stale if Hyprland restarted after the tmux server started.
+  if [ -n "$TMUX" ]; then
+    signature=$(client_hyprland_signature)
+    [ -z "$signature" ] && return 0
+    HYPRLAND_INSTANCE_SIGNATURE=$signature
+    export HYPRLAND_INSTANCE_SIGNATURE
+  fi
+
   hyprctl dispatch movefocus $hypr_dir
 }
 
@@ -51,8 +77,13 @@ vim_in_tmux_select() {
 }
 
 is_tmux() {
-  eval "$(tmux show-environment -s)"
-  active_class=$(hyprctl activewindow -j | jq -r '.class')
+  # Running inside a tmux pane (from vim, or a tmux binding) settles it, and
+  # unlike the compositor check below it holds over ssh/mosh too.
+  [ -n "$TMUX" ] && return 0
+
+  # Invoked from a Hyprland keybind instead, so the compositor spawned us and
+  # its signature is already in the environment. Ask what currently has focus.
+  active_class=$(hyprctl activewindow -j 2>/dev/null | jq -r '.class' 2>/dev/null)
   echo "$active_class" | grep -qE 'Tmux(Alacritty|Kitty)'
 }
 
