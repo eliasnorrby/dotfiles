@@ -3,6 +3,9 @@ keys:
   - key: p
     name: special paste
     value: special_paste
+  - key: i
+    name: import issue
+    value: task_import_issue --notify
   - key: a
     name: apps
     keys:

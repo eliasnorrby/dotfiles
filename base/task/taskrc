@@ -76,6 +76,11 @@ uda.taskwarrior-tui.keyconfig.shortcut3=R
 # usually launched from the .desktop entry, which never sources a shell.
 uda.taskwarrior-tui.shortcuts.4=task_note --vault-map work=bemlo
 uda.taskwarrior-tui.keyconfig.shortcut4=O
+# Imports from the clipboard: the uuid the TUI appends is ignored. A bare PR
+# number resolves against the current repo, so those need the URL from here.
+# --wait because the TUI redraws over the output as soon as the shortcut exits.
+uda.taskwarrior-tui.shortcuts.5=task_import_issue --wait
+uda.taskwarrior-tui.keyconfig.shortcut5=I
 
 
 uda.taskwarrior-tui.background_process=gh_pr_task_sync --repo bemlo/bemlo --username eliasnorrby
