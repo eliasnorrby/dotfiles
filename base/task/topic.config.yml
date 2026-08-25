@@ -27,6 +27,9 @@ task_config:
     - src: script/task_note.sh
       dest: "{{ xdg_bin_home }}/"
       rename: task_note
+    - src: script/task_import_issue.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: task_import_issue
     - src: hooks/on-modify.note-archive.sh
       dest: "~/.task/hooks/"
       rename: on-modify.note-archive
