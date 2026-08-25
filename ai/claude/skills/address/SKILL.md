@@ -40,3 +40,11 @@ Present a summary of all actionable items and proposed solutions to the user bef
 ### 5. Ask before proceeding
 
 After presenting the plan, ask the user whether to proceed with the changes, adjust the plan, or skip specific items.
+
+### 6. Commit the changes
+
+Land review feedback as new, focused commits on the feature branch. Each commit should address one comment or one group of closely related comments, so reviewers can see exactly what changed in response to their feedback.
+
+Do not fold review changes back into the commits being reviewed — no `git commit --amend`, no fixup/squash onto the original work. A reviewer who has already read a commit should not find it silently rewritten under them.
+
+Rebasing and force pushing the branch itself is fine, and is expected when maintaining a stack of PRs. The rule is about where feedback lands, not about the branch being immutable.
