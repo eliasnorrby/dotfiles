@@ -12,3 +12,4 @@ web_config:
     - prettier
     - oxfmt
     - serve
+    - "@playwright/cli"
