@@ -330,9 +330,11 @@ process_open_pr() {
     is_review_pr=true
   fi
 
-  # Find existing task
+  # Find existing task. pr_number is compared as a string with any fractional
+  # part dropped, so tasks written before it became a string UDA still match.
   local existing_task
-  existing_task=$(echo "$existing_tasks" | jq -r '.[] | select(.pr_number == '"$pr_number"')')
+  existing_task=$(echo "$existing_tasks" | jq -r --arg pr "$pr_number" \
+    '.[] | select((.pr_number | tostring | split(".")[0]) == $pr)')
 
   if [ "$is_my_pr" = true ]; then
     # Handle PR to merge
@@ -378,7 +380,7 @@ handle_orphaned_tasks() {
 
   # Get all task PR numbers (filter out null values)
   local task_pr_numbers
-  task_pr_numbers=$(echo "$existing_tasks" | jq -r '.[] | select(.pr_number != null) | .pr_number' | sort -n)
+  task_pr_numbers=$(echo "$existing_tasks" | jq -r '.[] | select(.pr_number != null) | .pr_number | tostring | split(".")[0]' | sort -n)
 
   for pr_number in $task_pr_numbers; do
     # Skip if pr_number is empty or invalid
@@ -412,7 +414,8 @@ handle_orphaned_tasks() {
       fi
 
       local task_uuid
-      task_uuid=$(echo "$existing_tasks" | jq -r '.[] | select(.pr_number == '"$pr_number"') | .uuid')
+      task_uuid=$(echo "$existing_tasks" | jq -r --arg pr "$pr_number" \
+        '.[] | select((.pr_number | tostring | split(".")[0]) == $pr) | .uuid')
 
       if [ "$state" = "MERGED" ]; then
         complete_task "$task_uuid" "$pr_number" || true

@@ -37,7 +37,10 @@ uda.taskwarrior-tui.task-report.show-info=false
 uda.taskwarrior-tui.task-report.auto-insert-double-quotes-on-add=false
 
 # GitHub PR sync UDAs
-uda.pr_number.type=numeric
+# pr_number is a string, not numeric: taskwarrior rewrites numeric UDAs in
+# `%f` form on every modify (10307 -> 10307.000000), which `gh pr view` and
+# the sync scripts choke on. A PR number is an identifier, not a quantity.
+uda.pr_number.type=string
 uda.pr_number.label=PR#
 uda.pr_repo.type=string
 uda.pr_repo.label=Repo

@@ -22,7 +22,9 @@ if [ -z "$task_data" ] || [ "$task_data" = "[]" ]; then
 fi
 
 # Extract PR number and repo from task
-pr_number=$(echo "$task_data" | jq -r '.[0].pr_number // empty')
+# Drop any fractional part: tasks written while pr_number was a numeric UDA
+# hold values like 10307.000000, which gh does not accept.
+pr_number=$(echo "$task_data" | jq -r '.[0].pr_number // empty | tostring | split(".")[0]')
 pr_repo=$(echo "$task_data" | jq -r '.[0].pr_repo // empty')
 
 # Validate we have the required data
