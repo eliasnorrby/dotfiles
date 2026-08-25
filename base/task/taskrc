@@ -1,4 +1,13 @@
 # vim:commentstring=#%s
+#
+# This file is the shared, version-controlled config, linked to
+# ~/.config/task/taskrc. It is *not* the rc file taskwarrior loads first:
+# ~/.taskrc is, and it does nothing but `include` this one. Settings that
+# taskwarrior rewrites at runtime -- `context=`, anything set through
+# `task config` -- are written to whichever rc file is loaded first, so
+# they land in ~/.taskrc and stay out of the repo. Never add `context=`
+# here; it would be machine-local state in a shared file.
+
 # Files
 data.location=~/.task
 
