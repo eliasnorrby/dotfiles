@@ -44,25 +44,24 @@ Further paragraphs come after blank lines.
 - Use a hanging indent
 ```
 
-## PR comments
+## Comments posted under my name (GitHub, Slack)
 
-When you write a comment on a pull request on my behalf — whether posting a new
-comment or replying in an existing thread — open the message with a short
-disclaimer that makes clear *you* composed the text, not me.
+When you write something that goes out under my name — a PR comment, a reply
+in a review thread, a Slack message — open it with an emoji marker on its own
+line, then a blank line, then the body. The marker is the whole disclaimer;
+don't also say in words that you composed it.
 
-Phrase the disclaimer with some nuance based on where the body came from:
+- GitHub: `:robot: :speech_balloon:`
+- Slack: `:claude: :speech_balloon:` (matches what Edvin posts). Slack already
+  appends its own "Sent using Claude" footer — don't add another.
 
-- Text you authored on your own (e.g. autonomously addressing review feedback or
-  replying to a thread): `:robot: *Claude says*:`
-- Text that captures something we worked out together (e.g. summarizing a
-  discussion we've had): `:robot: *Claude's summary*:` or similar
+Example of the shape:
 
-The takeaway: when I ask you to write something on my behalf, signal that you
-composed it, and convey whether it's solely your own work or a collaboration —
-without being wordy about it.
+```
+:robot: :speech_balloon:
 
-This applies to PR comments specifically. It is *not* needed for Slack
-messages, which already carry a Claude attribution automatically.
+Rebased onto master and re-ran the backend suite — all green.
+```
 
 ## SQL
 
