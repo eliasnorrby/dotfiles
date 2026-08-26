@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Start (or resume) work on a task from a Linear branch on the clipboard.
 #
-# Copy Linear's suggested branch name (e.g. elias/bemlo-7370-spike-jsonforms),
-# then this script:
+# Copy Linear's suggested branch name (e.g. elias/bemlo-7370-spike-jsonforms)
+# — or type one when prompted, if the clipboard holds nothing usable — then this
+# script:
 #   - creates a worktree under <main>/.worktrees/<lowercase-id> checked out to
 #     that branch (branching off the default branch when it doesn't exist yet),
 #   - opens a tmux window cwd'd there and ties it via the @worktree option
@@ -38,6 +39,38 @@ read_clipboard() {
     darwin*) pbpaste 2>/dev/null ;;
     *) wl-paste -n 2>/dev/null ;;
   esac
+}
+
+trim() {
+  local s=$1
+  s=${s#"${s%%[![:space:]]*}"} # leading whitespace
+  s=${s%"${s##*[![:space:]]}"} # trailing whitespace
+  printf '%s' "$s"
+}
+
+looks_like_branch() {
+  [ -n "$1" ] && [[ "$1" != *[[:space:]]* ]]
+}
+
+# Ask for a branch name, pre-filling whatever the clipboard held so a near-miss
+# can be edited rather than retyped. Keeps asking until the answer looks like a
+# branch; an empty answer (or having no terminal to ask on) aborts. Readline
+# writes to stderr, so only the answer itself lands on stdout.
+prompt_branch() {
+  local initial=$1 answer
+  [ -t 0 ] || return 1
+  while read -r -e -i "$initial" -p "Branch: " answer; do
+    answer=$(trim "$answer")
+    [ -n "$answer" ] || return 1
+    if looks_like_branch "$answer"; then
+      printf '%s' "$answer"
+      return
+    fi
+    # Drop the prefill on retry so a bare Enter can still abort.
+    printf "✗ A branch name can't contain spaces (empty aborts)\n" >&2
+    initial=
+  done
+  return 1
 }
 
 # The remote's default branch (origin/master, origin/main, …) to branch off of.
@@ -79,13 +112,11 @@ create_worktree() {
 main() {
   local branch id dir main_root created=0 win
 
-  branch=$(read_clipboard)
-  branch=${branch#"${branch%%[![:space:]]*}"} # trim leading whitespace
-  branch=${branch%"${branch##*[![:space:]]}"} # trim trailing whitespace
-  [ -n "$branch" ] || die "Clipboard is empty — copy a branch name first"
-  case "$branch" in
-    *[[:space:]]*) die "Clipboard doesn't look like a branch: $branch" ;;
-  esac
+  branch=$(trim "$(read_clipboard)")
+  if ! looks_like_branch "$branch"; then
+    branch=$(prompt_branch "$branch") \
+      || die "No branch name given — copy or type one first"
+  fi
 
   is_in_git_repo || die "Not in a git repository"
   # Anchor at the main worktree (git lists it first), never the current one —
