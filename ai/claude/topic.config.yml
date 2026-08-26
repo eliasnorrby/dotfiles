@@ -28,5 +28,7 @@ claude_config:
       dest: "{{ claude_home }}/"
     - src: agents
       dest: "{{ claude_home }}/"
+    - src: output-styles
+      dest: "{{ claude_home }}/"
 
 claude_home: "~/.claude"
