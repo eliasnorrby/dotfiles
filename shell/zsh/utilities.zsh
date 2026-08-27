@@ -2,24 +2,6 @@
 
 # === Utilities ===
 
-if [[ "$(_os)" == "macos" ]] ; then
-  copy_cmd() {
-    pbcopy
-  }
-else
-  copy_cmd() {
-    wl-copy
-  }
-fi
-
-get_copy_cmd() {
-  if [[ "$(_os)" == "macos" ]] ; then
-    echo "pbcopy"
-  else
-    echo "wl-copy"
-  fi
-}
-
 mkd() {
   mkdir -p -- "$1" &&
     cd -P -- "$1"

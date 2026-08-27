@@ -29,11 +29,11 @@ warn() {
   echo "$*" >&2
 }
 
+# Delegated to paste_cmd (shell/clipboard), which knows where the clipboard
+# actually is: a pane created inside a mosh session has no Wayland connection
+# of its own, so reading one directly here fails exactly when working remotely.
 read_clipboard() {
-  case "$OSTYPE" in
-    darwin*) pbpaste 2>/dev/null ;;
-    *) wl-paste -n 2>/dev/null ;;
-  esac
+  paste_cmd 2>/dev/null
 }
 
 # Print the git branch of DIR, empty when it is not a git repo.

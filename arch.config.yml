@@ -161,6 +161,9 @@ topics:
     - name: bash
       state: present
       config: "{{ bash_config }}"
+    - name: clipboard
+      state: present
+      config: "{{ clipboard_config }}"
     - name: git
       state: present
       config: "{{ git_config }}"

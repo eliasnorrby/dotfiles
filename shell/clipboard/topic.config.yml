@@ -1,0 +1,10 @@
+---
+clipboard_config:
+  path: shell/clipboard
+  links:
+    - src: copy_cmd.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: copy_cmd
+    - src: paste_cmd.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: paste_cmd

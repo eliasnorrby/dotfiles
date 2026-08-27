@@ -13,7 +13,7 @@ fi
 export FZF_CTRL_R_OPTS="
   --preview 'echo {}'
   --preview-window down:3:hidden:wrap
-  --bind 'ctrl-y:execute-silent(echo -n {2..} | $(get_copy_cmd))+abort'
+  --bind 'ctrl-y:execute-silent(echo -n {2..} | copy_cmd)+abort'
   --header 'Press CTRL-Y to copy command into clipboard'
   --list-label '   History '
 "
@@ -186,7 +186,7 @@ gg() {
   git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --graph --color=always |
   fzf_tmux -p "90%,70%" --ansi --no-sort --reverse --multi \
     --bind 'ctrl-n:toggle-sort' \
-    --bind "ctrl-y:execute-silent($_gitLogLineToHash | $(get_copy_cmd))+abort" \
+    --bind "ctrl-y:execute-silent($_gitLogLineToHash | copy_cmd)+abort" \
     --header 'Press CTRL-N to toggle sort, CTRL-Y to yank' \
     --preview 'grep -o "[a-f0-9]\{7,\}" <<< {} | xargs git show --color=always | head -200' |
   grep -o "[a-f0-9]\{7,\}"
