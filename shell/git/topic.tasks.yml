@@ -3,3 +3,7 @@
   file:
     state: directory
     path: "{{ xdg_config_home }}/gh"
+- name: create hunk config dir
+  file:
+    state: directory
+    path: "{{ xdg_config_home }}/hunk"

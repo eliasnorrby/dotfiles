@@ -63,6 +63,9 @@ git_config:
     - src: prdash.sh
       dest: "{{ xdg_bin_home }}/"
       rename: prdash
+    - src: hunk.config.toml
+      dest: "{{ xdg_config_home }}/hunk/"
+      rename: config.toml
   brew_formulae:
     - git
     - tig
