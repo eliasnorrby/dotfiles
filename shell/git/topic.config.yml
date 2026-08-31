@@ -81,3 +81,4 @@ git_config:
     - git-delta
   aur_packages:
     - python-grip
+    - hunk-bin
