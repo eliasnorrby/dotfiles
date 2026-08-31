@@ -589,3 +589,6 @@ keys:
           - key: r
             name: rebuild
             value: checkrebuild
+          - key: n
+            name: news
+            value: sudo informant read
