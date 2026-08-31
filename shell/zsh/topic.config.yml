@@ -51,6 +51,7 @@ zsh_config:
     - eza
     - go-yq
     - csvlens
+    - bind
   aur_packages:
     - pandoc-bin
   links:
