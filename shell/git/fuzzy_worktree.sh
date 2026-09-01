@@ -39,17 +39,37 @@ worktree_rows() {
   done
 }
 
+# Remove a worktree (invoked from the fzf ctrl-d binding). On failure, keep the
+# git error on screen until a key is pressed — fzf redraws over it otherwise.
+delete_worktree() {
+  printf 'deleting %s...\n' "$1"
+  git worktree remove "$1" || {
+    printf 'press any key to continue... '
+    read -rsn1
+  }
+}
+
+# Cancelling must exit 0: the popup binding uses display-popup -EE, which only
+# auto-closes on success — a propagated fzf 130 leaves a dead popup behind.
 main() {
-  is_in_git_repo || return
+  is_in_git_repo || return 0
   local main_root title choice path
   main_root=$(main_worktree)
   title=${main_root/#"$HOME"/\~}
   choice=$(worktree_rows "$main_root" | fzf --ansi --delimiter='\t' --with-nth=1 \
     --list-label " $title " --preview-window right:55% \
-    --preview 'git -C {2} log --graph --color --abbrev-commit --pretty="'"$GIT_LOG_FORMAT"'" | head -200') || return
-  [ -n "$choice" ] || return
+    --header 'ctrl-d: delete worktree' \
+    --bind "ctrl-d:execute(\"$0\" --delete {2})+reload(\"$0\" --rows)" \
+    --preview 'git -C {2} log --graph --color --abbrev-commit --pretty="'"$GIT_LOG_FORMAT"'" | head -200') || return 0
+  [ -n "$choice" ] || return 0
   path=${choice##*$'\t'}
   go_to_worktree "$path" >/dev/null
 }
 
-main
+# Internal subcommands let fzf bindings call back into this script, since bind
+# commands run in a fresh shell where our functions don't exist.
+case ${1-} in
+  --rows) worktree_rows "$(main_worktree)" ;;
+  --delete) delete_worktree "$2" ;;
+  *) main ;;
+esac
