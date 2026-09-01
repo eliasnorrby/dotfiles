@@ -52,6 +52,7 @@ line, then a blank line, then the body. The marker is the whole disclaimer;
 don't also say in words that you composed it.
 
 - GitHub: `:robot: :speech_balloon:`
+- Linear: `:robot_face: :speech_balloon:`
 - Slack: `:claude: :speech_balloon:` (matches what Edvin posts). Slack already
   appends its own "Sent using Claude" footer — don't add another.
 
