@@ -1,13 +1,3 @@
-## **IMPORTANT**: Do not break the user's flow
-
-DO NOT use compound commands (`cd foo && git add bar`) — they require explicit approval and slow things down. Instead, **just check the current directory, cd separately if needed, and run the command(s) directly**. Trying to run a compound command will prompt the user with this warning:
-
-> Compound commands with cd and git require approval to prevent bare repository attacks
-
-Run commands directly without `cd` prefixes; git commands work from any directory in the repo. Only run `cd` as a separate command if a command actually fails due to wrong working directory.
-
-IMPORTANT: Also try to avoid using `git -C` to specify the directory. To allow running such commands without asking for permission, the user has to approve `git:*` commands, which is a very broad category.
-
 ## Input
 
 If you need input, you MUST use the "AskUserQuestion" tool.
