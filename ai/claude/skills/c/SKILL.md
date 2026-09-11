@@ -52,15 +52,24 @@ Use conventional commits: `type(scope): description`
 
 ## Co-Author Attribution
 
-Always include co-author trailer at the end of the commit message. Detect which model you are and use the appropriate format:
+Always include a co-author trailer at the end of the commit message, naming
+the model you actually are — including its version — and its vendor's noreply
+address:
 
-| Model             | Co-Author Line                                              |
-| ----------------- | ----------------------------------------------------------- |
-| Claude Opus 4.5   | `Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>`   |
-| Claude Sonnet 4   | `Co-Authored-By: Claude Sonnet 4 <noreply@anthropic.com>`   |
-| Claude Sonnet 3.5 | `Co-Authored-By: Claude Sonnet 3.5 <noreply@anthropic.com>` |
-| GPT-4             | `Co-Authored-By: GPT-4 <noreply@openai.com>`                |
-| GPT-4o            | `Co-Authored-By: GPT-4o <noreply@openai.com>`               |
+```
+Co-Authored-By: <model name and version> <noreply@<vendor>>
+```
+
+These are examples of the format, not a list to pick from:
+
+```
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Co-Authored-By: Claude Sonnet 4 <noreply@anthropic.com>
+Co-Authored-By: GPT-4o <noreply@openai.com>
+```
+
+If your model is not shown, follow the pattern rather than claiming to be one
+of the models above.
 
 ## Commit Command Template
 
