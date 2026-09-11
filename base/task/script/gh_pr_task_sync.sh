@@ -159,7 +159,10 @@ check_gh_auth() {
 fetch_open_prs() {
   log_info "Fetching open PRs from $REPO..." >&2
   local prs
-  if ! prs=$(gh pr list --repo "$REPO" --state open \
+  # --limit explicitly: gh returns only 30 rows by default, which silently
+  # hid every PR past the thirtieth -- no task was created for them, and the
+  # tasks that did exist looked orphaned and cost a status lookup each.
+  if ! prs=$(gh pr list --repo "$REPO" --state open --limit 300 \
     --json number,title,author,reviewRequests,reviews,reviewDecision 2>&1); then
     log_error "Failed to fetch PRs from $REPO: $prs"
     return 1
