@@ -143,8 +143,10 @@ main() {
     attrs=("issue:$id" "project:work")
   else
     [ -n "$repo" ] || die "could not determine the repo for $id"
-    existing=$(existing_task "pr_number:${id#\#}" pr_repo "$repo")
-    attrs=("pr_number:${id#\#}" "pr_repo:$repo" "project:work" "+pr")
+    # $id already carries the '#', which is the form pr_number is stored in so
+    # the task list reads it as a PR reference.
+    existing=$(existing_task "pr_number:$id" pr_repo "$repo")
+    attrs=("pr_number:$id" "pr_repo:$repo" "project:work" "+pr")
   fi
 
   if [ -n "$existing" ]; then

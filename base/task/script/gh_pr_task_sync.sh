@@ -207,7 +207,9 @@ create_task() {
   local task_type="$3"  # "merge" or "review"
   local needs_wait="$4" # "true" or "false"
 
-  local description="[PR#${pr_number}] ${task_type^}: ${title}"
+  # No PR number in the description: it lives in pr_number, which the task
+  # list shows in its own column, and repeating it only costs width.
+  local description="${task_type^}: ${title}"
   local tags="project:work +pr +${task_type}"
   local wait_clause=""
 
@@ -216,7 +218,9 @@ create_task() {
     wait_clause="wait:later"
   fi
 
-  local cmd="task add \"${description}\" ${tags} pr_number:${pr_number} pr_repo:\"${REPO}\" ${wait_clause}"
+  # Stored with a leading '#' so the column reads as a PR reference. Every
+  # comparison normalises it away again; gh accepts either form.
+  local cmd="task add \"${description}\" ${tags} pr_number:#${pr_number} pr_repo:\"${REPO}\" ${wait_clause}"
 
   log_success "Creating task: $description"
   if execute_cmd "$cmd"; then
@@ -330,11 +334,12 @@ process_open_pr() {
     is_review_pr=true
   fi
 
-  # Find existing task. pr_number is compared as a string with any fractional
-  # part dropped, so tasks written before it became a string UDA still match.
+  # Find existing task. pr_number is normalised to a bare number: any '#'
+  # prefix is stripped, as is the fractional part left by tasks written before
+  # it became a string UDA, so every generation of stored value still matches.
   local existing_task
   existing_task=$(echo "$existing_tasks" | jq -r --arg pr "$pr_number" \
-    '.[] | select((.pr_number | tostring | split(".")[0]) == $pr)')
+    '.[] | select((.pr_number | tostring | split(".")[0] | ltrimstr("#")) == $pr)')
 
   if [ "$is_my_pr" = true ]; then
     # Handle PR to merge
@@ -380,7 +385,7 @@ handle_orphaned_tasks() {
 
   # Get all task PR numbers (filter out null values)
   local task_pr_numbers
-  task_pr_numbers=$(echo "$existing_tasks" | jq -r '.[] | select(.pr_number != null) | .pr_number | tostring | split(".")[0]' | sort -n)
+  task_pr_numbers=$(echo "$existing_tasks" | jq -r '.[] | select(.pr_number != null) | .pr_number | tostring | split(".")[0] | ltrimstr("#")' | sort -n)
 
   for pr_number in $task_pr_numbers; do
     # Skip if pr_number is empty or invalid
@@ -415,7 +420,7 @@ handle_orphaned_tasks() {
 
       local task_uuid
       task_uuid=$(echo "$existing_tasks" | jq -r --arg pr "$pr_number" \
-        '.[] | select((.pr_number | tostring | split(".")[0]) == $pr) | .uuid')
+        '.[] | select((.pr_number | tostring | split(".")[0] | ltrimstr("#")) == $pr) | .uuid')
 
       if [ "$state" = "MERGED" ]; then
         complete_task "$task_uuid" "$pr_number" || true
