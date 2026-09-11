@@ -186,6 +186,10 @@ u.map('n', '<C-Y>', '3<C-Y>')
 u.map('n', 'j', 'gj')
 u.map('n', 'k', 'gk')
 
+-- Exit terminal mode. Sidekick binds this buffer-locally in its own
+-- terminals; this makes it work in plain :terminal buffers too (V alias).
+u.map('t', '<C-q>', '<C-\\><C-n>', { desc = 'exit terminal mode' })
+
 wk.add({
   { '<leader>c', group = '+quickfix' },
   { '<leader>co', '<cmd>copen<CR>', desc = 'open' },
