@@ -27,6 +27,15 @@ alias.standup-sow=end.after:eoww-8d project:work completed
 uda.priority.values=H,M,,L
 urgency.uda.priority.L.coefficient=-0.5
 
+# taskwarrior-tui (0.27.0) skips the first two lines of `task context`
+# output, expecting taskwarrior 2.x's two-line piped header. Taskwarrior 3.x
+# emits a one-line ANSI-underlined header even when piped, so the
+# alphabetically first context is swallowed by the picker. This dummy sorts
+# first (digits before letters) and exists only to be eaten. Never activate
+# it; remove once the parser is fixed upstream.
+context.0filler.read=project:none
+context.0filler.write=project:none
+
 context.work.read=project:work
 context.work.write=project:work
 
