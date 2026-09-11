@@ -8,7 +8,7 @@
 class=$(hyprctl activewindow -j | jq -r '.class')
 
 case "$class" in
-  *[Kk]itty* | *[Aa]lacritty* | *[Ff]oot* | *[Ww]ezterm* | org.gnome.[Tt]erminal*)
+  *[Kk]itty* | *[Aa]lacritty* | *[Ff]oot* | *[Ww]ezterm* | org.gnome.[Tt]erminal* | TaskwarriorTui)
     hyprctl dispatch sendshortcut "CTRL, W, activewindow"
     ;;
   *)
