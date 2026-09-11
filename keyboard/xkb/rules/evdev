@@ -1,0 +1,10 @@
+// Custom options on top of the system ruleset. libxkbcommon reads this
+// file (via ~/.config/xkb/rules/evdev) instead of the system one; the
+// include pulls the system rules in. It must come FIRST: appended rules
+// accumulate in encounter order, and ours must land after the system's
+// +inet(evdev) to override its <FK13> = XF86Tools definition.
+
+! include %S/evdev
+
+! option = symbols
+  elias:dashes = +elias(dashes)

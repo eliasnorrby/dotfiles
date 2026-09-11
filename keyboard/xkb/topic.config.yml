@@ -1,9 +1,12 @@
 ---
 xkb_config:
   path: keyboard/xkb
+  # X11-era, kept for reference:
+  # pacman_packages:
+  #   - xcape
   links:
     - symbols
-    - setup-keybindings.sh
-    - layout.xkb
-  pacman_packages:
-    - xcape
+    - rules
+    # X11-era, kept for reference:
+    # - setup-keybindings.sh
+    # - layout.xkb

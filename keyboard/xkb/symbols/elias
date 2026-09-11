@@ -1,0 +1,11 @@
+// macOS-style dashes: keyd translates Option(-position)+hyphen into F13
+// (see keyboard/keyd/default.conf). This maps F13 to endash and, with
+// Shift, emdash — matching Option+hyphen / Option+Shift+hyphen on macOS.
+//
+// Shipped as an option (elias:dashes) rather than inside a layout: the
+// keymap assembles as pc+<layout>+inet(evdev)+<options>, and inet(evdev)
+// claims <FK13> for XF86Tools, so only a section merged after it wins.
+partial
+xkb_symbols "dashes" {
+    key <FK13> { [ endash, emdash ] };
+};

@@ -103,7 +103,7 @@ topics:
       state: absent
       config: "{{ sxhkd_config }}"
     - name: xkb
-      state: absent
+      state: present
       config: "{{ xkb_config }}"
     - name: espanso
       state: present
