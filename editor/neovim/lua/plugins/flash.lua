@@ -4,17 +4,20 @@ return {
   event = 'VeryLazy',
   opts = {},
   keys = {
+    -- No 'o' mode: an operator-pending 's' hijacks cs/ds/ys from
+    -- nvim-surround when the mapping times out (use 'r' instead).
     {
       's',
-      mode = { 'n', 'x', 'o' },
+      mode = { 'n', 'x' },
       function()
         require('flash').jump()
       end,
       desc = 'Flash',
     },
+    -- Normal mode only: visual 'S' belongs to nvim-surround.
     {
       'S',
-      mode = { 'n', 'o', 'x' },
+      mode = { 'n' },
       function()
         require('flash').treesitter()
       end,
