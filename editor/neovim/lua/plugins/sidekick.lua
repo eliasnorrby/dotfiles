@@ -1,3 +1,36 @@
+-- Toggle a claude owned by this nvim instance, starting one if needed.
+-- Deliberately bypasses sidekick's session picker: its tmux backend lists
+-- every claude pane on the tmux server as an attachable session, but it can
+-- only re-attach sessions it created itself, so picking one of ours just
+-- shows a blank screen. Filtering out `external` sessions leaves the local
+-- terminal session (if any) and the bare tool entry, so this never prompts.
+local function toggle_claude()
+  local State = require('sidekick.cli.state')
+  local states = vim.tbl_filter(function(s)
+    return not s.external
+  end, State.get({ name = 'claude' }))
+  local state = states[1]
+  if not state then
+    return vim.notify('claude is not available', vim.log.levels.WARN)
+  end
+  -- Mirrors sidekick.cli.toggle(): a fresh attach opens the terminal itself,
+  -- an existing one gets its window toggled. Don't pass `show` to attach --
+  -- that re-opens a hidden terminal right before toggle() closes it again,
+  -- making the toggle stick in the hidden state.
+  local just_attached
+  state, just_attached = State.attach(state)
+  local terminal = state.terminal
+  if not terminal then
+    return
+  end
+  if not just_attached then
+    terminal:toggle()
+  end
+  if terminal:is_open() then
+    terminal:focus()
+  end
+end
+
 ---@type LazyPluginSpec
 return {
   'folke/sidekick.nvim',
@@ -39,10 +72,8 @@ return {
     },
     {
       '<C-p>',
-      function()
-        require('sidekick.cli').toggle()
-      end,
-      desc = 'Sidekick Toggle',
+      toggle_claude,
+      desc = 'Sidekick Toggle Claude',
       mode = { 'n', 't', 'x' },
     },
     {
@@ -99,13 +130,14 @@ return {
     },
     {
       '<leader>aoc',
-      function()
-        require('sidekick.cli').toggle({ name = 'claude', focus = true })
-      end,
+      toggle_claude,
       desc = 'Sidekick Toggle Claude',
     },
   },
   init = function()
+    -- Entrypoint for the `vc` alias: `nvim +Claude`. Requiring a sidekick
+    -- module makes lazy.nvim load the plugin.
+    vim.api.nvim_create_user_command('Claude', toggle_claude, { desc = 'Toggle a local claude in sidekick' })
     require('which-key').add({
       { '<leader>a', group = '+ai' },
       { '<leader>ao', group = '+opencode' },
