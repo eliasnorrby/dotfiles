@@ -11,6 +11,10 @@ hyprland_config:
     - catppuccin-macchiato.conf
     - commands.yml
     - conf.d
+    - xdph.conf
+    - src: xdph_share_picker.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: xdph_share_picker
     - src: navigate.sh
       dest: "{{ xdg_bin_home }}/"
       rename: navigate
