@@ -17,6 +17,12 @@ bindkey -a ds delete-surround
 bindkey -a ys add-surround
 
 bindkey '^w' backward-kill-word
+
+# kitty is configured to send the CSI-u sequence for shift+return so that it
+# reaches claude through tmux and nvim. In a plain shell, degrade it to a
+# regular return instead of leaking the raw escape sequence.
+bindkey -M viins '^[[13;2u' accept-line
+bindkey -M vicmd '^[[13;2u' accept-line
 bindkey ',q' push-line
 bindkey -M viins ',.' insert-last-word
 bindkey -M viins '.,' insert-last-word
