@@ -34,6 +34,28 @@ Further paragraphs come after blank lines.
 - Use a hanging indent
 ```
 
+## Rebasing a stack of PRs
+
+When a branch that others are stacked on gets rewritten — rebased onto master,
+amended, or given a new commit — plain `git rebase <parent>` on the children is
+wrong. It tries to replay the parent's old commits, which either conflicts or
+silently duplicates them.
+
+Capture every parent's tip **before** rewriting anything, then replay only each
+child's own commits:
+
+```
+git rebase --onto <new parent> <that parent's old tip> <child>
+```
+
+Cascade downwards, one branch at a time. Each child's old base is its
+**parent's** pre-rewrite tip — not the child's own tip. Getting that wrong
+collapses the branch to zero commits.
+
+After each hop, check the commit count against what it was before. If it
+changed, stop. Branches already pushed can be restored with
+`git branch -f <branch> origin/<branch>`.
+
 ## Comments posted under my name (GitHub, Slack)
 
 When you write something that goes out under my name — a PR comment, a reply
