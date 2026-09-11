@@ -35,6 +35,7 @@
     "window-rewrite": {
       "class<kitty>": "",
       "class<TmuxKitty>": " ",
+      "class<HerdrKitty>": " ",
       "class<DotfilesKitty>": "",
       "class<ChromeWork>": " ",
       "class<ChromePersonal>": " ",
