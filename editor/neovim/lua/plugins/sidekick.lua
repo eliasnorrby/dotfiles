@@ -12,6 +12,14 @@ return {
       win = {
         keys = {
           prompt = { '<c-r>', 'prompt', mode = 't', desc = 'insert prompt or context' },
+          -- Drop sidekick's buffer-local ctrl-hjkl mappings: in a float
+          -- layout their expr action returns the key itself, feeding a raw
+          -- ctrl-j (newline) to claude and shadowing the global float-aware
+          -- terminal-mode navigation from legacy/navigation.lua.
+          nav_left = false,
+          nav_down = false,
+          nav_up = false,
+          nav_right = false,
         },
         layout = 'float',
       },
