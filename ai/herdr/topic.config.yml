@@ -1,0 +1,10 @@
+---
+herdr_config:
+  path: ai/herdr
+  aur_packages:
+    - herdr-bin
+  links:
+    - config.toml
+    - src: herdr_kitty.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: herdr_kitty
