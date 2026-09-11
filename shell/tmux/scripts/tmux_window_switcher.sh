@@ -65,7 +65,7 @@ if [ "${1:-}" = --list ]; then
 fi
 
 choice=$(list session | fzf \
-  --reverse --no-sort --delimiter=$'\t' --with-nth=2.. \
+  --reverse --delimiter=$'\t' --with-nth=2.. \
   --header="$(header session)" \
   --bind="ctrl-a:reload('$self' --list all)+change-header($(header all))" \
   --bind="ctrl-s:reload('$self' --list session)+change-header($(header session))") || exit 0
