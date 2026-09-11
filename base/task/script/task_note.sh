@@ -30,6 +30,10 @@ default_vault="${TASK_NOTE_DEFAULT_VAULT:-personal}"
 # Matched against the project root, so "work.backend" maps via "work".
 project_vaults="${TASK_NOTE_PROJECT_VAULTS:-}"
 notes_subdir="${TASK_NOTE_SUBDIR:-tasks}"
+# Mirrors "this task has a note" into a one-character UDA purely so the task
+# list can show it: taskwarrior-tui ignores the .indicator column format, so a
+# marker has to be a real value in a column of its own.
+note_flag_value="${TASK_NOTE_FLAG:-󰎞}"
 
 die() {
   echo "Error: $*" >&2
@@ -173,12 +177,13 @@ main() {
     die "task not found: $1"
   fi
 
-  local uuid description project issue note_rel
+  local uuid description project issue note_rel note_flag
   uuid=$(jq -r '.[0].uuid' <<<"$task_data")
   description=$(jq -r '.[0].description // empty' <<<"$task_data")
   project=$(jq -r '.[0].project // empty' <<<"$task_data")
   issue=$(jq -r '.[0].issue // empty' <<<"$task_data")
   note_rel=$(jq -r '.[0].note // empty' <<<"$task_data")
+  note_flag=$(jq -r '.[0].note_flag // empty' <<<"$task_data")
 
   # Pick up an issue key written straight into the description.
   if [ -z "$issue" ] && [[ "$description" =~ ([A-Z]+-[0-9]+) ]]; then
@@ -198,8 +203,18 @@ main() {
 
   local cached="${note_path#"$vault_path"/}"
   cached="${cached%.md}"
+
+  # Write both in one modify, and check the flag separately so a task whose
+  # path is already current still gets a missing flag filled in.
+  local -a changes=()
   if [ "$cached" != "$note_rel" ]; then
-    task "$uuid" modify note:"$cached" >/dev/null 2>&1 || true
+    changes+=("note:$cached")
+  fi
+  if [ "$note_flag" != "$note_flag_value" ]; then
+    changes+=("note_flag:$note_flag_value")
+  fi
+  if [ ${#changes[@]} -gt 0 ]; then
+    task "$uuid" modify "${changes[@]}" >/dev/null 2>&1 || true
   fi
 
   exec "${EDITOR:-nvim}" "$note_path"
