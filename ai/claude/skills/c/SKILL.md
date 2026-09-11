@@ -8,6 +8,19 @@ Create git commits following project conventions.
 2. **Stage files**: Stage files logically for atomic commits (prefer specific files over `git add .`)
 3. **Create commit(s)**: Use conventional commit format with co-author attribution
 
+## Scope: only commit work from this conversation
+
+Commit ONLY changes made as part of the current conversation. Other modified
+files in the working tree belong to other sessions or in-progress work — do
+not stage them, do not commit them, do not "clean up" by including them.
+
+- Match `git status` output against what this conversation actually touched;
+  stage only those files.
+- If a file mixes this conversation's changes with unrelated ones, stage
+  hunks selectively with `git add -p` (or `git apply --cached`).
+- If it is unclear whether a change belongs to this conversation, ask via
+  AskUserQuestion instead of including it.
+
 ## Atomic Commits
 
 Prefer multiple small, focused commits over one large commit:
