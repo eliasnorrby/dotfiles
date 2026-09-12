@@ -1,88 +1,73 @@
-local delay = 10000
+-- Paste the clipboard URL as a rich-text hyperlink.
+--
+-- Reads clipboard content (expected URL), extracts a label:
+-- - GitHub: github.com/.../123 -> #123
+-- - Linear: linear.app/.../PROJ-123/... -> PROJ-123
+-- - Notion: notion.so/.../Page-Name-uuid -> Page Name
+--
+-- Offers <a href="url">label</a> as html on the pasteboard (with the
+-- label as plain-text fallback) and sends Cmd+V, so rich-text targets
+-- (Slack, Linear, Notion, ...) insert a finished hyperlink. The
+-- original clipboard is restored afterwards.
+--
+-- Mirrors wm/hyprland/special_paste.sh - keep the parsers in sync.
 
-local function split(input, separator)
-  local result = {}
-  for part in string.gmatch(input, '([^' .. separator .. ']+)') do
-    table.insert(result, part)
+local function getLabel(url)
+  local prOrIssueNumber = url:match('github%.com/.*/(%d+)')
+  if prOrIssueNumber then
+    return '#' .. prOrIssueNumber
   end
-  return result
-end
 
-local function getIdentifier()
-  local clipboard = hs.pasteboard.getContents()
-  if clipboard then
-    local prOrIssueNumber = clipboard:match('github.com/.*/(%d+)')
-    if prOrIssueNumber then
-      return {
-        type = 'github',
-        id = prOrIssueNumber,
-      }
-    end
-    local issueTag = clipboard:match('linear.app/[^/]+/issue/([A-Z]+-%d+)/')
-    if issueTag then
-      return {
-        type = 'linear',
-        id = issueTag,
-      }
-    end
-    local pageName = clipboard:match('notion.so/[^/]+/([a-zA-Z0-9-]+)')
-    if pageName then
-      local pageNameParts = split(pageName, '-')
-      table.remove(pageNameParts, #pageNameParts)
-      return {
-        type = 'notion',
-        id = table.concat(pageNameParts, ' '),
-        wordCount = #pageNameParts,
-      }
-    end
+  local issueTag = url:match('linear%.app/[^/]+/issue/([A-Z]+-%d+)')
+  if issueTag then
+    return issueTag
   end
-  hs.alert.show('Clipboard does not contain a supported URL')
+
+  -- Notion: page name without the UUID suffix; handles both the old
+  -- notion.so/<ws>/<slug> and the new app.notion.com/p/<ws>/<slug> links
+  local pageSlug = url:match('notion%.com/p/[^/]+/([%w%-]+)') or url:match('notion%.so/[^/]+/([%w%-]+)')
+  if pageSlug then
+    local pageName = pageSlug:gsub('%-[a-f0-9]*$', ''):gsub('%-', ' ')
+    return pageName
+  end
+
   return nil
 end
 
-local function selectText(identifier)
-  if identifier.type == 'github' then
-    hs.eventtap.keyStroke({ 'alt', 'shift' }, 'left', delay)
-    hs.eventtap.keyStroke({ 'shift' }, 'left')
-  elseif identifier.type == 'linear' then
-    hs.eventtap.keyStroke({ 'alt', 'shift' }, 'left', delay)
-    hs.eventtap.keyStroke({ 'alt', 'shift' }, 'left', delay)
-    hs.eventtap.keyStroke({ 'alt', 'shift' }, 'left', delay)
-  elseif identifier.type == 'notion' then
-    for _ = 1, identifier.wordCount do
-      hs.eventtap.keyStroke({ 'alt', 'shift' }, 'left', delay)
-    end
-  end
+local function htmlEscape(text)
+  return (text:gsub('[&<>"]', {
+    ['&'] = '&amp;',
+    ['<'] = '&lt;',
+    ['>'] = '&gt;',
+    ['"'] = '&quot;',
+  }))
 end
 
--- Type out the reference, select it, and paste the URL
-local function typeAndPasteLink()
-  local identifier = getIdentifier()
+local function pasteLink()
+  local clipboard = hs.pasteboard.getContents()
 
-  if identifier then
-    -- Type the identifier
-    if identifier.type == 'github' then
-      hs.eventtap.keyStrokes('#')
-      hs.timer.usleep(delay)
-    end
-
-    for i = 1, #identifier.id do
-      local char = identifier.id:sub(i, i)
-      local mod = char:match('[A-Z]') and { 'shift' } or {}
-      local key = char == ' ' and 'space' or char
-      hs.eventtap.keyStroke(mod, key, delay)
-    end
-
-    -- Select the typed text
-    selectText(identifier)
-
-    -- Paste the URL
-    hs.eventtap.keyStroke({ 'cmd' }, 'v', delay)
-
-    -- Move the cursor to after the pasted URL
-    hs.eventtap.keyStroke({}, 'right', delay)
+  if not clipboard or clipboard == '' then
+    hs.alert.show('Clipboard is empty')
+    return
   end
+
+  local label = getLabel(clipboard)
+
+  if not label then
+    hs.alert.show('Clipboard does not contain a supported URL')
+    return
+  end
+
+  local html = '<a href="' .. htmlEscape(clipboard) .. '">' .. htmlEscape(label) .. '</a>'
+
+  hs.pasteboard.writeDataForUTI(nil, 'public.html', html)
+  hs.pasteboard.writeDataForUTI(nil, 'public.utf8-plain-text', label, true)
+  hs.eventtap.keyStroke({ 'cmd' }, 'v')
+
+  -- Give the target time to fetch the pasteboard, then restore it
+  hs.timer.doAfter(0.5, function()
+    hs.pasteboard.setContents(clipboard)
+  end)
 end
 
--- Bind the function to a key combination (e.g., Cmd+Shift+P)
-hs.hotkey.bind({ 'cmd', 'shift' }, 'P', typeAndPasteLink)
+hs.hotkey.bind({ 'cmd', 'shift' }, 'P', pasteLink)
