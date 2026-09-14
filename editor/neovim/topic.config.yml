@@ -24,12 +24,11 @@ neovim_config:
     - stylua
     - pgformatter
     - tree-sitter-cli
+    - glow
   npm_packages:
     - kulala-ls
     - kulala-fmt
     - eslint_d
-  aur_packages:
-    - glow-bin
   links:
     - init.lua
     - lua
