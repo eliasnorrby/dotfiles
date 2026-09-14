@@ -3,7 +3,7 @@ espanso_config:
   brew_casks:
     - espanso
   aur_packages:
-    - espanso-wayland
+    - espanso-wayland-bin
   links:
     - match
     - config
