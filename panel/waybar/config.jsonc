@@ -7,12 +7,8 @@
   "margin-left": 10,
   "margin-bottom": 2,
   "spacing": 0,
-  "modules-left": [
-    "hyprland/workspaces"
-  ],
-  "modules-center": [
-    "custom/hyprvoice"
-  ],
+  "modules-left": ["hyprland/workspaces"],
+  "modules-center": ["custom/hyprvoice"],
   "modules-right": [
     "custom/recorder",
     "hyprland/language",
@@ -24,7 +20,7 @@
     "custom/pacman",
     "clock",
     "custom/notification",
-    "custom/power"
+    "custom/power",
   ],
   "hyprland/workspaces": {
     "format": "{windows}",
@@ -52,29 +48,29 @@
       "class<chrome-fmpnliohjhemenmnlpbfagaolkdacoja-Default>": "", // claude
       "class<chrome-dcllmfmjlkpljanfegjgohmlnfipachj-Default>": "󰧑 ", // brain.fm
       // misc
-      "class<WhichCmd>": ""
-    }
+      "class<WhichCmd>": "",
+    },
   },
   "hyprland/language": {
     "format": " {}",
     "format-en": "EN",
     "format-se": "SE",
-    "on-click": "hyprctl switchxkblayout all next"
+    "on-click": "hyprctl switchxkblayout all next",
   },
   "clock": {
     "format": "{:%H:%M}",
     "format-alt": "{:%Y-%m-%d %H:%M}",
-    "tooltip-format": "<tt>{calendar}</tt>"
+    "tooltip-format": "<tt>{calendar}</tt>",
   },
   "cpu": {
     "format": " {usage}%",
     "interval": 5,
-    "on-click": "focus_or_run btop.desktop"
+    "on-click": "focus_or_run btop.desktop",
   },
   "memory": {
     "format": " {percentage}%",
     "interval": 5,
-    "on-click": "focus_or_run btop.desktop"
+    "on-click": "focus_or_run btop.desktop",
   },
   "network": {
     "format": " {bandwidthUpBytes}  {bandwidthUpBytes}",
@@ -82,7 +78,7 @@
     // "format-ethernet": " {ipaddr}/{cidr}",
     "format-disconnected": "󰖪 ",
     "tooltip-format": "{ifname}: {ipaddr}",
-    "on-click": "focus_or_run btop.desktop"
+    "on-click": "focus_or_run btop.desktop",
   },
   "pulseaudio": {
     "scroll-step": 5, // %, can be a float
@@ -100,16 +96,12 @@
       "phone": "",
       "portable": "",
       "car": "",
-      "default": [
-        "",
-        "",
-        ""
-      ]
+      "default": ["", "", ""],
     },
-    "on-click": "pavucontrol"
+    "on-click": "pavucontrol",
   },
   "tray": {
-    "spacing": 10
+    "spacing": 10,
   },
   "custom/power": {
     "format": "",
@@ -121,8 +113,8 @@
       "shutdown": "shutdown",
       "reboot": "reboot",
       "suspend": "safe-suspend",
-      "hibernate": "systemctl hibernate"
-    }
+      "hibernate": "systemctl hibernate",
+    },
   },
   "custom/pacman": {
     "format": "{}",
@@ -131,7 +123,7 @@
     "tooltip": true,
     "tooltip-format": "System updates available",
     "exec-if": "exit 0",
-    "signal": 8
+    "signal": 8,
   },
   "custom/notification": {
     "tooltip": true,
@@ -144,14 +136,14 @@
       "inhibited-notification": "󰂛",
       "inhibited-none": "󰪑",
       "dnd-inhibited-notification": "󰂛",
-      "dnd-inhibited-none": "󰪑"
+      "dnd-inhibited-none": "󰪑",
     },
     "return-type": "json",
     "exec-if": "which swaync-client",
     "exec": "swaync-client -swb",
     "on-click": "swaync-client -t -sw",
     "on-click-right": "swaync-client -d -sw",
-    "escape": true
+    "escape": true,
   },
   "custom/recorder": {
     "format": "{}",
@@ -159,13 +151,13 @@
     "exec-if": "screen_record status",
     "exec": "screen_record panel",
     "on-click": "screen_record stop",
-    "interval": 1
+    "interval": 1,
   },
   "custom/hyprvoice": {
     "format": "{}",
     "return-type": "json",
     "exec-if": "systemctl --user is-active hyprvoice.service",
     "exec": "hyprvoice_panel",
-    "interval": 1
-  }
+    "interval": 1,
+  },
 }
