@@ -48,6 +48,7 @@ arch_config:
     # pacman
     - pacman-contrib
     - rebuild-detector
+    - rsync # some AUR PKGBUILDs assume it (e.g. mdcat-bin)
     # tools
     - ranger
     - python-pillow # for image previews in ranger

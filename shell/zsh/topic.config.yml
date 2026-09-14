@@ -46,7 +46,6 @@ zsh_config:
     - ripgrep
     - tree
     - jq
-    - mdcat
     - entr
     - eza
     - go-yq
@@ -54,6 +53,7 @@ zsh_config:
     - bind
   aur_packages:
     - pandoc-bin
+    - mdcat-bin
   links:
     - src: zshrc
       rename: .zshrc
