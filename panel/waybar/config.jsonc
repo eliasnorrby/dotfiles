@@ -46,10 +46,10 @@
       "class<obsidian>": "",
       "class<Notion>": "",
       "class<BtopKitty>": "",
-      "class<claude>": "",
       // pwas
       "class<chrome-kjgfgldnnfoeklkmfkjfagphfepbbdan-Default>": "", // google meet
       "class<chrome-bgdbmehlmdmddlgneophbcddadgknlpm-Default>": " ", // linear
+      "class<chrome-fmpnliohjhemenmnlpbfagaolkdacoja-Default>": "", // claude
       // misc
       "class<WhichCmd>": ""
     }
