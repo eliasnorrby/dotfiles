@@ -6,5 +6,4 @@ db_config:
     - duckdb
   pacman_packages:
     - postgresql
-  aur_packages:
-    - duckdb-bin
+    - duckdb
