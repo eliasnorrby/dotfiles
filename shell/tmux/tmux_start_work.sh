@@ -2,7 +2,7 @@
 # Start (or resume) work on a task from a Linear branch on the clipboard.
 #
 # Copy Linear's suggested branch name (e.g. elias/bemlo-7370-spike-jsonforms)
-# — or type one when prompted, if the clipboard holds nothing usable — then this
+# — or type one when prompted, if the clipboard doesn't hold one — then this
 # script:
 #   - creates a worktree under <main>/.worktrees/<lowercase-id> checked out to
 #     that branch (branching off the default branch when it doesn't exist yet),
@@ -52,23 +52,27 @@ looks_like_branch() {
   [ -n "$1" ] && [[ "$1" != *[[:space:]]* ]]
 }
 
-# Ask for a branch name, pre-filling whatever the clipboard held so a near-miss
-# can be edited rather than retyped. Keeps asking until the answer looks like a
-# branch; an empty answer (or having no terminal to ask on) aborts. Readline
-# writes to stderr, so only the answer itself lands on stdout.
+# Linear prefixes its suggested branch names with the assignee's username, which
+# matches the login here. Anything else on the clipboard (a URL, a code snippet,
+# a stray word) is ignored in favour of asking.
+looks_like_linear_branch() {
+  [[ "$1" == "$USER"/?* ]] && looks_like_branch "$1"
+}
+
+# Ask for a branch name. Keeps asking until the answer looks like a branch; an
+# empty answer (or having no terminal to ask on) aborts. Readline writes to
+# stderr, so only the answer itself lands on stdout.
 prompt_branch() {
-  local initial=$1 answer
+  local answer
   [ -t 0 ] || return 1
-  while read -r -e -i "$initial" -p "Branch: " answer; do
+  while read -r -e -p "Branch: " answer; do
     answer=$(trim "$answer")
     [ -n "$answer" ] || return 1
     if looks_like_branch "$answer"; then
       printf '%s' "$answer"
       return
     fi
-    # Drop the prefill on retry so a bare Enter can still abort.
     printf "✗ A branch name can't contain spaces (empty aborts)\n" >&2
-    initial=
   done
   return 1
 }
@@ -113,8 +117,8 @@ main() {
   local branch id dir main_root created=0 win
 
   branch=$(trim "$(read_clipboard)")
-  if ! looks_like_branch "$branch"; then
-    branch=$(prompt_branch "$branch") \
+  if ! looks_like_linear_branch "$branch"; then
+    branch=$(prompt_branch) \
       || die "No branch name given — copy or type one first"
   fi
 
