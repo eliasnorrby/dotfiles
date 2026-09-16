@@ -1,3 +1,9 @@
 search_shortcut: ALT+CMD+SPACE
+
+# Linux/Wayland only (ignored on macOS). Espanso maps the keys it reads and
+# the keys it injects through this xkb config itself, so it must mirror
+# hyprland's input:kb_layout, and elias:groups (keyboard/xkb) lets espanso
+# follow layout switches without a restart. See wm/hyprland/switch_layout.sh.
 keyboard_layout:
-  layout: "us"
+  layout: "us,se"
+  options: "elias:groups"
