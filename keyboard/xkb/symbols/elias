@@ -9,3 +9,16 @@ partial
 xkb_symbols "dashes" {
     key <FK13> { [ endash, emdash ] };
 };
+
+// Absolute layout selection: F14..F17 lock xkb group 1..4 (the position in
+// kb_layout). Unlike the grp:* toggles this can't drift by one between the
+// compositor and espanso, which keeps its own xkb state per input device
+// and needs the same option in its config. switch_layout presses these keys
+// through ydotool; nothing else should emit them.
+partial modifier_keys
+xkb_symbols "groups" {
+    key <FK14> { [ ISO_First_Group ], actions = [ LockGroup(group=1) ] };
+    key <FK15> { [ ISO_Last_Group ],  actions = [ LockGroup(group=2) ] };
+    key <FK16> { [ ISO_Group_Shift ], actions = [ LockGroup(group=3) ] };
+    key <FK17> { [ ISO_Group_Shift ], actions = [ LockGroup(group=4) ] };
+};

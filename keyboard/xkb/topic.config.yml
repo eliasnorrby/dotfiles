@@ -1,12 +1,20 @@
 ---
 xkb_config:
   path: keyboard/xkb
-  # X11-era, kept for reference:
-  # pacman_packages:
-  #   - xcape
+  # Links land in /etc/xkb rather than ~/.config/xkb: libxkbcommon skips the
+  # $HOME-based include paths in processes with file capabilities (espanso
+  # has cap_dac_override for /dev/input), while /etc/xkb is a fixed path
+  # that every consumer (hyprland, espanso, xkbcli) searches. Needs sudo.
+  become: true
   links:
-    - symbols
-    - rules
-    # X11-era, kept for reference:
-    # - setup-keybindings.sh
-    # - layout.xkb
+    - src: symbols
+      dest: "/etc/xkb/"
+    - src: rules
+      dest: "/etc/xkb/"
+
+# X11-era, kept for reference:
+# pacman_packages:
+#   - xcape
+# links:
+#   - setup-keybindings.sh
+#   - layout.xkb

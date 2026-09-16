@@ -1,0 +1,18 @@
+---
+- name: create xkb extra config directory
+  file:
+    path: /etc/xkb
+    state: directory
+    mode: "0755"
+  become: true
+  tags: ["never", "sudo_enabled"]
+
+- name: notice about sudo
+  debug:
+    msg: |
+      The tasks for xkb require sudo and have been skipped.
+
+      Please pass the 'sudo_enabled' tag (use the --become flag for the CLI)
+      to run them.
+  when: "'sudo_enabled' not in ansible_run_tags"
+  tags: ["always"]
