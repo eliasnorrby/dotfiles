@@ -55,7 +55,10 @@
     "format": " {}",
     "format-en": "EN",
     "format-se": "SE",
-    "on-click": "hyprctl switchxkblayout all next",
+    // Physical keyboards all route through keyd; espanso's virtual keyboard
+    // reports its own (always US) layout and must not drive the indicator.
+    "keyboard-name": "keyd-virtual-keyboard",
+    "on-click": "switch_layout next",
   },
   "clock": {
     "format": "{:%H:%M}",

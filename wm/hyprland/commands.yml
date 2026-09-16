@@ -66,7 +66,7 @@ keys:
         value: toggle_display_brightness
       - key: l
         name: layout
-        value: hyprctl switchxkblayout all next
+        value: switch_layout next
       - key: d
         name: dnd
         value: swaync-client --toggle-dnd

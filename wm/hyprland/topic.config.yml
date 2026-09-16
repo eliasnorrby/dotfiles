@@ -54,6 +54,9 @@ hyprland_config:
     - src: delete_prev_word.sh
       dest: "{{ xdg_bin_home }}/"
       rename: delete_prev_word
+    - src: switch_layout.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: switch_layout
   pacman_packages:
     - hyprland
     - hyprpaper
