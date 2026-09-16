@@ -16,6 +16,9 @@ claude_config:
     - src: claude_notification.sh
       dest: "{{ xdg_bin_home }}/"
       rename: claude_notification
+    - src: claude_session_title.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: claude_session_title
     - src: settings.json
       dest: "{{ claude_home }}/"
     - src: statusline.sh

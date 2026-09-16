@@ -35,6 +35,10 @@
           {
             "type": "command",
             "command": "claude_notification reset"
+          },
+          {
+            "type": "command",
+            "command": "claude_session_title hook"
           }
         ]
       }

@@ -17,6 +17,12 @@ Get to work on a Linear issue.
    description, comments, and any linked attachments. Follow links that matter
    (sub-issues, related tickets, design docs).
 
+   Then name the session after the issue so it is easy to find when resuming:
+
+   ```
+   claude_session_title set "BEMLO-1234 <issue title>"
+   ```
+
 3. **Familiarize yourself with the issue.** Understand what's being asked, the
    acceptance criteria, and how it maps onto this codebase. Explore the relevant
    code before forming a plan.

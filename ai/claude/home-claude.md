@@ -79,3 +79,18 @@ Rebased onto master and re-ran the backend suite — all green.
 ## SQL
 
 Whenever you're writing SQL in a conversation context, that is, when asked for a specific query, always include a documentation comment above the query explaining what it does. Not how it works, just what its aim is.
+
+## Session titles
+
+When the session's work is centred on a Linear issue — it started with `/lg`,
+I handed you a ticket id, or you fetched an issue that is clearly the subject
+of the work — name the session after it as soon as you know the issue's title:
+
+```
+claude_session_title set "BEMLO-1234 Fix invoice rounding"
+```
+
+Format: issue identifier, a space, the issue title verbatim. The title is
+applied on my next prompt (a UserPromptSubmit hook picks it up), so run it
+once and carry on; don't wait for it to take effect. Skip it when the issue is
+only incidental, e.g. you looked one up to answer a question.
