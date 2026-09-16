@@ -43,6 +43,7 @@
   "enabledPlugins": {
     "slack@claude-plugins-official": true
   },
+  "feedbackDrafts": "off",
   "effortLevel": "xhigh",
   "theme": "auto",
   "agentPushNotifEnabled": true,
