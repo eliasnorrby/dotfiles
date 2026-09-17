@@ -31,7 +31,11 @@ if command -v pbpaste >/dev/null 2>&1; then
 fi
 
 if command -v wl-paste >/dev/null 2>&1 && find_wayland; then
-  text=$(wl-paste -n 2>/dev/null)
+  # Command substitution strips trailing newlines, and a line yanked in nvim
+  # ends in one: without it nvim reads the paste back as charwise, and p joins
+  # it onto the current line. The x shields them and is removed after.
+  text=$(wl-paste -n 2>/dev/null && printf x)
+  text=${text%x}
   if [ -n "$text" ]; then
     printf '%s' "$text"
     exit
