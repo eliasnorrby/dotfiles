@@ -7,10 +7,11 @@
 #
 #   wiki_checkpoint resolve [--issue KEY] [DIR]
 #                                      Which vault and task note does the work
-#                                      belong to? By default the issue on DIR's
-#                                      branch; --issue when the session knows
-#                                      better (an investigation worked on from
-#                                      another branch). Prints key=value lines.
+#                                      belong to? By default whatever `wk`
+#                                      resolves for DIR (the window's task, the
+#                                      worktree's, the branch's issue); --issue
+#                                      when the session knows better. Prints
+#                                      key=value lines.
 #   wiki_checkpoint commit VAULT -- FILE...
 #                                      Commit exactly these files, message on
 #                                      stdin. Serialized across sessions.
@@ -23,8 +24,8 @@
 #                                      with uncaptured work (session-end).
 #
 # Nothing here names a vault, a tracker or a company. A session is in scope
-# when its branch carries an issue key; the vault follows from the task's
-# project through task_note's own mapping.
+# when `wk` can tell which task it belongs to; the vault follows from the
+# task's project through wk's configuration.
 #
 # Several sessions checkpoint into the same vault, so `commit` never sweeps
 # the working tree: it commits only the paths it is given, under a lock.
@@ -36,7 +37,6 @@
 
 set -uo pipefail
 
-vaults_dir="${TASK_NOTE_VAULTS_DIR:-$HOME/vaults}"
 state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/claude/wiki-checkpoint"
 # Remind after this many prompts without a checkpoint, but no more often than
 # this many seconds.
@@ -51,41 +51,34 @@ die() {
   exit 1
 }
 
-# Print the issue key carried by DIR's branch, uppercased; empty when there is
-# none. Deliberately the branch only: the clipboard is no guide to what a
-# session is working on.
-branch_issue() {
-  local dir="$1" branch
-  branch=$(git -C "$dir" symbolic-ref --quiet --short HEAD 2>/dev/null) || return 0
-  if [[ "$branch" =~ (^|[^A-Za-z0-9])([A-Za-z][A-Za-z0-9]*-[0-9]+)($|[^0-9]) ]]; then
-    printf '%s' "${BASH_REMATCH[2]^^}"
-  fi
+# Where the vaults live, from wk's configuration.
+vaults_dir() {
+  local dir
+  dir=$(wk config get defaults.vaults_dir 2>/dev/null) || dir="$HOME/vaults"
+  printf '%s' "${dir/#\~/$HOME}"
 }
 
-# A session is in scope when it works on an issue branch outside the vaults.
+# A session is in scope when it works outside the vaults on something wk can
+# resolve to a task, or to an issue a task could be imported for. Local only:
+# this runs on every prompt.
 in_scope() {
   local dir="$1"
   [ -z "${WIKI_CHECKPOINT_DISABLE:-}" ] || return 1
   [ -d "$dir" ] || return 1
   case "$(cd "$dir" && pwd -P)/" in
-    "$vaults_dir"/*) return 1 ;;
+    "$(vaults_dir)"/*) return 1 ;;
   esac
-  [ -n "$(branch_issue "$dir")" ]
+  wk resolve --json -C "$dir" 2>/dev/null | jq -e '.ok or (.issue != null)' >/dev/null 2>&1
 }
 
-# Print the uuid of the task carrying ISSUE, preferring an open one.
-task_for_issue() {
-  local json
-  json=$(task rc.context= rc.verbose=nothing "issue:$1" export 2>/dev/null)
-  jq -r --arg i "$1" '
-      [ .[] | select(.issue == $i) ]
-      | sort_by(if .status == "pending" or .status == "waiting" then 0 else 1 end, .entry)
-      | first | .uuid // empty
-    ' <<<"$json" 2>/dev/null
+# The issue the session in DIR works on, for the uncaptured-work trail.
+session_issue() {
+  wk resolve --json -C "$1" 2>/dev/null | jq -r '.issue // empty' 2>/dev/null
 }
 
 cmd_resolve() {
-  local dir="" issue="" uuid note vault rest
+  local dir="" issue="" result rc vault
+  local -a locator=()
 
   while [ $# -gt 0 ]; do
     case "$1" in
@@ -100,33 +93,26 @@ cmd_resolve() {
     esac
   done
   dir="${dir:-$PWD}"
+  [ -z "$issue" ] || locator=(--issue "$issue")
 
-  [ -n "$issue" ] || issue=$(branch_issue "$dir")
-  if [ -z "$issue" ]; then
-    echo "No issue key on the branch in $dir (pass --issue KEY if you know it)" >&2
+  # Local first, so this works offline and costs nothing per checkpoint: wk
+  # asks the tracker only when there is no task yet, and creates the note
+  # when it is missing.
+  result=$(wk resolve --ensure --json -C "$dir" "${locator[@]}")
+  rc=$?
+  if [ "$rc" -eq 2 ]; then
+    echo "No task found for $dir (pass --issue KEY if you know it)" >&2
     exit 2
   fi
+  [ "$rc" -eq 0 ] || die "$(jq -r '.error.message // "wk resolve failed"' <<<"$result" 2>/dev/null)"
 
-  # Local first, so this works offline and costs nothing per checkpoint. The
-  # tracker is only asked when there is no task yet.
-  uuid=$(task_for_issue "$issue")
-  if [ -z "$uuid" ]; then
-    task_import_issue "$issue" >/dev/null 2>&1 || true
-    uuid=$(task_for_issue "$issue")
-  fi
-  [ -n "$uuid" ] || die "no task for $issue, and importing it failed"
-
-  note=$(task_note ${TASK_NOTE_PROJECT_VAULTS:+--vault-map "$TASK_NOTE_PROJECT_VAULTS"} \
-    --print "$uuid") || die "could not find or create a note for $issue"
-
-  rest="${note#"$vaults_dir"/}"
-  vault="$vaults_dir/${rest%%/*}"
+  vault=$(jq -r '.vault // empty' <<<"$result")
   if [ ! -f "$vault/CLAUDE.md" ] || [ ! -d "$vault/wiki" ]; then
     echo "Vault $vault has no wiki schema yet; nothing to checkpoint into" >&2
     exit 3
   fi
 
-  printf 'issue=%s\ntask=%s\nvault=%s\nnote=%s\n' "$issue" "$uuid" "$vault" "$note"
+  jq -r '"issue=\(.issue // "")", "task=\(.task.uuid)", "vault=\(.vault)", "note=\(.note)"' <<<"$result"
 }
 
 cmd_commit() {
@@ -272,7 +258,7 @@ cmd_hook() {
       # sessions that ended with work the wiki never saw.
       if [ "$(state_get "$sid" prompts)" -gt 0 ] && in_scope "$cwd"; then
         mkdir -p "$state_dir"
-        printf '%s\t%s\t%s\t%s\t%s\n' "$(date -Is)" "$sid" "$(branch_issue "$cwd")" "$cwd" \
+        printf '%s\t%s\t%s\t%s\t%s\n' "$(date -Is)" "$sid" "$(session_issue "$cwd")" "$cwd" \
           "$(jq -r '.transcript_path // empty' <<<"$input" 2>/dev/null)" >>"$state_dir/uncaptured.tsv"
       fi
       rm -f "$state_dir/$sid".{first,last,prompts,reminded}

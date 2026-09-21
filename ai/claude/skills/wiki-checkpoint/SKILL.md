@@ -18,13 +18,14 @@ Run it from the directory the work is happening in. It prints `issue`, `task`,
 `vault` and `note` (the task note, created if it didn't exist, along with the
 taskwarrior task).
 
-It reads the issue from the branch. If this session is about a different issue
-than the branch says (an investigation worked on from another checkout, a
-sub-issue handled in its parent's thread), say which:
-`wiki_checkpoint resolve --issue KEY`.
+It asks `wk` which task this session belongs to: the task its tmux window was
+opened for, else the one whose worktree this is, else the issue on the branch.
+That covers work without an issue too. If this session is about a different
+piece of work than that (an investigation worked on from another checkout),
+say which: `wiki_checkpoint resolve --issue KEY`.
 
-- Exit 2 (no issue on the branch) or 3 (vault has no schema): there is nowhere
-  to checkpoint. Say so in one line and carry on; don't improvise a location.
+- Exit 2 (no task found) or 3 (vault has no schema): there is nowhere to
+  checkpoint. Say so in one line and carry on; don't improvise a location.
 - Any other failure: file a friction report (step 5) and carry on.
 
 ## 2. Read the rules, once per session

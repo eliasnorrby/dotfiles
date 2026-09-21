@@ -5,7 +5,7 @@ keys:
     value: special_paste
   - key: i
     name: import issue
-    value: task_import_issue --notify
+    value: wk import --from clipboard --notify
   - key: a
     name: apps
     keys:

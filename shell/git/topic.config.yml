@@ -48,15 +48,6 @@ git_config:
     - src: auto_worktree_pruner.sh
       dest: "{{ xdg_bin_home }}/"
       rename: auto_worktree_pruner
-    - src: linear_issue_number.sh
-      dest: "{{ xdg_bin_home }}/"
-      rename: linear_issue_number
-    - src: open_linear_issue.sh
-      dest: "{{ xdg_bin_home }}/"
-      rename: open_linear_issue
-    - src: issue_resolve.sh
-      dest: "{{ xdg_bin_home }}/"
-      rename: issue_resolve
     - src: branch_todos.sh
       dest: "{{ xdg_bin_home }}/"
       rename: branch_todos

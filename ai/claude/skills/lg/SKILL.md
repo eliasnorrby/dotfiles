@@ -10,7 +10,9 @@ Get to work on a Linear issue.
 
 1. **Determine the Linear ticket ID** by trying these in order:
    - Argument passed to the command (e.g. `/lg BEMLO-1234`)
-   - Infer from the current git branch name (e.g. `user/bemlo-1234-...` → `BEMLO-1234`)
+   - `wk resolve --json`, which knows the task this session belongs to (from
+     the tmux window, the worktree or the branch); its `issue` field is the
+     ticket, also when it exits 2 because no task exists yet
    - If neither works, ask the user with AskUserQuestion
 
 2. **Fetch the issue** using `mcp__linear-server__get_issue` and read its

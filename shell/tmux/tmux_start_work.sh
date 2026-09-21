@@ -8,7 +8,7 @@
 #     that branch (branching off the default branch when it doesn't exist yet),
 #   - opens a tmux window cwd'd there and ties it via the @worktree option
 #     (reusing go_to_worktree from worktree_lib.sh),
-#   - annotates the window's @issue/@desc by reusing tmux_set_issue.
+#   - annotates the window's @task/@issue/@desc with `wk annotate`.
 #
 # Re-running on the same task just switches to the existing window. Meant to run
 # in a tmux popup (see `bind N` in tmux.conf).
@@ -146,7 +146,7 @@ main() {
 
   # Annotate only freshly created worktrees; resuming keeps existing annotations.
   if [ "$created" -eq 1 ]; then
-    tmux_set_issue -t "$win" "$branch" || true
+    wk annotate -t "$win" -C "$dir" --branch "$branch" >/dev/null 2>&1 || true
   fi
 }
 

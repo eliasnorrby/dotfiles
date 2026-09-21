@@ -75,7 +75,10 @@
       "~/vaults"
     ],
     "allow": [
-      "Bash(wiki_checkpoint *)"
+      "Bash(wiki_checkpoint *)",
+      "Bash(wk resolve *)",
+      "Bash(wk show *)",
+      "Bash(wk config get *)"
     ]
   },
   "enabledPlugins": {
