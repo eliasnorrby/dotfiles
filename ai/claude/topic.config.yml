@@ -19,6 +19,9 @@ claude_config:
     - src: claude_session_title.sh
       dest: "{{ xdg_bin_home }}/"
       rename: claude_session_title
+    - src: wiki_checkpoint.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: wiki_checkpoint
     - src: settings.json
       dest: "{{ claude_home }}/"
     - src: statusline.sh

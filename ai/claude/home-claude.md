@@ -108,3 +108,27 @@ Format: issue identifier, a space, the issue title verbatim. The title is
 applied on my next prompt (a UserPromptSubmit hook picks it up), so run it
 once and carry on; don't wait for it to take effect. Skip it when the issue is
 only incidental, e.g. you looked one up to answer a question.
+
+## Wiki
+
+My Obsidian vaults under `~/vaults/` are LLM-maintained wikis: you write them,
+I browse them. Each vault that takes part has a `CLAUDE.md` describing its
+structure and rules. They are your long-term memory for my work, so use them in
+both directions.
+
+**Reading.** When you start work on an issue, run `wiki_checkpoint resolve` and
+read the task note it prints, plus the pages that note links to. Before
+investigating something that sounds like it has history (an external system, a
+customer, a past incident), check the vault's `index.md`. If the wiki turns out
+to be wrong or missing something, fix it at the next checkpoint.
+
+**Writing.** Checkpoint with the `wiki-checkpoint` skill on your own
+initiative; I won't remember to ask. Good moments: a requirement is nailed
+down, a design decision is made or an approach abandoned, an investigation
+reaches a conclusion, a PR is opened or merged, and before I'm likely to step
+away. A hook will also remind you when it has been a while. Keep it brief and
+don't derail the task for it.
+
+Sessions outside an issue branch have nowhere to checkpoint yet; `resolve` says
+so and that is fine.
+

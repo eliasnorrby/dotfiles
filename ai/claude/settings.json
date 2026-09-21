@@ -39,9 +39,43 @@
           {
             "type": "command",
             "command": "claude_session_title hook"
+          },
+          {
+            "type": "command",
+            "command": "wiki_checkpoint hook user-prompt-submit"
           }
         ]
       }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "wiki_checkpoint hook post-tool-use"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "wiki_checkpoint hook session-end"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "additionalDirectories": [
+      "~/vaults"
+    ],
+    "allow": [
+      "Bash(wiki_checkpoint *)"
     ]
   },
   "enabledPlugins": {
