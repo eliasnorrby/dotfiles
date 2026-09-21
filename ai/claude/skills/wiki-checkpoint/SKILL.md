@@ -18,6 +18,11 @@ Run it from the directory the work is happening in. It prints `issue`, `task`,
 `vault` and `note` (the task note, created if it didn't exist, along with the
 taskwarrior task).
 
+It reads the issue from the branch. If this session is about a different issue
+than the branch says (an investigation worked on from another checkout, a
+sub-issue handled in its parent's thread), say which:
+`wiki_checkpoint resolve --issue KEY`.
+
 - Exit 2 (no issue on the branch) or 3 (vault has no schema): there is nowhere
   to checkpoint. Say so in one line and carry on; don't improvise a location.
 - Any other failure: file a friction report (step 5) and carry on.

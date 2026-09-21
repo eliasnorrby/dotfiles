@@ -5,8 +5,12 @@
 # Claude, following the wiki-checkpoint skill; this script covers the parts
 # that should be deterministic:
 #
-#   wiki_checkpoint resolve [DIR]      Which vault and task note does the work
-#                                      in DIR belong to? Prints key=value lines.
+#   wiki_checkpoint resolve [--issue KEY] [DIR]
+#                                      Which vault and task note does the work
+#                                      belong to? By default the issue on DIR's
+#                                      branch; --issue when the session knows
+#                                      better (an investigation worked on from
+#                                      another branch). Prints key=value lines.
 #   wiki_checkpoint commit VAULT -- FILE...
 #                                      Commit exactly these files, message on
 #                                      stdin. Serialized across sessions.
@@ -81,19 +85,35 @@ task_for_issue() {
 }
 
 cmd_resolve() {
-  local dir="${1:-$PWD}" issue uuid note vault rest
+  local dir="" issue="" uuid note vault rest
 
-  issue=$(branch_issue "$dir")
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --issue)
+        issue="${2^^}"
+        shift 2
+        ;;
+      *)
+        dir="$1"
+        shift
+        ;;
+    esac
+  done
+  dir="${dir:-$PWD}"
+
+  [ -n "$issue" ] || issue=$(branch_issue "$dir")
   if [ -z "$issue" ]; then
-    echo "No issue key on the branch in $dir" >&2
+    echo "No issue key on the branch in $dir (pass --issue KEY if you know it)" >&2
     exit 2
   fi
 
-  # Idempotent: reports an existing task rather than duplicating it. Failure
-  # (offline, no token) is fine as long as the task already exists.
-  task_import_issue "$issue" >/dev/null 2>&1 || true
-
+  # Local first, so this works offline and costs nothing per checkpoint. The
+  # tracker is only asked when there is no task yet.
   uuid=$(task_for_issue "$issue")
+  if [ -z "$uuid" ]; then
+    task_import_issue "$issue" >/dev/null 2>&1 || true
+    uuid=$(task_for_issue "$issue")
+  fi
   [ -n "$uuid" ] || die "no task for $issue, and importing it failed"
 
   note=$(task_note ${TASK_NOTE_PROJECT_VAULTS:+--vault-map "$TASK_NOTE_PROJECT_VAULTS"} \
