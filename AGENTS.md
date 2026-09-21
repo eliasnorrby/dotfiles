@@ -181,8 +181,13 @@ ansible-playbook playbook.yml --check --diff
 - Company specifics live in the machine-local `~/.config/wk/config.toml`
   (see `config.example.toml`), never in code. Other scripts read them with
   `wk config get <key>`.
-- `dev/wk/taskrc` holds the task schema (UDAs) and is included by
-  `base/task/taskrc`.
+- Main commands: `resolve`, `import`, `note`, `open` (window, worktree,
+  branch), `start` (the whole kickoff, Claude included), `sync` (PRs and issue
+  status, every minute from `wk-sync.timer`), `menu`, `adopt`, `status`,
+  `doctor`. All take `--json`. `wk hook …` is called by taskwarrior's,
+  Claude's and tmux's hooks and must stay fast and never fail.
+- `dev/wk/taskrc` holds the task schema (UDAs), urgency and colour rules and
+  the taskwarrior-tui shortcuts; it is included by `base/task/taskrc`.
 - Run `dev/wk/check` (ruff + pytest through `uv`) before committing changes
   there. Tests use a throwaway taskwarrior database and a private tmux socket.
 

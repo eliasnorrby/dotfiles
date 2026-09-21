@@ -15,6 +15,7 @@ project = "inbox"        # taskwarrior project for tasks nothing else claims
 vault = "personal"       # vault for projects without a mapping below
 vaults_dir = "~/vaults"
 tracker = "linear"       # tracker for issue keys of teams not listed below
+# branch_prefix = "me/"  # default: $USER/. Marks a clipboard branch as mine.
 
 [notes]
 # Candidates, since vaults need not share a layout: the first one that exists
@@ -34,5 +35,22 @@ vault = "acme"
 
 # Repositories wk knows about.
 [repos."acme/app"]
-path = "~/work/acme/app"
-project = "work"
+path = "~/work/acme/app" # the main checkout; worktrees go under .worktrees/
+project = "work"         # taskwarrior project for PR-only work items
+session = "app"          # tmux session for its windows; default: the basename
+sync = true              # include in `wk sync` (required: nothing syncs unscoped)
+
+[github]
+team_review_requests = false # also make review items of requests to my teams
+
+[sync]
+tracker_interval = 300   # seconds between issue-tracker polls
+
+[start]
+prompt = "/lg"           # Claude's first prompt in `wk start`
+
+# Desktop notifications from sync, each on its own switch.
+[notify]
+review_requested = true
+checks_failed = true
+reviewed = true          # changes requested, or approved

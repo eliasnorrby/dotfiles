@@ -96,13 +96,17 @@ def window_name(task):
     return _slug(task.get("description", ""), 24) or task["uuid"][:8]
 
 
-def ensure_window(config, tasks, task, cwd, branch=None, command=None, fetch_issue=None):
-    """Find or create the task's window, without switching to it."""
+def ensure_window(config, tasks, task, cwd, branch=None, command=None, fetch_issue=None, plain_dir=None):
+    """Find or create the task's window, without switching to it. `plain_dir`
+    is where a task without a repository of its own gets its window."""
     for window in tmux.windows():
         if window["task"] == task["uuid"]:
             return Opened(window["id"], window["session"], window["worktree"] or cwd)
 
-    repo, main = repo_path(config, task, cwd)
+    # Only work that lives on a branch gets a checkout; anything else (a plain
+    # to-do, untracked tinkering) gets a window where it already is.
+    wants_checkout = branch or task.get("issue") or task.get("branch") or task.get("prs")
+    repo, main = repo_path(config, task, cwd) if wants_checkout else (None, None)
     if branch and not main:
         raise WkError("a branch needs a repository: run this from inside one, or set `repo` on the task")
     created_worktree = False
@@ -117,8 +121,15 @@ def ensure_window(config, tasks, task, cwd, branch=None, command=None, fetch_iss
                 created_worktree = True
         tasks.modify(task, {"branch": branch, "worktree": directory, "repo": repo})
         session = config.data["repos"].get(repo or "", {}).get("session") or os.path.basename(main)
+    elif plain_dir and git.is_repo(plain_dir):
+        # Untracked work in a repository: its main checkout, its session, and
+        # no worktree or branch unless asked for.
+        directory = plain_dir
+        slug = git.slug(plain_dir) or ""
+        session = config.data["repos"].get(slug, {}).get("session") or os.path.basename(git.main_worktree(plain_dir))
+        tasks.modify(task, {"repo": slug})
     else:
-        directory = os.path.expanduser(config.data["defaults"].get("dir", "~"))
+        directory = os.path.expanduser(plain_dir or config.data["defaults"].get("dir", "~"))
         session = config.data["defaults"].get("session") or "main"
     session = re.sub(r"[.:]", "-", session)
 

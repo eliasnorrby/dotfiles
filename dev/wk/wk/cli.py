@@ -420,6 +420,136 @@ def cmd_state(args, out):
     return 0
 
 
+def cmd_start(args, out):
+    """The one-gesture kickoff: task, note, worktree, window, Claude. Every
+    step exists as a command of its own; this only strings them together. It
+    never reads the clipboard and never opens a picker, so Claude can call it."""
+    import shlex
+    import uuid as uuids
+
+    from . import git, workspace
+    from .resolve import resolve
+
+    config, tasks = context(args)
+    cwd = os.path.realpath(args.directory or os.getcwd())
+    plain_dir = None
+    if args.new:
+        repo = git.slug(cwd) if git.is_repo(cwd) else None
+        task = tasks.add(args.new, {"repo": repo, "project": config.project_for_repo(repo)})
+        plain_dir = git.main_worktree(cwd) if repo else cwd
+    else:
+        resolution = resolve(tasks, locator_from(args), cwd)
+        task = resolution.task or _import_missing(config, tasks, resolution, args.offline, cwd)
+        if not task:
+            raise NotFound(f"no task for {resolution.issue or args.locator or cwd}")
+    if args.partof:
+        parent = resolve(tasks, locators.parse(args.partof), cwd).task
+        if not parent:
+            raise NotFound(f"no task for {args.partof}")
+        tasks.modify(task, {"partof": parent["uuid"]})
+        task = tasks.get(task["uuid"])
+
+    note, _vault = note_of(config, tasks, task, create=True)
+    task = tasks.get(task["uuid"])
+    command = session = None
+    if not args.no_claude:
+        session = str(uuids.uuid4())
+        prompt = args.prompt if args.prompt is not None else config.data.get("start", {}).get("prompt", "")
+        command = shlex.join(["claude", "--session-id", session] + ([prompt] if prompt else []))
+    opened = workspace.ensure_window(config, tasks, task, cwd, branch=args.on, command=command, plain_dir=plain_dir)
+    launched = bool(command) and opened.created_window
+    if launched:
+        tasks.modify(tasks.get(task["uuid"]), {"session": session})
+    if not args.no_switch:
+        workspace.go(opened)
+    payload = {
+        "task": describe(tasks.get(task["uuid"])),
+        "note": note,
+        "window": opened.window,
+        "session": opened.session,
+        "directory": opened.directory,
+        "claude": launched,
+    }
+    lines = [f"{opened.session}:{opened.window}  {opened.directory}"]
+    if command and not launched:
+        lines.append("the task already had a window; Claude was not started in it")
+    out.result(payload, lines)
+    return 0
+
+
+def cmd_menu(args, out):
+    """Every action valid for a task, in one fzf list, so that a new action
+    never needs a key of its own."""
+    import subprocess
+
+    from . import prstatus
+
+    _config, tasks = context(args)
+    resolution, _cwd = resolved(args, tasks)
+    task = resolution.task
+    if not task:
+        raise NotFound(f"no task for {args.locator or 'this directory'}")
+    uuid = task["uuid"]
+    prs = _task_prs(task) if (task.get("prs") or task.get("pr_number")) else []
+    review = kind_of(task) == "review"
+
+    actions = [("check out for review" if review else "open in tmux", ["open", "--pause-on-error", uuid])]
+    actions.append(("note", ["note", uuid]))
+    if task.get("issue"):
+        actions.append((f"open issue {task['issue']}", ["open-issue", uuid]))
+    for pr in prs:
+        actions.append((f"open PR   {prstatus.summary(pr)}", ["open-pr", "--pick", pr["number"], uuid]))
+    if not review:
+        for pr in prs:
+            actions.append(
+                (f"merge PR  {prstatus.summary(pr)}", ("gh", "pr", "merge", pr["number"], "--repo", pr["repo"]))
+            )
+    if task.get("session"):
+        actions.append(("resume Claude session", ("resume", task["session"])))
+    if not review:
+        actions.append(("start: note, window and Claude", ["start", "--pause-on-error", uuid]))
+    actions.append(("sync now", ["sync", "--tracker", "--wait"]))
+
+    if args.list or not sys.stdin.isatty():
+        out.result({"actions": [label for label, _ in actions]}, [label for label, _ in actions])
+        return 0
+    labels = "\n".join(label for label, _ in actions)
+    header = f"{task.get('issue') or ''} {task['description']}".strip()
+    picked = subprocess.run(
+        ["fzf", "--no-multi", "--no-sort", "--height=60%", "--header", header],
+        input=labels,
+        capture_output=True,
+        text=True,
+    )
+    choice = next((action for label, action in actions if label == picked.stdout.rstrip("\n")), None)
+    if choice is None:
+        return 0
+    if isinstance(choice, list):
+        return main(choice)
+    if choice[0] == "resume":
+        return _resume(args, tasks, task, choice[1])
+    code = subprocess.run(list(choice)).returncode
+    input("Press Enter to continue...")
+    return code
+
+
+def _resume(args, tasks, task, session):
+    """Bring the task's window up and resume its Claude session there, in a
+    new pane: whatever runs in the window already is left alone."""
+    import shlex
+
+    from . import tmux, workspace
+
+    config, _ = context(args)
+    cwd = os.path.realpath(os.getcwd())
+    command = shlex.join(["claude", "--resume", session])
+    opened = workspace.ensure_window(config, tasks, task, cwd, command=command)
+    if not opened.created_window:
+        tmux.run("split-window", "-h", "-t", opened.window, "-c", opened.directory, command)
+    workspace.go(opened)
+    return 0
+
+
 def cmd_show(args, out):
     _config, tasks = context(args)
     resolution, _cwd = resolved(args, tasks)
@@ -671,6 +801,20 @@ def build_parser():
     p = sub.add_parser("state", parents=[common, where], help="a task's state; --refresh recomputes all of them")
     p.add_argument("--refresh", action="store_true")
     p.set_defaults(run=cmd_state)
+
+    p = sub.add_parser("start", parents=[common, where], help="kick off work: task, note, window, Claude")
+    p.add_argument("--new", metavar="DESCRIPTION", help="start untracked work: create the task first")
+    p.add_argument("--prompt", help="Claude's first prompt; default: start.prompt from the config")
+    p.add_argument("--no-claude", action="store_true", help="everything but Claude")
+    p.add_argument("--partof", metavar="LOCATOR", help="record the task as part of another (a sub-issue's parent)")
+    p.add_argument("--on", metavar="BRANCH", help="work on this branch")
+    p.add_argument("--no-switch", action="store_true", help="stay where I am")
+    p.add_argument("--offline", action="store_true", help="never ask a tracker")
+    p.set_defaults(run=cmd_start)
+
+    p = sub.add_parser("menu", parents=[common, where], help="pick among the actions valid for a task")
+    p.add_argument("--list", action="store_true", help="print the actions instead of asking")
+    p.set_defaults(run=cmd_menu)
 
     p = sub.add_parser("show", parents=[common, where], help="what wk knows about a task")
     p.set_defaults(run=cmd_show)

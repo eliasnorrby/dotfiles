@@ -64,6 +64,11 @@ uda.partof.label=Part of
 # from the tasks popup and from the standalone window alike.
 uda.taskwarrior-tui.shortcuts.6=wk open --pause-on-error
 uda.taskwarrior-tui.keyconfig.shortcut6=o
+# M: every other action valid for the task, in a menu. S: the whole kickoff.
+uda.taskwarrior-tui.shortcuts.7=wk menu --pause-on-error
+uda.taskwarrior-tui.keyconfig.shortcut7=M
+uda.taskwarrior-tui.shortcuts.8=wk start --pause-on-error
+uda.taskwarrior-tui.keyconfig.shortcut8=S
 uda.taskwarrior-tui.shortcuts.1=wk open-pr
 uda.taskwarrior-tui.keyconfig.shortcut1=P
 # Sync runs every minute from a systemd timer; R is "sync now", tracker
