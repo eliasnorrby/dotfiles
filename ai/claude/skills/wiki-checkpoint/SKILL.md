@@ -53,6 +53,13 @@ Only what changed since your last checkpoint in this session:
   durable was learned that outlives this task: how an external system really
   behaves, a customer's setup, a decision about architecture. Then follow the
   schema's ingest workflow for those pages. Most checkpoints don't touch them.
+- **Link what you mention.** When the task note names a customer, a system, a
+  person or another task, check `index.md` and link the page if there is one.
+  The links are what let a later session find this note from the topic's side.
+- **Don't let a durable finding die in a task note.** If you learned something
+  that outlives the task but a topic page isn't warranted yet (or the right
+  page doesn't exist), add one line under `## Wanted` in `index.md` naming the
+  subject and pointing at this note. Task notes get archived; the index doesn't.
 
 Other sessions may be writing to the same vault. Re-read a shared file (the
 daily, `index.md`, `log.md`) immediately before editing it, and make small
