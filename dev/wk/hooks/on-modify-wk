@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+"""taskwarrior on-modify hook, linked into ~/.task/hooks.
+
+stdin carries two JSON lines (original, then modified); stdout must carry
+exactly one task. Whatever goes wrong, including wk itself failing to import,
+the modified task is handed back untouched: a problem here must never block a
+task modification.
+"""
+
+import os
+import sys
+
+original = sys.stdin.readline().rstrip("\n")
+modified = sys.stdin.readline().rstrip("\n")
+result = modified or original
+try:
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+    from wk.hooks import task_on_modify
+
+    result = task_on_modify(original, modified) or result
+except Exception:
+    pass
+print(result)

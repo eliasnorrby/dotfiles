@@ -171,6 +171,21 @@ ansible-playbook playbook.yml --check --diff
   - `tmux_warning_wrapper`: warning display wrapper
   - `tmux_active_pane_directory`: get active pane directory
 
+### wk (work items)
+
+- **Location**: `dev/wk/`
+- A Python CLI (standard library only, no install step) that makes taskwarrior
+  the hub for issues, PRs, worktrees, tmux windows, Claude sessions and notes.
+  The taskwarrior task, by uuid, is the identity of a piece of work; `wk resolve`
+  answers "which task is this?" for a locator or for the current directory.
+- Company specifics live in the machine-local `~/.config/wk/config.toml`
+  (see `config.example.toml`), never in code. Other scripts read them with
+  `wk config get <key>`.
+- `dev/wk/taskrc` holds the task schema (UDAs) and is included by
+  `base/task/taskrc`.
+- Run `dev/wk/check` (ruff + pytest through `uv`) before committing changes
+  there. Tests use a throwaway taskwarrior database and a private tmux socket.
+
 ### Git Configuration
 
 - **Location**: `shell/git/`

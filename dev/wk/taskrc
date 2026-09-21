@@ -1,0 +1,45 @@
+# wk's part of the taskwarrior configuration: the work-item schema and the
+# taskwarrior-tui shortcuts that act on it. Included from base/task/taskrc.
+#
+# The task is the work item; these UDAs are its attributes. Enum-like values
+# stay plain lowercase words: '-' and '/' break rc overrides, and a '#' starts
+# a comment mid-line (so labels never carry one).
+
+# issue:  tracker key (e.g. TEAM-1234); leads the note filename when set.
+uda.issue.type=string
+uda.issue.label=Issue
+# note:   vault-relative path (no extension) of the task's note. A cache --
+#         the durable link is the `task:` uuid in the note's frontmatter.
+uda.note.type=string
+uda.note.label=Note
+# note_flag holds a glyph mirroring "note is set", written by wk. It exists
+# only to be shown: taskwarrior-tui ignores the .indicator format, so
+# `note.indicator` renders nothing there and a marker needs a real value.
+uda.note_flag.type=string
+uda.note_flag.label=N
+# branch / worktree: where the work happens. worktree is an absolute path and
+# is how a session in that directory finds its task.
+uda.branch.type=string
+uda.branch.label=Branch
+uda.worktree.type=string
+uda.worktree.label=Worktree
+# partof: uuid of the task this one is a sub-issue of. Not `parent`, which
+# taskwarrior's recurrence already owns.
+uda.partof.type=string
+uda.partof.label=Part of
+
+# == Shortcuts ==
+# taskwarrior-tui appends the selected task's uuid to the command, which is
+# exactly the locator wk wants. Configuration comes from wk's config file, not
+# the environment: the TUI is usually launched from the .desktop entry, which
+# never sources a shell.
+#
+# N is taken by taskwarrior-tui's search-previous, so notes open on O.
+uda.taskwarrior-tui.shortcuts.4=wk note
+uda.taskwarrior-tui.keyconfig.shortcut4=O
+# Imports from the clipboard; the appended uuid is not a reference and is
+# ignored. A bare PR number resolves against the current repo, so from here
+# those need the URL. --wait because the TUI redraws over the output as soon
+# as the shortcut exits.
+uda.taskwarrior-tui.shortcuts.5=wk import --from clipboard --wait
+uda.taskwarrior-tui.keyconfig.shortcut5=I

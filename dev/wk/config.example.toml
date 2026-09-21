@@ -1,0 +1,38 @@
+# wk configuration. Copy to ~/.config/wk/config.toml and fill in.
+#
+# That file is machine-local on purpose and is not managed by the dotfiles:
+# this is where everything specific to a company, a tracker workspace or a
+# machine lives, so that no script has to hardcode it. Other scripts can read
+# it too:
+#
+#   wk config get teams.ACME.workspace
+#   wk config get 'repos.acme/app.path'
+#
+# Note: disabling the dev/wk topic removes ~/.config/wk, this file included.
+
+[defaults]
+project = "inbox"        # taskwarrior project for tasks nothing else claims
+vault = "personal"       # vault for projects without a mapping below
+vaults_dir = "~/vaults"
+tracker = "linear"       # tracker for issue keys of teams not listed below
+
+[notes]
+# Candidates, since vaults need not share a layout: the first one that exists
+# in the chosen vault wins; a vault with none gets the first.
+subdirs = ["wiki/tasks", "tasks"]
+archive = "archive"
+
+# One table per issue-key prefix.
+[teams.ACME]
+project = "work"         # taskwarrior project that imported issues land in
+tracker = "linear"
+workspace = "acme"       # linear://<workspace>/issue/ACME-123
+
+# taskwarrior project (its root: work.backend maps via work) -> vault.
+[projects.work]
+vault = "acme"
+
+# Repositories wk knows about.
+[repos."acme/app"]
+path = "~/work/acme/app"
+project = "work"

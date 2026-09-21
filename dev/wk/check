@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Lint and test wk. uv fetches the tools on demand, so nothing is installed
+# into the system python; wk itself never needs uv.
+set -euo pipefail
+
+cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+
+uvx ruff check .
+uvx ruff format --check .
+uv run --no-project --with pytest pytest "$@"

@@ -1,0 +1,19 @@
+---
+# The config key is wk_config and the directory dev/wk, not dev/work: topic
+# config keys share one namespace, and work_config belongs to base/work.
+wk_config:
+  path: dev/wk
+  dirname: wk
+  links:
+    - taskrc
+    - config.example.toml
+    - src: bin/wk
+      dest: "{{ xdg_bin_home }}/"
+      rename: wk
+    - src: hooks/on-modify-wk
+      dest: "~/.task/hooks/"
+      rename: on-modify.wk
+  brew_formulae:
+    - uv
+  pacman_packages:
+    - uv

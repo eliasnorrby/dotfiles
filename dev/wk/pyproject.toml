@@ -1,0 +1,15 @@
+# Settings for the development tools only. wk is not a package: it runs from
+# this directory with the system python and has no dependencies to install.
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+# The launcher and the taskwarrior hook carry no extension.
+extend-include = ["bin/wk", "hooks/on-modify-wk"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

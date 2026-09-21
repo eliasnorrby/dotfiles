@@ -1,0 +1,30 @@
+---
+name: wk
+
+# Its own workflow rather than a job in ci.yml: path filters apply per
+# workflow, and this one should only run when wk changes.
+on:
+  push:
+    paths:
+      - dev/wk/**
+      - .github/workflows/wk.yml
+
+jobs:
+  check:
+    name: lint and test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      # Tests that need taskwarrior 3 skip themselves where only an older
+      # one is packaged; the rest (and the tmux ones) still run.
+      - name: Install tmux and taskwarrior
+        run: sudo apt-get update && sudo apt-get install -y tmux taskwarrior
+
+      - name: Check
+        run: dev/wk/check

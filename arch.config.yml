@@ -216,6 +216,9 @@ topics:
     - name: db
       state: present
       config: "{{ db_config }}"
+    - name: wk
+      state: present
+      config: "{{ wk_config }}"
   lang:
     - name: dart
       state: absent
