@@ -1,0 +1,11 @@
+---
+gdu_config:
+  path: tools/gdu
+  links:
+    - src: gdu.yaml
+      dest: ~/
+      rename: .gdu.yaml
+  pacman_packages:
+    - gdu
+  brew_formulae:
+    - gdu # installed as gdu-go when coreutils is present

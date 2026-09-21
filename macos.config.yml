@@ -9,6 +9,9 @@ topics:
       state: present
       config: "{{ notes_config }}"
   tools:
+    - name: gdu
+      state: present
+      config: "{{ gdu_config }}"
     - name: slides
       state: present
       config: "{{ slides_config }}"
