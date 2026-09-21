@@ -29,7 +29,19 @@ def kind_of(task):
 
 
 def describe(task):
-    fields = ("uuid", "id", "description", "status", "project", "issue", "note", "branch", "worktree")
+    fields = (
+        "uuid",
+        "id",
+        "description",
+        "status",
+        "project",
+        "issue",
+        "note",
+        "branch",
+        "worktree",
+        "state",
+        "session",
+    )
     out = {field: task[field] for field in fields if task.get(field) not in (None, "", 0)}
     if task.get("prs") or task.get("pr_number"):
         out["prs"] = task.get("prs") or task["pr_number"]
@@ -358,6 +370,56 @@ def cmd_open(args, out):
     return 0
 
 
+def cmd_adopt(args, out):
+    """Make a task out of work already under way: create it, and tie this
+    directory, window and Claude session to it. For work that never had an
+    issue, so it needs no ceremony to start and none to be remembered."""
+    from . import git, state, tmux
+
+    config, tasks = context(args)
+    cwd = os.path.realpath(args.directory or os.getcwd())
+    from .resolve import resolve
+
+    existing = resolve(tasks, cwd=cwd).task
+    if existing:
+        raise WkError(f"this is already task {existing.get('id') or existing['uuid'][:8]}: {existing['description']}")
+    repo = git.slug(cwd) if git.is_repo(cwd) else None
+    attrs = {"repo": repo, "project": args.project or config.project_for_repo(repo)}
+    top = git.toplevel(cwd)
+    if top:
+        attrs["worktree"] = top
+        attrs["branch"] = git.branch(cwd)
+    attrs["session"] = os.environ.get("CLAUDE_CODE_SESSION_ID")
+    task = tasks.add(args.description, attrs)
+    pane = os.environ.get("TMUX_PANE")
+    if pane and not tmux.window_option(pane, "@task"):
+        tmux.set_window_options(pane, {"@task": task["uuid"], "@desc": task["description"]})
+    session_id = attrs["session"]
+    if session_id:
+        pid = int(os.environ.get("CLAUDE_PID") or 0) or os.getppid()
+        state.write_agent(session_id, {"uuid": task["uuid"], "pane": pane, "pid": pid, "status": "working"})
+    state.refresh(tasks, config, only=task["uuid"])
+    out.result({"task": describe(tasks.get(task["uuid"]))}, [f"Task {task.get('id')}: {task['description']}"])
+    return 0
+
+
+def cmd_state(args, out):
+    from . import state
+
+    config, tasks = context(args)
+    if args.refresh:
+        state.reap()
+        written = state.refresh(tasks, config)
+        out.result({"written": written}, [f"{len(written)} task(s) updated"])
+        return 0
+    resolution, _cwd = resolved(args, tasks)
+    if not resolution.task:
+        raise NotFound(f"no task for {args.locator or 'this directory'}")
+    value = resolution.task.get("state", "")
+    out.result({"state": value, "session": resolution.task.get("session")}, [value or "-"])
+    return 0
+
+
 def cmd_show(args, out):
     _config, tasks = context(args)
     resolution, _cwd = resolved(args, tasks)
@@ -599,6 +661,16 @@ def build_parser():
     p.add_argument("--ask", action="store_true", help="with --from clipboard: prompt when it holds nothing usable")
     p.add_argument("--offline", action="store_true", help="never ask a tracker")
     p.set_defaults(run=cmd_open)
+
+    p = sub.add_parser("adopt", parents=[common], help="make a task of the work already under way here")
+    p.add_argument("description")
+    p.add_argument("-C", dest="directory", metavar="DIR", help="treat DIR as the working directory")
+    p.add_argument("--project", help="taskwarrior project; default: the repository's, from the config")
+    p.set_defaults(run=cmd_adopt)
+
+    p = sub.add_parser("state", parents=[common, where], help="a task's state; --refresh recomputes all of them")
+    p.add_argument("--refresh", action="store_true")
+    p.set_defaults(run=cmd_state)
 
     p = sub.add_parser("show", parents=[common, where], help="what wk knows about a task")
     p.set_defaults(run=cmd_show)

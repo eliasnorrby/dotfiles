@@ -336,6 +336,13 @@ class Sync:
             except WkError as err:
                 self.report.stale.append(f"{name}: {err}")
                 errors[name] = str(err)
+        if not self.report.dry_run:
+            # Hooks push state as it changes; this catches what they cannot
+            # report, such as a crashed agent or a worktree removed by hand.
+            from . import state
+
+            state.reap()
+            state.refresh(self.tasks, self.config)
         self.state["errors"] = errors
         if "github" not in errors:
             self.state["last_ok"] = now().isoformat()

@@ -13,6 +13,10 @@
           {
             "type": "command",
             "command": "claude_notification done"
+          },
+          {
+            "type": "command",
+            "command": "wk hook claude stop"
           }
         ]
       }
@@ -24,6 +28,10 @@
           {
             "type": "command",
             "command": "claude_notification input_required"
+          },
+          {
+            "type": "command",
+            "command": "wk hook claude notification"
           }
         ]
       }
@@ -43,6 +51,10 @@
           {
             "type": "command",
             "command": "wiki_checkpoint hook user-prompt-submit"
+          },
+          {
+            "type": "command",
+            "command": "wk hook claude user-prompt-submit"
           }
         ]
       }
@@ -54,7 +66,12 @@
           {
             "type": "command",
             "command": "wiki_checkpoint hook post-tool-use"
-          },
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
           {
             "type": "command",
             "command": "wk hook claude post-tool-use"
@@ -69,6 +86,32 @@
           {
             "type": "command",
             "command": "wiki_checkpoint hook session-end"
+          },
+          {
+            "type": "command",
+            "command": "wk hook claude session-end"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "wk hook claude session-start"
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "wk hook claude permission-request"
           }
         ]
       }

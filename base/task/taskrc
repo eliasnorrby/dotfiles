@@ -51,10 +51,10 @@ report.next.filter=(status:pending or status:waiting) page:limit
 # The rest of the list is the stock `next` set reproduced verbatim: there is no
 # append-to-default syntax, so naming the columns at all means pinning them and
 # no longer picking up changes to the default on upgrade.
-report.next.columns=id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,prs,prstatus,description,issue,note_flag,urgency
+report.next.columns=id,state_flag,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,prs,prstatus,description,issue,note_flag,urgency
 # No '#' in the labels: taskwarrior treats it as a mid-line comment, which
 # silently truncates the rest of the value.
-report.next.labels=ID,Active,Age,Deps,P,Project,Tag,Recur,S,Due,Until,PR,PRs,Description,Issue,N,Urg
+report.next.labels=ID,S,Active,Age,Deps,P,Project,Tag,Recur,S,Due,Until,PR,PRs,Description,Issue,N,Urg
 
 # custom started report
 report.started.columns=description

@@ -137,6 +137,9 @@ def ensure_window(config, tasks, task, cwd, branch=None, command=None, fetch_iss
     if not window:
         raise WkError(f"could not create a tmux window in session {session}")
     _annotate(window, task, directory if main else "")
+    from . import state
+
+    state.refresh(tasks, config, only=task["uuid"])
     return Opened(window, session, directory, created_window=True, created_worktree=created_worktree)
 
 

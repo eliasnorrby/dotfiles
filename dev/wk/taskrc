@@ -35,6 +35,20 @@ uda.repo.label=Repo
 uda.prstatus.type=string
 uda.prstatus.label=PRs
 uda.prstatus.values=failing,changes,review,approved,draft,
+# session: the Claude session that last worked on the task; resume it with
+# `claude --resume <id>`.
+uda.session.type=string
+uda.session.label=Session
+# state: what is going on with the task right now, topmost wins. Pushed by
+# Claude's and tmux's hooks, written only on change. state_flag mirrors it as
+# a glyph for a narrow column (the note_flag trick).
+uda.state.type=string
+uda.state.label=State
+# "checkout" and "resume" rather than "worktree" and "session": a value that
+# is also an attribute's name is read as a reference to that attribute.
+uda.state.values=input,working,idle,window,checkout,resume,
+uda.state_flag.type=string
+uda.state_flag.label=S
 # partof: uuid of the task this one is a sub-issue of. Not `parent`, which
 # taskwarrior's recurrence already owns.
 uda.partof.type=string
@@ -69,6 +83,10 @@ uda.taskwarrior-tui.keyconfig.shortcut5=I
 # == Urgency and colour ==
 # PR status moves a work item up or down the list: something to fix or merge
 # rises, something merely waiting on others sinks. First-cut values.
+# An agent waiting for an answer is the loudest thing on the list.
+urgency.uda.state.input.coefficient=8.0
+color.uda.state.input=bold white on red
+color.uda.state.working=cyan
 urgency.uda.prstatus.failing.coefficient=4.0
 urgency.uda.prstatus.changes.coefficient=3.0
 urgency.uda.prstatus.approved.coefficient=2.0
