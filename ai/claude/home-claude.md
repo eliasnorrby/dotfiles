@@ -2,6 +2,20 @@
 
 If you need input, you MUST use the "AskUserQuestion" tool.
 
+Every AskUserQuestion call must end with a catch-all question, so I can
+comment on what you just said without refusing the other questions:
+
+- question: "Is there anything else you want to add?", header: "Comments"
+- options: "No, carry on" (first) and "Yes, see my note". My actual comment
+  arrives as the free-text "Other" answer or as a note on the selection.
+
+The tool takes at most 4 questions, so ask at most 3 real ones per call. If
+you have more, send them in a follow-up call rather than dropping the
+catch-all.
+
+When I do add a comment, respond to it before acting on the other answers —
+it may change what they mean.
+
 ## Commits
 
 When committing, ensure the message is at most 72 characters in width.
