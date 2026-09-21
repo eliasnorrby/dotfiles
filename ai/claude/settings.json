@@ -54,6 +54,10 @@
           {
             "type": "command",
             "command": "wiki_checkpoint hook post-tool-use"
+          },
+          {
+            "type": "command",
+            "command": "wk hook claude post-tool-use"
           }
         ]
       }

@@ -78,3 +78,46 @@ def fetch_issue(key, post=post):
 def app_url(workspace, key):
     """Linear's custom scheme, which opens the desktop app directly."""
     return f"linear://{workspace}/issue/{key}"
+
+
+CHANGED_QUERY = """
+query($filter: IssueFilter!) {
+  issues(filter: $filter, first: 250) {
+    nodes { identifier title state { type } parent { identifier } }
+  }
+}
+"""
+
+
+def _by_team(keys):
+    teams = {}
+    for key in keys:
+        team, _, number = key.rpartition("-")
+        teams.setdefault(team, []).append(int(number))
+    # An explicit `and`: inside an `or`, Linear does not combine the sibling
+    # fields of one entry, and the filter silently matches every issue.
+    return [{"and": [{"team": {"key": {"eq": team}}}, {"number": {"in": numbers}}]} for team, numbers in teams.items()]
+
+
+def fetch_changed(keys, since=None, always=(), post=post):
+    """Of these issues, the ones updated after `since` (an ISO timestamp; all
+    of them when None), plus the `always` ones regardless."""
+    queries = []
+    if keys:
+        changed = {"or": _by_team(keys)}
+        if since:
+            changed = {"and": [changed, {"updatedAt": {"gt": since}}]}
+        queries.append(changed)
+    if always and since:
+        queries.append({"or": _by_team(always)})
+    found = {}
+    for issue_filter in queries:
+        data = post(CHANGED_QUERY, {"filter": issue_filter})
+        for node in data.get("issues", {}).get("nodes") or []:
+            found[node["identifier"]] = {
+                "key": node["identifier"],
+                "title": node["title"],
+                "state": (node.get("state") or {}).get("type"),
+                "parent": (node.get("parent") or {}).get("identifier"),
+            }
+    return list(found.values())

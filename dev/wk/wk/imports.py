@@ -81,16 +81,15 @@ def import_pr(config, tasks, number, repo=None, offline=False, cwd=None, fetch=N
     existing = tasks.by_pr(number, pr["repo"])
     if existing and is_open(existing):
         return Imported(existing, created=False)
-    # Until sync moves to `prs`/`repo`, a PR task is handed to
-    # gh_pr_task_sync by the +pr tag and the legacy fields, which completes it
-    # on merge. The '#' is part of the stored form so the column reads as a
-    # PR reference.
+    # The same shape sync gives a PR-only work item, so sync keeps it current
+    # and completes it when the PR merges.
     attrs = {
-        "pr_number": f"#{pr['number']}",
-        "pr_repo": pr["repo"],
+        "prs": f"#{pr['number']}",
+        "repo": pr["repo"],
+        "branch": pr.get("branch"),
         "project": config.project_for_repo(pr["repo"]),
     }
-    return Imported(tasks.add(pr["title"], attrs, tags=["pr"]), created=True)
+    return Imported(tasks.add(pr["title"], attrs), created=True)
 
 
 def import_reference(config, tasks, reference, offline=False, branch=None, cwd=None):

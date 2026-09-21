@@ -5,6 +5,8 @@ anything unexpected is swallowed rather than reported.
 """
 
 import json
+import re
+import sys
 
 CLOSED = ("completed", "deleted")
 
@@ -45,3 +47,46 @@ def task_on_modify(original, modified):
         return json.dumps(after, ensure_ascii=False, separators=(",", ":"))
     except Exception:
         return modified
+
+
+PR_CREATE_RE = re.compile(r"(^|[;&|\s])gh\s+pr\s+create(\s|$)")
+PR_URL_RE = re.compile(r"github\.com/([^/\s]+)/([^/\s]+)/pull/(\d+)")
+
+
+def claude_post_tool_use(payload):
+    """A session that opens a PR attaches it to its own task at once. Branch
+    names often carry no issue key, and this session knows what the PR is
+    for: that beats any guess sync could make later."""
+    if payload.get("tool_name") != "Bash":
+        return
+    if not PR_CREATE_RE.search((payload.get("tool_input") or {}).get("command", "")):
+        return
+    url = PR_URL_RE.search(json.dumps(payload.get("tool_response", "")))
+    if not url:
+        return
+    repo, number = f"{url.group(1)}/{url.group(2)}", url.group(3)
+
+    from .resolve import resolve
+    from .sync import format_prs, listed_prs
+    from .tasks import Tasks, is_open
+
+    tasks = Tasks()
+    task = resolve(tasks, cwd=payload.get("cwd")).task
+    if not task or not is_open(task) or (task.get("repo") and task["repo"].lower() != repo.lower()):
+        return
+    if tasks.by_pr(number, repo):
+        return
+    tasks.modify(task, {"prs": format_prs(listed_prs(task) + [number]), "repo": repo})
+
+
+CLAUDE_EVENTS = {"post-tool-use": claude_post_tool_use}
+
+
+def main(argv):
+    """`wk hook claude <event>`, payload on stdin. Always exits 0."""
+    try:
+        if argv[:1] == ["claude"] and argv[1:2] and argv[1] in CLAUDE_EVENTS:
+            CLAUDE_EVENTS[argv[1]](json.load(sys.stdin))
+    except Exception:
+        pass
+    return 0

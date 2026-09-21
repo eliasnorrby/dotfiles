@@ -72,14 +72,12 @@ def test_sub_issue_links_to_its_parents_task_when_there_is_one(config, tasks):
 
 
 def test_pr_import(world, config, tasks):
-    (world / "taskrc").open("a").write("uda.pr_number.type=string\nuda.pr_repo.type=string\n")
-
     def fetch(number, repo, cwd=None):
         return {"number": str(number), "title": "feat: thing", "repo": repo or "acme/app"}
 
     result = import_pr(config, tasks, "77", fetch=fetch)
-    assert result.task["pr_number"] == "#77"
-    assert result.task["pr_repo"] == "acme/app"
+    assert result.task["prs"] == "#77"
+    assert result.task["repo"] == "acme/app"
     assert result.task["project"] == "work"
     assert not import_pr(config, tasks, "77", "acme/app", fetch=fetch).created
     with pytest.raises(WkError):

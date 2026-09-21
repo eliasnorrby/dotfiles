@@ -15,12 +15,6 @@ task_config:
     - src: task_module.sh
       dest: "{{ xdg_bin_home }}/"
       rename: task_module
-    - src: script/gh_pr_task_sync.sh
-      dest: "{{ xdg_bin_home }}/"
-      rename: gh_pr_task_sync
-    - src: script/task_open_pr.sh
-      dest: "{{ xdg_bin_home }}/"
-      rename: task_open_pr
     - src: script/add_wait_tag.sh
       dest: "{{ xdg_bin_home }}/"
       rename: add_wait_tag

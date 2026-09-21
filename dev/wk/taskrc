@@ -23,6 +23,18 @@ uda.branch.type=string
 uda.branch.label=Branch
 uda.worktree.type=string
 uda.worktree.label=Worktree
+# prs / repo / prstatus: my pull requests fold into the work item they belong
+# to. prs lists them in stack order ("#10,#12"); prstatus is the worst status
+# across them (failing, changes, review, approved, draft). Per-PR detail lives
+# in wk's cache, since UDAs are scalar. No '#' in the label: it would start a
+# comment.
+uda.prs.type=string
+uda.prs.label=PR
+uda.repo.type=string
+uda.repo.label=Repo
+uda.prstatus.type=string
+uda.prstatus.label=PRs
+uda.prstatus.values=failing,changes,review,approved,draft,
 # partof: uuid of the task this one is a sub-issue of. Not `parent`, which
 # taskwarrior's recurrence already owns.
 uda.partof.type=string
@@ -34,6 +46,12 @@ uda.partof.label=Part of
 # the environment: the TUI is usually launched from the .desktop entry, which
 # never sources a shell.
 #
+uda.taskwarrior-tui.shortcuts.1=wk open-pr
+uda.taskwarrior-tui.keyconfig.shortcut1=P
+# Sync runs every minute from a systemd timer; R is "sync now", tracker
+# included. The appended uuid is ignored.
+uda.taskwarrior-tui.shortcuts.3=wk sync --tracker --wait
+uda.taskwarrior-tui.keyconfig.shortcut3=R
 # N is taken by taskwarrior-tui's search-previous, so notes open on O.
 uda.taskwarrior-tui.shortcuts.4=wk note
 uda.taskwarrior-tui.keyconfig.shortcut4=O
@@ -43,3 +61,16 @@ uda.taskwarrior-tui.keyconfig.shortcut4=O
 # as the shortcut exits.
 uda.taskwarrior-tui.shortcuts.5=wk import --from clipboard --wait
 uda.taskwarrior-tui.keyconfig.shortcut5=I
+
+# == Urgency and colour ==
+# PR status moves a work item up or down the list: something to fix or merge
+# rises, something merely waiting on others sinks. First-cut values.
+urgency.uda.prstatus.failing.coefficient=4.0
+urgency.uda.prstatus.changes.coefficient=3.0
+urgency.uda.prstatus.approved.coefficient=2.0
+urgency.uda.prstatus.draft.coefficient=-1.0
+urgency.uda.prstatus.review.coefficient=-3.0
+color.uda.prstatus.failing=red
+color.uda.prstatus.changes=yellow
+color.uda.prstatus.approved=green
+color.uda.prstatus.review=gray12

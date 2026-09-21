@@ -140,3 +140,16 @@ class Tasks:
         self._task([task["uuid"], "modify"] + args)
         self.invalidate()
         return True
+
+    def done(self, task):
+        self._task([task["uuid"], "done"])
+        self.invalidate()
+
+    def delete(self, task):
+        self._task([task["uuid"], "delete"])
+        self.invalidate()
+
+    def revive(self, task):
+        """Reopen a completed task."""
+        self._task([task["uuid"], "modify", "status:pending", "end:"])
+        self.invalidate()

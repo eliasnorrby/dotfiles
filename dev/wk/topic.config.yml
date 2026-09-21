@@ -13,6 +13,14 @@ wk_config:
     - src: hooks/on-modify-wk
       dest: "~/.task/hooks/"
       rename: on-modify.wk
+    - src: systemd/wk-sync.service
+      dest: "{{ xdg_config_home }}/systemd/user/"
+      rename: wk-sync.service
+      condition: "{{ is_arch }}"
+    - src: systemd/wk-sync.timer
+      dest: "{{ xdg_config_home }}/systemd/user/"
+      rename: wk-sync.timer
+      condition: "{{ is_arch }}"
   brew_formulae:
     - uv
   pacman_packages:

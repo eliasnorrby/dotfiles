@@ -21,11 +21,11 @@ def kind_of(task):
     +review tag."""
     if "review" in task.get("tags", []):
         return "review"
-    if task.get("issue") or task.get("branch"):
+    if task.get("issue"):
         return "work"
     if task.get("prs") or task.get("pr_number"):
         return "pr"
-    return "todo"
+    return "work" if task.get("branch") else "todo"
 
 
 def describe(task):
@@ -200,7 +200,7 @@ def cmd_import(args, out):
 
     imported = import_reference(config, tasks, reference, args.offline, branch, cwd)
     task = imported.task
-    label = task.get("issue") or task.get("pr_number") or ""
+    label = task.get("issue") or task.get("prs") or ""
     summary = f"{task.get('id') or task['uuid'][:8]}  {task['description']}  [{label}]"
     if not imported.created:
         title = "Already imported"
@@ -337,6 +337,132 @@ def cmd_doctor(args, out):
     return 0 if all(ok for _, ok, _ in checks) else 1
 
 
+def cmd_sync(args, out):
+    from . import sync as syncing
+    from .trackers import github, linear
+
+    held = syncing.lock()
+    if held is None:
+        out.result({"skipped": "another sync is running"}, ["another sync is running"])
+        return 0
+    config, tasks = context(args)
+    report = syncing.Sync(config, tasks, github, linear, dry_run=args.dry_run).run(force_tracker=args.tracker)
+    if not args.dry_run:
+        from . import platform
+
+        for title, body in report.notifications:
+            platform.notify(title, body)
+    lines = report.lines or ["nothing to do"]
+    lines += [f"stale: {problem}" for problem in report.stale]
+    out.result({"changes": report.lines, "stale": report.stale, "dry_run": args.dry_run}, lines)
+    return 0
+
+
+def cmd_status(args, out):
+    """How fresh the synced data is."""
+    import datetime
+
+    from . import cache
+
+    state = cache.read_state()
+
+    def age(stamp):
+        if not stamp:
+            return "never"
+        then = datetime.datetime.fromisoformat(stamp)
+        minutes = int((datetime.datetime.now(datetime.UTC) - then).total_seconds() // 60)
+        return "just now" if minutes < 1 else f"{minutes} min ago"
+
+    lines = [f"github:  synced {age(state.get('last_ok'))}"]
+    lines.append(f"tracker: synced {age(state.get('tracker', {}).get('last_ok'))}")
+    lines += [f"{name} error: {message}" for name, message in state.get("errors", {}).items()]
+    payload = {
+        "last_ok": state.get("last_ok"),
+        "tracker_last_ok": state.get("tracker", {}).get("last_ok"),
+        "errors": state.get("errors", {}),
+    }
+    out.result(payload, lines)
+    return 0
+
+
+def _task_prs(task):
+    from . import cache
+    from .sync import listed_prs
+
+    cached = {pr["number"]: pr for pr in cache.read_prs(task["uuid"])}
+    numbers = listed_prs(task) or [str(task.get("pr_number", "")).split(".")[0].lstrip("#")]
+    repo = task.get("repo") or task.get("pr_repo")
+    return [cached.get(n, {"number": n, "repo": repo, "title": ""}) | {"repo": repo} for n in numbers if n]
+
+
+def cmd_open_pr(args, out):
+    from . import prstatus
+    from .trackers.github import gh
+
+    _config, tasks = context(args)
+    resolution, _cwd = resolved(args, tasks)
+    if not resolution.task:
+        raise NotFound(f"no task for {args.locator or 'this directory'}")
+    prs = _task_prs(resolution.task)
+    if not prs:
+        raise NotFound("this task has no PR")
+    if args.pick:
+        prs = [pr for pr in prs if pr["number"] == args.pick.lstrip("#")] or prs
+    if len(prs) > 1:
+        prs = [_pick(prs, prstatus.summary)]
+    pr = prs[0]
+    gh(["pr", "view", pr["number"], "--repo", pr["repo"], "--web"])
+    out.result({"pr": pr["number"], "repo": pr["repo"]}, [f"#{pr['number']}"])
+    return 0
+
+
+def _pick(items, label):
+    """Choose one with fzf. Only ever reached when a person is at a terminal;
+    scripted callers name their choice instead."""
+    import subprocess
+
+    if not sys.stdin.isatty():
+        choices = ", ".join(f"#{item['number']}" for item in items)
+        raise WkError(f"several PRs ({choices}); name one with --pick")
+    lines = "\n".join(label(item) for item in items)
+    try:
+        result = subprocess.run(["fzf", "--no-multi", "--height=40%"], input=lines, capture_output=True, text=True)
+    except FileNotFoundError as err:
+        raise WkError("fzf is not installed; name a PR with --pick") from err
+    if result.returncode != 0 or not result.stdout.strip():
+        raise NotFound("nothing picked")
+    chosen = result.stdout.split()[0].lstrip("#")
+    return next(item for item in items if item["number"] == chosen)
+
+
+def cmd_attach_pr(args, out):
+    """Move a PR onto a task by hand, when folding got it wrong."""
+    from .sync import format_prs, listed_prs
+
+    _config, tasks = context(args)
+    pr = locators.parse(args.pr, force="pr")
+    resolution, _cwd = resolved(args, tasks)
+    target = resolution.task
+    if not target:
+        raise NotFound(f"no task for {args.locator or 'this directory'}")
+    repo = pr.repo or target.get("repo")
+    holder = tasks.by_pr(pr.value, repo)
+    if holder and holder["uuid"] != target["uuid"] and holder.get("status") in ("pending", "waiting"):
+        rest = [n for n in listed_prs(holder) if n != pr.value]
+        if rest or kind_of(holder) != "pr":
+            tasks.modify(holder, {"prs": format_prs(rest), "prstatus": None if not rest else holder.get("prstatus")})
+        else:
+            # A PR-only item exists for its PRs alone; with none left it is nothing.
+            tasks.delete(holder)
+        target = tasks.get(target["uuid"])
+    numbers = listed_prs(target)
+    if pr.value not in numbers:
+        numbers.append(pr.value)
+    tasks.modify(target, {"prs": format_prs(numbers), "repo": repo})
+    out.result({"task": describe(tasks.get(target["uuid"]))}, [f"#{pr.value} -> {target['description']}"])
+    return 0
+
+
 # -- parser ----------------------------------------------------------------
 
 
@@ -349,20 +475,27 @@ def build_parser():
     common.add_argument("--notify", "-n", action="store_true", help="also report via a desktop notification")
     common.add_argument("--display", action="store_true", help="also report in tmux's status line")
 
-    where = argparse.ArgumentParser(add_help=False)
-    where.add_argument("locator", nargs="?", help="task, issue, PR, branch, directory or tmux window; default: here")
-    where.add_argument("-C", dest="directory", metavar="DIR", help="treat DIR as the working directory")
-    where.add_argument(
-        "--from",
-        dest="source",
-        choices=("clipboard", "branch"),
-        help="take the locator from the clipboard, or from the branch only",
-    )
-    kinds = where.add_mutually_exclusive_group()
-    for kind in KIND_FLAGS:
-        kinds.add_argument(
-            f"--{kind}", dest="kind", action="store_const", const=kind, help=f"read the locator as a {kind}"
+    def where_options(positional=True):
+        options = argparse.ArgumentParser(add_help=False)
+        if positional:
+            options.add_argument(
+                "locator", nargs="?", help="task, issue, PR, branch, directory or tmux window; default: here"
+            )
+        options.add_argument("-C", dest="directory", metavar="DIR", help="treat DIR as the working directory")
+        options.add_argument(
+            "--from",
+            dest="source",
+            choices=("clipboard", "branch"),
+            help="take the locator from the clipboard, or from the branch only",
         )
+        kinds = options.add_mutually_exclusive_group()
+        for kind in KIND_FLAGS:
+            kinds.add_argument(
+                f"--{kind}", dest="kind", action="store_const", const=kind, help=f"read the locator as a {kind}"
+            )
+        return options
+
+    where = where_options()
 
     parser = argparse.ArgumentParser(prog="wk", description=__doc__.split("\n\n")[0])
     sub = parser.add_subparsers(dest="command", required=True)
@@ -393,6 +526,26 @@ def build_parser():
     p = sub.add_parser("show", parents=[common, where], help="what wk knows about a task")
     p.set_defaults(run=cmd_show)
 
+    p = sub.add_parser("sync", parents=[common], help="pull PR and issue status into taskwarrior")
+    p.add_argument("--dry-run", action="store_true", help="show what would change")
+    p.add_argument("--tracker", action="store_true", help="poll the issue tracker now, whatever its interval")
+    p.add_argument("selection", nargs="?", help=argparse.SUPPRESS)  # the uuid the TUI appends; unused
+    p.set_defaults(run=cmd_sync)
+
+    p = sub.add_parser("status", parents=[common], help="how fresh the synced data is")
+    p.set_defaults(run=cmd_status)
+
+    p = sub.add_parser("open-pr", parents=[common, where], help="open the task's PR in the browser")
+    p.add_argument("--pick", metavar="NUMBER", help="which PR, when the task has several")
+    p.set_defaults(run=cmd_open_pr)
+
+    p = sub.add_parser(
+        "attach-pr", parents=[common, where_options(positional=False)], help="attach a PR to a task (default: here)"
+    )
+    p.add_argument("pr", help="the PR: #123 or its URL")
+    p.add_argument("locator", nargs="?", help="the task to attach it to; default: here")
+    p.set_defaults(run=cmd_attach_pr)
+
     p = sub.add_parser("config", parents=[common], help="read the configuration")
     p.add_argument("action", choices=("get", "path"))
     p.add_argument("key", nargs="?", default="")
@@ -404,6 +557,11 @@ def build_parser():
 
 
 def main(argv):
+    if argv[:1] == ["hook"]:
+        # Before argparse is even imported: hooks run on every prompt.
+        from .hooks import main as hook_main
+
+        return hook_main(argv[1:])
     args = build_parser().parse_args(argv)
     out = Output(args)
     try:

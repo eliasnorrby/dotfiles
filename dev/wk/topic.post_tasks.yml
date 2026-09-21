@@ -1,0 +1,11 @@
+---
+# Sync runs from a timer rather than from taskwarrior-tui's background
+# process, so the data is fresh whether or not the TUI is open.
+- name: enable wk sync timer
+  systemd:
+    name: wk-sync.timer
+    scope: user
+    enabled: true
+    state: started
+    daemon_reload: true
+  when: is_arch

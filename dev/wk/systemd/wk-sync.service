@@ -1,0 +1,12 @@
+[Unit]
+Description=wk: sync pull requests and issue status into taskwarrior
+
+[Service]
+Type=oneshot
+# The user manager's PATH is whatever the session happened to import; name
+# what wk needs (itself, task, gh, notify-send) instead of relying on that.
+Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin
+ExecStart=%h/.local/bin/wk sync
+# A sync that finds a service unreachable has not failed; wk exits 0 and
+# records the staleness itself (see `wk status`).
+TimeoutStartSec=90
