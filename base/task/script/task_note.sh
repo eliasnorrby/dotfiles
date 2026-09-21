@@ -20,9 +20,13 @@ set -eo pipefail
 # therefore launcher-independent; the environment is only a fallback for
 # interactive use.
 #
+# With --print the note is found or created as usual, but its path is written
+# to stdout instead of being opened, so scripts and hooks can ask "where is
+# this task's note?" without an editor getting in the way.
+#
 # Usage: task_note [--vault-map work=acme,side=personal]
 #                  [--default-vault NAME] [--vaults-dir PATH]
-#                  [--subdir NAME[,NAME...]] <task-id-or-uuid>
+#                  [--subdir NAME[,NAME...]] [--print] <task-id-or-uuid>
 
 vaults_dir="${TASK_NOTE_VAULTS_DIR:-$HOME/vaults}"
 default_vault="${TASK_NOTE_DEFAULT_VAULT:-personal}"
@@ -36,6 +40,7 @@ notes_subdir="${TASK_NOTE_SUBDIR:-wiki/tasks,tasks}"
 # list can show it: taskwarrior-tui ignores the .indicator column format, so a
 # marker has to be a real value in a column of its own.
 note_flag_value="${TASK_NOTE_FLAG:-󰎞}"
+print_only=false
 
 die() {
   echo "Error: $*" >&2
@@ -172,6 +177,10 @@ main() {
         notes_subdir="$2"
         shift 2
         ;;
+      --print)
+        print_only=true
+        shift
+        ;;
       --)
         shift
         break
@@ -234,6 +243,11 @@ main() {
   fi
   if [ ${#changes[@]} -gt 0 ]; then
     task "$uuid" modify "${changes[@]}" >/dev/null 2>&1 || true
+  fi
+
+  if [ "$print_only" = true ]; then
+    printf '%s\n' "$note_path"
+    return
   fi
 
   exec "${EDITOR:-nvim}" "$note_path"
