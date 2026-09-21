@@ -25,7 +25,8 @@
 # on every replica.
 
 vaults_dir="${TASK_NOTE_VAULTS_DIR:-$HOME/vaults}"
-notes_subdir="${TASK_NOTE_SUBDIR:-tasks}"
+# Comma-separated candidates, resolved per vault; see task_note.
+notes_subdir="${TASK_NOTE_SUBDIR:-wiki/tasks,tasks}"
 archive_subdir="${TASK_NOTE_ARCHIVE_SUBDIR:-archive}"
 
 emit() {
@@ -76,9 +77,32 @@ find_note() {
       fi
     done
   fi
-  candidate=$(grep -rlFx "task: $uuid" "$vaults_dir"/*/"$notes_subdir" \
-    --include='*.md' 2>/dev/null | head -1)
-  [ -n "$candidate" ] && printf '%s' "$candidate"
+  local subdirs subdir
+  IFS=',' read -ra subdirs <<<"$notes_subdir"
+  for subdir in "${subdirs[@]}"; do
+    [ -n "$subdir" ] || continue
+    candidate=$(grep -rlFx "task: $uuid" "$vaults_dir"/*/"$subdir" \
+      --include='*.md' 2>/dev/null | head -1)
+    if [ -n "$candidate" ]; then
+      printf '%s' "$candidate"
+      return
+    fi
+  done
+}
+
+subdir_for_vault() {
+  local vault_path="$1"
+  local candidates candidate
+
+  IFS=',' read -ra candidates <<<"$notes_subdir"
+  for candidate in "${candidates[@]}"; do
+    if [ -n "$candidate" ] && [ -d "$vault_path/$candidate" ]; then
+      printf '%s' "$candidate"
+      return
+    fi
+  done
+
+  printf '%s' "${candidates[0]}"
 }
 
 # Set a frontmatter key, inserting it before the closing delimiter when the
@@ -110,6 +134,7 @@ rest="${note_path#"$vaults_dir"/}"
 vault="${rest%%/*}"
 vault_dir="$vaults_dir/$vault"
 base=$(basename "$note_path")
+notes_subdir=$(subdir_for_vault "$vault_dir")
 
 if [ "$direction" = archive ]; then
   dest_dir="$vault_dir/$notes_subdir/$archive_subdir"

@@ -22,14 +22,16 @@ set -eo pipefail
 #
 # Usage: task_note [--vault-map work=acme,side=personal]
 #                  [--default-vault NAME] [--vaults-dir PATH]
-#                  [--subdir NAME] <task-id-or-uuid>
+#                  [--subdir NAME[,NAME...]] <task-id-or-uuid>
 
 vaults_dir="${TASK_NOTE_VAULTS_DIR:-$HOME/vaults}"
 default_vault="${TASK_NOTE_DEFAULT_VAULT:-personal}"
 # Comma-separated project=vault pairs, e.g. "work=acme,side=personal".
 # Matched against the project root, so "work.backend" maps via "work".
 project_vaults="${TASK_NOTE_PROJECT_VAULTS:-}"
-notes_subdir="${TASK_NOTE_SUBDIR:-tasks}"
+# Comma-separated candidates, since vaults need not share a layout. The first
+# one that exists in the chosen vault wins; a vault with none gets the first.
+notes_subdir="${TASK_NOTE_SUBDIR:-wiki/tasks,tasks}"
 # Mirrors "this task has a note" into a one-character UDA purely so the task
 # list can show it: taskwarrior-tui ignores the .indicator column format, so a
 # marker has to be a real value in a column of its own.
@@ -58,6 +60,21 @@ vault_for_project() {
   done
 
   printf '%s' "$default_vault"
+}
+
+subdir_for_vault() {
+  local vault_path="$1"
+  local candidates candidate
+
+  IFS=',' read -ra candidates <<<"$notes_subdir"
+  for candidate in "${candidates[@]}"; do
+    if [ -n "$candidate" ] && [ -d "$vault_path/$candidate" ]; then
+      printf '%s' "$candidate"
+      return
+    fi
+  done
+
+  printf '%s' "${candidates[0]}"
 }
 
 # Make a description safe for a filename without mangling it beyond
@@ -194,6 +211,7 @@ main() {
   vault=$(vault_for_project "$project")
   vault_path="$vaults_dir/$vault"
   [ -d "$vault_path" ] || die "vault not found: $vault_path"
+  notes_subdir=$(subdir_for_vault "$vault_path")
 
   local note_path
   note_path=$(resolve_note "$vault_path" "$uuid" "$note_rel")
