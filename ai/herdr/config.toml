@@ -8,43 +8,29 @@ name = "catppuccin"
 
 auto_switch = false
 [keys]
-# Same prefix as tmux (set -g prefix C-SPACE).
 prefix = "ctrl+space"
 
-# tmux uses prefix+d to detach (herdr default is prefix+q).
 detach = "prefix+d"
 
-# Direct ctrl+hjkl pane focus, matching vim-tmux-navigator muscle memory.
-# Caveat: unlike the tmux is_vim trick these are unconditional — a pane app
-# never sees ctrl+h/j/k/l. Fine for agent panes; comment out if it bites.
 focus_pane_left = "ctrl+h"
 focus_pane_down = "ctrl+j"
 focus_pane_up = "ctrl+k"
 focus_pane_right = "ctrl+l"
 
-# Splits: herdr's defaults already match tmux (prefix+v side-by-side,
-# prefix+minus stacked); kept explicit as documentation. The tmux backslash
-# alias has no herdr equivalent (backslash is not a bindable key name).
 split_vertical = "prefix+v"
 split_horizontal = "prefix+minus"
 
-# Picker on prefix+w, like the tmux window switcher popup.
 workspace_picker = "prefix+w"
 
-# Zoom is prefix+z (tmux uses prefix+space, but space is taken by the prefix).
-zoom = "prefix+z"
+zoom = "prefix+space"
 
-# Direct tab switching in the spirit of the tmux F1–F8 bindings:
-# uncomment to make alt+1..9 switch tabs without the prefix.
-# [keys.indexed]
-# tabs = "alt"
+[keys.indexed]
+tabs = "alt"
 
 [ui.toast]
-# Desktop notifications (via dunst) when a background agent needs attention.
 delivery = "system"
 
 [session]
-# Resume agent conversations after a herdr server restart.
 resume_agents_on_restore = true
 
 [ui]
