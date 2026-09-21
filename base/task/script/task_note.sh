@@ -139,7 +139,8 @@ create_note() {
     echo 'status: active'
     echo '---'
     echo
-    echo "# $description"
+    # Same as the file name, so the heading and the link target agree.
+    echo "# $title"
     echo
     echo '## Plan'
     echo
