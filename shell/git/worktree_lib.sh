@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Shared git-worktree helpers. Pure definitions — nothing runs on source, so it
 # is safe to source from anywhere (no sourced-vs-executed guard needed). Sourced
-# by fuzzy_worktree.sh (the prefix W picker) and tmux_start_work.sh (prefix N).
+# by fuzzy_worktree.sh (the prefix W picker). `wk open` (prefix N) keeps the
+# same conventions: <main>/.worktrees, and windows tied by @worktree.
 
 is_in_git_repo() {
   git rev-parse HEAD >/dev/null 2>&1

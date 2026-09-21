@@ -46,6 +46,10 @@ uda.partof.label=Part of
 # the environment: the TUI is usually launched from the .desktop entry, which
 # never sources a shell.
 #
+# o: open the task in tmux (its window; else worktree; else branch). Works
+# from the tasks popup and from the standalone window alike.
+uda.taskwarrior-tui.shortcuts.6=wk open --pause-on-error
+uda.taskwarrior-tui.keyconfig.shortcut6=o
 uda.taskwarrior-tui.shortcuts.1=wk open-pr
 uda.taskwarrior-tui.keyconfig.shortcut1=P
 # Sync runs every minute from a systemd timer; R is "sync now", tracker

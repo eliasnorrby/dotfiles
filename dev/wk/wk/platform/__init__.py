@@ -40,3 +40,45 @@ def read_clipboard():
     if result is None:
         raise WkError("paste_cmd is not on PATH")
     return result.stdout.strip()
+
+
+def _parent_pid(pid):
+    try:
+        with open(f"/proc/{pid}/stat", encoding="utf-8") as handle:
+            # The command name is parenthesised and may contain spaces
+            # ("tmux: client"); the fields proper start after the last ')'.
+            return int(handle.read().rsplit(")", 1)[1].split()[1])
+    except (OSError, ValueError, IndexError):
+        return 0
+
+
+def focus_terminal(pid):
+    """Focus the desktop window hosting process `pid` (a tmux client). Best
+    effort and Hyprland only: a client reached over ssh or mosh has no window
+    here, and that is fine."""
+    import json
+
+    if MACOS:
+        return
+    listing = _quiet(["hyprctl", "clients", "-j"])
+    if listing is None or listing.returncode != 0:
+        return
+    try:
+        windows = {client["pid"]: client for client in json.loads(listing.stdout)}
+    except ValueError:
+        return
+    while pid > 1 and pid not in windows:
+        pid = _parent_pid(pid)
+    window = windows.get(pid)
+    if not window:
+        return
+    monitors = _quiet(["hyprctl", "monitors", "-j"])
+    try:
+        special = [m["specialWorkspace"]["name"] for m in json.loads(monitors.stdout) if m["focused"]]
+    except (AttributeError, ValueError, KeyError, TypeError):
+        special = []
+    # A visible special workspace (where the task list lives) would stay on
+    # top of the window being focused, unless that window is on it.
+    if special and special[0] and window.get("workspace", {}).get("name") != special[0]:
+        _quiet(["hyprctl", "dispatch", "togglespecialworkspace", special[0].removeprefix("special:")])
+    _quiet(["hyprctl", "dispatch", "focuswindow", f"address:{window['address']}"])

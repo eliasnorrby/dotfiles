@@ -14,7 +14,7 @@ TIMEOUT = 15
 ISSUE_QUERY = """
 query($team: String!, $number: Float!) {
   issues(filter: { team: { key: { eq: $team } }, number: { eq: $number } }) {
-    nodes { identifier title url state { type } parent { identifier } }
+    nodes { identifier title url branchName state { type } parent { identifier } }
   }
 }
 """
@@ -70,6 +70,7 @@ def fetch_issue(key, post=post):
         "key": node["identifier"],
         "title": node["title"],
         "url": node.get("url"),
+        "branch": node.get("branchName"),
         "state": (node.get("state") or {}).get("type"),
         "parent": (node.get("parent") or {}).get("identifier"),
     }

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Remove the worktree you're in and close its tmux window (which-cmd g>w>D).
 #
-# Inverse of tmux_start_work: run from inside a worktree (under
+# Inverse of `wk open`: run from inside a worktree (under
 # <main>/.worktrees), it removes that worktree and kills the tmux window tied to
 # it via the @worktree option. Refuses to touch the main worktree.
 #

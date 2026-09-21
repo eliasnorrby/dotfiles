@@ -54,6 +54,10 @@ def import_issue(config, tasks, key, offline=False, branch=None, fetch=None):
     attrs = {"issue": key, "project": config.project_for_issue(key)}
     if branch and issue_key_in(branch) == key:
         attrs["branch"] = branch
+    elif issue and issue.get("branch"):
+        # The tracker's suggested branch name: what the work will most likely
+        # happen on, and what ties a later PR to this task.
+        attrs["branch"] = issue["branch"]
     if issue is None:
         task = tasks.add(_title_from_branch(branch, key), attrs, tags=["stub"])
         return Imported(task, created=True, stub=True)

@@ -53,3 +53,52 @@ def rename_window(target, name):
 
 def display(message):
     _tmux("display-message", message)
+
+
+POPUP_PREFIX = "_popup_"
+
+
+def run(*args):
+    """Run a tmux command; its output, or None when it failed."""
+    return _tmux(*args)
+
+
+def windows():
+    """Every window on the server, popups excluded."""
+    fields = "#{window_id}\t#{session_name}\t#{@task}\t#{@worktree}"
+    rows = []
+    for line in (_tmux("list-windows", "-a", "-F", fields) or "").splitlines():
+        window, session, task, worktree = (line.split("\t") + ["", "", ""])[:4]
+        if not session.startswith(POPUP_PREFIX):
+            rows.append({"id": window, "session": session, "task": task, "worktree": worktree})
+    return rows
+
+
+def has_session(name):
+    return _tmux("has-session", "-t", f"={name}") is not None
+
+
+def new_session(name, directory):
+    _tmux("new-session", "-d", "-s", name, "-c", directory)
+
+
+def new_window(session, directory, name, command=None):
+    """Create a window without switching to it; returns its id."""
+    args = ["new-window", "-d", "-t", f"={session}:", "-c", directory, "-n", name, "-P", "-F", "#{window_id}"]
+    return _tmux(*(args + ([command] if command else [])))
+
+
+def clients():
+    fields = "#{client_name}\t#{client_pid}\t#{client_session}\t#{client_activity}"
+    rows = []
+    for line in (_tmux("list-clients", "-F", fields) or "").splitlines():
+        name, pid, session, activity = (line.split("\t") + ["", "", ""])[:4]
+        rows.append({"name": name, "pid": int(pid or 0), "session": session, "activity": int(activity or 0)})
+    return rows
+
+
+def current_session():
+    pane = os.environ.get("TMUX_PANE")
+    if not pane or not os.environ.get("TMUX"):
+        return None
+    return _tmux("display-message", "-p", "-t", pane, "#{session_name}")

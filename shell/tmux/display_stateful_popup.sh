@@ -133,6 +133,11 @@ for arg in "$@"; do
   cmd="$cmd $(printf '%q' "$arg")"
 done
 
+# Remember which client the popup opens on. A program inside the popup runs in
+# a nested client and cannot otherwise tell which outer client to act on (`wk
+# open` switches that one to the task's window, then closes the popup).
+tmux set -g @popup_outer_client "$(tmux display-message -p '#{client_name}')"
+
 # Build the display-popup command
 tmux display-popup -E -b rounded \
   -T "#[fg=white bold] $title #[fg=default]" \

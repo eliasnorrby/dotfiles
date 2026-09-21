@@ -289,6 +289,75 @@ def cmd_annotate(args, out):
     return 0
 
 
+def _workable_locator(config, args):
+    """The locator to open. The clipboard may hold anything, so from there
+    only what clearly names work counts: an issue, a PR, or a branch that
+    looks like one of mine or carries an issue key. Failing that, ask, when
+    there is someone to ask."""
+    from .workspace import branch_prefix
+
+    try:
+        found = locator_from(args)
+    except NotFound:
+        found = None
+    if args.source != "clipboard":
+        return found
+    if found and found.kind == "branch":
+        mine = found.value.startswith(branch_prefix(config))
+        if not (mine or locators.issue_key_in(found.value)):
+            found = None
+    if found and found.kind in ("issue", "pr", "branch"):
+        return found
+    if not (args.ask and sys.stdin.isatty()):
+        raise NotFound("the clipboard holds no issue, PR or branch")
+    while True:
+        try:
+            answer = input("Branch, issue or PR: ").strip()
+        except (EOFError, KeyboardInterrupt):
+            answer = ""
+        if not answer:
+            raise NotFound("nothing given")
+        try:
+            return locators.parse(answer)
+        except ValueError:
+            print("✗ not a branch, issue key or PR (empty aborts)", file=sys.stderr)
+
+
+def cmd_open(args, out):
+    from . import git, workspace
+    from .resolve import resolve
+
+    config, tasks = context(args)
+    cwd = os.path.realpath(args.directory or os.getcwd())
+    found = _workable_locator(config, args)
+    resolution = resolve(tasks, found, cwd)
+    task = resolution.task or _import_missing(config, tasks, resolution, args.offline, cwd)
+    branch = args.on or (found.value if found and found.kind == "branch" else None)
+    if not task and branch:
+        # A branch that belongs to no issue (a colleague's, checked out for a
+        # look) is still a piece of work, and gets a task like any other.
+        repo = git.slug(cwd) if git.is_repo(cwd) else None
+        words = branch.split("/", 1)[-1].replace("-", " ").replace("_", " ")
+        attrs = {"branch": branch, "repo": repo, "project": config.project_for_repo(repo)}
+        task = tasks.add(words, attrs)
+    if not task:
+        raise NotFound(f"no task for {resolution.issue or args.locator or cwd}")
+
+    opened = workspace.ensure_window(config, tasks, task, cwd, branch=branch)
+    if not args.no_switch:
+        workspace.go(opened)
+    payload = {
+        "task": describe(tasks.get(task["uuid"])),
+        "window": opened.window,
+        "session": opened.session,
+        "directory": opened.directory,
+        "created_window": opened.created_window,
+        "created_worktree": opened.created_worktree,
+    }
+    out.result(payload, [f"{opened.session}:{opened.window}  {opened.directory}"])
+    return 0
+
+
 def cmd_show(args, out):
     _config, tasks = context(args)
     resolution, _cwd = resolved(args, tasks)
@@ -472,6 +541,7 @@ def build_parser():
     common = argparse.ArgumentParser(add_help=False)
     common.add_argument("--json", action="store_true", help="machine-readable output")
     common.add_argument("--wait", "-w", action="store_true", help="pause before exiting (the TUI redraws over output)")
+    common.add_argument("--pause-on-error", action="store_true", help="pause before exiting, but only after a failure")
     common.add_argument("--notify", "-n", action="store_true", help="also report via a desktop notification")
     common.add_argument("--display", action="store_true", help="also report in tmux's status line")
 
@@ -523,6 +593,13 @@ def build_parser():
     p.add_argument("--offline", action="store_true", help="never ask a tracker")
     p.set_defaults(run=cmd_annotate)
 
+    p = sub.add_parser("open", parents=[common, where], help="open the task in tmux: window, worktree, branch")
+    p.add_argument("--on", metavar="BRANCH", help="work on this branch rather than the task's or the tracker's")
+    p.add_argument("--no-switch", action="store_true", help="create what is missing, but stay where I am")
+    p.add_argument("--ask", action="store_true", help="with --from clipboard: prompt when it holds nothing usable")
+    p.add_argument("--offline", action="store_true", help="never ask a tracker")
+    p.set_defaults(run=cmd_open)
+
     p = sub.add_parser("show", parents=[common, where], help="what wk knows about a task")
     p.set_defaults(run=cmd_show)
 
@@ -564,16 +641,21 @@ def main(argv):
         return hook_main(argv[1:])
     args = build_parser().parse_args(argv)
     out = Output(args)
+    code = 1
     try:
-        return args.run(args, out) or 0
+        code = args.run(args, out) or 0
     except WkError as err:
         out.error(err)
-        return err.code
+        code = err.code
     except KeyboardInterrupt:
-        return 130
+        code = 130
     finally:
-        if getattr(args, "wait", False) and sys.stdin.isatty():
+        # Callers like the TUI or a tmux popup redraw or close as soon as this
+        # exits, taking the output with them.
+        pause = getattr(args, "wait", False) or (code != 0 and getattr(args, "pause_on_error", False))
+        if pause and sys.stdin.isatty():
             try:
                 input("Press Enter to continue...")
             except (EOFError, KeyboardInterrupt):
                 pass
+    return code

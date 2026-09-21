@@ -35,7 +35,7 @@ git_config:
     - src: fuzzy_worktree.sh
       dest: "{{ xdg_bin_home }}/"
       rename: fuzzy_worktree
-    # Sourced (not run) by fuzzy_worktree / tmux_start_work via `command -v`.
+    # Sourced (not run) by fuzzy_worktree via `command -v`.
     - src: worktree_lib.sh
       dest: "{{ xdg_bin_home }}/"
       rename: worktree_lib.sh
