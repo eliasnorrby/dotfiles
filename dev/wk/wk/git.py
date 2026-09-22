@@ -1,6 +1,33 @@
 """Thin git helpers. All local, all tolerant of "not a repository"."""
 
+import os
+import re
 import subprocess
+
+
+def _agent_socket():
+    """The ssh agent's socket, for a process whose environment lacks it: the
+    task list launched from a desktop entry, a systemd timer. The shell finds
+    the agent through the file shell/ssh writes on start-up; so does this."""
+    runtime = os.environ.get("XDG_RUNTIME_DIR") or f"/run/user/{os.getuid()}"
+    try:
+        with open(os.path.join(runtime, "ssh-agent.env"), encoding="utf-8") as handle:
+            match = re.search(r"SSH_AUTH_SOCK=([^;\s]+)", handle.read())
+    except OSError:
+        return None
+    socket = match.group(1) if match else None
+    return socket if socket and os.path.exists(socket) else None
+
+
+def environment():
+    env = dict(os.environ)
+    if not env.get("SSH_AUTH_SOCK"):
+        socket = _agent_socket()
+        if socket:
+            env["SSH_AUTH_SOCK"] = socket
+    # Never sit waiting for a username or password on a fetch.
+    env.setdefault("GIT_TERMINAL_PROMPT", "0")
+    return env
 
 
 def _git(directory, *args):
@@ -10,6 +37,7 @@ def _git(directory, *args):
             capture_output=True,
             text=True,
             stdin=subprocess.DEVNULL,
+            env=environment(),
         )
     except (FileNotFoundError, NotADirectoryError):
         return None
@@ -31,7 +59,13 @@ def is_repo(directory):
 
 def _run(directory, *args):
     """Like _git, for commands whose failure is the caller's business."""
-    return subprocess.run(["git", "-C", directory, *args], capture_output=True, text=True, stdin=subprocess.DEVNULL)
+    return subprocess.run(
+        ["git", "-C", directory, *args],
+        capture_output=True,
+        text=True,
+        stdin=subprocess.DEVNULL,
+        env=environment(),
+    )
 
 
 def main_worktree(directory):
