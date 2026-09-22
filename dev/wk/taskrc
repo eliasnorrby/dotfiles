@@ -72,10 +72,8 @@ uda.taskwarrior-tui.shortcuts.8=wk start --pause-on-error
 uda.taskwarrior-tui.keyconfig.shortcut8=S
 uda.taskwarrior-tui.shortcuts.1=wk open-pr
 uda.taskwarrior-tui.keyconfig.shortcut1=P
-# Sync runs every minute from a systemd timer; R is "sync now", tracker
-# included. The appended uuid is ignored.
-uda.taskwarrior-tui.shortcuts.3=wk sync --tracker --wait
-uda.taskwarrior-tui.keyconfig.shortcut3=R
+# No "sync now" key: sync runs every minute from a systemd timer and is in
+# the C menu, and R belongs to taskwarrior-tui's report switcher.
 # N is taken by taskwarrior-tui's search-previous, so notes open on O.
 uda.taskwarrior-tui.shortcuts.4=wk note
 uda.taskwarrior-tui.keyconfig.shortcut4=O
@@ -85,6 +83,17 @@ uda.taskwarrior-tui.keyconfig.shortcut4=O
 # as the shortcut exits.
 uda.taskwarrior-tui.shortcuts.5=wk import --from clipboard --wait
 uda.taskwarrior-tui.keyconfig.shortcut5=I
+
+# == Reports ==
+# What got done, newest first, with the same attributes as the next report.
+# Reach it with the TUI's report switcher (R). The stock `completed` report
+# lists oldest first; flipped, for the same reason.
+report.recent.description=Recently completed
+report.recent.filter=status:completed
+report.recent.columns=id,end.age,project,prs,description,issue,note_flag
+report.recent.labels=ID,Done,Project,PR,Description,Issue,N
+report.recent.sort=end-
+report.completed.sort=end-
 
 # == Urgency and colour ==
 # PR status moves a work item up or down the list: something to fix or merge
