@@ -86,6 +86,13 @@ class Sync:
         first_sync = "prs" not in self.state
         known = self.state.setdefault("prs", {})
 
+        # GitHub computes mergeability lazily and reports UNKNOWN while it
+        # recomputes, which is not "no conflict": a conflicted PR would flip
+        # to clean and back on every recomputation, notifying each time.
+        for pr in mine:
+            if pr.get("mergeable") == "UNKNOWN":
+                pr["mergeable"] = known.get(f"{pr['repo']}#{pr['number']}", {}).get("mergeable")
+
         groups = self._fold(mine)
         self._settle_vanished(groups, {(pr["repo"], pr["number"]) for pr in mine})
         for uuid, prs in groups.items():
@@ -95,7 +102,11 @@ class Sync:
         else:
             self.report.stale.append("review requests (more than one page)")
         for pr in mine:
-            known[f"{pr['repo']}#{pr['number']}"] = {"status": prstatus.status_of(pr), "decision": pr["decision"]}
+            known[f"{pr['repo']}#{pr['number']}"] = {
+                "status": prstatus.status_of(pr),
+                "decision": pr["decision"],
+                "mergeable": pr.get("mergeable"),
+            }
 
     def _fold(self, mine):
         """Group my open PRs by the task they belong to, creating PR-only

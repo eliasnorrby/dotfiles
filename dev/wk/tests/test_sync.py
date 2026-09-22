@@ -237,6 +237,19 @@ def test_notifications_only_on_transitions_after_the_first_sync(world_with_sync,
     assert sync(tasks, GitHub(mine=[pr(10, "me/x", checks="FAILURE", decision="APPROVED")])).notifications == []
 
 
+def test_unknown_mergeability_is_not_a_change(world_with_sync, tasks):
+    conflicted = pr(10, "me/x", draft=True, mergeable="CONFLICTING")
+    sync(tasks, GitHub(mine=[conflicted]))
+    sync(tasks, GitHub(mine=[conflicted]))  # past the first sync, so notifications count
+    modified = tasks.by_pr("10")["modified"]
+    report = sync(tasks, GitHub(mine=[{**conflicted, "mergeable": "UNKNOWN"}]))
+    assert report.notifications == [] and report.lines == []
+    assert tasks.by_pr("10")["prstatus"] == "failing"
+    assert tasks.by_pr("10")["modified"] == modified
+    report = sync(tasks, GitHub(mine=[conflicted]))
+    assert report.notifications == []
+
+
 def test_tracker_status_flows_to_the_task(world_with_sync, tasks):
     task = tasks.add("Fix the thing", {"issue": "ACME-12"})
     linear = Linear([{"key": "ACME-12", "title": "Fix the thing", "state": "completed", "parent": None}])
