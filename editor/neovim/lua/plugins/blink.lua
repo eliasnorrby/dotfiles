@@ -79,8 +79,23 @@ return {
     completion = {
       accept = { auto_brackets = { enabled = true } },
       menu = {
-        auto_show = function()
-          return not vim.tbl_contains({ 'markdown', 'gitcommit' }, vim.bo.filetype)
+        auto_show = function(_, items)
+          local ft = vim.bo.filetype
+          if ft == 'gitcommit' then
+            return false
+          end
+          -- Prose completion is noise in markdown, but obsidian-ls only
+          -- answers on its trigger characters ([[, #, ^), so let its wiki
+          -- links, tags and footnotes through.
+          if ft == 'markdown' then
+            for _, item in ipairs(items or {}) do
+              if item.client_name == 'obsidian-ls' then
+                return true
+              end
+            end
+            return false
+          end
+          return true
         end,
       },
     },
@@ -219,10 +234,14 @@ return {
       })
     end, { desc = 'Trigger Emmet (accept first)' })
 
-    -- Hide menu when opening brackets
+    -- Hide menu when opening brackets. Not in markdown, where `[[` is what
+    -- triggers obsidian-ls wiki-link completion.
     vim.api.nvim_create_autocmd('User', {
       pattern = 'BlinkCmpMenuOpen',
       callback = function()
+        if vim.bo.filetype == 'markdown' then
+          return
+        end
         local col = vim.fn.col('.')
         local line = vim.fn.getline('.')
         if col > 1 then
