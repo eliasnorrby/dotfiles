@@ -13,6 +13,20 @@ return {
   },
   keys = {
     {
+      '<leader>nh',
+      function()
+        Snacks.notifier.show_history()
+      end,
+      desc = 'Notification history',
+    },
+    {
+      '<leader>nn',
+      function()
+        Snacks.picker.notifications()
+      end,
+      desc = 'Notifications (picker)',
+    },
+    {
       '<leader>gi',
       function()
         Snacks.picker.gh_issue()
