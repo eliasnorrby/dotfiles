@@ -26,9 +26,6 @@ return {
         return stamp
       end
     end,
-    completion = {
-      blink = true,
-    },
     frontmatter = {
       enabled = false,
     },
