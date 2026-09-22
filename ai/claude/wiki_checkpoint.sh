@@ -20,8 +20,10 @@
 #   wiki_checkpoint mark               Record that this session checkpointed.
 #   wiki_checkpoint hook EVENT         Claude Code hook: remind the session to
 #                                      checkpoint (post-tool-use,
-#                                      user-prompt-submit) or note that it ended
-#                                      with uncaptured work (session-end).
+#                                      user-prompt-submit), note that it ended
+#                                      with uncaptured work (session-end), or
+#                                      keep the file tools out of a vault's
+#                                      raw/ and private/ (pre-tool-use).
 #
 # Nothing here names a vault, a tracker or a company. A session is in scope
 # when `wk` can tell which task it belongs to; the vault follows from the
@@ -31,6 +33,7 @@
 # the working tree: it commits only the paths it is given, under a lock.
 #
 # Wired via settings.json:
+#   PreToolUse (file tools) -> wiki_checkpoint hook pre-tool-use
 #   PostToolUse (Bash)  -> wiki_checkpoint hook post-tool-use
 #   UserPromptSubmit    -> wiki_checkpoint hook user-prompt-submit
 #   SessionEnd          -> wiki_checkpoint hook session-end
@@ -213,11 +216,52 @@ reminder_text() {
     'Checkpoint this session into the wiki now with the wiki-checkpoint skill (briefly, without interrupting the task at hand), unless nothing worth keeping has happened since the last checkpoint — in that case just run `wiki_checkpoint mark`.'
 }
 
+# Refuse a tool call. Args: REASON
+emit_deny() {
+  jq -cn --arg r "$1" \
+    '{hookSpecificOutput: {hookEventName: "PreToolUse", permissionDecision: "deny", permissionDecisionReason: $r}}'
+}
+
+# The vault boundary, enforced: the file tools may not write under a vault's
+# raw/ (Elias's sources) or touch private/ at all. Bash is not covered, so a
+# deliberate move on Elias's say-so still works. Runs on every file tool call,
+# so it looks at the path before it asks wk anything.
+hook_pre_tool_use() {
+  local input="$1" tool path vaults verb
+  tool=$(jq -r '.tool_name // empty' <<<"$input" 2>/dev/null)
+  path=$(jq -r '.tool_input | .file_path // .notebook_path // .path // empty' <<<"$input" 2>/dev/null)
+  [ -n "$tool" ] && [ -n "$path" ] || return 0
+  case "$path" in
+    */raw/* | */private/* | */raw | */private) ;;
+    *) return 0 ;;
+  esac
+  case "$tool" in
+    Write | Edit | MultiEdit | NotebookEdit) verb="write" ;;
+    Read | Grep | Glob) verb="read" ;;
+    *) return 0 ;;
+  esac
+  vaults=$(vaults_dir)
+  path=$(readlink -m "${path/#\~\//$HOME/}" 2>/dev/null) || return 0
+  case "$path/" in
+    "$vaults"/*/private/*)
+      emit_deny "This vault's private/ is off limits: never read, written, linted or cited. See the vault's CLAUDE.md."
+      ;;
+    "$vaults"/*/raw/*)
+      [ "$verb" = write ] || return 0
+      emit_deny "raw/ holds Elias's own sources and is immutable to you: read it, write to wiki/ instead. If a file really must move out of raw/, that is his call and a git mv."
+      ;;
+  esac
+}
+
 # Hooks must never get in the way: every path exits 0, and anything unexpected
 # is swallowed rather than reported into the session.
 cmd_hook() {
   local event="${1:-}" input sid cwd now
   input=$(cat)
+  if [ "$event" = pre-tool-use ]; then
+    hook_pre_tool_use "$input"
+    exit 0
+  fi
   sid=$(jq -r '.session_id // empty' <<<"$input" 2>/dev/null)
   cwd=$(jq -r '.cwd // empty' <<<"$input" 2>/dev/null)
   [ -n "$sid" ] && [ -n "$cwd" ] || exit 0
