@@ -18,9 +18,13 @@ def _quiet(command):
 
 
 def open_url(url):
-    result = _quiet(["open" if MACOS else "xdg-open", url])
-    if result is None or result.returncode != 0:
-        raise WkError(f"could not open {url}")
+    opener = "open" if MACOS else "xdg-open"
+    result = _quiet([opener, url])
+    if result is None:
+        raise WkError(f"{opener} is not installed; could not open {url}")
+    if result.returncode != 0:
+        reason = result.stderr.strip() or f"{opener} exited {result.returncode}"
+        raise WkError(f"could not open {url}: {reason}")
 
 
 def notify(title, body, urgency="normal"):

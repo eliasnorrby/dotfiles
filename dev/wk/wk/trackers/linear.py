@@ -76,9 +76,13 @@ def fetch_issue(key, post=post):
     }
 
 
-def app_url(workspace, key):
-    """Linear's custom scheme, which opens the desktop app directly."""
-    return f"linear://{workspace}/issue/{key}"
+def issue_url(workspace, key, app=False):
+    """The issue's address. Linear's own scheme opens the desktop app on
+    macOS; on Linux there is no such app, and the web URL is what the PWA
+    handler (see wm/handlr) knows how to route."""
+    if app:
+        return f"linear://{workspace}/issue/{key}"
+    return f"https://linear.app/{workspace}/issue/{key}"
 
 
 CHANGED_QUERY = """

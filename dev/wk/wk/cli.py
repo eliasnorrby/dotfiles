@@ -254,7 +254,7 @@ def cmd_open_issue(args, out):
     if not workspace:
         prefix = key.rsplit("-", 1)[0]
         raise WkError(f"set teams.{prefix}.workspace in {config.path} to open {key}")
-    url = linear.app_url(workspace, key)
+    url = linear.issue_url(workspace, key, app=platform.MACOS)
     platform.open_url(url)
     out.result({"issue": key, "url": url}, [url])
     return 0
