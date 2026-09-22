@@ -89,10 +89,11 @@ uda.taskwarrior-tui.keyconfig.shortcut5=I
 # == Urgency and colour ==
 # PR status moves a work item up or down the list: something to fix or merge
 # rises, something merely waiting on others sinks. First-cut values.
-# An agent waiting for an answer is the loudest thing on the list.
+# An agent waiting for an answer is the loudest thing on the list. Background
+# only: the foreground belongs to rules of higher precedence (`active` paints
+# a started task green), and a dark red sits under any of them.
 urgency.uda.state.input.coefficient=8.0
-color.uda.state.input=bold white on red
-color.uda.state.working=cyan
+color.uda.state.input=on color52
 urgency.uda.prstatus.failing.coefficient=4.0
 urgency.uda.prstatus.changes.coefficient=3.0
 urgency.uda.prstatus.approved.coefficient=2.0

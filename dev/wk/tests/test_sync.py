@@ -137,10 +137,28 @@ def test_merged_pr_completes_a_pr_only_item_but_not_issue_work(world_with_sync, 
     sync(tasks, GitHub(mine=[pr(10, "me/x"), pr(11, "me/acme-12-fix")]))
     tracked = tasks.add("Fix the thing", {"issue": "ACME-13", "prs": "#12", "repo": "acme/app"})
     sync(tasks, GitHub(mine=[pr(11, "me/acme-12-fix")], states={"node10": "MERGED", "node12": "MERGED"}))
-    assert tasks.by_pr("10")["status"] == "completed"
+    done = tasks.by_pr("10")
+    assert done["status"] == "completed"
+    assert done["prs"] == "#10"  # the hub keeps what touched the task
+    assert cache.read_prs(done["uuid"])[0]["state"] == "MERGED"
     tracked = tasks.get(tracked["uuid"])
     assert tracked["status"] == "pending"
-    assert "prs" not in tracked and "prstatus" not in tracked
+    assert tracked["prs"] == "#12" and "prstatus" not in tracked
+
+
+def test_a_settled_pr_is_not_asked_about_again(world_with_sync, tasks):
+    sync(tasks, GitHub(mine=[pr(10, "me/x"), pr(11, "me/y")]))
+
+    class Strict(GitHub):
+        def fetch_states(self, ids):
+            assert ids == ["node10"]
+            return {"node10": "MERGED"}
+
+        def fetch_state(self, number, repo):
+            raise AssertionError("asked one by one")
+
+    sync(tasks, Strict(mine=[pr(11, "me/y")]))
+    sync(tasks, Strict(mine=[pr(11, "me/y")]))  # nothing new to ask
 
 
 def test_closed_unmerged_pr_deletes_a_pr_only_item(world_with_sync, tasks):
@@ -155,7 +173,8 @@ def test_one_of_a_stack_merging_keeps_the_rest(world_with_sync, tasks):
     uuid = tasks.by_pr("20")["uuid"]
     tasks.modify(tasks.get(uuid), {"prs": "#20,#21"})
     sync(tasks, GitHub(mine=[pr(21, "b", "main")], states={"node20": "MERGED"}))
-    assert listed_prs(tasks.get(uuid)) == ["21"]
+    assert listed_prs(tasks.get(uuid)) == ["20", "21"]
+    assert tasks.get(uuid)["prstatus"] == "review"
     assert tasks.get(uuid)["status"] == "pending"
 
 

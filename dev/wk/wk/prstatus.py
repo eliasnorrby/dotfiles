@@ -62,6 +62,8 @@ def stack_order(prs):
 
 def summary(pr):
     """One line for a picker."""
+    if pr.get("state") in ("MERGED", "CLOSED"):
+        return f"#{pr['number']}  {pr['state'].lower():<8}    {pr.get('title', '')}"
     checks = {"SUCCESS": "✓", "FAILURE": "✗", "ERROR": "✗", "PENDING": "…", "EXPECTED": "…"}.get(pr.get("checks"), " ")
     conflict = " conflict" if pr.get("mergeable") == "CONFLICTING" else ""
     return f"#{pr['number']}  {status_of(pr):<8} {checks}{conflict}  {pr.get('title', '')}"

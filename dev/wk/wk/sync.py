@@ -149,63 +149,69 @@ class Sync:
         return None
 
     def _settle_vanished(self, groups, open_keys):
-        """PRs listed on a task but no longer open were merged or closed."""
+        """PRs listed on a task but no longer open were merged or closed.
+        They stay listed: the task is the hub for everything that touched it,
+        before and after it is done. What changes is that they no longer
+        count towards the status, and a PR-only item with nothing open left
+        is finished."""
         vanished = []
         for task in self._open_tasks():
             if "review" in task.get("tags", []) or not task.get("repo"):
                 continue
+            cached = {pr["number"]: pr for pr in cache.read_prs(task["uuid"])}
             for number in listed_prs(task):
-                if (task["repo"], number) not in open_keys:
-                    vanished.append((task, number))
+                settled = cached.get(number, {}).get("state") in ("MERGED", "CLOSED")
+                if (task["repo"], number) not in open_keys and not settled:
+                    vanished.append((task, number, cached.get(number)))
         if not vanished:
             return
 
-        cached = {(task["uuid"], pr["number"]): pr for task, _ in vanished for pr in cache.read_prs(task["uuid"])}
-        gone = {(task["uuid"], number) for task, number in vanished}
-        ids = {key: pr["id"] for key, pr in cached.items() if key in gone and pr.get("id")}
+        ids = {(task["uuid"], number): pr["id"] for task, number, pr in vanished if pr and pr.get("id")}
         states = self.github.fetch_states(sorted(set(ids.values())))
         outcome = {}
-        for task, number in vanished:
+        for task, number, pr in vanished:
             node = ids.get((task["uuid"], number))
             if node:
                 state = states.get(node)
             else:
-                _, state = self.github.fetch_state(number, task["repo"])
+                node, state = self.github.fetch_state(number, task["repo"])
             if state in ("MERGED", "CLOSED"):
-                outcome.setdefault(task["uuid"], []).append((number, state))
+                outcome.setdefault(task["uuid"], []).append((number, state, pr or {"number": number, "id": node}))
 
-        for uuid, gone in outcome.items():
+        for uuid, settled in outcome.items():
             task = self.tasks.get(uuid)
-            remaining = [n for n in listed_prs(task) if n not in {number for number, _ in gone}]
-            for number, state in gone:
-                self.report.did(f"detach #{number} ({state.lower()}) from {task['description']}")
-            if remaining or uuid in groups or task.get("issue"):
-                # More PRs may follow, and an issue's fate is the tracker's
-                # to decide, so the task itself stays open.
-                changes = {"prs": format_prs(remaining)}
-                if not remaining and uuid not in groups:
-                    changes["prstatus"] = ""
-                    cache.write_prs(uuid, [])
-                self._modify(task, changes)
-            elif any(state == "MERGED" for _, state in gone):
+            for number, state, _ in settled:
+                self.report.did(f"#{number} {state.lower()} ({task['description']})")
+            if not self.report.dry_run:
+                # Remembered as settled, so the next sync does not ask again.
+                entries = {pr["number"]: pr for pr in cache.read_prs(uuid)}
+                for number, state, pr in settled:
+                    entries[number] = {**pr, "repo": task["repo"], "state": state}
+                cache.write_prs(uuid, [entries[n] for n in listed_prs(task) if n in entries])
+            if uuid in groups or task.get("issue"):
+                # Still-open PRs set the status below; an issue's fate is the
+                # tracker's to decide, so the task itself stays open.
+                if uuid not in groups:
+                    self._modify(task, {"prstatus": ""})
+            elif any(state == "MERGED" for _, state, _ in settled):
                 self.report.did(f"complete {task['description']}")
                 if not self.report.dry_run:
                     self.tasks.done(task)
-                    cache.write_prs(uuid, [])
             else:
                 self.report.did(f"delete {task['description']} (closed unmerged)")
                 if not self.report.dry_run:
                     self.tasks.delete(task)
-                    cache.write_prs(uuid, [])
 
     def _update_work_item(self, task, prs, known, first_sync):
-        # PRs listed but not in this answer are left listed; _settle_vanished
-        # has already removed the ones known to be gone.
+        # Settled PRs (merged, closed) keep their place at the front; the
+        # open ones follow in stack order.
         current = self.tasks.get(task["uuid"]) or task
-        still_listed = [n for n in listed_prs(current) if n not in {pr["number"] for pr in prs}]
         ordered = prstatus.stack_order(prs)
+        open_numbers = [pr["number"] for pr in ordered]
+        settled = [n for n in listed_prs(current) if n not in open_numbers]
+        listed = settled + open_numbers
         changes = {
-            "prs": format_prs([pr["number"] for pr in ordered] + still_listed),
+            "prs": format_prs(listed),
             "repo": prs[0]["repo"],
             "prstatus": prstatus.aggregate(prs),
         }
@@ -216,7 +222,9 @@ class Sync:
             self.report.did(f"update {current['description']}: {changes['prs']} {changes['prstatus']}")
         self._modify(current, changes)
         if not self.report.dry_run:
-            cache.write_prs(task["uuid"], ordered)
+            entries = {pr["number"]: pr for pr in cache.read_prs(task["uuid"])}
+            entries.update({pr["number"]: pr for pr in ordered})
+            cache.write_prs(task["uuid"], [entries[n] for n in listed if n in entries])
 
         if first_sync:
             return
