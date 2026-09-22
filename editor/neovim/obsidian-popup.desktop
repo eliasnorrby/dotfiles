@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Obsidian Popup
 Comment=Obsidian quick switch terminal
-Exec=kitty --class ObsidianPopupKitty -e nvim '+cd ~/vaults/bemlo' '+set nonu nornu'
+Exec=kitty --class ObsidianPopupKitty -e nvim '+cd ~/vaults/bemlo' '+set nonu nornu' ~/vaults/bemlo/index.md
 Icon=utilities-terminal
 Terminal=false
 Type=Application
