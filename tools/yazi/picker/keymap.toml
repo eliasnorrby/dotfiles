@@ -1,11 +1,11 @@
 [[mgr.prepend_keymap]]
 on   = "<Enter>"
-run  = "shell --orphan -- echo -n 'file://'$0 | wl-copy -t text/uri-list && ya emit quit"
+run  = "shell --orphan -- echo -n 'file://'%s1 | wl-copy -t text/uri-list && ya emit quit"
 desc = "Copy file:// URL to clipboard and quit"
 
 [[mgr.prepend_keymap]]
 on   = "<C-y>"
-run  = "shell --orphan -- wl-copy -t \"$(file -b --mime-type \"$0\")\" < \"$0\" && ya emit quit"
+run  = "shell --orphan -- wl-copy -t \"$(file -b --mime-type %s1)\" < %s1 && ya emit quit"
 desc = "Copy binary data to clipboard and quit"
 
 [[mgr.prepend_keymap]]
@@ -15,5 +15,5 @@ desc = "Open file"
 
 [[mgr.prepend_keymap]]
 on   = "a"
-run  = "shell --orphan -- satty --filename \"$0\" && ya emit quit"
+run  = "shell --orphan -- satty --filename %s1 && ya emit quit"
 desc = "Annotate with satty"
