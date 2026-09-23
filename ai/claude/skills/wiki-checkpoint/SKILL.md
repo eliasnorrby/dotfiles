@@ -47,7 +47,8 @@ Only what changed since your last checkpoint in this session:
   why, and what was rejected) and `## Links` (PRs, issues). Rewrite and
   reorganise rather than appending a log; the note should read well to someone
   who opens it cold.
-- **Today's daily** (`<vault>/dailies/YYYY-MM-DD.md`): one bullet for this task
+- **Today's daily** (`<vault>/dailies/YYYY-MM-DD.md`, only where the vault's
+  schema gives the dailies to you): one bullet for this task
   under `## Worked on`, linking the task note, saying what moved. If the bullet
   is already there, refresh it instead of adding another.
 - **Topic and people pages, and the index: only when warranted.** Something

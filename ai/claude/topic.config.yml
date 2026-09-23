@@ -27,6 +27,8 @@ claude_config:
       rename: wiki_backfill
     - src: settings.json
       dest: "{{ claude_home }}/"
+    - src: wiki-schema.md
+      dest: "{{ claude_home }}/"
     - src: statusline.sh
       dest: "{{ claude_home }}/"
     - src: home-claude.md
