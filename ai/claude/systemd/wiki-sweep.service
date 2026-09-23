@@ -1,0 +1,10 @@
+[Unit]
+Description=wiki: commit what has settled in the vaults
+
+[Service]
+Type=oneshot
+# The user manager's PATH is whatever the session happened to import; name
+# what the sweep needs (wiki_checkpoint, wk, git, jq, flock) instead.
+Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin
+ExecStart=%h/.local/bin/wiki_checkpoint sweep
+TimeoutStartSec=120

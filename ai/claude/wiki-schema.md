@@ -174,6 +174,16 @@ treats them as sources, and you write none.
   cited by permalink. The vault's `CLAUDE.md` gives the URL shapes.
 - **No secrets.** No credentials, tokens or personal data about third parties,
   even if a source contains them.
+- **Currency.** A page says what is true now. When something changes, find
+  and edit every page that says otherwise; never add a reading rule ("read
+  *stage* in older notes as *test*") for the reader to carry around. Git and
+  `log.md` keep the history, and where the past matters it is stated as a
+  dated fact ("until September 2026 changes went to stage first"), in a
+  timeline section or a sentence, not left standing as the present. Working
+  documents (reports, digests, plans that have been carried out) are deleted
+  once their content is in the standing pages. Lint proposes forgetting: a
+  page nothing links to and nothing has touched for months is a candidate for
+  deletion, and its useful lines for merging elsewhere.
 
 ## Workflows
 
@@ -296,7 +306,9 @@ commit" may mean someone else's commit carried yours. Both are fine.
 Subjects: `checkpoint: <ISSUE-KEY> <what moved>` for checkpoints; for
 everything else mirror the log entry (`ingest: …`, `lint: …`, `schema: …`,
 `restructure: …`). One commit per operation. Never rewrite history. Elias's
-own files (new jots in `inbox/`, `raw/`, his notes, attachments) are his to
-commit: leave them, or commit them separately as `raw: jots 2026-09-21` when
-asked. The one exception is a jot you ingest: its move to `raw/jots/` goes in
-the ingest commit.
+own files (new jots in `inbox/`, `raw/`, his notes, attachments) and the
+moves made by hooks are committed by a timer (`wiki_checkpoint sweep`, as
+`auto: sweep <vault>`) once they have sat untouched for five minutes; leave
+them alone. The one exception is a jot you ingest: its move to `raw/jots/`
+goes in the ingest commit. Every commit is pushed to the vault's `backup`
+remote by the same tooling.

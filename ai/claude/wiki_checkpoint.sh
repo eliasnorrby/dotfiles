@@ -15,6 +15,10 @@
 #   wiki_checkpoint commit VAULT -- FILE...
 #                                      Commit exactly these files, message on
 #                                      stdin. Serialized across sessions.
+#   wiki_checkpoint sweep [--min-age SECONDS]
+#                                      Commit what has settled in every vault
+#                                      (the owner's jots and moves, hook-made
+#                                      archive moves). Run from a timer.
 #   wiki_checkpoint friction VAULT SLUG
 #                                      File a friction report, body on stdin.
 #   wiki_checkpoint mark               Record that this session checkpointed.
@@ -199,6 +203,62 @@ cmd_friction() {
   printf '%s\n' "$file"
 }
 
+# Commit whatever has settled in a vault: the owner's jots and moves, task
+# notes archived by wk's hooks, Obsidian configuration. Nobody should have to
+# think about committing. A file is settled when it has not been written to
+# for MIN_AGE seconds, which keeps a jot still being typed and a page a session
+# is still writing out of the sweep; a session's own checkpoint commits the
+# rest, and "already committed" is fine on both sides. Deletions are always
+# settled.
+sweep_vault() {
+  local vault="$1" min_age="$2" now entry status path mtime
+  local -a paths=()
+  now=$(date +%s)
+  while IFS= read -r -d '' entry; do
+    status="${entry:0:2}"
+    path="${entry:3}"
+    case "$status" in
+      R* | C*)
+        # A staged rename or copy carries the original path as a second record.
+        IFS= read -r -d '' entry || true
+        paths+=("$entry")
+        ;;
+    esac
+    if [ -e "$vault/$path" ]; then
+      mtime=$(stat -c %Y "$vault/$path" 2>/dev/null) || continue
+      [ $((now - mtime)) -ge "$min_age" ] || continue
+    fi
+    paths+=("$path")
+  done < <(git -C "$vault" status --porcelain -z --untracked-files=all)
+  [ ${#paths[@]} -gt 0 ] || return 0
+
+  local message
+  message=$(
+    printf 'auto: sweep %s (%d files)\n\n' "$(basename "$vault")" "${#paths[@]}"
+    printf '%s\n' "${paths[@]}" | head -n 30
+    [ ${#paths[@]} -le 30 ] || echo "…"
+  )
+  cmd_commit "$vault" -- "${paths[@]}" <<<"$message"
+}
+
+cmd_sweep() {
+  local min_age="${WIKI_SWEEP_MIN_AGE:-300}" vault
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --min-age)
+        min_age="$2"
+        shift 2
+        ;;
+      *) die "usage: wiki_checkpoint sweep [--min-age SECONDS]" ;;
+    esac
+  done
+  for vault in "$(vaults_dir)"/*/; do
+    vault="${vault%/}"
+    [ -d "$vault/.git" ] && [ -f "$vault/CLAUDE.md" ] || continue
+    sweep_vault "$vault" "$min_age"
+  done
+}
+
 state_get() {
   cat "$state_dir/$1.$2" 2>/dev/null || echo 0
 }
@@ -354,13 +414,14 @@ cmd_hook() {
   exit 0
 }
 
-[ $# -ge 1 ] || die "usage: wiki_checkpoint resolve|commit|friction|mark|hook ..."
+[ $# -ge 1 ] || die "usage: wiki_checkpoint resolve|commit|sweep|friction|mark|hook ..."
 
 sub="$1"
 shift
 case "$sub" in
   resolve) cmd_resolve "$@" ;;
   commit) cmd_commit "$@" ;;
+  sweep) cmd_sweep "$@" ;;
   friction) cmd_friction "$@" ;;
   mark) cmd_mark "$@" ;;
   hook) cmd_hook "$@" ;;
