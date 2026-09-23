@@ -141,7 +141,12 @@ cmd_commit() {
 
   ( 
     flock -w "$lock_wait" 9 || die "another checkpoint held the commit lock for over ${lock_wait}s"
-    git -C "$vault" add -- "${paths[@]}" || die "git add failed"
+    for path in "${paths[@]}"; do
+      # The old name of a git mv, or a git rm, is already fully staged and
+      # matches nothing git add can see; it still belongs in the pathspec.
+      git -C "$vault" add -- "$path" 2>/dev/null && continue
+      git -C "$vault" diff --cached --quiet -- "$path" && die "git add failed: $path"
+    done
     if git -C "$vault" diff --cached --quiet -- "${paths[@]}"; then
       echo "Nothing to commit in the given files (already committed, perhaps by another session)"
       exit 0
