@@ -226,7 +226,7 @@ keys:
       - key: t
         name: filter by test name
         value: -t
-  - key: C
+  - key: Z
     value: curl
     loop: true
     keys:
@@ -259,6 +259,28 @@ keys:
           - key: d
             value: DELETE
   - key: c
+    value: claude
+    loop: true
+    keys:
+      - key: r
+        name: resume
+        value: --resume
+      - key: c
+        name: continue
+        value: --continue
+        immediate: true
+      - key: m
+        name: model
+        value: --model
+        fleeting: true
+        keys:
+          - key: o
+            value: opus
+          - key: f
+            value: fable
+          - key: s
+            value: sonnet
+  - key: C
     value: cargo
     keys:
       - key: r
