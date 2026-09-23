@@ -61,7 +61,7 @@ return {
       time_format = '%H:%M',
     },
     attachments = {
-      img_folder = '_meta/attachments',
+      folder = '_meta/attachments',
     },
   },
   config = function(_, opts)
