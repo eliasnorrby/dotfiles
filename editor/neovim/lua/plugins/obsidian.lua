@@ -37,12 +37,12 @@ return {
     },
     workspaces = {
       {
-        name = 'personal',
-        path = '~/vaults/personal',
-      },
-      {
         name = 'bemlo',
         path = '~/vaults/bemlo',
+      },
+      {
+        name = 'personal',
+        path = '~/vaults/personal',
       },
     },
     daily_notes = {
