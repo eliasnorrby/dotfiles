@@ -66,6 +66,36 @@ return {
   },
   config = function(_, opts)
     require('obsidian').setup(opts)
+
+    -- Archiving is a queue, not a folder: the note moves to the vault's
+    -- inbox/archive/, and the wiki session that drains the inbox files it for
+    -- good and marks the pages that link to it as past. Links keep resolving
+    -- meanwhile, since Obsidian links by basename.
+    local function archive_note()
+      local file = vim.api.nvim_buf_get_name(0)
+      local root = file ~= '' and vim.fs.root(file, '.obsidian') or nil
+      if not root then
+        vim.notify('Not a vault note', vim.log.levels.WARN)
+        return
+      end
+      local dir = root .. '/inbox/archive'
+      local dest = dir .. '/' .. vim.fs.basename(file)
+      if vim.uv.fs_stat(dest) then
+        vim.notify('Already queued: ' .. dest, vim.log.levels.WARN)
+        return
+      end
+      vim.cmd.write()
+      vim.fn.mkdir(dir, 'p')
+      if vim.fn.rename(file, dest) ~= 0 then
+        vim.notify('Could not move ' .. file, vim.log.levels.ERROR)
+        return
+      end
+      local old = vim.api.nvim_get_current_buf()
+      vim.cmd.edit(vim.fn.fnameescape(dest))
+      vim.api.nvim_buf_delete(old, { force = true })
+      vim.notify('Queued for archive: ' .. vim.fs.basename(file))
+    end
+
     local wk = require('which-key')
     wk.add({
       { '<leader>o', group = 'obsidian' },
@@ -80,6 +110,7 @@ return {
       -- Note operations
       { '<leader>on', '<cmd>Obsidian new<cr>', desc = 'New note' },
       { '<leader>or', '<cmd>Obsidian rename<cr>', desc = 'Rename note' },
+      { '<leader>oa', archive_note, desc = 'Queue for archive' },
 
       -- Linking (visual mode)
       { '<leader>ol', '<cmd>Obsidian link<cr>', desc = 'Link to note', mode = 'v' },
