@@ -17,8 +17,9 @@ uda.note.label=Note
 # `note.indicator` renders nothing there and a marker needs a real value.
 uda.note_flag.type=string
 uda.note_flag.label=N
-# branch / worktree: where the work happens. worktree is an absolute path and
-# is how a session in that directory finds its task.
+# branch / worktree: where the work happens. worktree is an absolute path (a
+# git worktree for issue work, any directory for other work) and is how a
+# session in that directory finds its task.
 uda.branch.type=string
 uda.branch.label=Branch
 uda.worktree.type=string

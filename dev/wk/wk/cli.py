@@ -355,7 +355,7 @@ def cmd_open(args, out):
     if not task:
         raise NotFound(f"no task for {resolution.issue or args.locator or cwd}")
 
-    opened = workspace.ensure_window(config, tasks, task, cwd, branch=branch)
+    opened = workspace.ensure_window(config, tasks, task, cwd, branch=branch, plain_dir=args.directory_in)
     if not args.no_switch:
         workspace.go(opened)
     payload = {
@@ -432,8 +432,8 @@ def cmd_start(args, out):
 
     config, tasks = context(args)
     cwd = os.path.realpath(args.directory or os.getcwd())
-    plain_dir = None
-    if args.new:
+    plain_dir = args.directory_in
+    if args.new and not plain_dir:
         repo = git.slug(cwd) if git.is_repo(cwd) else None
         task = tasks.add(args.new, {"repo": repo, "project": config.project_for_repo(repo)})
         plain_dir = git.main_worktree(cwd) if repo else cwd
@@ -792,6 +792,7 @@ def build_parser():
 
     p = sub.add_parser("open", parents=[common, where], help="open the task in tmux: window, worktree, branch")
     p.add_argument("--on", metavar="BRANCH", help="work on this branch rather than the task's or the tracker's")
+    p.add_argument("--in", dest="directory_in", metavar="DIR", help="work in this directory (recorded on the task)")
     p.add_argument("--no-switch", action="store_true", help="create what is missing, but stay where I am")
     p.add_argument("--ask", action="store_true", help="with --from clipboard: prompt when it holds nothing usable")
     p.add_argument("--offline", action="store_true", help="never ask a tracker")
@@ -813,6 +814,7 @@ def build_parser():
     p.add_argument("--no-claude", action="store_true", help="everything but Claude")
     p.add_argument("--partof", metavar="LOCATOR", help="record the task as part of another (a sub-issue's parent)")
     p.add_argument("--on", metavar="BRANCH", help="work on this branch")
+    p.add_argument("--in", dest="directory_in", metavar="DIR", help="work in this directory (recorded on the task)")
     p.add_argument("--no-switch", action="store_true", help="stay where I am")
     p.add_argument("--offline", action="store_true", help="never ask a tracker")
     p.set_defaults(run=cmd_start)

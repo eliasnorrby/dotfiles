@@ -163,11 +163,7 @@ def _session_task(event, payload):
     if task and is_open(task):
         return task["uuid"]
     if git.is_repo(cwd) and payload.get("source") in (None, "startup"):
-        from .config import Config
-
-        vaults = os.path.realpath(Config.load().vaults_dir) + os.sep
-        if not (os.path.realpath(cwd) + os.sep).startswith(vaults):
-            _emit_context("SessionStart", NO_TASK)
+        _emit_context("SessionStart", NO_TASK)
     return None
 
 

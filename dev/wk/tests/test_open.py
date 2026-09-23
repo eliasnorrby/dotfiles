@@ -112,10 +112,30 @@ def test_a_plain_todo_gets_a_window_and_nothing_else(wk, tasks, app, tmux_server
     task = tasks.add("Write the agenda", {"project": "work"})
     assert wk("open", "--no-switch", task["uuid"]) == 0
     task = tasks.get(task["uuid"])
-    assert "worktree" not in task and "branch" not in task
+    assert "branch" not in task
     window = next(w for w in workspace.tmux.windows() if w["task"] == task["uuid"])
     assert window["session"] == "main"
     assert not (app / ".worktrees").exists()
+
+
+def test_a_task_opens_in_its_own_directory(wk, tasks, app, tmux_server, world):
+    vault = world / "vaults" / "acme"
+    task = tasks.add("Backfill the wiki", {"project": "work", "worktree": str(vault)})
+    assert wk("open", "--no-switch", task["uuid"]) == 0
+    window = next(w for w in workspace.tmux.windows() if w["task"] == task["uuid"])
+    assert option(tmux_server, window["id"], "pane_current_path") == str(vault)
+    assert "branch" not in tasks.get(task["uuid"])
+
+
+def test_in_records_the_directory_and_the_project_supplies_a_default(wk, tasks, app, tmux_server, world):
+    (world / "config.toml").open("a").write(f'[projects.tools]\ndir = "{world}"\n')
+    by_flag = tasks.add("Tinker", {"project": "tools"})
+    assert wk("open", "--no-switch", "--in", str(app), by_flag["uuid"]) == 0
+    assert tasks.get(by_flag["uuid"])["worktree"] == str(app)
+    assert tasks.get(by_flag["uuid"])["repo"] == "acme/app"
+    by_project = tasks.add("Tinker more", {"project": "tools"})
+    assert wk("open", "--no-switch", by_project["uuid"]) == 0
+    assert tasks.get(by_project["uuid"])["worktree"] == str(world)
 
 
 def test_a_branch_from_the_clipboard_becomes_a_task(wk, tasks, app, tmux_server, monkeypatch):

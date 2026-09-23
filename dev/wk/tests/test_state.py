@@ -1,5 +1,6 @@
 import json
 import os
+import subprocess
 
 import pytest
 from conftest import needs_task
@@ -91,6 +92,12 @@ def test_a_crashed_agent_is_reaped(tasks, stateful, repo):
 def test_a_session_with_no_task_is_offered_one(tasks, stateful, repo, capsys):
     (repo / ".git" / "HEAD").write_text("ref: refs/heads/no-issue-here\n")
     event("session-start", cwd=str(repo), source="startup")
+    offered = json.loads(capsys.readouterr().out)
+    assert "wk adopt" in offered["hookSpecificOutput"]["additionalContext"]
+    # Inside a vault too: a session working on the wiki is work like any other.
+    vault = stateful / "vaults" / "acme"
+    subprocess.run(["git", "init", "-q", str(vault)], check=True)
+    event("session-start", "s2", cwd=str(vault), source="startup")
     offered = json.loads(capsys.readouterr().out)
     assert "wk adopt" in offered["hookSpecificOutput"]["additionalContext"]
     assert state.agents() == {}

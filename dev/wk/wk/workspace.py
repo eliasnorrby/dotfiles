@@ -96,15 +96,33 @@ def window_name(task):
     return _slug(task.get("description", ""), 24) or task["uuid"][:8]
 
 
+def plain_directory(config, task, plain_dir=None):
+    """Where a task with no branch to check out gets its window: what the
+    caller says, else the directory recorded on the task, else the project's
+    default from the config, else the general default."""
+    candidates = [
+        plain_dir,
+        task.get("worktree"),
+        config.data["projects"].get((task.get("project") or "").split(".")[0], {}).get("dir"),
+        config.data["defaults"].get("dir", "~"),
+    ]
+    for candidate in candidates:
+        if candidate and os.path.isdir(os.path.expanduser(candidate)):
+            return os.path.realpath(os.path.expanduser(candidate))
+    return os.path.expanduser("~")
+
+
 def ensure_window(config, tasks, task, cwd, branch=None, command=None, fetch_issue=None, plain_dir=None):
     """Find or create the task's window, without switching to it. `plain_dir`
-    is where a task without a repository of its own gets its window."""
+    is where a task without a branch of its own gets its window; without it,
+    the task's own directory, then the project's."""
     for window in tmux.windows():
         if window["task"] == task["uuid"]:
             return Opened(window["id"], window["session"], window["worktree"] or cwd)
 
     # Only work that lives on a branch gets a checkout; anything else (a plain
-    # to-do, untracked tinkering) gets a window where it already is.
+    # to-do, untracked tinkering, work in a directory that is not a code
+    # repository) gets a window in its directory.
     wants_checkout = branch or task.get("issue") or task.get("branch") or task.get("prs")
     repo, main = repo_path(config, task, cwd) if wants_checkout else (None, None)
     if branch and not main:
@@ -121,16 +139,19 @@ def ensure_window(config, tasks, task, cwd, branch=None, command=None, fetch_iss
                 created_worktree = True
         tasks.modify(task, {"branch": branch, "worktree": directory, "repo": repo})
         session = config.data["repos"].get(repo or "", {}).get("session") or os.path.basename(main)
-    elif plain_dir and git.is_repo(plain_dir):
-        # Untracked work in a repository: its main checkout, its session, and
-        # no worktree or branch unless asked for.
-        directory = plain_dir
-        slug = git.slug(plain_dir) or ""
-        session = config.data["repos"].get(slug, {}).get("session") or os.path.basename(git.main_worktree(plain_dir))
-        tasks.modify(task, {"repo": slug})
     else:
-        directory = os.path.expanduser(plain_dir or config.data["defaults"].get("dir", "~"))
-        session = config.data["defaults"].get("session") or "main"
+        directory = plain_directory(config, task, plain_dir)
+        if git.is_repo(directory):
+            # The directory's repository names the session; no worktree or
+            # branch unless asked for.
+            slug = git.slug(directory) or ""
+            session = config.data["repos"].get(slug, {}).get("session") or os.path.basename(
+                git.main_worktree(directory)
+            )
+            tasks.modify(task, {"repo": slug or None, "worktree": directory})
+        else:
+            session = config.data["defaults"].get("session") or "main"
+            tasks.modify(task, {"worktree": directory})
     session = re.sub(r"[.:]", "-", session)
 
     # A window made for this checkout by other means (prefix W, or a parent's
@@ -147,7 +168,7 @@ def ensure_window(config, tasks, task, cwd, branch=None, command=None, fetch_iss
     window = tmux.new_window(session, directory, window_name(task), command)
     if not window:
         raise WkError(f"could not create a tmux window in session {session}")
-    _annotate(window, task, directory if main else "")
+    _annotate(window, task, directory)
     from . import state
 
     state.refresh(tasks, config, only=task["uuid"])

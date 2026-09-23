@@ -29,9 +29,12 @@ project = "work"         # taskwarrior project that imported issues land in
 tracker = "linear"
 workspace = "acme"       # linear://<workspace>/issue/ACME-123
 
-# taskwarrior project (its root: work.backend maps via work) -> vault.
+# taskwarrior project (its root: work.backend maps via work) -> vault, and
+# the directory its tasks open in when they name none of their own.
 [projects.work]
 vault = "acme"
+[projects.dotfiles]
+dir = "~/.dotfiles"
 
 # Repositories wk knows about.
 [repos."acme/app"]

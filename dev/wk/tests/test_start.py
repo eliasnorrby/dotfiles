@@ -36,7 +36,7 @@ def test_start_new_is_untracked_work_in_the_main_checkout(wk, tasks, app, tmux_s
     assert wk("start", "--new", "Tidy the prompt", "--no-claude", "--no-switch", "-C", str(app)) == 0
     task = next(t for t in tasks.all() if t["description"] == "Tidy the prompt")
     assert task["repo"] == "acme/app" and task["project"] == "work"
-    assert "branch" not in task and "worktree" not in task
+    assert "branch" not in task and task["worktree"] == str(app)
     window = next(w for w in workspace.tmux.windows() if w["task"] == task["uuid"])
     assert window["session"] == "app"
     assert option(tmux_server, window["id"], "pane_current_path") == str(app)
