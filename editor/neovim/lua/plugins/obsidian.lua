@@ -13,10 +13,10 @@ return {
   ----@type obsidian.config.ClientOpts
   opts = {
     legacy_commands = false, -- use modern command syntax
-    -- New notes are jots: standalone, timestamped entries dropped in an inbox
-    -- rather than wherever the current buffer happens to live. The time keeps
-    -- two untitled jots on the same day from colliding.
-    notes_subdir = 'raw/inbox',
+    -- New notes are jots: standalone, timestamped entries dropped in the
+    -- vault's inbox rather than wherever the current buffer happens to live.
+    -- The time keeps two untitled jots on the same day from colliding.
+    notes_subdir = 'inbox',
     new_notes_location = 'notes_subdir',
     note_id_func = function(title)
       local stamp = os.date('%Y-%m-%d %H%M')
@@ -56,9 +56,12 @@ return {
       enable = false,
     },
     templates = {
-      folder = '_templates',
+      folder = '_meta/templates',
       date_format = '%Y-%m-%d',
       time_format = '%H:%M',
+    },
+    attachments = {
+      img_folder = '_meta/attachments',
     },
   },
   config = function(_, opts)

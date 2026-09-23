@@ -23,7 +23,8 @@
 #                                      user-prompt-submit), note that it ended
 #                                      with uncaptured work (session-end), or
 #                                      keep the file tools out of a vault's
-#                                      raw/ and private/ (pre-tool-use).
+#                                      private/ and off everything but the
+#                                      wiki layer (pre-tool-use).
 #
 # Nothing here names a vault, a tracker or a company. A session is in scope
 # when `wk` can tell which task it belongs to; the vault follows from the
@@ -162,11 +163,11 @@ cmd_friction() {
   [ -n "$body" ] || die "empty report on stdin"
 
   slug=$(printf '%s' "$slug" | tr -cs '[:alnum:]' ' ' | sed -e 's/^ *//' -e 's/ *$//' | cut -c1-60)
-  mkdir -p "$vault/friction"
+  mkdir -p "$vault/_meta/friction"
   # One file per report, so reports never contend for the same file.
   local title
   title="$(date '+%Y-%m-%d %H%M%S') $slug"
-  file="$vault/friction/$title.md"
+  file="$vault/_meta/friction/$title.md"
   {
     echo '---'
     echo 'type: friction'
@@ -222,19 +223,42 @@ emit_deny() {
     '{hookSpecificOutput: {hookEventName: "PreToolUse", permissionDecision: "deny", permissionDecisionReason: $r}}'
 }
 
-# The vault boundary, enforced: the file tools may not write under a vault's
-# raw/ (Elias's sources) or touch private/ at all. Bash is not covered, so a
-# deliberate move on Elias's say-so still works. Runs on every file tool call,
-# so it looks at the path before it asks wk anything.
+# Where the file tools may write inside a vault: the wiki layer and the files
+# that carry it. Everything else in a vault is the owner's. A vault extends the
+# list with path prefixes, one per line, in _meta/claude-writable (a vault with
+# no wiki yet that keeps a few project notes for Claude, say).
+vault_allows_write() {
+  local vault="$1" rel="$2" prefix
+  case "$rel" in
+    wiki/* | dailies/* | _meta/friction/* | index.md | log.md | CLAUDE.md) return 0 ;;
+    inbox/*)
+      # Only Claude's own digests: a file it creates, or one it marked as a
+      # digest. The owner's jots there carry no frontmatter.
+      [ -e "$vault/$rel" ] || return 0
+      head -n 10 "$vault/$rel" 2>/dev/null | grep -q '^type: digest$'
+      return
+      ;;
+  esac
+  [ -f "$vault/_meta/claude-writable" ] || return 1
+  while IFS= read -r prefix; do
+    prefix="${prefix%/}"
+    [ -n "$prefix" ] && [ "${prefix#\#}" = "$prefix" ] || continue
+    case "$rel" in
+      "$prefix" | "$prefix"/*) return 0 ;;
+    esac
+  done <"$vault/_meta/claude-writable"
+  return 1
+}
+
+# The vault boundary, enforced: the file tools may not touch private/ at all,
+# and may write only where vault_allows_write says. Bash is not covered, so a
+# deliberate move on the owner's say-so still works. Runs on every file tool
+# call, so it never asks wk anything beyond where the vaults are.
 hook_pre_tool_use() {
-  local input="$1" tool path vaults verb
+  local input="$1" tool path vaults verb vault rel
   tool=$(jq -r '.tool_name // empty' <<<"$input" 2>/dev/null)
   path=$(jq -r '.tool_input | .file_path // .notebook_path // .path // empty' <<<"$input" 2>/dev/null)
   [ -n "$tool" ] && [ -n "$path" ] || return 0
-  case "$path" in
-    */raw/* | */private/* | */raw | */private) ;;
-    *) return 0 ;;
-  esac
   case "$tool" in
     Write | Edit | MultiEdit | NotebookEdit) verb="write" ;;
     Read | Grep | Glob) verb="read" ;;
@@ -243,14 +267,22 @@ hook_pre_tool_use() {
   vaults=$(vaults_dir)
   path=$(readlink -m "${path/#\~\//$HOME/}" 2>/dev/null) || return 0
   case "$path/" in
-    "$vaults"/*/private/*)
+    "$vaults"/*/*) ;;
+    *) return 0 ;;
+  esac
+  rel="${path#"$vaults"/}"
+  vault="${rel%%/*}"
+  # The vault root itself has no path inside the vault.
+  if [ "$rel" = "$vault" ]; then rel=""; else rel="${rel#*/}"; fi
+  case "$rel/" in
+    private/*)
       emit_deny "This vault's private/ is off limits: never read, written, linted or cited. See the vault's CLAUDE.md."
-      ;;
-    "$vaults"/*/raw/*)
-      [ "$verb" = write ] || return 0
-      emit_deny "raw/ holds Elias's own sources and is immutable to you: read it, write to wiki/ instead. If a file really must move out of raw/, that is his call and a git mv."
+      return 0
       ;;
   esac
+  [ "$verb" = write ] || return 0
+  vault_allows_write "$vaults/$vault" "$rel" && return 0
+  emit_deny "Your file tools write only to the wiki layer of a vault (wiki/, dailies/, _meta/friction/, index.md, log.md, CLAUDE.md, and your own digests in inbox/); ${rel:-the vault root} is the owner's. If it really must change, that is his call and a git mv or an edit he asks for. See the vault's CLAUDE.md."
 }
 
 # Hooks must never get in the way: every path exits 0, and anything unexpected
