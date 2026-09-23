@@ -31,8 +31,12 @@ return {
     },
     open = {
       func = function(uri)
-        -- TODO: adjust for non-macOS systems
-        vim.ui.open(uri, { cmd = { 'open', '-a', '/Applications/Obsidian.app' } })
+        if vim.fn.has('mac') == 1 then
+          vim.ui.open(uri, { cmd = { 'open', '-a', '/Applications/Obsidian.app' } })
+        else
+          -- xdg-open hands obsidian:// to obsidian.desktop
+          vim.ui.open(uri)
+        end
       end,
     },
     workspaces = {
