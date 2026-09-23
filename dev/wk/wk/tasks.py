@@ -141,6 +141,11 @@ class Tasks:
         self.invalidate()
         return True
 
+    def start(self, task):
+        if not task.get("start"):
+            self._task([task["uuid"], "start"])
+            self.invalidate()
+
     def done(self, task):
         self._task([task["uuid"], "done"])
         self.invalidate()

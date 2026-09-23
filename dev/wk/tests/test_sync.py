@@ -22,6 +22,7 @@ def pr(number, head, base="main", author="me", **fields):
         "mergeable": "MERGEABLE",
         "decision": "REVIEW_REQUIRED",
         "checks": "SUCCESS",
+        "requested": ["them"],
         **fields,
     }
 
@@ -86,9 +87,11 @@ def test_prs_fold_into_their_work_item(world_with_sync, tasks):
         ),
     )
     assert tasks.get(by_branch["uuid"])["prs"] == "#10"
-    assert tasks.get(by_branch["uuid"])["prstatus"] == "failing"
+    assert tasks.get(by_branch["uuid"])["action"] == "fix"
+    assert tasks.get(by_branch["uuid"])["health"] == "failing"
     assert tasks.get(by_issue["uuid"])["prs"] == "#11"
-    assert tasks.get(by_issue["uuid"])["prstatus"] == "approved"
+    assert tasks.get(by_issue["uuid"])["action"] == "merge"
+    assert tasks.get(by_issue["uuid"])["decision"] == "approved"
     orphan = tasks.by_pr("12", "acme/app")
     assert orphan["description"] == "PR 12"
     assert orphan["branch"] == "me/no-home-for-this"
@@ -107,7 +110,7 @@ def test_a_stack_is_listed_bottom_first_with_the_worst_status(world_with_sync, t
     sync(tasks, GitHub(mine=[pr(22, "c", "b"), pr(20, "a"), pr(21, "b", "a", draft=True)]))
     task = tasks.get(task["uuid"])
     assert task["prs"] == "#20,#21,#22"
-    assert task["prstatus"] == "review"
+    assert task["action"] == "finish"  # a draft to get ready beats a PR others are reviewing
 
 
 def test_a_new_stack_shares_one_work_item(world_with_sync, tasks):
@@ -143,7 +146,7 @@ def test_merged_pr_completes_a_pr_only_item_but_not_issue_work(world_with_sync, 
     assert cache.read_prs(done["uuid"])[0]["state"] == "MERGED"
     tracked = tasks.get(tracked["uuid"])
     assert tracked["status"] == "pending"
-    assert tracked["prs"] == "#12" and "prstatus" not in tracked
+    assert tracked["prs"] == "#12" and "action" not in tracked
 
 
 def test_a_settled_pr_is_not_asked_about_again(world_with_sync, tasks):
@@ -174,7 +177,7 @@ def test_one_of_a_stack_merging_keeps_the_rest(world_with_sync, tasks):
     tasks.modify(tasks.get(uuid), {"prs": "#20,#21"})
     sync(tasks, GitHub(mine=[pr(21, "b", "main")], states={"node20": "MERGED"}))
     assert listed_prs(tasks.get(uuid)) == ["20", "21"]
-    assert tasks.get(uuid)["prstatus"] == "review"
+    assert tasks.get(uuid)["action"] == "await"
     assert tasks.get(uuid)["status"] == "pending"
 
 
@@ -182,8 +185,8 @@ def test_review_items_come_and_go(world_with_sync, tasks):
     theirs = pr(40, "them/feature", author="them")
     sync(tasks, GitHub(review=[theirs]))
     item = tasks.by_pr("40")
-    assert "review" in item["tags"]
-    assert "prstatus" not in item
+    assert item["action"] == "review"
+    assert "tags" not in item
     assert sync(tasks, GitHub(review=[theirs])).lines == []
 
     sync(tasks, GitHub(review=[]))
@@ -244,7 +247,7 @@ def test_unknown_mergeability_is_not_a_change(world_with_sync, tasks):
     modified = tasks.by_pr("10")["modified"]
     report = sync(tasks, GitHub(mine=[{**conflicted, "mergeable": "UNKNOWN"}]))
     assert report.notifications == [] and report.lines == []
-    assert tasks.by_pr("10")["prstatus"] == "failing"
+    assert tasks.by_pr("10")["health"] == "conflict"
     assert tasks.by_pr("10")["modified"] == modified
     report = sync(tasks, GitHub(mine=[conflicted]))
     assert report.notifications == []

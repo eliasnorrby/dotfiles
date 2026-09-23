@@ -23,29 +23,39 @@ uda.branch.type=string
 uda.branch.label=Branch
 uda.worktree.type=string
 uda.worktree.label=Worktree
-# prs / repo / prstatus: my pull requests fold into the work item they belong
-# to. prs lists them in stack order ("#10,#12"); prstatus is the worst status
-# across them (failing, changes, review, approved, draft). Per-PR detail lives
-# in wk's cache, since UDAs are scalar. No '#' in the label: it would start a
-# comment.
+# prs / repo: my pull requests fold into the work item they belong to. prs
+# lists them in stack order ("#10,#12"). Per-PR detail lives in wk's cache,
+# since UDAs are scalar. No '#' in the label: it would start a comment.
 uda.prs.type=string
 uda.prs.label=PR
 uda.repo.type=string
 uda.repo.label=Repo
-uda.prstatus.type=string
-uda.prstatus.label=PRs
-uda.prstatus.values=failing,changes,review,approved,draft,
+# action / decision / health: what the PR most in need of me means. action is
+# the verb (merge, fix, review, assign, finish, await), decision where the PR
+# stands (approved, changes, draft), health what is red (failing checks, a
+# merge conflict). Whose PR it is decides what red turns into: on mine the
+# action is fix; on one I review, the action stays review and the red state
+# makes it a worse one to pick up.
+uda.action.type=string
+uda.action.label=Action
+uda.action.values=merge,fix,review,assign,finish,await,
+uda.decision.type=string
+uda.decision.label=Decision
+uda.decision.values=approved,changes,draft,
+uda.health.type=string
+uda.health.label=Health
+uda.health.values=failing,conflict,
 # session: the Claude session that last worked on the task; resume it with
 # `claude --resume <id>`.
 uda.session.type=string
 uda.session.label=Session
 # state: what is going on with the task right now, topmost wins. Pushed by
 # Claude's and tmux's hooks, written only on change. state_flag mirrors it as
-# a glyph for a narrow column (the note_flag trick).
+# a glyph for a narrow column (the note_flag trick). "checkout" and "resume"
+# rather than "worktree" and "session": a value that is also an attribute's
+# name is read as a reference to that attribute.
 uda.state.type=string
 uda.state.label=State
-# "checkout" and "resume" rather than "worktree" and "session": a value that
-# is also an attribute's name is read as a reference to that attribute.
 uda.state.values=input,working,idle,window,checkout,resume,
 uda.state_flag.type=string
 uda.state_flag.label=S
@@ -96,19 +106,39 @@ report.recent.sort=end-
 report.completed.sort=end-
 
 # == Urgency and colour ==
-# PR status moves a work item up or down the list: something to fix or merge
-# rises, something merely waiting on others sinks. First-cut values.
-# An agent waiting for an answer is the loudest thing on the list. Background
-# only: the foreground belongs to rules of higher precedence (`active` paints
-# a started task green), and a dark red sits under any of them.
-urgency.uda.state.input.coefficient=8.0
-color.uda.state.input=on color52
-urgency.uda.prstatus.failing.coefficient=4.0
-urgency.uda.prstatus.changes.coefficient=3.0
-urgency.uda.prstatus.approved.coefficient=2.0
-urgency.uda.prstatus.draft.coefficient=-1.0
-urgency.uda.prstatus.review.coefficient=-3.0
-color.uda.prstatus.failing=red
-color.uda.prstatus.changes=yellow
-color.uda.prstatus.approved=green
-color.uda.prstatus.review=gray12
+# What wk knows about a task moves it up the list. Each attribute pulls in one
+# direction and the sum sorts: an agent waiting on me first, then PRs by what
+# they need of me, shaded by where they stand and what is red, then anything
+# with an agent, a window or a checkout. Priority (H 6, M 3.9) stays as it
+# is: a plain task marked H lands level with a review to do, below anything
+# of mine that needs doing.
+urgency.uda.state.input.coefficient=12.0
+urgency.uda.state.working.coefficient=4.0
+urgency.uda.state.idle.coefficient=4.0
+urgency.uda.state.window.coefficient=3.0
+urgency.uda.state.checkout.coefficient=2.0
+urgency.uda.state.resume.coefficient=1.0
+urgency.uda.action.merge.coefficient=10.0
+urgency.uda.action.fix.coefficient=7.0
+urgency.uda.action.review.coefficient=7.0
+urgency.uda.action.assign.coefficient=5.0
+urgency.uda.action.finish.coefficient=4.0
+urgency.uda.action.await.coefficient=-4.0
+urgency.uda.decision.approved.coefficient=3.0
+urgency.uda.decision.changes.coefficient=1.0
+urgency.uda.decision.draft.coefficient=-2.0
+urgency.uda.health.failing.coefficient=-1.0
+urgency.uda.health.conflict.coefficient=-2.0
+# A task with a note has been thought about.
+urgency.uda.note.coefficient=1.0
+
+# Background only for the input state, in the theme's own dark grey (`black`
+# is color0, surface1 in catppuccin): the foreground belongs to rules of
+# higher precedence (`active` paints a started task green) and stays
+# readable on it; the bell glyph in the S column carries the rest of the
+# alarm.
+color.uda.state.input=on black
+color.uda.action.merge=green
+color.uda.action.fix=red
+color.uda.action.review=yellow
+color.uda.action.await=gray12

@@ -19,7 +19,8 @@ PR stays where it is:
 import datetime
 import os
 
-from . import cache, prstatus
+from . import cache
+from . import prs as pull_requests
 from .errors import Unreachable, WkError
 from .locator import issue_key_in
 from .tasks import is_open
@@ -30,6 +31,12 @@ DONE_STATES = ("completed", "canceled")
 
 def now():
     return datetime.datetime.now(datetime.UTC)
+
+
+def is_review(task):
+    """A review item: someone else's PR, which is the only kind that carries
+    the `review` action."""
+    return task.get("action") == "review"
 
 
 def listed_prs(task):
@@ -103,7 +110,7 @@ class Sync:
             self.report.stale.append("review requests (more than one page)")
         for pr in mine:
             known[f"{pr['repo']}#{pr['number']}"] = {
-                "status": prstatus.status_of(pr),
+                "status": pull_requests.classify(pr),
                 "decision": pr["decision"],
                 "mergeable": pr.get("mergeable"),
             }
@@ -113,7 +120,7 @@ class Sync:
         items for those that belong to none. Returns {uuid: [pr, …]}."""
         groups = {}
         by_head = {}  # (repo, head branch) -> uuid, filled bottom of the stack first
-        for pr in prstatus.stack_order(mine):
+        for pr in pull_requests.stack_order(mine):
             task = self._task_for(pr)
             key = issue_key_in(pr["head"])
             if task is None and key and self.config.team(key):
@@ -141,7 +148,7 @@ class Sync:
         return groups
 
     def _task_for(self, pr):
-        candidates = [task for task in self._open_tasks() if "review" not in task.get("tags", [])]
+        candidates = [task for task in self._open_tasks() if not is_review(task)]
 
         def same_repo(task):
             return not task.get("repo") or task["repo"].lower() == pr["repo"].lower()
@@ -167,7 +174,7 @@ class Sync:
         is finished."""
         vanished = []
         for task in self._open_tasks():
-            if "review" in task.get("tags", []) or not task.get("repo"):
+            if is_review(task) or not task.get("repo"):
                 continue
             cached = {pr["number"]: pr for pr in cache.read_prs(task["uuid"])}
             for number in listed_prs(task):
@@ -203,7 +210,7 @@ class Sync:
                 # Still-open PRs set the status below; an issue's fate is the
                 # tracker's to decide, so the task itself stays open.
                 if uuid not in groups:
-                    self._modify(task, {"prstatus": ""})
+                    self._modify(task, {"action": "", "decision": "", "health": ""})
             elif any(state == "MERGED" for _, state, _ in settled):
                 self.report.did(f"complete {task['description']}")
                 if not self.report.dry_run:
@@ -217,20 +224,17 @@ class Sync:
         # Settled PRs (merged, closed) keep their place at the front; the
         # open ones follow in stack order.
         current = self.tasks.get(task["uuid"]) or task
-        ordered = prstatus.stack_order(prs)
+        ordered = pull_requests.stack_order(prs)
         open_numbers = [pr["number"] for pr in ordered]
         settled = [n for n in listed_prs(current) if n not in open_numbers]
         listed = settled + open_numbers
-        changes = {
-            "prs": format_prs(listed),
-            "repo": prs[0]["repo"],
-            "prstatus": prstatus.aggregate(prs),
-        }
+        attributes = {key: value or "" for key, value in pull_requests.aggregate(prs).items()}
+        changes = {"prs": format_prs(listed), "repo": prs[0]["repo"], **attributes}
         if not current.get("branch") and len(prs) == 1:
             changes["branch"] = prs[0]["head"]
         before = {key: str(current.get(key, "")) for key in changes}
         if before != changes:
-            self.report.did(f"update {current['description']}: {changes['prs']} {changes['prstatus']}")
+            self.report.did(f"update {current['description']}: {changes['prs']} {changes['action']}")
         self._modify(current, changes)
         if not self.report.dry_run:
             entries = {pr["number"]: pr for pr in cache.read_prs(task["uuid"])}
@@ -243,8 +247,10 @@ class Sync:
             was = known.get(f"{pr['repo']}#{pr['number']}")
             if not was:
                 continue
-            status = prstatus.status_of(pr)
-            if status == "failing" and was["status"] != "failing":
+            health = pull_requests.health_of(pr)
+            # Before the attributes split, "status" held one word.
+            was_health = was["status"].get("health") if isinstance(was["status"], dict) else was["status"]
+            if health == "failing" and was_health != "failing":
                 self._notify("checks_failed", f"#{pr['number']} is failing", pr["title"])
             if pr["decision"] != was["decision"] and pr["decision"] in ("APPROVED", "CHANGES_REQUESTED"):
                 verdict = "approved" if pr["decision"] == "APPROVED" else "changes requested"
@@ -256,11 +262,12 @@ class Sync:
         new one."""
         wanted = {(pr["repo"], pr["number"]): pr for pr in review}
         for task in self._open_tasks():
-            if "review" not in task.get("tags", []) or not task.get("prs"):
+            if not is_review(task) or not task.get("prs"):
                 continue
             key = (task.get("repo"), listed_prs(task)[0])
             if key in wanted:
                 pr = wanted.pop(key)
+                self._modify(task, pull_requests.classify(pr, mine=False))
                 if not self.report.dry_run:
                     cache.write_prs(task["uuid"], [pr])
             else:
@@ -279,8 +286,9 @@ class Sync:
                 "branch": pr["head"],
                 "prs": format_prs([pr["number"]]),
                 "project": self.config.project_for_repo(pr["repo"]),
+                **pull_requests.classify(pr, mine=False),
             }
-            task = self.tasks.add(pr["title"], attrs, tags=["review"])
+            task = self.tasks.add(pr["title"], attrs)
             cache.write_prs(task["uuid"], [pr])
 
     # -- tracker ----------------------------------------------------------

@@ -4,10 +4,10 @@ if ! command -v task >/dev/null 2>&1; then
   exit 0
 fi
 
-# Work items whose PRs are approved and green, and reviews asked of me; both
-# kept up to date by `wk sync`.
-merge_count=$(task count status:pending prstatus:approved)
-review_count=$(task count status:pending +review)
+# Work items with a PR to merge, and reviews asked of me; both kept up to
+# date by `wk sync`.
+merge_count=$(task count status:pending action:merge)
+review_count=$(task count status:pending action:review)
 due_count=$(task count status:pending '(due:today or +OVERDUE)')
 next_task=$(task rc.verbose: limit:1 started | head -1)
 separator="#[fg=brightblack] • #[fg=default]"

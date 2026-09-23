@@ -17,9 +17,9 @@ KIND_FLAGS = ("task", "issue", "pr", "branch", "dir", "window")
 
 
 def kind_of(task):
-    """What sort of work item this is. Derived, never stored, apart from the
-    +review tag."""
-    if "review" in task.get("tags", []):
+    """What sort of work item this is. Derived, never stored: `review` is the
+    one action that only a PR of someone else's can carry."""
+    if task.get("action") == "review":
         return "review"
     if task.get("issue"):
         return "work"
@@ -460,6 +460,8 @@ def cmd_start(args, out):
     launched = bool(command) and opened.created_window
     if launched:
         tasks.modify(tasks.get(task["uuid"]), {"session": session})
+    # Kicking off is starting: the task turns active, as `task start` would.
+    tasks.start(tasks.get(task["uuid"]))
     if not args.no_switch:
         workspace.go(opened)
     payload = {
@@ -482,7 +484,7 @@ def cmd_menu(args, out):
     never needs a key of its own."""
     import subprocess
 
-    from . import prstatus
+    from . import prs as pull_requests
 
     _config, tasks = context(args)
     resolution, _cwd = resolved(args, tasks)
@@ -498,11 +500,13 @@ def cmd_menu(args, out):
     if task.get("issue"):
         actions.append((f"open issue {task['issue']}", ["open-issue", uuid]))
     for pr in prs:
-        actions.append((f"open PR   {prstatus.summary(pr)}", ["open-pr", "--pick", pr["number"], uuid]))
+        actions.append(
+            (f"open PR   {pull_requests.summary(pr, not review)}", ["open-pr", "--pick", pr["number"], uuid])
+        )
     if not review:
         for pr in prs:
             actions.append(
-                (f"merge PR  {prstatus.summary(pr)}", ("gh", "pr", "merge", pr["number"], "--repo", pr["repo"]))
+                (f"merge PR  {pull_requests.summary(pr)}", ("gh", "pr", "merge", pr["number"], "--repo", pr["repo"]))
             )
     if task.get("session"):
         actions.append(("resume Claude session", ("resume", task["session"])))
@@ -657,7 +661,7 @@ def _task_prs(task):
 
 
 def cmd_open_pr(args, out):
-    from . import prstatus
+    from . import prs as pull_requests
     from .trackers.github import gh
 
     _config, tasks = context(args)
@@ -670,7 +674,7 @@ def cmd_open_pr(args, out):
     if args.pick:
         prs = [pr for pr in prs if pr["number"] == args.pick.lstrip("#")] or prs
     if len(prs) > 1:
-        prs = [_pick(prs, prstatus.summary)]
+        prs = [_pick(prs, lambda pr: pull_requests.summary(pr, kind_of(resolution.task) != "review"))]
     pr = prs[0]
     gh(["pr", "view", pr["number"], "--repo", pr["repo"], "--web"])
     out.result({"pr": pr["number"], "repo": pr["repo"]}, [f"#{pr['number']}"])
@@ -711,7 +715,8 @@ def cmd_attach_pr(args, out):
     if holder and holder["uuid"] != target["uuid"] and holder.get("status") in ("pending", "waiting"):
         rest = [n for n in listed_prs(holder) if n != pr.value]
         if rest or kind_of(holder) != "pr":
-            tasks.modify(holder, {"prs": format_prs(rest), "prstatus": None if not rest else holder.get("prstatus")})
+            cleared = {} if rest else {"action": None, "decision": None, "health": None}
+            tasks.modify(holder, {"prs": format_prs(rest), **cleared})
         else:
             # A PR-only item exists for its PRs alone; with none left it is nothing.
             tasks.delete(holder)

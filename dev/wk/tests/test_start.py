@@ -26,6 +26,7 @@ def test_start_strings_the_steps_together(wk, tasks, app, tmux_server, world, ca
     assert payload["claude"] is True
     assert payload["note"].endswith("ACME-12 Fix the thing.md")
     assert task["note"] and task["worktree"] and task["session"]
+    assert task["start"], "kicking off starts the task"
     window = next(w for w in workspace.tmux.windows() if w["task"] == task["uuid"])
     command = option(tmux_server, window["id"], "pane_start_command")
     assert command.strip('"') == f"claude --session-id {task['session']} /lg"
@@ -51,7 +52,7 @@ def test_partof_links_a_sub_issue_to_its_parent(wk, tasks, app, tmux_server):  #
 def test_menu_lists_only_what_applies(wk, tasks, app, tmux_server, capsys):  # noqa: F811
     todo = tasks.add("Write the agenda")
     work = tasks.add("Fix", {"issue": "ACME-12", "prs": "#7,#8", "repo": "acme/app", "session": "abc"})
-    review = tasks.add("Their PR", {"prs": "#9", "repo": "acme/app"}, tags=["review"])
+    review = tasks.add("Their PR", {"prs": "#9", "repo": "acme/app", "action": "review"})
 
     def actions(task):
         assert wk("menu", "--list", "--json", task["uuid"]) == 0
@@ -64,3 +65,5 @@ def test_menu_lists_only_what_applies(wk, tasks, app, tmux_server, capsys):  # n
     assert "open issue ACME-12" in listed and "resume Claude session" in listed
     assert actions(review)[0] == "check out for review"
     assert not any(a.startswith(("merge PR", "start")) for a in actions(review))
+    assert any(a.startswith("open PR   #9  review") for a in actions(review))
+    assert any(a.startswith("open PR   #7  assign") for a in actions(work))
