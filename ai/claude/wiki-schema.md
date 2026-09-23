@@ -166,6 +166,12 @@ treats them as sources, and you write none.
   are fine.
 - **Identifiers.** Write issue keys (`ABC-1234`), PR numbers (`#10511`) and
   repo paths (`apps/backend/src/cors.ts`) exactly, so they stay greppable.
+- **External links.** In `## Links` and `## Sources`, every issue, PR, Slack
+  thread, document and page outside the vault is a markdown link whose text
+  is the exact identifier, so Elias can follow it and grep still finds it:
+  `- [#10939](https://github.com/org/repo/pull/10939) — draft PR, four
+  commits`. Inline in prose the bare identifier is fine. Slack threads are
+  cited by permalink. The vault's `CLAUDE.md` gives the URL shapes.
 - **No secrets.** No credentials, tokens or personal data about third parties,
   even if a source contains them.
 

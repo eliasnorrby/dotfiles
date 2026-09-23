@@ -157,6 +157,12 @@ cmd_commit() {
       die "git commit failed"
     fi
     git -C "$vault" log -1 --format='Committed %h %s'
+    # A vault with a `backup` remote (a bare repository on a synced disk) is
+    # pushed after every commit. Local, so it costs milliseconds; a failure
+    # must never fail a checkpoint.
+    if git -C "$vault" remote get-url backup >/dev/null 2>&1; then
+      git -C "$vault" push -q backup HEAD >/dev/null 2>&1 || echo "Warning: push to backup failed" >&2
+    fi
   ) 9>"$vault/.git/wiki-checkpoint.lock"
 }
 
