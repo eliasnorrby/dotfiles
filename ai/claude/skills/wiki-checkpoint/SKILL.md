@@ -1,6 +1,6 @@
 ---
 name: wiki-checkpoint
-description: Record where the current work stands in the user's LLM-maintained wiki (task note, today's daily, and topic pages when something durable was learned). Invoke it yourself, without being asked, when a requirement or design decision is settled, an approach is abandoned, an investigation reaches a conclusion, a PR is opened or merged, before ending a work session, or when a hook reminds you to. Also when the user says "checkpoint", "log this" or "update the wiki".
+description: Record where the current work stands in the user's LLM-maintained wiki (task note, today's daily, and hubs or pages when something durable was learned). Invoke it yourself, without being asked, when a requirement or design decision is settled, an approach is abandoned, an investigation reaches a conclusion, a PR is opened or merged, before ending a work session, or when a hook reminds you to. Also when the user says "checkpoint", "log this" or "update the wiki".
 ---
 
 Checkpoint this session into the wiki. You already hold the context, so this
@@ -51,15 +51,17 @@ Only what changed since your last checkpoint in this session:
   schema gives the dailies to you): one bullet for this task
   under `## Worked on`, linking the task note, saying what moved. If the bullet
   is already there, refresh it instead of adding another.
-- **Topic and people pages, and the index: only when warranted.** Something
+- **Hubs, pages, people, and the index: only when warranted.** Something
   durable was learned that outlives this task: how an external system really
   behaves, a customer's setup, a decision about architecture. Then follow the
-  schema's ingest workflow for those pages. Most checkpoints don't touch them.
+  schema's ingest workflow: extend the page it belongs on, or write a new page
+  under the hub (and its index line) when the schema's split rule says so.
+  Most checkpoints don't touch them.
 - **Link what you mention.** When the task note names a customer, a system, a
   person or another task, check `index.md` and link the page if there is one.
   The links are what let a later session find this note from the topic's side.
 - **Don't let a durable finding die in a task note.** If you learned something
-  that outlives the task but a topic page isn't warranted yet (or the right
+  that outlives the task but a page isn't warranted yet (or the right
   page doesn't exist), add one line under `## Wanted` in `index.md` naming the
   subject and pointing at this note. Task notes get archived; the index doesn't.
 

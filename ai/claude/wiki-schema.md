@@ -20,7 +20,8 @@ inbox/             what has not been processed yet; always empties out
 dailies/           one note per day; the vault says who writes them
 wiki/              yours
   tasks/           one note per task (unless the vault keeps them elsewhere)
-  topics/          systems, concepts, customers, investigations
+  topics/          hubs: a system, concept, customer or investigation
+  pages/           everything else: one page per thing worth a page, flat
   people/          one page per person worth linking to
 raw/               sources that stay. Read, never edit, move or delete.
   jots/            Elias's jots once they have been ingested
@@ -88,11 +89,31 @@ Sections: `## Summary` (two or three sentences, kept current), `## Plan`,
 `## Links`. Notes created by `wk` start with only Plan and Findings; add the
 rest on first ingest.
 
-**Topic** — `wiki/topics/<Name>.md`. A system, concept, customer or recurring
-theme. Written as a standing reference, not a narrative: reorganise as
-understanding grows. Open with a short summary. Cite where claims come from
-(task note, raw file, PR, repo path). When a new source contradicts the page,
-update it and note what changed rather than appending a conflicting paragraph.
+**Page** — `wiki/pages/<Title>.md`. The bulk of the wiki: one page per thing
+worth a page, free in form. "Dates in Prisma", "How BST came to be", "The
+Cloud Run domain mappings", a comparison, a how-to, a piece of history. No
+prescribed sections; open with what it is about, end with `## Sources`.
+Titles are natural and unique across the vault (Obsidian links by basename):
+check for a clash before choosing one, and qualify only when there is one.
+A page usually belongs to a hub (`up:`), but it need not: a page can be a dot
+waiting for the web to reach it. What it may never be is uncatalogued: it
+gets its `index.md` line when it is written.
+
+```yaml
+type: page
+up: "[[BST (Bemlo Standard Time)]]"   # its hub, when it has one
+created: 2026-09-21
+updated: 2026-09-21
+```
+
+**Topic** — `wiki/topics/<Name>.md`. The **hub** for a system, concept,
+customer or recurring theme: the landing page a reader or a session starts
+from. It carries a summary, the current state in a few paragraphs, and a
+`## Pages` section listing the pages that go deeper, one line each. Written
+as a standing reference, not a narrative: reorganise as understanding grows.
+Cite where claims come from (task note, raw file, PR, repo path). When a new
+source contradicts the page, update it and note what changed rather than
+appending a conflicting paragraph.
 
 ```yaml
 type: topic
@@ -100,6 +121,13 @@ kind: system | concept | customer | investigation | other
 created: 2026-09-21
 updated: 2026-09-21
 ```
+
+**When a section becomes a page** (the split rule): when it has a name a
+second page would link to; when a second page does link to it; or when it
+passes about 500 words. A hub past about 1,000 words is overdue for
+splitting. The reverse holds too: a page under about 100 words with no
+inbound link but its hub folds back into the hub. Split by moving the text,
+leaving a one-line pointer in the hub's `## Pages`, and updating every link.
 
 An **investigation** (`kind: investigation`) is a topic for something Elias
 returns to over weeks, across several issues and sessions: a recurring class of
@@ -109,7 +137,8 @@ this order: `## Current understanding` (with a table of causes, state and
 owner where that fits), `## Incident timeline`, `## Ruled out, and conclusions
 that were reversed`, `## What to try next`. The reversals matter as much as the
 findings: they stop the next session from re-walking the same wrong path. Task
-notes hold the detail of each issue; the investigation page holds the whole.
+notes hold the detail of each issue, pages hold the detail of each aspect;
+the investigation hub holds the whole.
 
 **Person** — `wiki/people/<Name>.md`, so that tasks, topics and meetings can
 link to them. Full name when known, otherwise first name plus affiliation:
@@ -193,8 +222,10 @@ a transcript.
 
 1. Read `index.md` to see what exists.
 2. Update or create the task note, if the source belongs to a task.
-3. Update every topic page the source bears on; create pages for new topics.
-   One source commonly touches several pages.
+3. Update every page the source bears on, hubs and pages alike; create pages
+   for what has none, and split where the split rule says so. One source
+   commonly touches several pages. A new page links to its hub and the hub
+   lists it.
 4. Update `index.md` for pages added, renamed or substantially changed.
 5. Add today's daily entry if this was work done today and the dailies are
    yours.
@@ -212,7 +243,7 @@ covered, and raw notes Elias wrote by hand recently.
 **Checkpoint**: the light, frequent form of ingest, run by a working session
 on its own initiative (the `wiki-checkpoint` skill; hooks remind it). The
 source is the session's own context. Update the task note and, where the
-dailies are yours, the task's bullet in today's daily. Touch topic pages,
+dailies are yours, the task's bullet in today's daily. Touch hubs, pages,
 people and the index only when something durable was learned that outlives
 the task; then steps 3 and 4 of ingest apply. A checkpoint does not write to
 `log.md`: the task note and the git history already record it, and the log is
@@ -223,8 +254,10 @@ sources only when the wiki falls short, and fix the wiki when it does. If an
 answer took real synthesis, offer to file it as a page.
 
 **Lint** — on request. Look for contradictions between pages, claims newer
-sources have superseded, orphans, concepts lacking a page, missing
-cross-references (never into `private/`), pages with more or fewer than one
+sources have superseded, orphans (a page with no inbound links is a finding
+to fix by linking, not a state to leave), concepts lacking a page, missing
+cross-references (never into `private/`), pages the split rule says to split
+or fold, pages missing from the index, pages with more or fewer than one
 H1, stale `status: active` tasks, index entries that no longer match their
 page, and files under `raw/` that no wiki page links to (not yet ingested, or
 deliberately skipped). Read the open reports in `_meta/friction/`: group them,
@@ -234,10 +267,13 @@ Elias agrees to.
 
 ## index.md and log.md
 
-`index.md`: one line per page — `- [[Page]] — one-line summary` — grouped under
-`## Tasks (active)`, `## Tasks (closed)`, `## Topics` (sub-grouped by kind),
-`## People` and `## Wanted`, plus whatever sections the vault adds. It is how
-you find things; keep the summaries specific.
+`index.md`: one line per page, every page — `- [[Page]] — one-line summary` —
+grouped under `## Tasks (active)`, `## Tasks (closed)`, `## Topics`
+(sub-grouped by kind), `## Pages` (sub-grouped by hub, `### Loose` for pages
+with none), `## People` and `## Wanted`, plus whatever sections the vault
+adds. It is how you find things: a fresh session reads it first, so a page
+missing here does not exist. Keep the summaries specific and to one line; a
+summary that needs a paragraph is a page that needs splitting.
 
 `log.md`: append-only, newest last, one entry per operation:
 
