@@ -34,6 +34,14 @@ claude_config:
       dest: "{{ xdg_config_home }}/systemd/user/"
       rename: wiki-sweep.timer
       condition: "{{ is_arch }}"
+    - src: systemd/wiki-usage.service
+      dest: "{{ xdg_config_home }}/systemd/user/"
+      rename: wiki-usage.service
+      condition: "{{ is_arch }}"
+    - src: systemd/wiki-usage.timer
+      dest: "{{ xdg_config_home }}/systemd/user/"
+      rename: wiki-usage.timer
+      condition: "{{ is_arch }}"
     - src: statusline.sh
       dest: "{{ claude_home }}/"
     - src: home-claude.md

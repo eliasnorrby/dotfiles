@@ -1,0 +1,8 @@
+[Unit]
+Description=wiki: write the weekly usage report into each vault
+
+[Service]
+Type=oneshot
+Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin
+ExecStart=%h/.local/bin/wiki_checkpoint usage --write
+TimeoutStartSec=120
