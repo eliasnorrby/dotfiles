@@ -18,8 +18,9 @@
 #   wiki_checkpoint sweep [--min-age SECONDS] [--vault DIR]
 #                                      Commit what has settled in every vault
 #                                      (the owner's jots and moves, hook-made
-#                                      archive moves; in the wiki layer only
-#                                      moves). Run from a timer.
+#                                      archive moves; where sessions write,
+#                                      edits only after four hours). Run from
+#                                      a timer.
 #   wiki_checkpoint friction VAULT SLUG
 #                                      File a friction report, body on stdin.
 #   wiki_checkpoint mark               Record that this session checkpointed.
@@ -280,26 +281,21 @@ cmd_friction() {
   printf '%s\n' "$file"
 }
 
-# The part of a vault that sessions write, and commit themselves.
-in_wiki_layer() {
-  case "$1" in
-    wiki/* | dailies/* | index.md | log.md | CLAUDE.md) return 0 ;;
-  esac
-  return 1
-}
 
 # Commit whatever has settled in a vault: the owner's jots and moves, task
 # notes archived by wk's hooks, Obsidian configuration. Nobody should have to
 # think about committing. A file is settled when it has not been written to
 # for MIN_AGE seconds, which keeps a jot still being typed out of the sweep.
 #
-# The wiki layer is different: a session may work for an hour and leave a page
-# untouched for most of it before its own commit, so no settling time protects
-# it. There the sweep takes only moves (a deleted path whose file name
-# reappears untracked elsewhere, as wk's archive hook leaves a task note), and
-# leaves edits and new pages to the session that made them.
+# Where sessions write (the paths the pre-tool-use hook lets them write) is
+# different: a session may work for an hour and leave a page untouched for most
+# of it before its own commit. There the sweep takes moves at once (a deleted
+# path whose file name reappears untracked elsewhere, as wk's archive hook
+# leaves a task note), and anything else only after SESSION_AGE seconds, by
+# which time no session is still holding it: work a session abandoned, or the
+# owner's own edits to files sessions may also write.
 sweep_vault() {
-  local vault="$1" min_age="$2" now entry status path mtime base i
+  local vault="$1" min_age="$2" session_age="$3" now entry status path mtime base i age
   local -a paths=() statuses=() entries=()
   local -A deleted=() moved=()
   now=$(date +%s)
@@ -329,11 +325,12 @@ sweep_vault() {
     path="${entries[$i]}"
     base="${path##*/}"
     case "$status" in *D) continue ;; esac
-    if in_wiki_layer "$path"; then
-      [ "$status" = '??' ] && [ -n "${deleted[$base]:-}" ] || continue
+    age=$min_age
+    if vault_allows_write "$vault" "$path"; then
+      [ "$status" = '??' ] && [ -n "${deleted[$base]:-}" ] || age=$session_age
     fi
     mtime=$(stat -c %Y "$vault/$path" 2>/dev/null) || continue
-    [ $((now - mtime)) -ge "$min_age" ] || continue
+    [ $((now - mtime)) -ge "$age" ] || continue
     paths+=("$path")
     [ "$status" = '??' ] && moved[$base]=1
   done
@@ -342,7 +339,8 @@ sweep_vault() {
     path="${entries[$i]}"
     base="${path##*/}"
     case "$status" in *D) ;; *) continue ;; esac
-    if in_wiki_layer "$path"; then
+    # A session's own deletion carries no age; it waits for the session.
+    if vault_allows_write "$vault" "$path"; then
       [ -n "${moved[$base]:-}" ] || continue
     fi
     paths+=("$path")
@@ -359,7 +357,7 @@ sweep_vault() {
 }
 
 cmd_sweep() {
-  local min_age="${WIKI_SWEEP_MIN_AGE:-300}" vault only=""
+  local min_age="${WIKI_SWEEP_MIN_AGE:-300}" session_age="${WIKI_SWEEP_SESSION_AGE:-14400}" vault only=""
   while [ $# -gt 0 ]; do
     case "$1" in
       --min-age)
@@ -375,13 +373,13 @@ cmd_sweep() {
   done
   if [ -n "$only" ]; then
     [ -d "$only/.git" ] || die "not a git repository: $only"
-    sweep_vault "$only" "$min_age"
+    sweep_vault "$only" "$min_age" "$session_age"
     return
   fi
   for vault in "$(vaults_dir)"/*/; do
     vault="${vault%/}"
     [ -d "$vault/.git" ] && [ -f "$vault/CLAUDE.md" ] || continue
-    sweep_vault "$vault" "$min_age"
+    sweep_vault "$vault" "$min_age" "$session_age"
   done
 }
 
