@@ -17,6 +17,9 @@ os_config:
       rename: wiki_checkpoint
     - src: wiki-schema.md
       dest: "{{ claude_home }}/"
+    - src: harvest/wiki_backfill.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: wiki_backfill
     - src: skills/wiki-checkpoint
       dest: "{{ claude_home }}/skills/"
       rename: wiki-checkpoint
