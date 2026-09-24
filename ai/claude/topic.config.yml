@@ -22,9 +22,6 @@ claude_config:
     - src: wiki_checkpoint.sh
       dest: "{{ xdg_bin_home }}/"
       rename: wiki_checkpoint
-    - src: wiki_backfill.sh
-      dest: "{{ xdg_bin_home }}/"
-      rename: wiki_backfill
     - src: settings.json
       dest: "{{ claude_home }}/"
     - src: wiki-schema.md
