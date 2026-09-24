@@ -510,7 +510,7 @@ def cmd_menu(args, out):
 
     from . import prs as pull_requests
 
-    _config, tasks = context(args)
+    config, tasks = context(args)
     resolution, _cwd = resolved(args, tasks)
     task = resolution.task
     if not task:
@@ -530,7 +530,10 @@ def cmd_menu(args, out):
     if not review:
         for pr in prs:
             actions.append(
-                (f"merge PR  {pull_requests.summary(pr)}", ("gh", "pr", "merge", pr["number"], "--repo", pr["repo"]))
+                (
+                    f"merge PR  {pull_requests.summary(pr)}",
+                    ("gh", "pr", "merge", pr["number"], "--repo", pr["repo"], *config.merge_flags(pr["repo"])),
+                )
             )
     for child in _sub_tasks(tasks, task):
         label = " ".join(filter(None, [child.get("issue"), child["description"]]))

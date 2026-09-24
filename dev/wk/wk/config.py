@@ -16,6 +16,7 @@ DEFAULTS = {
         "vault": "personal",
         "vaults_dir": "~/vaults",
         "tracker": "linear",
+        "merge": "squash",
     },
     "notes": {
         "subdirs": ["wiki/tasks", "tasks"],
@@ -118,6 +119,15 @@ class Config:
 
     def tracker_for_issue(self, issue_key):
         return self.team(issue_key).get("tracker") or self.data["defaults"]["tracker"]
+
+    def merge_flags(self, repo):
+        """`gh pr merge` flags for the repository's merge strategy: its own
+        `merge`, else the default. Empty leaves the choice to gh, which asks."""
+        entry = self.data["repos"].get(repo or "", {})
+        method = entry.get("merge", self.data["defaults"].get("merge")) or ""
+        if method not in ("", "merge", "squash", "rebase"):
+            raise WkError(f"merge = {method!r} in {self.path}: use merge, squash or rebase")
+        return [f"--{method}"] if method else []
 
     def project_for_repo(self, repo):
         entry = self.data["repos"].get(repo or "", {})

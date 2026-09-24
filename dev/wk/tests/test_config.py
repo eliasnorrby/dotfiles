@@ -34,3 +34,12 @@ def test_a_broken_file_is_reported(tmp_path):
     path.write_text("[defaults\n")
     with pytest.raises(WkError):
         Config.load(path)
+
+
+def test_merge_strategy_is_per_repo_with_a_default():
+    config = Config({"repos": {"acme/app": {"merge": "rebase"}, "acme/ask": {"merge": ""}}})
+    assert config.merge_flags("acme/app") == ["--rebase"]
+    assert config.merge_flags("acme/other") == ["--squash"]
+    assert config.merge_flags("acme/ask") == []
+    with pytest.raises(WkError):
+        Config({"defaults": {"merge": "fast-forward"}}).merge_flags("acme/app")

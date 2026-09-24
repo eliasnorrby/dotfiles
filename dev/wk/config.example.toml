@@ -15,6 +15,7 @@ project = "inbox"        # taskwarrior project for tasks nothing else claims
 vault = "personal"       # vault for projects without a mapping below
 vaults_dir = "~/vaults"
 tracker = "linear"       # tracker for issue keys of teams not listed below
+merge = "squash"         # how the menu merges a PR: merge, squash, rebase, or "" to ask
 # branch_prefix = "me/"  # default: $USER/. Marks a clipboard branch as mine.
 
 [notes]
@@ -42,6 +43,7 @@ path = "~/work/acme/app" # the main checkout; worktrees go under .worktrees/
 project = "work"         # taskwarrior project for PR-only work items
 session = "app"          # tmux session for its windows; default: the basename
 sync = true              # include in `wk sync` (required: nothing syncs unscoped)
+# merge = "rebase"       # this repository's merge strategy; default: defaults.merge
 
 [github]
 team_review_requests = false # also make review items of requests to my teams
