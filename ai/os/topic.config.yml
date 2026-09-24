@@ -1,7 +1,7 @@
 ---
 # The agentic OS: the entrypoint (~/os) and the plumbing that keeps the
-# vaults' wiki (checkpoints, the sweeper, the usage report, the schema every
-# vault imports). The vaults themselves are tools/obsidian's; work items are
+# vaults' wiki (checkpoints, the sweeper, the drain, the usage report, the
+# schema every vault imports). The vaults themselves are tools/obsidian's; work items are
 # dev/wk's; Claude Code's own configuration is ai/claude's.
 os_config:
   path: ai/os
@@ -38,6 +38,14 @@ os_config:
     - src: systemd/wiki-usage.timer
       dest: "{{ xdg_config_home }}/systemd/user/"
       rename: wiki-usage.timer
+      condition: "{{ is_arch }}"
+    - src: systemd/wiki-drain.service
+      dest: "{{ xdg_config_home }}/systemd/user/"
+      rename: wiki-drain.service
+      condition: "{{ is_arch }}"
+    - src: systemd/wiki-drain.timer
+      dest: "{{ xdg_config_home }}/systemd/user/"
+      rename: wiki-drain.timer
       condition: "{{ is_arch }}"
 
 os_home: "~/os"

@@ -1,0 +1,10 @@
+[Unit]
+Description=wiki: drain the inboxes every day at 17:00
+
+[Timer]
+OnCalendar=*-*-* 17:00
+# A run missed while atlas sleeps fires on wake.
+Persistent=true
+
+[Install]
+WantedBy=timers.target

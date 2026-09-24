@@ -197,9 +197,12 @@ ansible-playbook playbook.yml --check --diff
 - `~/os` is the entrypoint for sessions that work through or on the OS; its
   `CLAUDE.md` and `.claude/settings.json` are linked from `ai/os/os/`. How the
   OS works is described in the personal vault (the `Agentic OS` hub), not here.
-- `wiki_checkpoint` (checkpoints, commits, the sweeper, the usage report, the
-  Claude Code hooks that guard the vaults), `wiki-schema.md` (the schema every
-  vault's `CLAUDE.md` imports) and the `wiki-checkpoint` skill live here.
+- `wiki_checkpoint` (checkpoints, commits, the sweeper, the drain, the usage
+  report, the Claude Code hooks that guard the vaults), `wiki-schema.md` (the
+  schema every vault's `CLAUDE.md` imports), `drain-brief.md` (what the
+  drain's headless session is told) and the `wiki-checkpoint` skill live here.
+  Which vaults are drained unattended is machine-local: `vaults.<name>.drain`
+  in wk's config.
 - Skills are linked one by one into `~/.claude/skills/`, each by the topic it
   belongs to; `ai/claude/skills/` holds the general ones.
 

@@ -19,4 +19,5 @@
   loop:
     - wiki-sweep.timer
     - wiki-usage.timer
+    - wiki-drain.timer
   when: is_arch

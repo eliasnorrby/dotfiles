@@ -1,0 +1,10 @@
+[Unit]
+Description=wiki: drain the vaults' inboxes with a headless Claude session
+
+[Service]
+Type=oneshot
+# The user manager's PATH is whatever the session happened to import; name
+# what the drain needs (wiki_checkpoint, wk, claude, git, jq, flock, task).
+Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin
+ExecStart=%h/.local/bin/wiki_checkpoint drain
+TimeoutStartSec=1h

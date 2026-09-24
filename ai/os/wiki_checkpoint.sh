@@ -21,6 +21,13 @@
 #                                      archive moves; where sessions write,
 #                                      edits only after four hours). Run from
 #                                      a timer.
+#   wiki_checkpoint drain [--vault NAME] [--min-age SECONDS] [--dry-run]
+#                                      Hand what waits in a vault's inbox to a
+#                                      headless Claude session that ingests it
+#                                      (drain-brief.md). Every vault with
+#                                      vaults.<name>.drain = true in wk's
+#                                      config, or the one named. Run from a
+#                                      timer.
 #   wiki_checkpoint friction VAULT SLUG
 #                                      File a friction report, body on stdin.
 #   wiki_checkpoint mark               Record that this session checkpointed.
@@ -67,6 +74,8 @@ event_debounce="${WIKI_CHECKPOINT_EVENT_DEBOUNCE:-300}"
 lock_wait="${WIKI_CHECKPOINT_LOCK_WAIT:-30}"
 # One line per work session started and per wiki page read, for `usage`.
 usage_log="$state_dir/usage.tsv"
+# The drain session's instructions, next to this script in the dotfiles.
+drain_brief="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/drain-brief.md"
 
 die() {
   echo "Error: $*" >&2
@@ -652,7 +661,130 @@ PY
   done
 }
 
-[ $# -ge 1 ] || die "usage: wiki_checkpoint resolve|commit|sweep|friction|mark|usage|hook ..."
+# Marks the drain's commits, so a question it left in the inbox can be told
+# apart from one the owner has since written in.
+drain_trailer="Drain-Run"
+
+# What waits in a vault's inbox for the drain, one vault-relative path per
+# line: the owner's jots and archive requests that have sat for MIN_AGE
+# seconds, digests, and questions the drain left that the owner has since
+# written in. A question nobody has answered is waiting for him, not for it.
+drain_pending() {
+  local vault="$1" min_age="$2" now path rel mtime
+  now=$(date +%s)
+  [ -d "$vault/inbox" ] || return 0
+  while IFS= read -r -d '' path; do
+    rel="${path#"$vault"/}"
+    mtime=$(stat -c %Y "$path" 2>/dev/null) || continue
+    [ $((now - mtime)) -ge "$min_age" ] || continue
+    if head -n 10 "$path" | grep -q '^by: claude$'; then
+      git -C "$vault" diff --quiet HEAD -- "$rel" 2>/dev/null \
+        && [ -n "$(git -C "$vault" log -1 --format="%(trailers:key=$drain_trailer,valueonly)" -- "$rel")" ] \
+        && continue
+    fi
+    printf '%s\n' "$rel"
+  done < <(find "$vault/inbox" -type f -name '*.md' -print0 | sort -z)
+}
+
+# Drain one vault: hand what waits in its inbox to a headless Claude session
+# that ingests it by the vault's own schema. Nothing waiting, no model call.
+drain_vault() {
+  local vault="$1" min_age="$2" dry_run="$3" name pending other log prompt
+  local -a dirs=() others=() waiting=()
+  name=$(basename "$vault")
+  pending=$(drain_pending "$vault" "$min_age")
+  if [ -z "$pending" ]; then
+    echo "drain $name: nothing waiting"
+    return 0
+  fi
+  mapfile -t waiting <<<"$pending"
+  for other in "$(vaults_dir)"/*/; do
+    other="${other%/}"
+    [ "$other" != "$vault" ] && [ -f "$other/CLAUDE.md" ] && others+=("$other")
+  done
+  # The other vaults, for jots that landed in the wrong one; the repositories,
+  # for verifying what a jot claims.
+  dirs=("${others[@]}")
+  while IFS= read -r other; do
+    other="${other/#\~/$HOME}"
+    [ -d "$other" ] && dirs+=("$other")
+  done < <(wk config get repos 2>/dev/null | jq -r '.[].path // empty' 2>/dev/null)
+
+  prompt=$(
+    echo "Drain the inbox of the vault $name ($vault), as your brief says. Today is $(date +%F)."
+    echo
+    echo "Waiting (paths relative to the vault):"
+    printf -- '- %s\n' "${waiting[@]}"
+    echo
+    echo "The other vaults, for a jot that belongs in one of them (each CLAUDE.md says what belongs there):"
+    printf -- '- %s\n' "${others[@]:-(none)}"
+    echo
+    echo "Mark every commit you make with the trailer line \`$drain_trailer: $(date +%F)\` before Co-Authored-By."
+  )
+  local -a command=(
+    claude -p
+    --model "${WIKI_DRAIN_MODEL:-opus}"
+    --name "drain $name $(date +%F)"
+    --permission-mode auto
+    --permission-prompts none
+    --max-budget-usd "${WIKI_DRAIN_BUDGET:-5}"
+    --append-system-prompt-file "$drain_brief"
+    --output-format json
+  )
+  for other in "${dirs[@]}"; do command+=(--add-dir "$other"); done
+
+  if [ -n "$dry_run" ]; then
+    printf '%q ' "${command[@]}"
+    printf '\n\n%s\n' "$prompt"
+    return 0
+  fi
+  mkdir -p "$state_dir/drain"
+  log="$state_dir/drain/$(date +%F-%H%M) $name.json"
+  echo "drain $name: ${#waiting[@]} waiting; log in $log"
+  (cd "$vault" && printf '%s\n' "$prompt" | "${command[@]}") >"$log" 2>&1
+  local rc=$?
+  jq -r '"drain \(input_filename | split("/") | last): \(.subtype // "?"), $\(.total_cost_usd // 0 | . * 100 | round / 100)\n\(.result // "")"' "$log" 2>/dev/null \
+    || tail -n 20 "$log"
+  return "$rc"
+}
+
+cmd_drain() {
+  local min_age="${WIKI_DRAIN_MIN_AGE:-3600}" only="" dry_run="" vault name rc=0
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --min-age)
+        min_age="$2"
+        shift 2
+        ;;
+      --vault)
+        only="$2"
+        shift 2
+        ;;
+      --dry-run)
+        dry_run=1
+        shift
+        ;;
+      *) die "usage: wiki_checkpoint drain [--vault NAME] [--min-age SECONDS] [--dry-run]" ;;
+    esac
+  done
+  [ -f "$drain_brief" ] || die "no drain brief at $drain_brief"
+  mkdir -p "$state_dir"
+  ( 
+    flock -n 8 || die "a drain is already running"
+    for vault in "$(vaults_dir)"/*/; do
+      vault="${vault%/}"
+      name=$(basename "$vault")
+      [ -z "$only" ] || [ "$name" = "$only" ] || continue
+      [ -d "$vault/.git" ] && [ -f "$vault/CLAUDE.md" ] || continue
+      # Which vaults are drained unattended is the owner's call, per machine.
+      [ -n "$only" ] || [ "$(wk config get "vaults.$name.drain" 2>/dev/null)" = true ] || continue
+      drain_vault "$vault" "$min_age" "$dry_run" || rc=$?
+    done
+    exit "$rc"
+  ) 8>"$state_dir/drain.lock"
+}
+
+[ $# -ge 1 ] || die "usage: wiki_checkpoint resolve|commit|sweep|drain|friction|mark|usage|hook ..."
 
 sub="$1"
 shift
@@ -660,6 +792,7 @@ case "$sub" in
   resolve) cmd_resolve "$@" ;;
   commit) cmd_commit "$@" ;;
   sweep) cmd_sweep "$@" ;;
+  drain) cmd_drain "$@" ;;
   friction) cmd_friction "$@" ;;
   mark) cmd_mark "$@" ;;
   usage) cmd_usage "$@" ;;

@@ -37,6 +37,11 @@ vault = "acme"
 [projects.dotfiles]
 dir = "~/.dotfiles"
 
+# Vaults, by directory name under defaults.vaults_dir. drain: empty its
+# inbox unattended (`wiki_checkpoint drain`, dotfiles topic ai/os).
+[vaults.acme]
+drain = true
+
 # Repositories wk knows about.
 [repos."acme/app"]
 path = "~/work/acme/app" # the main checkout; worktrees go under .worktrees/
