@@ -165,6 +165,11 @@
       "mcp__claude_ai_Gmail__update_message_labels"
     ]
   },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh",
+    "refreshInterval": 30
+  },
   "enabledPlugins": {
     "slack@claude-plugins-official": true
   },

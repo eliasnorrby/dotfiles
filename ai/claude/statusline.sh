@@ -1,228 +1,281 @@
 #!/usr/bin/env bash
 
 # Claude status line
-# https://docs.claude.com/en/docs/claude-code/statusline
+# https://code.claude.com/docs/en/statusline
+#
+# Line 1: the session (model, directory, branch, context, duration).
+# Line 2: the work it belongs to (issue, PR) and rate limits,
+# printed only when there is something to say.
+#
+# Pass --debug to log each JSON input to ~/.cache/claude/statusline.log.
 
-# Parse arguments
-DEBUG=false
-if [[ "$1" == "--debug" ]]; then
-  DEBUG=true
-fi
+# Segments are called by name from join_segments.
+# shellcheck disable=SC2329
 
-# Read JSON input once
 input=$(cat)
 
-# Debug logging
-if [[ "$DEBUG" == "true" ]]; then
+if [[ "$1" == "--debug" ]]; then
   log_file="$HOME/.cache/claude/statusline.log"
   mkdir -p "$(dirname "$log_file")"
-  {
-    echo "=== $(date '+%Y-%m-%d %H:%M:%S') ==="
-    echo "$input" | jq '.'
-    echo ""
-  } >>"$log_file"
+  printf '=== %s ===\n%s\n\n' "$(date '+%F %T')" "$(jq . <<<"$input")" >>"$log_file"
 fi
 
-# ANSI color codes (standard 16 terminal colors)
-COLOR_RESET='\033[0m'
-COLOR_BOLD='\033[1m'
-COLOR_DIM='\033[2m'
+RESET=$'\e[0m'
+BOLD=$'\e[1m'
+RED=$'\e[31m'
+GREEN=$'\e[32m'
+YELLOW=$'\e[33m'
+MAGENTA=$'\e[35m'
+CYAN=$'\e[36m'
+WHITE=$'\e[37m'
+GREY=$'\e[90m'
+BLUE=$'\e[94m'
 
-# Foreground colors
-FG_BLACK='\033[30m'
-FG_RED='\033[31m'
-FG_GREEN='\033[32m'
-FG_YELLOW='\033[33m'
-FG_BLUE='\033[34m'
-FG_MAGENTA='\033[35m'
-FG_CYAN='\033[36m'
-FG_WHITE='\033[37m'
+# Nerd Font glyphs, written as escapes: private-use characters do not survive
+# every editor and pipe.
+ICON_MODEL=$'\uec19'
+ICON_DIR=$'\uf07b'
+ICON_BRANCH=$'\U000f062c'
+ICON_CONTEXT=$'\ue64d'
+ICON_CLOCK=$'\uf017'
+ICON_ISSUE=$'\uf41b'
+ICON_PR=$'\uf407'
+ICON_LIMIT=$'\U000f0e7a'
 
-# Bright foreground colors
-FG_BRIGHT_BLACK='\033[90m'
-FG_BRIGHT_RED='\033[91m'
-FG_BRIGHT_GREEN='\033[92m'
-FG_BRIGHT_YELLOW='\033[93m'
-FG_BRIGHT_BLUE='\033[94m'
-FG_BRIGHT_MAGENTA='\033[95m'
-FG_BRIGHT_CYAN='\033[96m'
-FG_BRIGHT_WHITE='\033[97m'
+# One jq call; fields are joined with the unit separator, so empty ones
+# survive `read` (a tab would collapse them).
+IFS=$'\x1f' read -r session_id model effort current_dir lines_added \
+  lines_removed duration_ms ctx_pct ctx_size ctx_tokens pr_number pr_url \
+  pr_state limit_5h limit_7d repo_owner repo_name < <(
+    jq -r '[
+      .session_id,
+      .model.display_name,
+      .effort.level,
+      (.workspace.current_dir // .cwd),
+      .cost.total_lines_added,
+      .cost.total_lines_removed,
+      .cost.total_duration_ms,
+      .context_window.used_percentage,
+      .context_window.context_window_size,
+      (.context_window.current_usage
+        | if . then .input_tokens + .cache_creation_input_tokens
+                    + .cache_read_input_tokens
+          else null end),
+      .pr.number,
+      .pr.url,
+      .pr.review_state,
+      .rate_limits.five_hour.used_percentage,
+      .rate_limits.seven_day.used_percentage,
+      .workspace.repo.owner,
+      .workspace.repo.name
+    ] | map(. // "" | tostring) | join("\u001f")' <<<"$input"
+  )
+
+# Keep the latest rate limits where a session can read its own (a long agent
+# run checks them to pace itself): one file per session, since sessions on
+# other accounts report other limits. Written atomically; only when present.
+if [[ -n "$limit_7d" && -n "$session_id" ]]; then
+  limits_file="$HOME/.cache/claude/rate-limits/$session_id.json"
+  mkdir -p "$(dirname "$limits_file")"
+  jq -c --arg at "$(date -Iseconds)" '{at: $at, rate_limits}' <<<"$input" \
+    >"$limits_file.tmp" && mv "$limits_file.tmp" "$limits_file"
+fi
 
 # ============================================================================
-# Data extraction helpers
+# Helpers
 # ============================================================================
 
-get_model_name() { echo "$input" | jq -r '.model.display_name'; }
-get_current_dir() { echo "$input" | jq -r '.workspace.current_dir'; }
-get_project_dir() { echo "$input" | jq -r '.workspace.project_dir'; }
-get_version() { echo "$input" | jq -r '.version'; }
-get_duration() { echo "$input" | jq -r '.cost.total_duration_ms'; }
-get_lines_added() { echo "$input" | jq -r '.cost.total_lines_added'; }
-get_lines_removed() { echo "$input" | jq -r '.cost.total_lines_removed'; }
-
-get_git_branch() {
-  local project_dir=$(get_project_dir)
-  if [[ -f "$project_dir/.git/HEAD" ]]; then
-    local ref=$(cat "$project_dir/.git/HEAD")
-    if [[ $ref == ref:* ]]; then
-      local branch="${ref#ref: refs/heads/}"
-      if [[ ${#branch} -gt 35 ]]; then
-        branch="${branch:0:35}..."
-      fi
-      echo "$branch"
-    else
-      echo "${ref:0:7}"  # detached HEAD
-    fi
+# An OSC 8 hyperlink: link URL TEXT
+link() {
+  if [[ -n "$1" ]]; then
+    printf '\e]8;;%s\a%s\e]8;;\a' "$1" "$2"
+  else
+    printf '%s' "$2"
   fi
 }
 
-get_context_percentage() {
-  local ccusage_output="$(echo "$input" | pnpm dlx ccusage statusline 2>/dev/null)"
-  if [[ -n "$ccusage_output" ]]; then
-    local percentage=$(echo "$ccusage_output" | grep -oE '\([0-9]+%\)' | tr -d '()')
-    if [[ -n "$percentage" ]]; then
-      # Extract numeric value and add 20
-      local pct_num=$(echo "$percentage" | tr -d '%')
-      if [[ -n "$pct_num" ]]; then
-        local adjusted_pct=$((pct_num + 0))
-        if [[ $adjusted_pct -gt 100 ]]; then
-          adjusted_pct=100
-        fi
-        echo "${adjusted_pct}%"
-      fi
-    fi
+# Colour for a percentage: green, then yellow from $2, red from $3.
+level_colour() {
+  local pct=${1%.*}
+  if ((pct >= $3)); then
+    printf '%s' "$RED"
+  elif ((pct >= $2)); then
+    printf '%s' "$YELLOW"
+  else
+    printf '%s' "$GREEN"
+  fi
+}
+
+# 1234 -> 1.2k, 340000 -> 340k, 1000000 -> 1M
+human_tokens() {
+  local n=$1
+  if ((n >= 1000000)); then
+    printf '%sM' "$(awk "BEGIN { printf \"%.3g\", $n / 1000000 }")"
+  elif ((n >= 10000)); then
+    printf '%dk' $((n / 1000))
+  elif ((n >= 1000)); then
+    printf '%sk' "$(awk "BEGIN { printf \"%.1f\", $n / 1000 }")"
+  else
+    printf '%d' "$n"
   fi
 }
 
 format_duration() {
-  local ms=$1
-  if [[ "$ms" == "null" ]] || [[ -z "$ms" ]]; then
-    echo ""
-    return
-  fi
-  local seconds=$((ms / 1000))
-  if [[ $seconds -lt 60 ]]; then
-    echo "${seconds}s"
+  local s=$(($1 / 1000))
+  if ((s >= 3600)); then
+    printf '%dh %dm' $((s / 3600)) $((s % 3600 / 60))
+  elif ((s >= 60)); then
+    printf '%dm' $((s / 60))
   else
-    local minutes=$((seconds / 60))
-    local remaining_seconds=$((seconds % 60))
-    echo "${minutes}m ${remaining_seconds}s"
+    printf '%ds' "$s"
   fi
 }
 
-# ============================================================================
-# Component functions (each returns a formatted string or empty if N/A)
-# ============================================================================
-
-component_model() {
-  local model=$(get_model_name)
-  if [[ -n "$model" ]] && [[ "$model" != "null" ]]; then
-    echo "${FG_BRIGHT_BLUE}${COLOR_BOLD}  ${model}${COLOR_RESET}"
-  fi
-}
-
-component_directory() {
-  local current_dir=$(get_current_dir)
-  if [[ -n "$current_dir" ]] && [[ "$current_dir" != "null" ]]; then
-    local dir_name="${current_dir##*/}"
-    echo "${FG_YELLOW}  ${dir_name}${COLOR_RESET}"
-  fi
-}
-
-component_git_branch() {
-  local branch=$(get_git_branch)
-  if [[ -z "$branch" ]]; then
+# The wk task this session belongs to, as its issue, PRs and the issue's
+# URL. wk resolve is quick but not free, and the status line runs after every
+# message, so the answer is cached per session for a little while.
+wk_task() {
+  command -v wk >/dev/null || return
+  local cache_dir="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}/claude-statusline"
+  local cache="$cache_dir/${session_id:-none}.wk"
+  if [[ -f "$cache" ]] && (($(date +%s) - $(stat -c %Y "$cache" 2>/dev/null || stat -f %m "$cache") < 15)); then
+    cat "$cache"
     return
   fi
-
-  local output="${FG_BRIGHT_BLACK}${FG_WHITE}󰘬 ${branch}${COLOR_RESET}"
-
-  # Add line changes to the same component
-  local lines_added=$(get_lines_added)
-  local lines_removed=$(get_lines_removed)
-
-  if [[ "$lines_added" != "null" ]] && [[ "$lines_added" != "0" ]] && [[ -n "$lines_added" ]]; then
-    output="${output} ${FG_GREEN}+${lines_added}${COLOR_RESET}"
+  mkdir -p "$cache_dir"
+  local resolved issue prs url=""
+  resolved=$(wk resolve --json --offline -C "$current_dir" 2>/dev/null)
+  IFS=$'\x1f' read -r issue prs < <(
+    jq -r 'select(.ok) | [.issue // .task.issue, .task.prs]
+      | map(. // "") | join("\u001f")' <<<"$resolved" 2>/dev/null
+  )
+  if [[ -n "$issue" ]]; then
+    local workspace
+    workspace=$(wk config get "teams.${issue%%-*}.workspace" 2>/dev/null)
+    [[ -n "$workspace" ]] && url="https://linear.app/$workspace/issue/$issue"
   fi
-
-  if [[ "$lines_removed" != "null" ]] && [[ "$lines_removed" != "0" ]] && [[ -n "$lines_removed" ]]; then
-    output="${output} ${FG_RED}-${lines_removed}${COLOR_RESET}"
-  fi
-
-  echo "$output"
-}
-
-component_duration() {
-  local duration=$(get_duration)
-  local formatted=$(format_duration "$duration")
-
-  if [[ -n "$formatted" ]]; then
-    echo "${FG_BRIGHT_BLACK}  ${formatted}${COLOR_RESET}"
-  fi
-}
-
-component_context() {
-  local context_pct=$(get_context_percentage)
-  if [[ -z "$context_pct" ]]; then
-    return
-  fi
-
-  # Extract numeric percentage
-  local pct_num=$(echo "$context_pct" | tr -d '%')
-
-  # Determine color based on usage
-  local bar_color
-  if [[ $pct_num -lt 50 ]]; then
-    bar_color="$FG_BRIGHT_WHITE"
-  elif [[ $pct_num -lt 80 ]]; then
-    bar_color="$FG_YELLOW"
-  else
-    bar_color="$FG_RED"
-  fi
-
-  # Create progress bar (20 characters wide)
-  local bar_width=20
-  local filled=$((pct_num * bar_width / 100))
-  local empty=$((bar_width - filled))
-
-  local bar=""
-  for ((i = 0; i < filled; i++)); do bar+="█"; done
-  for ((i = 0; i < empty; i++)); do bar+="░"; done
-
-  echo "${FG_BRIGHT_WHITE}  ${bar_color}${bar} ${context_pct}${COLOR_RESET}"
+  printf '%s\x1f%s\x1f%s\n' "$issue" "$prs" "$url" | tee "$cache"
 }
 
 # ============================================================================
-# Compose statusline
+# Segments (each prints a formatted string, or nothing when N/A)
 # ============================================================================
 
-# Define component order here - reorder by changing the sequence
-components=(
-  component_model
-  component_directory
-  component_git_branch
-  component_context
-  component_duration
-)
+segment_model() {
+  [[ -n "$model" ]] || return
+  printf '%s%s%s %s%s' "$BLUE" "$BOLD" "$ICON_MODEL" "$model" "$RESET"
+  [[ -n "$effort" ]] && printf ' %s%s%s' "$GREY" "$effort" "$RESET"
+}
 
-# Build the statusline by calling each component function
-separator="${FG_BRIGHT_BLACK} │ ${COLOR_RESET}"
-output=""
-first=true
-
-for component_fn in "${components[@]}"; do
-  component_output=$($component_fn)
-
-  # Only add non-empty components
-  if [[ -n "$component_output" ]]; then
-    if [[ "$first" == "true" ]]; then
-      output="$component_output"
-      first=false
-    else
-      output="${output}${separator}${component_output}"
+segment_directory() {
+  [[ -n "$current_dir" ]] || return
+  # The repository, not the directory: a worktree or a subdirectory is named
+  # after the checkout it belongs to. The common git dir is shared by every
+  # worktree; it is <repo>/.git, or <repo>.git for a bare repository.
+  local name="${current_dir##*/}" common
+  if common=$(git -C "$current_dir" rev-parse --path-format=absolute --git-common-dir 2>/dev/null); then
+    if [[ "${common##*/}" == .git ]]; then
+      common="${common%/.git}"
     fi
+    name="${common##*/}"
+    name="${name%.git}"
   fi
-done
+  printf '%s%s %s%s' "$YELLOW" "$ICON_DIR" "$name" "$RESET"
+}
 
-# Output the final statusline
-echo -e "$output"
+segment_branch() {
+  local branch
+  branch=$(git -C "$current_dir" branch --show-current 2>/dev/null) || return
+  [[ -n "$branch" ]] || branch=$(git -C "$current_dir" rev-parse --short HEAD 2>/dev/null) || return
+  ((${#branch} > 35)) && branch="${branch:0:34}…"
+  printf '%s%s %s%s' "$WHITE" "$ICON_BRANCH" "$branch" "$RESET"
+  [[ "${lines_added:-0}" != 0 ]] && printf ' %s+%s%s' "$GREEN" "$lines_added" "$RESET"
+  [[ "${lines_removed:-0}" != 0 ]] && printf ' %s-%s%s' "$RED" "$lines_removed" "$RESET"
+}
+
+segment_context() {
+  # Null before the first API response, and again right after /compact.
+  [[ -n "$ctx_pct" ]] || return
+  local pct=${ctx_pct%.*} width=10 bar="" i
+  local filled=$(((pct * width + 50) / 100))
+  for ((i = 0; i < width; i++)); do
+    ((i < filled)) && bar+="█" || bar+="░"
+  done
+  local colour
+  colour=$(level_colour "$pct" 50 80)
+  printf '%s%s %s%s %s%%' "$WHITE" "$ICON_CONTEXT" "$colour" "$bar" "$pct"
+  if [[ -n "$ctx_tokens" && -n "$ctx_size" ]]; then
+    printf ' %s%s/%s' "$GREY" "$(human_tokens "$ctx_tokens")" "$(human_tokens "$ctx_size")"
+  fi
+  printf '%s' "$RESET"
+}
+
+segment_duration() {
+  [[ -n "$duration_ms" ]] || return
+  printf '%s%s %s%s' "$GREY" "$ICON_CLOCK" "$(format_duration "$duration_ms")" "$RESET"
+}
+
+segment_issue() {
+  [[ -n "$wk_issue" ]] || return
+  printf '%s%s %s%s' "$MAGENTA" "$ICON_ISSUE" "$(link "$wk_url" "$wk_issue")" "$RESET"
+}
+
+segment_pr() {
+  # Claude Code's own PR detection first; the task's PRs (kept current by
+  # wk sync) cover what it misses, e.g. a PR on another branch.
+  if [[ -n "$pr_number" ]]; then
+    local colour="$CYAN" mark=""
+    case "$pr_state" in
+      approved) colour="$GREEN" mark=" ✓" ;;
+      changes_requested) colour="$RED" mark=" ✗" ;;
+      draft) colour="$GREY" mark=" draft" ;;
+    esac
+    printf '%s%s %s%s%s' "$colour" "$ICON_PR" "$(link "$pr_url" "#$pr_number")" "$mark" "$RESET"
+  elif [[ -n "$wk_prs" ]]; then
+    local pr base="" out=""
+    [[ -n "$repo_owner" && -n "$repo_name" ]] && base="https://github.com/$repo_owner/$repo_name/pull"
+    for pr in ${wk_prs//,/ }; do
+      out+="${out:+ }$(link "${base:+$base/${pr#\#}}" "$pr")"
+    done
+    printf '%s%s %s%s' "$CYAN" "$ICON_PR" "$out" "$RESET"
+  fi
+}
+
+segment_limits() {
+  # Only once they start to matter.
+  local out="" pct
+  for window in 5h:"$limit_5h" 7d:"$limit_7d"; do
+    pct=${window#*:}
+    pct=${pct%.*}
+    if [[ -z "$pct" ]] || ((pct < 50)); then
+      continue
+    fi
+    out+="${out:+ }$(level_colour "$pct" 50 80)${window%%:*} ${pct}%${RESET}"
+  done
+  [[ -n "$out" ]] && printf '%s%s %s' "$GREY" "$ICON_LIMIT" "$out"
+}
+
+# ============================================================================
+# Compose
+# ============================================================================
+
+SEPARATOR="${GREY} │ ${RESET}"
+
+join_segments() {
+  local fn part out=""
+  for fn in "$@"; do
+    part=$($fn)
+    [[ -n "$part" ]] && out+="${out:+$SEPARATOR}$part"
+  done
+  printf '%s' "$out"
+}
+
+IFS=$'\x1f' read -r wk_issue wk_prs wk_url < <(wk_task)
+
+# segment_branch is left out for now; add it back after segment_directory.
+line1=$(join_segments segment_model segment_directory segment_context segment_duration)
+line2=$(join_segments segment_issue segment_pr segment_limits)
+
+printf '%s\n' "$line1"
+[[ -n "$line2" ]] && printf '%s\n' "$line2"
+exit 0
