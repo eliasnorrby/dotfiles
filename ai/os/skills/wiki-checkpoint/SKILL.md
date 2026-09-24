@@ -55,10 +55,11 @@ Only what changed since your last checkpoint in this session:
   durable was learned that outlives this task: how an external system really
   behaves, a customer's setup, a decision about architecture. Then follow the
   schema's ingest workflow: extend the page it belongs on, or write a new page
-  under the hub (and its index line) when the schema's split rule says so.
+  under the hub (listed on its `## Pages`) when the schema's split rule says so.
   Most checkpoints don't touch them.
 - **Link what you mention.** When the task note names a customer, a system, a
-  person or another task, check `index.md` and link the page if there is one.
+  person or another task, check the indexes (`index.md` for hubs,
+  `wiki/Tasks index.md`, `wiki/People index.md`) and link the page if there is one.
   The links are what let a later session find this note from the topic's side.
 - **Say what the wiki did for you** under `## Wiki use` in the task note, one
   dated line per page that mattered since your last checkpoint:

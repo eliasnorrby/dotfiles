@@ -12,7 +12,7 @@ how tasks are keyed. Follow both, and propose changes when they stop fitting.
 
 ```
 CLAUDE.md          the vault's schema; imports this file
-index.md           catalog of every wiki page
+index.md           the entry point: hubs by kind, the other indexes, Wanted
 log.md             append-only record of changes to the wiki
 inbox/             what has not been processed yet; always empties out
                    Elias's jots (one timestamped file each), your digests,
@@ -82,8 +82,8 @@ no `task:` key) are created directly in the task folder's `archive/` with
 Closing is handled outside the wiki: when the taskwarrior task is completed or
 deleted, a hook moves the note to `archive/` and sets `status` and `closed`;
 reopening moves it back. Don't move notes in or out of `archive/` yourself.
-Wikilinks survive the move; do update the note's section in `index.md` next
-time you touch it.
+Wikilinks survive the move; do move the note's line in `wiki/Tasks index.md`
+next time you touch it.
 
 Sections: `## Summary` (two or three sentences, kept current), `## Plan`,
 `## Findings`, `## Decisions` (each with the why and what was rejected),
@@ -100,8 +100,9 @@ prescribed sections; open with what it is about, end with `## Sources`.
 Titles are natural and unique across the vault (Obsidian links by basename):
 check for a clash before choosing one, and qualify only when there is one.
 A page usually belongs to a hub (`up:`), but it need not: a page can be a dot
-waiting for the web to reach it. What it may never be is uncatalogued: it
-gets its `index.md` line when it is written.
+waiting for the web to reach it. What it may never be is unreachable: when it
+is written it gets a line on its hub's `## Pages`, or, with no hub, on
+`wiki/Loose pages.md`.
 
 ```yaml
 type: page
@@ -230,7 +231,9 @@ a transcript.
    for what has none, and split where the split rule says so. One source
    commonly touches several pages. A new page links to its hub and the hub
    lists it.
-4. Update `index.md` for pages added, renamed or substantially changed.
+4. Update the indexes for what was added, renamed or substantially changed:
+   a hub's line in `index.md`, a task's in `wiki/Tasks index.md`, a person's
+   in `wiki/People index.md`, a hubless page's in `wiki/Loose pages.md`.
 5. Add today's daily entry if this was work done today and the dailies are
    yours.
 6. Append to `log.md`.
@@ -253,7 +256,8 @@ the task; then steps 3 and 4 of ingest apply. A checkpoint does not write to
 `log.md`: the task note and the git history already record it, and the log is
 for operations on the wiki as a whole. Commit as described under Git.
 
-**Query** — read `index.md` first, then the pages it points to; go to raw
+**Query** — read `index.md` first, then the hubs and indexes it points to,
+then their pages; go to raw
 sources only when the wiki falls short, and fix the wiki when it does. If an
 answer took real synthesis, offer to file it as a page.
 
@@ -261,7 +265,8 @@ answer took real synthesis, offer to file it as a page.
 sources have superseded, orphans (a page with no inbound links is a finding
 to fix by linking, not a state to leave), concepts lacking a page, missing
 cross-references (never into `private/`), pages the split rule says to split
-or fold, pages missing from the index, pages with more or fewer than one
+or fold, pages that can't be reached from `index.md` by following links,
+pages with more or fewer than one
 H1, stale `status: active` tasks, index entries that no longer match their
 page, and files under `raw/` that no wiki page links to (not yet ingested, or
 deliberately skipped). Read the latest usage report in `_meta/usage/`
@@ -275,13 +280,17 @@ Elias agrees to.
 
 ## index.md and log.md
 
-`index.md`: one line per page, every page — `- [[Page]] — one-line summary` —
-grouped under `## Tasks (active)`, `## Tasks (closed)`, `## Topics`
-(sub-grouped by kind), `## Pages` (sub-grouped by hub, `### Loose` for pages
-with none), `## People` and `## Wanted`, plus whatever sections the vault
-adds. It is how you find things: a fresh session reads it first, so a page
-missing here does not exist. Keep the summaries specific and to one line; a
-summary that needs a paragraph is a page that needs splitting.
+The indexes disclose the wiki progressively, so that the first thing a
+session reads stays short. `index.md` is the entry point: `## Indexes`
+(links to the three below), `## Topics` (every hub, sub-grouped by kind, one
+line each: `- [[Hub]] — one-line summary`) and `## Wanted`, plus whatever
+sections the vault adds. Pages are listed on their hub's `## Pages`, not here.
+Three more indexes live in `wiki/`, each `type: index` with the same one-line
+format: `Tasks index.md` (`## Active`, `## Closed`), `People index.md`, and
+`Loose pages.md` for pages without a hub. The invariant: every page can be
+reached from `index.md` by following links; lint checks it. Keep summaries
+specific and to one line; a summary that needs a paragraph is a page that
+needs splitting.
 
 `log.md`: append-only, newest last, one entry per operation:
 

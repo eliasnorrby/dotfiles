@@ -152,8 +152,8 @@ This work has a wiki: $vault (an Obsidian vault; its CLAUDE.md is the schema).
 Before you investigate anything with history (a system, a customer, an external
 API, an incident, a past decision), look it up there instead of rediscovering
 it: the hubs below each list their pages under \`## Pages\`; topics are
-$vault/wiki/topics/<Title>.md, pages $vault/wiki/pages/<Title>.md, and the full
-catalogue is $vault/index.md. Open questions and known problems are on
+$vault/wiki/topics/<Title>.md, pages $vault/wiki/pages/<Title>.md; the entry
+index is $vault/index.md, and it links the tasks, people and loose-pages indexes. Open questions and known problems are on
 [[Open questions]] and [[Loose ends]]. ${issue:+Your task note: \`wiki_checkpoint resolve\` (issue $issue). }When you
 checkpoint, note which pages helped and which were wrong or missing.
 
