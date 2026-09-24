@@ -22,13 +22,22 @@
 #   wiki_checkpoint friction VAULT SLUG
 #                                      File a friction report, body on stdin.
 #   wiki_checkpoint mark               Record that this session checkpointed.
-#   wiki_checkpoint hook EVENT         Claude Code hook: remind the session to
-#                                      checkpoint (post-tool-use,
-#                                      user-prompt-submit), note that it ended
-#                                      with uncaptured work (session-end), or
-#                                      keep the file tools out of a vault's
-#                                      private/ and off everything but the
-#                                      wiki layer (pre-tool-use).
+#   wiki_checkpoint usage [--since DATE] [--vault NAME] [--write]
+#                                      How sessions use the wiki: which pages
+#                                      they read, how many never looked, and
+#                                      what their task notes say helped or was
+#                                      wrong. Markdown on stdout; --write puts
+#                                      it in <vault>/_meta/usage/ instead.
+#   wiki_checkpoint hook EVENT         Claude Code hook: hand a work session a
+#                                      map of its vault's hubs (session-start),
+#                                      remind the session to checkpoint
+#                                      (post-tool-use, user-prompt-submit),
+#                                      note that it ended with uncaptured work
+#                                      (session-end), keep the file tools out
+#                                      of a vault's private/ and off
+#                                      everything but the wiki layer
+#                                      (pre-tool-use), and log every read of a
+#                                      wiki page (pre-tool-use, post-tool-use).
 #
 # Nothing here names a vault, a tracker or a company. A session is in scope
 # when `wk` can tell which task it belongs to; the vault follows from the
@@ -38,6 +47,7 @@
 # the working tree: it commits only the paths it is given, under a lock.
 #
 # Wired via settings.json:
+#   SessionStart        -> wiki_checkpoint hook session-start
 #   PreToolUse (file tools) -> wiki_checkpoint hook pre-tool-use
 #   PostToolUse (Bash)  -> wiki_checkpoint hook post-tool-use
 #   UserPromptSubmit    -> wiki_checkpoint hook user-prompt-submit
@@ -53,6 +63,8 @@ min_interval="${WIKI_CHECKPOINT_MIN_INTERVAL:-2700}"
 # Events like a push come in bursts; one reminder per burst is enough.
 event_debounce="${WIKI_CHECKPOINT_EVENT_DEBOUNCE:-300}"
 lock_wait="${WIKI_CHECKPOINT_LOCK_WAIT:-30}"
+# One line per work session started and per wiki page read, for `usage`.
+usage_log="$state_dir/usage.tsv"
 
 die() {
   echo "Error: $*" >&2
@@ -82,6 +94,70 @@ in_scope() {
 # The issue the session in DIR works on, for the uncaptured-work trail.
 session_issue() {
   wk resolve --json -C "$1" 2>/dev/null | jq -r '.issue // empty' 2>/dev/null
+}
+
+# The vault the task in DIR belongs to (the task's project, through wk's
+# configuration), without creating a note or asking the tracker.
+session_vault() {
+  local project name
+  project=$(wk resolve --json -C "$1" 2>/dev/null | jq -r '.task.project // empty' 2>/dev/null)
+  [ -n "$project" ] || return 1
+  name=$(wk config get "projects.$project.vault" 2>/dev/null) || return 1
+  [ -n "$name" ] && [ -f "$(vaults_dir)/$name/index.md" ] || return 1
+  printf '%s/%s' "$(vaults_dir)" "$name"
+}
+
+# The session's issue, looked up once and remembered.
+cached_issue() {
+  local sid="$1" cwd="$2" f="$state_dir/$1.issue"
+  if [ ! -f "$f" ]; then
+    mkdir -p "$state_dir"
+    session_issue "$cwd" >"$f" 2>/dev/null
+  fi
+  cat "$f" 2>/dev/null
+}
+
+# Append to the usage log. Args: EVENT SID CWD TOOL VAULT PATH
+log_usage() {
+  mkdir -p "$state_dir"
+  printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$(date -Is)" "$1" "$2" "$(cached_issue "$2" "$3")" \
+    "$4" "$5" "$6" "$3" >>"$usage_log"
+}
+
+# Log a read of a vault file when it is wiki content. Args: SID CWD TOOL ABSPATH
+log_wiki_read() {
+  local vaults rel vault
+  vaults=$(vaults_dir)
+  case "$4/" in
+    "$vaults"/*/*) ;;
+    *) return 0 ;;
+  esac
+  rel="${4#"$vaults"/}"
+  vault="${rel%%/*}"
+  rel="${rel#*/}"
+  case "$rel" in
+    wiki | wiki/* | index.md | dailies/*) log_usage read "$1" "$2" "$3" "$vault" "$rel" ;;
+  esac
+}
+
+# What a work session is handed at start: where its wiki is and the list of
+# hubs and topics, which each list their pages. The full index is a read away.
+wiki_map() {
+  local vault="$1" issue="$2" topics
+  topics=$(awk '/^## Topics/{on=1; next} /^## /{if(on) exit} on' "$vault/index.md")
+  cat <<EOF
+This work has a wiki: $vault (an Obsidian vault; its CLAUDE.md is the schema).
+Before you investigate anything with history (a system, a customer, an external
+API, an incident, a past decision), look it up there instead of rediscovering
+it: the hubs below each list their pages under \`## Pages\`; topics are
+$vault/wiki/topics/<Title>.md, pages $vault/wiki/pages/<Title>.md, and the full
+catalogue is $vault/index.md. Open questions and known problems are on
+[[Open questions]] and [[Loose ends]]. ${issue:+Your task note: \`wiki_checkpoint resolve\` (issue $issue). }When you
+checkpoint, note which pages helped and which were wrong or missing.
+
+Hubs and topics:
+$topics
+EOF
 }
 
 cmd_resolve() {
@@ -351,7 +427,13 @@ hook_pre_tool_use() {
       return 0
       ;;
   esac
-  [ "$verb" = write ] || return 0
+  if [ "$verb" = read ]; then
+    local sid cwd
+    sid=$(jq -r '.session_id // empty' <<<"$input" 2>/dev/null)
+    cwd=$(jq -r '.cwd // empty' <<<"$input" 2>/dev/null)
+    [ -n "$sid" ] && log_wiki_read "$sid" "$cwd" "$tool" "$path"
+    return 0
+  fi
   vault_allows_write "$vaults/$vault" "$rel" && return 0
   emit_deny "Your file tools write only to the wiki layer of a vault (wiki/, dailies/, _meta/friction/, index.md, log.md, CLAUDE.md, and your own digests in inbox/); ${rel:-the vault root} is the owner's. If it really must change, that is his call and a git mv or an edit he asks for. See the vault's CLAUDE.md."
 }
@@ -389,10 +471,25 @@ cmd_hook() {
           "$(reminder_text "It has been a while ($prompts prompts) since this session was last checkpointed.")"
       fi
       ;;
+    session-start)
+      local vault
+      in_scope "$cwd" || exit 0
+      vault=$(session_vault "$cwd") || exit 0
+      log_usage start "$sid" "$cwd" "" "${vault##*/}" ""
+      emit_context SessionStart "$(wiki_map "$vault" "$(cached_issue "$sid" "$cwd")")"
+      ;;
     post-tool-use)
-      local command
+      local command vaults p
       command=$(jq -r 'select(.tool_name == "Bash") | .tool_input.command // empty' <<<"$input" 2>/dev/null)
       [ -n "$command" ] || exit 0
+      # Reads through the shell (cat, sed, grep, head) count too. Titles have
+      # spaces, so take everything up to the .md.
+      vaults=$(vaults_dir)
+      if [[ "$command" == *"$vaults/"* || "$command" == *"~/vaults/"* ]]; then
+        while IFS= read -r p; do
+          [ -n "$p" ] && log_wiki_read "$sid" "$cwd" Bash "${p/#\~\//$HOME/}"
+        done < <(grep -oP "(?:\Q$vaults\E|~/vaults)/[^/'\"]+/(?:wiki/[^'\"]*?\.md|index\.md)" <<<"$command" | sort -u)
+      fi
       [[ "$command" =~ (^|[\;\&\|[:space:]])(gh[[:space:]]+pr[[:space:]]+(create|merge)|git[[:space:]]+push)([[:space:]]|$) ]] || exit 0
       in_scope "$cwd" || exit 0
       [ $((now - $(state_get "$sid" reminded))) -ge "$event_debounce" ] || exit 0
@@ -408,13 +505,106 @@ cmd_hook() {
         printf '%s\t%s\t%s\t%s\t%s\n' "$(date -Is)" "$sid" "$(session_issue "$cwd")" "$cwd" \
           "$(jq -r '.transcript_path // empty' <<<"$input" 2>/dev/null)" >>"$state_dir/uncaptured.tsv"
       fi
-      rm -f "$state_dir/$sid".{first,last,prompts,reminded}
+      rm -f "$state_dir/$sid".{first,last,prompts,reminded,issue}
       ;;
   esac
   exit 0
 }
 
-[ $# -ge 1 ] || die "usage: wiki_checkpoint resolve|commit|sweep|friction|mark|hook ..."
+cmd_usage() {
+  local since="" vault="" write=""
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --since) since="$2"; shift 2 ;;
+      --vault) vault="$2"; shift 2 ;;
+      --write) write=1; shift ;;
+      *) die "usage: wiki_checkpoint usage [--since YYYY-MM-DD] [--vault NAME] [--write]" ;;
+    esac
+  done
+  since="${since:-$(date -d '7 days ago' +%F)}"
+  local vaults report
+  vaults=$(vaults_dir)
+  [ -f "$usage_log" ] || die "no usage logged yet ($usage_log)"
+  for v in "$vaults"/*/; do
+    v="${v%/}"
+    [ -f "$v/index.md" ] || continue
+    [ -z "$vault" ] || [ "${v##*/}" = "$vault" ] || continue
+    report=$(python3 - "$usage_log" "$v" "$since" "$vaults" <<'PY'
+import collections, datetime, os, re, sys
+log, vault, since, vaults = sys.argv[1:5]
+name = os.path.basename(vault)
+starts, reads = {}, collections.defaultdict(list)
+for line in open(log, encoding="utf-8"):
+    f = line.rstrip("\n").split("\t")
+    if len(f) < 8 or f[0][:10] < since:
+        continue
+    ts, ev, sid, issue, tool, v, rel, cwd = f[:8]
+    if cwd.startswith(vaults + "/"):
+        continue  # sessions maintaining the wiki itself
+    if ev == "start" and v == name:
+        starts.setdefault(sid, (ts, issue))
+    elif ev == "read" and v == name:
+        reads[sid].append((ts, tool, rel))
+        starts.setdefault(sid, (ts, issue))
+own = lambda rel: rel.startswith(("wiki/tasks/", "dailies/"))
+n = len(starts)
+read_any = [s for s in starts if reads.get(s)]
+read_index = [s for s in starts if any(r[2] == "index.md" for r in reads.get(s, []))]
+read_pages = [s for s in starts if any(r[2].startswith(("wiki/topics/", "wiki/pages/", "wiki/people/")) for r in reads.get(s, []))]
+by_page = collections.Counter()
+for s, rs in reads.items():
+    for rel in {r[2] for r in rs}:
+        if rel.endswith(".md") and not own(rel) and rel != "index.md":
+            by_page[rel] += 1
+hubs = sorted(f[:-3] for f in os.listdir(os.path.join(vault, "wiki/topics")) if f.endswith(".md"))
+unread_hubs = [h for h in hubs if f"wiki/topics/{h}.md" not in by_page]
+notes = []
+for sub in ("wiki/tasks", "wiki/tasks/archive"):
+    d = os.path.join(vault, sub)
+    if not os.path.isdir(d):
+        continue
+    for fn in os.listdir(d):
+        if not fn.endswith(".md"):
+            continue
+        t = open(os.path.join(d, fn), encoding="utf-8").read()
+        m = re.search(r"^## Wiki use\n(.*?)(?=^## |\Z)", t, re.S | re.M)
+        if not m:
+            continue
+        for l in m.group(1).splitlines():
+            d8 = re.match(r"- (\d{4}-\d{2}-\d{2})", l)
+            if d8 and d8.group(1) >= since:
+                notes.append((fn[:-3], l[2:].strip()))
+pct = lambda k: f"{k} of {n}" + (f" ({100 * k // n} %)" if n else "")
+out = [f"# Wiki usage {since} to {datetime.date.today()}", "",
+       f"Work sessions in scope of {name}: {n}.", "",
+       f"- read any wiki file: {pct(len(read_any))}",
+       f"- read index.md: {pct(len(read_index))}",
+       f"- read a topic, page or person (not their own task note or a daily): {pct(len(read_pages))}", "",
+       "## Most-read pages", ""]
+out += [f"- {c} × [[{os.path.basename(p)[:-3]}]]" for p, c in by_page.most_common(25)] or ["- none"]
+out += ["", "## Sessions", ""]
+for s, (ts, issue) in sorted(starts.items(), key=lambda kv: kv[1][0]):
+    rs = reads.get(s, [])
+    pages = sorted({os.path.basename(r[2])[:-3] for r in rs if r[2].endswith(".md") and not own(r[2])})
+    out.append(f"- {ts[:16]} {issue or '(no issue)'} `{s[:8]}`: {len(rs)} reads" + (f" — {', '.join(pages)}" if pages else ""))
+out += ["", "## What task notes say (## Wiki use)", ""]
+out += [f"- [[{t}]]: {l}" for t, l in sorted(notes)] or ["- nothing recorded"]
+out += ["", f"## Hubs and topics nobody read ({len(unread_hubs)} of {len(hubs)})", "",
+        ", ".join(f"[[{h}]]" for h in unread_hubs) or "none"]
+print("\n".join(out))
+PY
+)
+    if [ -n "$write" ]; then
+      mkdir -p "$v/_meta/usage"
+      printf '%s\n' "$report" >"$v/_meta/usage/$(date +%F).md"
+      echo "$v/_meta/usage/$(date +%F).md"
+    else
+      printf '%s\n\n' "$report"
+    fi
+  done
+}
+
+[ $# -ge 1 ] || die "usage: wiki_checkpoint resolve|commit|sweep|friction|mark|usage|hook ..."
 
 sub="$1"
 shift
@@ -424,6 +614,7 @@ case "$sub" in
   sweep) cmd_sweep "$@" ;;
   friction) cmd_friction "$@" ;;
   mark) cmd_mark "$@" ;;
+  usage) cmd_usage "$@" ;;
   hook) cmd_hook "$@" ;;
   *) die "unknown subcommand: $sub" ;;
 esac

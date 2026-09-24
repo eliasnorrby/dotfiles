@@ -112,6 +112,10 @@
           {
             "type": "command",
             "command": "wk hook claude session-start"
+          },
+          {
+            "type": "command",
+            "command": "wiki_checkpoint hook session-start"
           }
         ]
       }
