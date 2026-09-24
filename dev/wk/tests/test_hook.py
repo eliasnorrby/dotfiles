@@ -58,3 +58,35 @@ def test_done_archives_the_note_through_taskwarrior_itself(config, tasks, world)
     tasks.invalidate()
     assert tasks.get(task["uuid"])["note"] == "wiki/tasks/ACME-4 archive me"
     assert os.path.exists(path)
+
+
+def pr_created(cwd, url="https://github.com/acme/app/pull/77"):
+    return {
+        "tool_name": "Bash",
+        "tool_input": {"command": "gh pr create --fill"},
+        "tool_response": {"stdout": f"{url}\n"},
+        "cwd": str(cwd),
+    }
+
+
+@needs_task
+def test_a_pr_goes_to_the_task_of_its_branch(tasks, world):
+    from wk import hooks
+
+    # A parent's session, where a background agent opens a sub-issue's PR.
+    parent = tasks.add("investigation", {"issue": "ACME-1", "worktree": str(world)})
+    child = tasks.add("one part", {"issue": "ACME-2", "branch": "me/acme-2-one-part"})
+    hooks.claude_post_tool_use(pr_created(world), head_of=lambda url: "me/acme-2-one-part")
+    tasks.invalidate()
+    assert tasks.get(child["uuid"])["prs"] == "#77"
+    assert "prs" not in tasks.get(parent["uuid"])
+
+
+@needs_task
+def test_a_pr_whose_branch_has_no_task_goes_to_the_sessions(tasks, world):
+    from wk import hooks
+
+    parent = tasks.add("investigation", {"issue": "ACME-1", "worktree": str(world)})
+    hooks.claude_post_tool_use(pr_created(world), head_of=lambda url: "me/a-side-quest")
+    tasks.invalidate()
+    assert tasks.get(parent["uuid"])["prs"] == "#77"

@@ -14,6 +14,10 @@ PR stays where it is:
      none yet,
   4. the task of the PR it is stacked on (its base is that PR's head),
   5. else a new PR-only work item.
+
+A parent answers for its sub-tasks' PRs as well as its own: it lists them in
+`subprs` and its action, decision and health cover them. They still belong to
+the sub-task; this is only so the list can show the stack by its parent.
 """
 
 import datetime
@@ -101,9 +105,11 @@ class Sync:
                 pr["mergeable"] = known.get(f"{pr['repo']}#{pr['number']}", {}).get("mergeable")
 
         groups = self._fold(mine)
-        self._settle_vanished(groups, {(pr["repo"], pr["number"]) for pr in mine})
-        for uuid, prs in groups.items():
-            self._update_work_item(self.tasks.get(uuid), prs, known, first_sync)
+        below = self._below(groups)
+        self._settle_vanished(groups, below, {(pr["repo"], pr["number"]) for pr in mine})
+        rolled_up = {task["uuid"] for task in self._open_tasks() if task.get("subprs")}
+        for uuid in dict.fromkeys([*groups, *below, *rolled_up]):
+            self._update_work_item(self.tasks.get(uuid), groups.get(uuid, []), known, first_sync, below.get(uuid, []))
         if complete:
             self._sync_reviews(review, first_sync)
         else:
@@ -166,7 +172,20 @@ class Sync:
                     return task
         return None
 
-    def _settle_vanished(self, groups, open_keys):
+    def _below(self, groups):
+        """The open PRs of each task's open sub-tasks, by the parent's uuid.
+        A PR has one owner, its sub-task; the parent only shows the stack
+        (`subprs`) and answers for it (action, decision, health), so the
+        sub-tasks can stay out of the list."""
+        open_tasks = self._open_tasks()
+        parents = {task["uuid"] for task in open_tasks}
+        below = {}
+        for task in open_tasks:
+            if task.get("partof") in parents and task["uuid"] in groups:
+                below.setdefault(task["partof"], []).extend(groups[task["uuid"]])
+        return below
+
+    def _settle_vanished(self, groups, below, open_keys):
         """PRs listed on a task but no longer open were merged or closed.
         They stay listed: the task is the hub for everything that touched it,
         before and after it is done. What changes is that they no longer
@@ -209,7 +228,7 @@ class Sync:
             if uuid in groups or task.get("issue"):
                 # Still-open PRs set the status below; an issue's fate is the
                 # tracker's to decide, so the task itself stays open.
-                if uuid not in groups:
+                if uuid not in groups and uuid not in below:
                     self._modify(task, {"action": "", "decision": "", "health": ""})
             elif any(state == "MERGED" for _, state, _ in settled):
                 self.report.did(f"complete {task['description']}")
@@ -220,23 +239,31 @@ class Sync:
                 if not self.report.dry_run:
                     self.tasks.delete(task)
 
-    def _update_work_item(self, task, prs, known, first_sync):
+    def _update_work_item(self, task, prs, known, first_sync, below=()):
+        """`prs` are the task's own open PRs, `below` its sub-tasks'. Either
+        may be empty: a parent can answer for its sub-tasks alone, and a
+        parent whose sub-tasks' PRs are gone has its rollup cleared."""
+        current = self.tasks.get(task["uuid"]) or task
+        attributes = pull_requests.aggregate(list(prs) + list(below))
+        changes = {key: value or "" for key, value in attributes.items()}
+        changes["subprs"] = format_prs(pr["number"] for pr in pull_requests.stack_order(below))
         # Settled PRs (merged, closed) keep their place at the front; the
         # open ones follow in stack order.
-        current = self.tasks.get(task["uuid"]) or task
         ordered = pull_requests.stack_order(prs)
         open_numbers = [pr["number"] for pr in ordered]
         settled = [n for n in listed_prs(current) if n not in open_numbers]
         listed = settled + open_numbers
-        attributes = {key: value or "" for key, value in pull_requests.aggregate(prs).items()}
-        changes = {"prs": format_prs(listed), "repo": prs[0]["repo"], **attributes}
+        if prs:
+            changes["prs"] = format_prs(listed)
+            changes["repo"] = prs[0]["repo"]
         if not current.get("branch") and len(prs) == 1:
             changes["branch"] = prs[0]["head"]
         before = {key: str(current.get(key, "")) for key in changes}
         if before != changes:
-            self.report.did(f"update {current['description']}: {changes['prs']} {changes['action']}")
+            shown = " ".join(filter(None, [format_prs(listed), changes["subprs"], changes["action"]]))
+            self.report.did(f"update {current['description']}: {shown}")
         self._modify(current, changes)
-        if not self.report.dry_run:
+        if prs and not self.report.dry_run:
             entries = {pr["number"]: pr for pr in cache.read_prs(task["uuid"])}
             entries.update({pr["number"]: pr for pr in ordered})
             cache.write_prs(task["uuid"], [entries[n] for n in listed if n in entries])

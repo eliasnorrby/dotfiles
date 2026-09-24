@@ -281,3 +281,38 @@ def test_stubs_are_filled_in(world_with_sync, tasks):
     assert stub["description"] == "Fix: the thing"
     assert stub["partof"] == parent["uuid"]
     assert "stub" not in stub.get("tags", [])
+
+
+def test_a_parent_answers_for_its_sub_tasks_prs(world_with_sync, tasks):
+    parent = tasks.add("investigation", {"issue": "ACME-1"})
+    child = tasks.add("one part", {"issue": "ACME-2", "partof": parent["uuid"]})
+    other = tasks.add("another part", {"issue": "ACME-3", "partof": parent["uuid"]})
+    github = GitHub(
+        mine=[
+            pr(30, "me/acme-1-benchmark"),
+            pr(31, "me/acme-2-part", "me/acme-1-benchmark", checks="FAILURE"),
+            pr(32, "me/acme-3-part", "me/acme-1-benchmark"),
+        ]
+    )
+    sync(tasks, github)
+    parent = tasks.get(parent["uuid"])
+    assert parent["prs"] == "#30"
+    assert parent["subprs"] == "#31,#32"
+    assert (parent["action"], parent["health"]) == ("fix", "failing")  # a sub-task's red is the parent's
+    assert tasks.get(child["uuid"])["prs"] == "#31"
+    assert tasks.get(other["uuid"])["prs"] == "#32"
+    assert sync(tasks, github).lines == []  # one write per change, not an own-then-rolled-up pair
+
+    sync(tasks, GitHub(mine=[pr(30, "me/acme-1-benchmark")], states={"node31": "MERGED", "node32": "MERGED"}))
+    parent = tasks.get(parent["uuid"])
+    assert "subprs" not in parent
+    assert parent["action"] == "await"
+
+
+def test_a_parent_with_no_prs_of_its_own_still_answers_for_its_sub_tasks(world_with_sync, tasks):
+    parent = tasks.add("investigation", {"issue": "ACME-1"})
+    tasks.add("one part", {"issue": "ACME-2", "partof": parent["uuid"]})
+    sync(tasks, GitHub(mine=[pr(31, "me/acme-2-part", decision="APPROVED")]))
+    parent = tasks.get(parent["uuid"])
+    assert "prs" not in parent
+    assert (parent["subprs"], parent["action"]) == ("#31", "merge")

@@ -172,3 +172,24 @@ def test_switching_moves_an_attached_client(wk, tasks, app, tmux_server, monkeyp
     finally:
         os.kill(pid, 15)
         os.waitpid(pid, 0)
+
+
+def test_a_task_without_a_window_opens_where_its_session_runs(wk, tasks, app, tmux_server, world, monkeypatch):
+    from wk import state
+
+    monkeypatch.setenv("XDG_STATE_HOME", str(world / "state"))
+    parent = tasks.add("the investigation", {"issue": "ACME-1", "project": "work"})
+    wk("open", "--no-switch", parent["uuid"])
+    window = next(w for w in workspace.tmux.windows() if w["task"] == parent["uuid"])
+    pane = option(tmux_server, window["id"], "pane_id")
+    state.write_agent("orchestrator", {"uuid": parent["uuid"], "pane": pane, "pid": os.getpid()})
+    child = tasks.add("one part", {"issue": "ACME-2", "project": "work", "session": "orchestrator"})
+
+    windows = workspace.tmux.windows()
+    assert wk("open", "--no-switch", child["uuid"]) == 0
+    assert workspace.tmux.windows() == windows
+    assert "worktree" not in tasks.get(child["uuid"])
+
+    state.remove_agent("orchestrator")  # the session is gone: the task gets a window of its own
+    assert wk("open", "--no-switch", child["uuid"]) == 0
+    assert tasks.get(child["uuid"])["worktree"] == str(app / ".worktrees" / "acme-2")

@@ -67,3 +67,20 @@ def test_menu_lists_only_what_applies(wk, tasks, app, tmux_server, capsys):  # n
     assert not any(a.startswith(("merge PR", "start")) for a in actions(review))
     assert any(a.startswith("open PR   #9  review") for a in actions(review))
     assert any(a.startswith("open PR   #7  assign") for a in actions(work))
+
+
+def test_background_names_the_branch_and_ties_the_session(wk, tasks, app, tmux_server, monkeypatch, capsys):  # noqa: F811
+    monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "orchestrator")
+    parent = tasks.add("Investigate", {"issue": "ACME-1", "project": "work"})
+    child = tasks.add("One part", {"issue": "ACME-2", "project": "work"})
+    windows = workspace.tmux.windows()
+    assert wk("start", "ACME-2", "--partof", "ACME-1", "--background", "--json") == 0
+    payload = json.loads(capsys.readouterr().out)
+    child = tasks.get(child["uuid"])
+    assert payload["branch"] == child["branch"] == "me/acme-2-one-part"
+    assert payload["repository"] == str(app)
+    assert payload["note"].endswith("ACME-2 One part.md")
+    assert (child["session"], child["partof"], child["repo"]) == ("orchestrator", parent["uuid"], "acme/app")
+    assert child["start"] and "worktree" not in child
+    assert workspace.tmux.windows() == windows
+    assert not (app / ".worktrees").exists()

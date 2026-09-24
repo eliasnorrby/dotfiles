@@ -31,6 +31,10 @@ uda.prs.type=string
 uda.prs.label=PR
 uda.repo.type=string
 uda.repo.label=Repo
+# subprs: the open PRs of the task's sub-tasks (those whose partof is this
+# one), in stack order. Written by sync; the PRs belong to the sub-tasks.
+uda.subprs.type=string
+uda.subprs.label=Sub PR
 # action / decision / health: what the PR most in need of me means. action is
 # the verb (merge, fix, review, assign, finish, await), decision where the PR
 # stands (approved, changes, draft), health what is red (failing checks, a

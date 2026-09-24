@@ -112,13 +112,22 @@ def plain_directory(config, task, plain_dir=None):
     return os.path.expanduser("~")
 
 
-def ensure_window(config, tasks, task, cwd, branch=None, command=None, fetch_issue=None, plain_dir=None):
+def ensure_window(
+    config, tasks, task, cwd, branch=None, command=None, fetch_issue=None, plain_dir=None, follow_session=False
+):
     """Find or create the task's window, without switching to it. `plain_dir`
     is where a task without a branch of its own gets its window; without it,
-    the task's own directory, then the project's."""
+    the task's own directory, then the project's. With `follow_session`, a
+    task without a window of its own opens where its Claude session is live:
+    a sub-task handed to a background agent is worked on in the window of
+    the session that runs the agent."""
     for window in tmux.windows():
         if window["task"] == task["uuid"]:
             return Opened(window["id"], window["session"], window["worktree"] or cwd)
+    if follow_session:
+        opened = _session_window(task)
+        if opened:
+            return opened
 
     # Only work that lives on a branch gets a checkout; anything else (a plain
     # to-do, untracked tinkering, work in a directory that is not a code
@@ -173,6 +182,21 @@ def ensure_window(config, tasks, task, cwd, branch=None, command=None, fetch_iss
 
     state.refresh(tasks, config, only=task["uuid"])
     return Opened(window, session, directory, created_window=True, created_worktree=created_worktree)
+
+
+def _session_window(task):
+    """The window of the live Claude session recorded on the task, if any."""
+    from . import state
+
+    agent = state.read_agent(task["session"]) if task.get("session") else None
+    pane = agent.get("pane") if agent else None
+    if not pane:
+        return None
+    found = tmux.run("display-message", "-p", "-t", pane, "#{window_id}\t#{session_name}\t#{pane_current_path}")
+    if not found:
+        return None
+    window, session, directory = (found.split("\t") + ["", ""])[:3]
+    return Opened(window, session, directory)
 
 
 def _annotate(window, task, worktree):

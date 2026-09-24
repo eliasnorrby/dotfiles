@@ -355,7 +355,9 @@ def cmd_open(args, out):
     if not task:
         raise NotFound(f"no task for {resolution.issue or args.locator or cwd}")
 
-    opened = workspace.ensure_window(config, tasks, task, cwd, branch=branch, plain_dir=args.directory_in)
+    opened = workspace.ensure_window(
+        config, tasks, task, cwd, branch=branch, plain_dir=args.directory_in, follow_session=True
+    )
     if not args.no_switch:
         workspace.go(opened)
     payload = {
@@ -451,6 +453,8 @@ def cmd_start(args, out):
 
     note, _vault = note_of(config, tasks, task, create=True)
     task = tasks.get(task["uuid"])
+    if args.background:
+        return _start_background(args, out, config, tasks, task, note, cwd)
     command = session = None
     if not args.no_claude:
         session = str(uuids.uuid4())
@@ -479,6 +483,26 @@ def cmd_start(args, out):
     return 0
 
 
+def _start_background(args, out, config, tasks, task, note, cwd):
+    """Hand the task to a background agent of the calling Claude session. The
+    agent works in a checkout of its own that wk does not manage, so wk only
+    names the branch, and records the session: `wk open` then leads to the
+    window the session runs in, and the PR the agent opens is attached by
+    its branch."""
+    from . import workspace
+
+    repo, main = workspace.repo_path(config, task, cwd)
+    changes = {"session": os.environ.get("CLAUDE_CODE_SESSION_ID")}
+    if main:
+        changes.update(branch=args.on or workspace.branch_for(config, task), repo=repo)
+    tasks.modify(task, changes)
+    tasks.start(tasks.get(task["uuid"]))
+    task = tasks.get(task["uuid"])
+    payload = {"task": describe(task), "note": note, "branch": task.get("branch"), "repository": main}
+    out.result(payload, [" ".join(filter(None, [task.get("branch"), note]))])
+    return 0
+
+
 def cmd_menu(args, out):
     """Every action valid for a task, in one fzf list, so that a new action
     never needs a key of its own."""
@@ -492,7 +516,7 @@ def cmd_menu(args, out):
     if not task:
         raise NotFound(f"no task for {args.locator or 'this directory'}")
     uuid = task["uuid"]
-    prs = _task_prs(task) if (task.get("prs") or task.get("pr_number")) else []
+    prs = _task_prs(task, tasks)
     review = kind_of(task) == "review"
 
     actions = [("check out for review" if review else "open in tmux", ["open", "--pause-on-error", uuid])]
@@ -508,6 +532,9 @@ def cmd_menu(args, out):
             actions.append(
                 (f"merge PR  {pull_requests.summary(pr)}", ("gh", "pr", "merge", pr["number"], "--repo", pr["repo"]))
             )
+    for child in _sub_tasks(tasks, task):
+        label = " ".join(filter(None, [child.get("issue"), child["description"]]))
+        actions.append((f"sub-task  {label}", ["menu", child["uuid"]]))
     if task.get("session"):
         actions.append(("resume Claude session", ("resume", task["session"])))
     if not review:
@@ -650,14 +677,25 @@ def cmd_status(args, out):
     return 0
 
 
-def _task_prs(task):
+def _task_prs(task, tasks=None):
+    """The task's PRs; given `tasks`, its open sub-tasks' too, which are the
+    rest of the stack the task stands for in the list."""
     from . import cache
     from .sync import listed_prs
 
     cached = {pr["number"]: pr for pr in cache.read_prs(task["uuid"])}
     numbers = listed_prs(task) or [str(task.get("pr_number", "")).split(".")[0].lstrip("#")]
     repo = task.get("repo") or task.get("pr_repo")
-    return [cached.get(n, {"number": n, "repo": repo, "title": ""}) | {"repo": repo} for n in numbers if n]
+    prs = [cached.get(n, {"number": n, "repo": repo, "title": ""}) | {"repo": repo} for n in numbers if n]
+    for child in _sub_tasks(tasks, task) if tasks else ():
+        prs += [pr for pr in _task_prs(child) if pr not in prs]
+    return prs
+
+
+def _sub_tasks(tasks, task):
+    from .tasks import is_open
+
+    return [child for child in tasks.all() if child.get("partof") == task["uuid"] and is_open(child)]
 
 
 def cmd_open_pr(args, out):
@@ -668,7 +706,7 @@ def cmd_open_pr(args, out):
     resolution, _cwd = resolved(args, tasks)
     if not resolution.task:
         raise NotFound(f"no task for {args.locator or 'this directory'}")
-    prs = _task_prs(resolution.task)
+    prs = _task_prs(resolution.task, tasks)
     if not prs:
         raise NotFound("this task has no PR")
     if args.pick:
@@ -812,6 +850,11 @@ def build_parser():
     p.add_argument("--new", metavar="DESCRIPTION", help="start untracked work: create the task first")
     p.add_argument("--prompt", help="Claude's first prompt; default: start.prompt from the config")
     p.add_argument("--no-claude", action="store_true", help="everything but Claude")
+    p.add_argument(
+        "--background",
+        action="store_true",
+        help="for a background agent of this Claude session: task, note and branch name only",
+    )
     p.add_argument("--partof", metavar="LOCATOR", help="record the task as part of another (a sub-issue's parent)")
     p.add_argument("--on", metavar="BRANCH", help="work on this branch")
     p.add_argument("--in", dest="directory_in", metavar="DIR", help="work in this directory (recorded on the task)")

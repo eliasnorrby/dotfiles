@@ -54,10 +54,15 @@ PR_CREATE_RE = re.compile(r"(^|[;&|\s])gh\s+pr\s+create(\s|$)")
 PR_URL_RE = re.compile(r"github\.com/([^/\s]+)/([^/\s]+)/pull/(\d+)")
 
 
-def claude_post_tool_use(payload):
-    """A session that opens a PR attaches it to its own task at once. Branch
+def claude_post_tool_use(payload, head_of=None):
+    """A session that opens a PR attaches it to its task at once. Branch
     names often carry no issue key, and this session knows what the PR is
-    for: that beats any guess sync could make later."""
+    for: that beats any guess sync could make later.
+
+    Which task: the one the PR's head branch belongs to, else the session's.
+    A PR belongs to a branch, and a session may open PRs for several: a
+    parent's background agents each open one for their own sub-issue, from
+    inside the parent's window."""
     if payload.get("tool_name") != "Bash":
         return
     if not PR_CREATE_RE.search((payload.get("tool_input") or {}).get("command", "")):
@@ -67,17 +72,33 @@ def claude_post_tool_use(payload):
         return
     repo, number = f"{url.group(1)}/{url.group(2)}", url.group(3)
 
+    from .locator import Locator
     from .resolve import resolve
     from .sync import format_prs, listed_prs
     from .tasks import Tasks, is_open
 
     tasks = Tasks()
-    task = resolve(tasks, cwd=payload.get("cwd")).task
+    head = (head_of or _pr_head)(url.group(0))
+    task = resolve(tasks, Locator("branch", head)).task if head else None
+    if not task or not is_open(task):
+        task = resolve(tasks, cwd=payload.get("cwd")).task
     if not task or not is_open(task) or (task.get("repo") and task["repo"].lower() != repo.lower()):
         return
     if tasks.by_pr(number, repo):
         return
     tasks.modify(task, {"prs": format_prs(listed_prs(task) + [number]), "repo": repo})
+
+
+def _pr_head(url):
+    """The PR's head branch; None when GitHub cannot say. One round trip,
+    paid once per PR created."""
+    from .errors import WkError
+    from .trackers.github import gh
+
+    try:
+        return gh(["pr", "view", url, "--json", "headRefName", "--jq", ".headRefName"]).strip() or None
+    except WkError:
+        return None
 
 
 def _emit_context(event, text):

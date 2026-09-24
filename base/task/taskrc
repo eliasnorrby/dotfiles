@@ -42,7 +42,10 @@ context.work.write=project:work
 context.dotfiles.read=pro:dotfiles
 context.dotfiles.write=pro:dotfiles
 
-report.next.filter=(status:pending or status:waiting) page:limit
+# A sub-task (partof set) shows only while it has a window or an agent of its
+# own. Otherwise its parent stands for it, carrying its PRs (subprs) and their
+# status; `task partof:<uuid>` lists them.
+report.next.filter=(status:pending or status:waiting) (partof: or state:input or state:working or state:idle or state:window) page:limit
 
 # Surface the tracker key and the PRs with their status. Taskwarrior drops a column
 # entirely, header included, when nothing in view fills it, so these two cost
@@ -51,10 +54,10 @@ report.next.filter=(status:pending or status:waiting) page:limit
 # The rest of the list is the stock `next` set reproduced verbatim: there is no
 # append-to-default syntax, so naming the columns at all means pinning them and
 # no longer picking up changes to the default on upgrade.
-report.next.columns=id,state_flag,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,prs,action,health,description,issue,note_flag,urgency
+report.next.columns=id,state_flag,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,prs,subprs,action,health,description,issue,note_flag,urgency
 # No '#' in the labels: taskwarrior treats it as a mid-line comment, which
 # silently truncates the rest of the value.
-report.next.labels=ID,S,Active,Age,Deps,P,Project,Tag,Recur,S,Due,Until,PR,Action,Health,Description,Issue,N,Urg
+report.next.labels=ID,S,Active,Age,Deps,P,Project,Tag,Recur,S,Due,Until,PR,Sub PR,Action,Health,Description,Issue,N,Urg
 
 # custom started report
 report.started.columns=description

@@ -23,6 +23,9 @@ worktree_rows() {
   git worktree list | while IFS= read -r line; do
     local path branch name match indicator detail
     path=${line%% *}
+    # Checkouts Claude makes for its background agents: no window or
+    # conversation of their own to go to.
+    [[ "$path" == */.claude/worktrees/* ]] && continue
     branch=$(sed -n 's/.*\[\(.*\)\].*/\1/p' <<<"$line")
     name=$(worktree_label "$path" "$main")
     match=$(awk -F'::' -v p="$path" '$1 == p { print $2 "\t" $3; exit }' <<<"$windows")
