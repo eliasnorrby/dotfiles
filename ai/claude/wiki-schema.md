@@ -30,6 +30,7 @@ _meta/
   attachments/     images and files embedded from notes
   templates/       Obsidian and obsidian.nvim templates
   friction/        reports from sessions about what got in their way
+  usage/           weekly reports on how sessions use the wiki (script-written)
 ```
 
 **`inbox/` versus `raw/`**: things leave the inbox; things stay in raw. A jot
@@ -86,8 +87,11 @@ time you touch it.
 
 Sections: `## Summary` (two or three sentences, kept current), `## Plan`,
 `## Findings`, `## Decisions` (each with the why and what was rejected),
-`## Links`. Notes created by `wk` start with only Plan and Findings; add the
-rest on first ingest.
+`## Links`, and `## Wiki use` when the wiki mattered to the work: dated lines
+saying which pages helped, which were wrong and what was missing (the
+checkpoint skill has the format; `wiki_checkpoint usage` reports on them).
+Notes created by `wk` start with only Plan and Findings; add the rest on first
+ingest.
 
 **Page** — `wiki/pages/<Title>.md`. The bulk of the wiki: one page per thing
 worth a page, free in form. "Dates in Prisma", "How BST came to be", "The
@@ -260,7 +264,11 @@ cross-references (never into `private/`), pages the split rule says to split
 or fold, pages missing from the index, pages with more or fewer than one
 H1, stale `status: active` tasks, index entries that no longer match their
 page, and files under `raw/` that no wiki page links to (not yet ingested, or
-deliberately skipped). Read the open reports in `_meta/friction/`: group them,
+deliberately skipped). Read the latest usage report in `_meta/usage/`
+(written weekly by `wiki_checkpoint usage --write`; run it by hand for a fresh
+one): pages no session reads are candidates for better links or for
+forgetting, and "wrong" or "missing" lines in task notes are fixes to make.
+Read the open reports in `_meta/friction/`: group them,
 propose a fix for each pattern (to the schema, the skill or the tooling), and
 set `status: resolved` on the ones dealt with. Report first, then fix what
 Elias agrees to.

@@ -60,6 +60,15 @@ Only what changed since your last checkpoint in this session:
 - **Link what you mention.** When the task note names a customer, a system, a
   person or another task, check `index.md` and link the page if there is one.
   The links are what let a later session find this note from the topic's side.
+- **Say what the wiki did for you** under `## Wiki use` in the task note, one
+  dated line per page that mattered since your last checkpoint:
+  `- 2026-09-24 helped: [[Heroma KIM licence files]] — explained the 403 at once`,
+  `- … wrong: [[X]] — says Y, the code does Z (fixed)` or
+  `- … missing: no page on Z; had to read the code`. Fix what was wrong on the
+  page itself, or add it to [[Open questions]] when you can't settle it. Skip
+  the section when you didn't use the wiki; a weekly report
+  (`wiki_checkpoint usage`) reads these lines, so honest "didn't help" lines are
+  as useful as praise.
 - **Don't let a durable finding die in a task note.** If you learned something
   that outlives the task but a page isn't warranted yet (or the right
   page doesn't exist), add one line under `## Wanted` in `index.md` naming the
