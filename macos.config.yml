@@ -9,6 +9,9 @@ topics:
       state: present
       config: "{{ notes_config }}"
   tools:
+    - name: obsidian
+      state: present
+      config: "{{ obsidian_config }}"
     - name: gdu
       state: present
       config: "{{ gdu_config }}"
@@ -19,6 +22,9 @@ topics:
     - name: claude
       state: present
       config: "{{ claude_config }}"
+    - name: os
+      state: present
+      config: "{{ os_config }}"
     - name: opencode
       state: present
       config: "{{ opencode_config }}"

@@ -19,36 +19,36 @@ claude_config:
     - src: claude_session_title.sh
       dest: "{{ xdg_bin_home }}/"
       rename: claude_session_title
-    - src: wiki_checkpoint.sh
-      dest: "{{ xdg_bin_home }}/"
-      rename: wiki_checkpoint
     - src: settings.json
       dest: "{{ claude_home }}/"
-    - src: wiki-schema.md
-      dest: "{{ claude_home }}/"
-    - src: systemd/wiki-sweep.service
-      dest: "{{ xdg_config_home }}/systemd/user/"
-      rename: wiki-sweep.service
-      condition: "{{ is_arch }}"
-    - src: systemd/wiki-sweep.timer
-      dest: "{{ xdg_config_home }}/systemd/user/"
-      rename: wiki-sweep.timer
-      condition: "{{ is_arch }}"
-    - src: systemd/wiki-usage.service
-      dest: "{{ xdg_config_home }}/systemd/user/"
-      rename: wiki-usage.service
-      condition: "{{ is_arch }}"
-    - src: systemd/wiki-usage.timer
-      dest: "{{ xdg_config_home }}/systemd/user/"
-      rename: wiki-usage.timer
-      condition: "{{ is_arch }}"
     - src: statusline.sh
       dest: "{{ claude_home }}/"
     - src: home-claude.md
       dest: ~/
       rename: CLAUDE.md
-    - src: skills
-      dest: "{{ claude_home }}/"
+    # Skills are linked one by one, so other topics can add theirs and
+    # ~/.claude/skills can hold what Claude Code puts there itself.
+    - src: skills/address
+      dest: "{{ claude_home }}/skills/"
+      rename: address
+    - src: skills/c
+      dest: "{{ claude_home }}/skills/"
+      rename: c
+    - src: skills/delegate
+      dest: "{{ claude_home }}/skills/"
+      rename: delegate
+    - src: skills/download-plan
+      dest: "{{ claude_home }}/skills/"
+      rename: download-plan
+    - src: skills/grill-me
+      dest: "{{ claude_home }}/skills/"
+      rename: grill-me
+    - src: skills/lg
+      dest: "{{ claude_home }}/skills/"
+      rename: lg
+    - src: skills/upload-plan
+      dest: "{{ claude_home }}/skills/"
+      rename: upload-plan
     - src: agents
       dest: "{{ claude_home }}/"
     - src: output-styles

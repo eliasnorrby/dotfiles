@@ -27,7 +27,6 @@ macos_config:
     - amethyst
     - balenaetcher
     - fantastical
-    - obsidian
     - betterdisplay
     - mimestream
     - rocket

@@ -1,0 +1,16 @@
+---
+# Obsidian and the vaults under ~/vaults. What the vaults hold, and the
+# tooling that maintains their wiki, is ai/os's.
+obsidian_config:
+  path: tools/obsidian
+  # Not "obsidian": ~/.config/obsidian is the app's own state, and a topic's
+  # config dir is removed when the topic is disabled.
+  dirname: obsidian-topic
+  links:
+    - src: obsidian-popup.desktop
+      dest: "{{ xdg_applications_dir }}/"
+      condition: "{{ is_arch }}"
+  pacman_packages:
+    - obsidian
+  brew_casks:
+    - obsidian

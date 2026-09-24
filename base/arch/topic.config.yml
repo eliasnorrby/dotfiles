@@ -61,7 +61,6 @@ arch_config:
     # apps
     - mpv
     - discord
-    - obsidian
   aur_packages:
     # pacman
     - informant

@@ -3,3 +3,8 @@
   file:
     state: directory
     path: "{{ claude_home }}"
+
+- name: create the skills dir
+  file:
+    state: directory
+    path: "{{ claude_home }}/skills"

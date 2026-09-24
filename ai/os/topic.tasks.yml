@@ -1,0 +1,22 @@
+---
+- name: create the os entrypoint
+  file:
+    state: directory
+    path: "{{ os_home }}/.claude"
+
+- name: create the user skills dir
+  file:
+    state: directory
+    path: "{{ claude_home }}/skills"
+
+- name: enable the wiki timers
+  systemd:
+    name: "{{ item }}"
+    scope: user
+    enabled: true
+    state: started
+    daemon_reload: true
+  loop:
+    - wiki-sweep.timer
+    - wiki-usage.timer
+  when: is_arch

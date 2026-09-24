@@ -191,6 +191,18 @@ ansible-playbook playbook.yml --check --diff
 - Run `dev/wk/check` (ruff + pytest through `uv`) before committing changes
   there. Tests use a throwaway taskwarrior database and a private tmux socket.
 
+### Agentic OS (ai/os)
+
+- **Location**: `ai/os/`, with Obsidian and `~/vaults` in `tools/obsidian/`
+- `~/os` is the entrypoint for sessions that work through or on the OS; its
+  `CLAUDE.md` and `.claude/settings.json` are linked from `ai/os/os/`. How the
+  OS works is described in the personal vault (the `Agentic OS` hub), not here.
+- `wiki_checkpoint` (checkpoints, commits, the sweeper, the usage report, the
+  Claude Code hooks that guard the vaults), `wiki-schema.md` (the schema every
+  vault's `CLAUDE.md` imports) and the `wiki-checkpoint` skill live here.
+- Skills are linked one by one into `~/.claude/skills/`, each by the topic it
+  belongs to; `ai/claude/skills/` holds the general ones.
+
 ### Git Configuration
 
 - **Location**: `shell/git/`

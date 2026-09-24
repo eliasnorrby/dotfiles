@@ -6,11 +6,6 @@
     mode: 0700
   tags: ["never", "do_pacman"]
 
-- name: create obsidian vaults dir
-  file:
-    state: directory
-    path: ~/vaults
-
 - name: create flameshot config dir
   file:
     state: directory
