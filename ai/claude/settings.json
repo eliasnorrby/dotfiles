@@ -143,6 +143,15 @@
       "Bash(wk config get *)"
     ],
     "deny": [
+      "Bash(gh pr merge *--admin*)",
+      "Bash(gh pr merge *--merge*)",
+      "Bash(gh pr merge *--rebase*)",
+      "Bash(gh pr merge -m*)",
+      "Bash(gh pr merge * -m*)",
+      "Bash(gh pr merge -r*)",
+      "Bash(gh pr merge * -r*)",
+      "Bash(gh api *pulls/*/merge*)",
+      "Bash(gh api *mergePullRequest*)",
       "mcp__claude_ai_Gmail__apply_sensitive_message_label",
       "mcp__claude_ai_Gmail__apply_sensitive_thread_label",
       "mcp__claude_ai_Gmail__create_draft",
