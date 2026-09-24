@@ -131,3 +131,28 @@ class Config:
     def project_for_repo(self, repo):
         entry = self.data["repos"].get(repo or "", {})
         return entry.get("project") or self.data["defaults"]["project"]
+
+    def project_for_directory(self, directory, repo=None):
+        """The project work in DIRECTORY belongs to: its repository's, else
+        that of the project whose `dir` holds it (the deepest), else the
+        default. So a session in ~/os lands in `os` without being told."""
+        entry = self.data["repos"].get(repo or "", {})
+        if entry.get("project"):
+            return entry["project"]
+        directory = os.path.realpath(directory)
+        found, depth = None, -1
+        for name, project in self.data["projects"].items():
+            root = project.get("dir")
+            if not root:
+                continue
+            root = os.path.realpath(os.path.expanduser(root))
+            if (directory == root or directory.startswith(root + os.sep)) and len(root) > depth:
+                found, depth = name, len(root)
+        return found or self.data["defaults"]["project"]
+
+    def project_names(self):
+        """Every project the configuration knows of, for a session choosing one."""
+        names = {self.data["defaults"]["project"], *self.data["projects"]}
+        names.update(entry["project"] for entry in self.data["repos"].values() if entry.get("project"))
+        names.update(team["project"] for team in self.data["teams"].values() if team.get("project"))
+        return sorted(names)

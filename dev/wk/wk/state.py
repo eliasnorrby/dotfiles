@@ -76,6 +76,15 @@ def agents():
     return found
 
 
+def resumable(session_id):
+    """Whether Claude still has the session's transcript, so that
+    `claude --resume <id>` can pick it up (from any directory)."""
+    import glob
+
+    base = os.environ.get("CLAUDE_CONFIG_DIR") or os.path.expanduser("~/.claude")
+    return bool(glob.glob(os.path.join(glob.escape(base), "projects", "*", f"{glob.escape(session_id)}.jsonl")))
+
+
 def reap():
     """Forget agents whose Claude process is gone: a crash or a killed
     terminal never sends SessionEnd."""

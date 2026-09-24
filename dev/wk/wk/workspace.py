@@ -192,6 +192,10 @@ def _session_window(task):
     pane = agent.get("pane") if agent else None
     if not pane:
         return None
+    # A crashed Claude leaves its agent file and its pane behind; that window
+    # is no longer where the session is.
+    if agent.get("pid") and os.path.isdir("/proc") and not os.path.exists(f"/proc/{agent['pid']}"):
+        return None
     found = tmux.run("display-message", "-p", "-t", pane, "#{window_id}\t#{session_name}\t#{pane_current_path}")
     if not found:
         return None

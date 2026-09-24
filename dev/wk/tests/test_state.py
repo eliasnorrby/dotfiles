@@ -89,7 +89,8 @@ def test_a_crashed_agent_is_reaped(tasks, stateful, repo):
     assert state_of(tasks, task) == "resume"
 
 
-def test_a_session_with_no_task_is_offered_one(tasks, stateful, repo, capsys):
+def test_a_session_with_no_task_is_told_to_register_one(tasks, stateful, repo, monkeypatch, capsys):
+    monkeypatch.setenv("CLAUDE_CODE_ENTRYPOINT", "cli")
     (repo / ".git" / "HEAD").write_text("ref: refs/heads/no-issue-here\n")
     event("session-start", cwd=str(repo), source="startup")
     offered = json.loads(capsys.readouterr().out)
@@ -103,6 +104,17 @@ def test_a_session_with_no_task_is_offered_one(tasks, stateful, repo, capsys):
     assert state.agents() == {}
     event("post-tool-use", tool_name="Read")  # and costs nothing afterwards
     assert state.agents() == {}
+    # Anywhere, not only in a repository, and told which project it lands in.
+    home = stateful / "os"
+    home.mkdir()
+    (stateful / "config.toml").open("a").write(f'[projects.os]\ndir = "{home}"\n')
+    event("session-start", "s3", cwd=str(home), source="startup")
+    told = json.loads(capsys.readouterr().out)["hookSpecificOutput"]["additionalContext"]
+    assert "project `os`" in told and "--task" in told
+    # A headless run is a job, not a work session.
+    monkeypatch.setenv("CLAUDE_CODE_ENTRYPOINT", "sdk-cli")
+    event("session-start", "s4", cwd=str(home), source="startup")
+    assert capsys.readouterr().out == ""
 
 
 def test_adopt_ties_the_directory_and_session_to_a_new_task(tasks, stateful, repo, monkeypatch, capsys):
@@ -114,7 +126,32 @@ def test_adopt_ties_the_directory_and_session_to_a_new_task(tasks, stateful, rep
     assert task["description"] == "Tidy the prompt"
     assert task["session"] == "s9"
     assert task["state"] == "working"
+    assert task["start"], "the work is under way"
     assert cli.main(["adopt", "again", "-C", str(repo)]) == 1
+
+
+def test_adopt_lands_in_the_project_whose_dir_holds_it(tasks, stateful, monkeypatch):
+    home = stateful / "os"
+    (home / "deeper").mkdir(parents=True)
+    (stateful / "config.toml").open("a").write(f'[projects.os]\ndir = "{home}"\n')
+    monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "s9")
+    assert cli.main(["adopt", "The drain", "-C", str(home / "deeper")]) == 0
+    tasks.invalidate()
+    assert next(t for t in tasks.all() if t["description"] == "The drain")["project"] == "os"
+
+
+def test_adopt_task_takes_over_an_existing_task(tasks, stateful, monkeypatch):
+    pending = tasks.add("Lint on a schedule", {"project": "os", "session": "older"})
+    monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "s9")
+    assert cli.main(["adopt", "--task", str(pending["id"])]) == 0
+    tasks.invalidate()
+    taken = tasks.get(pending["uuid"])
+    assert taken["session"] == "s9" and taken["start"]
+    assert state.read_agent("s9")["uuid"] == pending["uuid"]
+    assert len(tasks.all()) == 1, "nothing new was created"
+    tasks.done(taken)
+    assert cli.main(["adopt", "--task", pending["uuid"]]) == 1
+    assert cli.main(["adopt"]) == 1
 
 
 def test_hooks_never_fail(stateful, monkeypatch, capsys):

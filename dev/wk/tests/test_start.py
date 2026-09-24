@@ -84,3 +84,26 @@ def test_background_names_the_branch_and_ties_the_session(wk, tasks, app, tmux_s
     assert child["start"] and "worktree" not in child
     assert workspace.tmux.windows() == windows
     assert not (app / ".worktrees").exists()
+
+
+def test_start_resumes_the_session_the_task_already_has(wk, tasks, app, tmux_server, world, capsys):  # noqa: F811
+    task = tasks.add("Fix the thing", {"issue": "ACME-12", "project": "work", "session": "earlier"})
+    transcripts = world / ".claude" / "projects" / "-somewhere"
+    transcripts.mkdir(parents=True)
+    (transcripts / "earlier.jsonl").write_text("{}\n")
+
+    assert wk("start", "--no-switch", "--json", "ACME-12") == 0
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["claude"] and payload["resumed"]
+    assert tasks.get(task["uuid"])["session"] == "earlier"
+    window = next(w for w in workspace.tmux.windows() if w["task"] == task["uuid"])
+    command = option(tmux_server, window["id"], "pane_start_command")
+    assert command.strip('"') == "claude --resume earlier"
+
+
+def test_start_begins_afresh_when_the_session_is_gone(wk, tasks, app, tmux_server, capsys):  # noqa: F811
+    task = tasks.add("Fix the thing", {"issue": "ACME-12", "project": "work", "session": "lost"})
+    assert wk("start", "--no-switch", "--json", "ACME-12") == 0
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["claude"] and not payload["resumed"]
+    assert tasks.get(task["uuid"])["session"] not in ("lost", None)

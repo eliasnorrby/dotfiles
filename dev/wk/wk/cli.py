@@ -373,34 +373,74 @@ def cmd_open(args, out):
 
 
 def cmd_adopt(args, out):
-    """Make a task out of work already under way: create it, and tie this
-    directory, window and Claude session to it. For work that never had an
-    issue, so it needs no ceremony to start and none to be remembered."""
-    from . import git, state, tmux
+    """Register the work under way here as a task: a new one from a
+    description, or an existing one named with --task (a pending task another
+    session left, or the next task this session moves on to). Either way the
+    task is started and this window and Claude session are tied to it, so
+    taskwarrior lists every session's work, running or past, and `wk open`
+    and `wk start` lead back to it."""
+    import shutil
+    import subprocess
+
+    from . import git, state, tmux, workspace
+    from .resolve import resolve
+    from .tasks import is_open
 
     config, tasks = context(args)
     cwd = os.path.realpath(args.directory or os.getcwd())
-    from .resolve import resolve
-
-    existing = resolve(tasks, cwd=cwd).task
-    if existing:
-        raise WkError(f"this is already task {existing.get('id') or existing['uuid'][:8]}: {existing['description']}")
-    repo = git.slug(cwd) if git.is_repo(cwd) else None
-    attrs = {"repo": repo, "project": args.project or config.project_for_repo(repo)}
-    top = git.toplevel(cwd)
-    if top:
-        attrs["worktree"] = top
-        attrs["branch"] = git.branch(cwd)
-    attrs["session"] = os.environ.get("CLAUDE_CODE_SESSION_ID")
-    task = tasks.add(args.description, attrs)
+    session_id = os.environ.get("CLAUDE_CODE_SESSION_ID")
     pane = os.environ.get("TMUX_PANE")
-    if pane and not tmux.window_option(pane, "@task"):
-        tmux.set_window_options(pane, {"@task": task["uuid"], "@desc": task["description"]})
-    session_id = attrs["session"]
+    previous = tmux.window_option(pane, "@task") if pane else None
+
+    if args.task:
+        try:
+            task = resolve(tasks, locators.parse(args.task), cwd).task
+        except ValueError as err:
+            raise NotFound(str(err)) from err
+        if not task:
+            raise NotFound(f"no task for {args.task}")
+        if not is_open(task):
+            raise WkError(f"task {task['uuid'][:8]} is {task['status']}: reopen it first")
+        if session_id:
+            tasks.modify(task, {"session": session_id})
+    else:
+        if not args.description:
+            raise WkError("give a description, or --task to take an existing task")
+        # A directory that is a task's checkout is that task's; the window
+        # alone is not, since a session may move on to new work in it.
+        existing = resolve(tasks, locators.Locator("dir", cwd), cwd).task
+        if existing:
+            raise WkError(
+                f"this is already task {existing.get('id') or existing['uuid'][:8]}: {existing['description']}"
+                " (take it, or another, with --task)"
+            )
+        repo = git.slug(cwd) if git.is_repo(cwd) else None
+        attrs = {"repo": repo, "project": args.project or config.project_for_directory(cwd, repo)}
+        top = git.toplevel(cwd)
+        if top:
+            attrs["worktree"] = top
+            attrs["branch"] = git.branch(cwd)
+        attrs["session"] = session_id
+        task = tasks.add(args.description, attrs)
+    tasks.start(tasks.get(task["uuid"]))
+    task = tasks.get(task["uuid"])
+
+    # The window follows the session to whatever it works on now; a task it
+    # worked on before still leads here through its recorded session.
+    if pane:
+        label = task.get("issue") or str(task.get("prs") or "").split(",")[0]
+        tmux.set_window_options(pane, {"@task": task["uuid"], "@issue": label, "@desc": task["description"]})
+        tmux.rename_window(pane, workspace.window_name(task))
     if session_id:
         pid = int(os.environ.get("CLAUDE_PID") or 0) or os.getppid()
         state.write_agent(session_id, {"uuid": task["uuid"], "pane": pane, "pid": pid, "status": "working"})
-    state.refresh(tasks, config, only=task["uuid"])
+        # Named like the task in `claude --resume`; best effort, it is a
+        # convenience of the dotfiles, not something wk depends on.
+        if shutil.which("claude_session_title"):
+            title = " ".join(filter(None, [task.get("issue"), task["description"]]))
+            subprocess.run(["claude_session_title", "set", title], capture_output=True)
+    for uuid in filter(None, {task["uuid"], previous}):
+        state.refresh(tasks, config, only=uuid)
     out.result({"task": describe(tasks.get(task["uuid"]))}, [f"Task {task.get('id')}: {task['description']}"])
     return 0
 
@@ -429,7 +469,7 @@ def cmd_start(args, out):
     import shlex
     import uuid as uuids
 
-    from . import git, workspace
+    from . import git, state, workspace
     from .resolve import resolve
 
     config, tasks = context(args)
@@ -455,12 +495,22 @@ def cmd_start(args, out):
     task = tasks.get(task["uuid"])
     if args.background:
         return _start_background(args, out, config, tasks, task, note, cwd)
+    # A task worked on before carries on in its session: a live one is found
+    # where it runs (follow_session), one that has ended is resumed in the
+    # new window. Only a task no session has touched starts a fresh one.
     command = session = None
+    resumed = False
     if not args.no_claude:
-        session = str(uuids.uuid4())
-        prompt = args.prompt if args.prompt is not None else config.data.get("start", {}).get("prompt", "")
-        command = shlex.join(["claude", "--session-id", session] + ([prompt] if prompt else []))
-    opened = workspace.ensure_window(config, tasks, task, cwd, branch=args.on, command=command, plain_dir=plain_dir)
+        session = task.get("session")
+        if session and state.resumable(session):
+            command, resumed = shlex.join(["claude", "--resume", session]), True
+        else:
+            session = str(uuids.uuid4())
+            prompt = args.prompt if args.prompt is not None else config.data.get("start", {}).get("prompt", "")
+            command = shlex.join(["claude", "--session-id", session] + ([prompt] if prompt else []))
+    opened = workspace.ensure_window(
+        config, tasks, task, cwd, branch=args.on, command=command, plain_dir=plain_dir, follow_session=True
+    )
     launched = bool(command) and opened.created_window
     if launched:
         tasks.modify(tasks.get(task["uuid"]), {"session": session})
@@ -475,8 +525,11 @@ def cmd_start(args, out):
         "session": opened.session,
         "directory": opened.directory,
         "claude": launched,
+        "resumed": launched and resumed,
     }
     lines = [f"{opened.session}:{opened.window}  {opened.directory}"]
+    if launched and resumed:
+        lines.append(f"resumed Claude session {session}")
     if command and not launched:
         lines.append("the task already had a window; Claude was not started in it")
     out.result(payload, lines)
@@ -845,10 +898,13 @@ def build_parser():
     p.add_argument("--offline", action="store_true", help="never ask a tracker")
     p.set_defaults(run=cmd_open)
 
-    p = sub.add_parser("adopt", parents=[common], help="make a task of the work already under way here")
-    p.add_argument("description")
+    p = sub.add_parser("adopt", parents=[common], help="register the work under way here as a task")
+    p.add_argument("description", nargs="?")
+    p.add_argument("--task", metavar="LOCATOR", help="take this existing task instead of creating one")
     p.add_argument("-C", dest="directory", metavar="DIR", help="treat DIR as the working directory")
-    p.add_argument("--project", help="taskwarrior project; default: the repository's, from the config")
+    p.add_argument(
+        "--project", help="taskwarrior project; default: the repository's, else the project whose dir holds DIR"
+    )
     p.set_defaults(run=cmd_adopt)
 
     p = sub.add_parser("state", parents=[common, where], help="a task's state; --refresh recomputes all of them")

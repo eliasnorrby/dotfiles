@@ -105,12 +105,40 @@ def _emit_context(event, text):
     print(json.dumps({"hookSpecificOutput": {"hookEventName": event, "additionalContext": text}}))
 
 
-NO_TASK = (
-    "No wk task is tied to this session (no @task on the tmux window, no task for this worktree or "
-    "branch). That is fine for a quick question. If it turns into real work, offer once to run "
-    '`wk adopt "<short description>"`, which creates a task for it and ties this window and session '
-    "to it, so the work gets a note, shows up in the task list and can be checkpointed."
-)
+NO_TASK = """\
+No wk task is tied to this session yet (no @task on the tmux window, no task for this directory, worktree \
+or branch). Every piece of work gets one: taskwarrior is the register of every session, running or past. \
+As soon as you know what the first request is about, and before you start on it, register it yourself, \
+without asking:
+
+- If a pending task already describes it (`task project:<name> list`), take it: `wk adopt --task <id>`.
+- Otherwise create one: `wk adopt "<short description>"`. Here it lands in project `{project}`; add \
+`--project <name>` when the work belongs elsewhere (projects: {projects}).
+
+Either starts the task, ties this window and session to it and names the session. When the work moves on \
+to another task, adopt that one with --task. Only a one-off question answered in a turn or two needs no \
+task."""
+
+CLEARED = """\
+This window is tied to task {id} ({description}). If what you are asked now is other work, move this \
+session to it before starting: `wk adopt --task <id>` for a pending task, `wk adopt "<short description>"` \
+for new work."""
+
+
+def _interactive():
+    """Headless runs (`claude -p`, the SDK) are scheduled jobs, not work
+    sessions: they get no task."""
+    return not os.environ.get("CLAUDE_CODE_ENTRYPOINT", "").startswith("sdk")
+
+
+def _no_task_context(cwd):
+    from . import git
+    from .config import Config
+
+    config = Config.load()
+    repo = git.slug(cwd) if git.is_repo(cwd) else None
+    project = config.project_for_directory(cwd, repo)
+    return NO_TASK.format(project=project, projects=", ".join(config.project_names()))
 
 
 def _agent_status(event, payload, current):
@@ -174,17 +202,24 @@ def _session_task(event, payload):
     from .tasks import Tasks, is_open
 
     uuid = tmux.current_task()
-    if uuid or event != "session-start":
+    if event != "session-start":
         return uuid
-    from . import git
+    source = payload.get("source")
+    if uuid:
+        # After /clear the window still names the work before it.
+        task = Tasks().get(uuid) if source == "clear" and _interactive() else None
+        if task and is_open(task):
+            told = CLEARED.format(id=task.get("id") or uuid[:8], description=task["description"])
+            _emit_context("SessionStart", told)
+        return uuid
     from .resolve import resolve
 
     cwd = payload.get("cwd") or "."
     task = resolve(Tasks(), cwd=cwd).task
     if task and is_open(task):
         return task["uuid"]
-    if git.is_repo(cwd) and payload.get("source") in (None, "startup"):
-        _emit_context("SessionStart", NO_TASK)
+    if source in (None, "startup", "clear") and _interactive():
+        _emit_context("SessionStart", _no_task_context(cwd))
     return None
 
 
