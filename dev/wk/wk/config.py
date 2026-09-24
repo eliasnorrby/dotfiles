@@ -16,7 +16,6 @@ DEFAULTS = {
         "vault": "personal",
         "vaults_dir": "~/vaults",
         "tracker": "linear",
-        "merge": "squash",
     },
     "notes": {
         "subdirs": ["wiki/tasks", "tasks"],

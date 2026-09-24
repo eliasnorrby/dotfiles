@@ -15,7 +15,7 @@ project = "inbox"        # taskwarrior project for tasks nothing else claims
 vault = "personal"       # vault for projects without a mapping below
 vaults_dir = "~/vaults"
 tracker = "linear"       # tracker for issue keys of teams not listed below
-merge = "squash"         # how the menu merges a PR: merge, squash, rebase, or "" to ask
+merge = "squash"         # how the menu merges a PR: merge, squash or rebase; unset: gh asks
 # branch_prefix = "me/"  # default: $USER/. Marks a clipboard branch as mine.
 
 [notes]
