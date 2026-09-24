@@ -83,7 +83,7 @@ color.due=magenta
 color.tag.wait=yellow
 color.active=green
 
-uda.taskwarrior-tui.style.report.selection=black on green
+uda.taskwarrior-tui.style.report.selection=on black
 # uda.taskwarrior-tui.style.report.scrollbar
 # uda.taskwarrior-tui.style.report.scrollbar.area
 # uda.taskwarrior-tui.style.calendar.title
