@@ -17,6 +17,31 @@
 # marker; an `input_required` arriving while the marker is fresh is suppressed.
 # `reset` (on UserPromptSubmit) clears the marker the moment you respond, so a
 # genuine mid-turn permission prompt later still notifies.
+#
+# Background agents: every report from a background sub-agent starts a new
+# turn of the main agent, and each of those turns ends in a Stop. A turn that
+# was started by such a report stays quiet while other background agents are
+# still out, so a fan-out of N agents notifies once, when the last one is in.
+
+# Prints "<origin of the current turn> <background agents still running>",
+# read from the session transcript on stdin.
+background_state() {
+  jq -rn '
+    def finished_id:
+      (.origin.senderTaskId // .origin.from)
+      // (tostring | capture("<task-id>(?<id>[^<]+)</task-id>").id);
+    reduce (inputs | select(.type == "user" or .attachment.type == "queued_command")) as $e (
+      {out: {}, origin: "human"};
+      ($e.toolUseResult | if type == "object" then . else {} end) as $r
+      | if $r.isAsync == true and $r.agentId then .out[$r.agentId] = true
+        elif $r.resumedAgentId then .out[$r.resumedAgentId] = true
+        elif $e.attachment then del(.out[$e.attachment | finished_id // ""])
+        elif $e.origin.kind then
+          .origin = $e.origin.kind
+          | if $e.origin.kind == "human" then . else del(.out[$e | finished_id // ""]) end
+        else . end)
+    | "\(.origin) \(.out | length)"'
+}
 
 bell() {
   # If running inside tmux, write bell directly to the pane's TTY
@@ -80,6 +105,14 @@ case "$notification_type" in
   done)
     mkdir -p "$state_dir"
     date +%s >"$marker"
+    transcript="$(printf '%s' "$hook_json" | jq -r '.transcript_path // empty' 2>/dev/null)"
+    if [ -f "$transcript" ]; then
+      read -r origin running < <(background_state <"$transcript" 2>/dev/null)
+      if [ "$origin" != "human" ] && [ "${running:-0}" -gt 0 ]; then
+        # A sub-agent reported back while others are still working.
+        exit 0
+      fi
+    fi
     ;;
   input_required)
     if [ -f "$marker" ]; then
