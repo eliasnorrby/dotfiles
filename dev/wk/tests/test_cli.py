@@ -89,3 +89,11 @@ def test_config_get(capsys, world):
     assert run(capsys, "config", "get", "teams.ACME.workspace")[:2] == (0, "acme\n")
     assert run(capsys, "config", "get", "repos.acme/app.project")[:2] == (0, "work\n")
     assert run(capsys, "config", "get", "teams.NOPE.workspace")[0] == 2
+
+
+@needs_task
+def test_attach_pr_refuses_what_is_not_a_pr(tasks, world):
+    task = tasks.add("the thing", {"issue": "ACME-12", "worktree": str(world)})
+    assert cli.main(["attach-pr", f"#10999 {task['uuid']}"]) == 2
+    tasks.invalidate()
+    assert "prs" not in tasks.get(task["uuid"])

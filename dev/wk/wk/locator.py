@@ -55,6 +55,8 @@ def parse(text, force=None):
             url = GITHUB_URL_RE.search(text)
             if url:
                 return Locator("pr", url.group(3), f"{url.group(1)}/{url.group(2)}")
+            if not re.fullmatch(r"#?\d+", text):
+                raise ValueError(f"not a PR: {text!r}")
             return Locator("pr", text.lstrip("#"))
         if force == "issue":
             return Locator("issue", (issue_key_in(text) or text).upper())

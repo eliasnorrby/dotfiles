@@ -743,7 +743,10 @@ def cmd_attach_pr(args, out):
     from .sync import format_prs, listed_prs
 
     _config, tasks = context(args)
-    pr = locators.parse(args.pr, force="pr")
+    try:
+        pr = locators.parse(args.pr, force="pr")
+    except ValueError as err:
+        raise NotFound(str(err)) from err
     resolution, _cwd = resolved(args, tasks)
     target = resolution.task
     if not target:

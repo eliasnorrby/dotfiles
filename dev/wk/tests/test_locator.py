@@ -37,6 +37,7 @@ def test_an_existing_directory_is_a_directory(tmp_path):
 
 def test_flags_force_a_kind():
     assert parse("63", force="pr") == Locator("pr", "63")
+    assert parse("#63", force="pr") == Locator("pr", "63")
     assert parse("ACME-1", force="branch") == Locator("branch", "ACME-1")
     assert parse("someone/acme-12-fix", force="issue") == Locator("issue", "ACME-12")
 
@@ -59,3 +60,9 @@ def test_not_a_locator(text):
 )
 def test_issue_key_in_a_branch(branch, key):
     assert issue_key_in(branch) == key
+
+
+@pytest.mark.parametrize("text", ["#10999 c2300c5e-764f-44c7-8a3e-38bbe3d9f741", "ACME-1", "#"])
+def test_a_forced_pr_is_a_number_or_a_url(text):
+    with pytest.raises(ValueError):
+        parse(text, force="pr")
