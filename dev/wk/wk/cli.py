@@ -546,8 +546,11 @@ def cmd_menu(args, out):
         return 0
     labels = "\n".join(label for label, _ in actions)
     header = f"{task.get('issue') or ''} {task['description']}".strip()
+    # Ranked, and on a tie the earliest match wins: typing a verb picks the
+    # action that starts with it, not one whose PR status carries the same
+    # word ("merge PR" over "open PR … merge"). An empty query keeps the order.
     picked = subprocess.run(
-        ["fzf", "--no-multi", "--no-sort", "--height=60%", "--header", header],
+        ["fzf", "--no-multi", "--tiebreak=begin,index", "--height=60%", "--header", header],
         input=labels,
         capture_output=True,
         text=True,
