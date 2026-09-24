@@ -90,6 +90,18 @@ Example of the shape:
 Rebased onto master and re-ran the backend suite — all green.
 ```
 
+## Shell
+
+Your Bash tool runs zsh, not bash, and zsh does not word-split an unquoted
+variable. `set -- $pair` or `for x in $list` sees the whole string as one
+word, so a loop meant to run `cmd A 1`, `cmd B 2` runs `cmd "A 1"` instead.
+It has more than once sent writes to the wrong place.
+
+- For a handful of calls, write each command out in full.
+- To loop, use an array (`pairs=(A 1 B 2)`; `for a b in $pairs`) or split
+  explicitly (`${=pair}`), or run the loop under `bash -c`.
+- Before a loop that writes, echo the commands it would run first.
+
 ## SQL
 
 Whenever you're writing SQL in a conversation context, that is, when asked for a specific query, always include a documentation comment above the query explaining what it does. Not how it works, just what its aim is.
