@@ -15,10 +15,11 @@
 #   wiki_checkpoint commit VAULT -- FILE...
 #                                      Commit exactly these files, message on
 #                                      stdin. Serialized across sessions.
-#   wiki_checkpoint sweep [--min-age SECONDS]
+#   wiki_checkpoint sweep [--min-age SECONDS] [--vault DIR]
 #                                      Commit what has settled in every vault
 #                                      (the owner's jots and moves, hook-made
-#                                      archive moves). Run from a timer.
+#                                      archive moves; in the wiki layer only
+#                                      moves). Run from a timer.
 #   wiki_checkpoint friction VAULT SLUG
 #                                      File a friction report, body on stdin.
 #   wiki_checkpoint mark               Record that this session checkpointed.
@@ -279,33 +280,73 @@ cmd_friction() {
   printf '%s\n' "$file"
 }
 
+# The part of a vault that sessions write, and commit themselves.
+in_wiki_layer() {
+  case "$1" in
+    wiki/* | dailies/* | index.md | log.md | CLAUDE.md) return 0 ;;
+  esac
+  return 1
+}
+
 # Commit whatever has settled in a vault: the owner's jots and moves, task
 # notes archived by wk's hooks, Obsidian configuration. Nobody should have to
 # think about committing. A file is settled when it has not been written to
-# for MIN_AGE seconds, which keeps a jot still being typed and a page a session
-# is still writing out of the sweep; a session's own checkpoint commits the
-# rest, and "already committed" is fine on both sides. Deletions are always
-# settled.
+# for MIN_AGE seconds, which keeps a jot still being typed out of the sweep.
+#
+# The wiki layer is different: a session may work for an hour and leave a page
+# untouched for most of it before its own commit, so no settling time protects
+# it. There the sweep takes only moves (a deleted path whose file name
+# reappears untracked elsewhere, as wk's archive hook leaves a task note), and
+# leaves edits and new pages to the session that made them.
 sweep_vault() {
-  local vault="$1" min_age="$2" now entry status path mtime
-  local -a paths=()
+  local vault="$1" min_age="$2" now entry status path mtime base i
+  local -a paths=() statuses=() entries=()
+  local -A deleted=() moved=()
   now=$(date +%s)
   while IFS= read -r -d '' entry; do
     status="${entry:0:2}"
     path="${entry:3}"
     case "$status" in
       R* | C*)
-        # A staged rename or copy carries the original path as a second record.
+        # A staged rename or copy carries the original path as a second
+        # record. It is a move by definition; take both sides.
         IFS= read -r -d '' entry || true
-        paths+=("$entry")
+        paths+=("$entry" "$path")
+        continue
         ;;
     esac
-    if [ -e "$vault/$path" ]; then
-      mtime=$(stat -c %Y "$vault/$path" 2>/dev/null) || continue
-      [ $((now - mtime)) -ge "$min_age" ] || continue
+    statuses+=("$status")
+    entries+=("$path")
+    base="${path##*/}"
+    case "$status" in
+      *D) deleted[$base]=1 ;;
+    esac
+  done < <(git -C "$vault" status --porcelain -z --untracked-files=all)
+
+  # New files first, so a move's deletion is taken only with its new half.
+  for i in "${!entries[@]}"; do
+    status="${statuses[$i]}"
+    path="${entries[$i]}"
+    base="${path##*/}"
+    case "$status" in *D) continue ;; esac
+    if in_wiki_layer "$path"; then
+      [ "$status" = '??' ] && [ -n "${deleted[$base]:-}" ] || continue
+    fi
+    mtime=$(stat -c %Y "$vault/$path" 2>/dev/null) || continue
+    [ $((now - mtime)) -ge "$min_age" ] || continue
+    paths+=("$path")
+    [ "$status" = '??' ] && moved[$base]=1
+  done
+  for i in "${!entries[@]}"; do
+    status="${statuses[$i]}"
+    path="${entries[$i]}"
+    base="${path##*/}"
+    case "$status" in *D) ;; *) continue ;; esac
+    if in_wiki_layer "$path"; then
+      [ -n "${moved[$base]:-}" ] || continue
     fi
     paths+=("$path")
-  done < <(git -C "$vault" status --porcelain -z --untracked-files=all)
+  done
   [ ${#paths[@]} -gt 0 ] || return 0
 
   local message
@@ -318,16 +359,25 @@ sweep_vault() {
 }
 
 cmd_sweep() {
-  local min_age="${WIKI_SWEEP_MIN_AGE:-300}" vault
+  local min_age="${WIKI_SWEEP_MIN_AGE:-300}" vault only=""
   while [ $# -gt 0 ]; do
     case "$1" in
       --min-age)
         min_age="$2"
         shift 2
         ;;
-      *) die "usage: wiki_checkpoint sweep [--min-age SECONDS]" ;;
+      --vault)
+        only="$2"
+        shift 2
+        ;;
+      *) die "usage: wiki_checkpoint sweep [--min-age SECONDS] [--vault DIR]" ;;
     esac
   done
+  if [ -n "$only" ]; then
+    [ -d "$only/.git" ] || die "not a git repository: $only"
+    sweep_vault "$only" "$min_age"
+    return
+  fi
   for vault in "$(vaults_dir)"/*/; do
     vault="${vault%/}"
     [ -d "$vault/.git" ] && [ -f "$vault/CLAUDE.md" ] || continue
