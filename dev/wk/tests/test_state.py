@@ -160,3 +160,18 @@ def test_hooks_never_fail(stateful, monkeypatch, capsys):
     monkeypatch.setattr("sys.stdin", io.StringIO("not json"))
     assert hooks.main(["claude", "stop"]) == 0
     assert hooks.main(["nonsense"]) == 0
+
+
+def test_a_shared_directory_names_no_task(tasks, stateful, repo, monkeypatch, capsys):
+    """A project's dir is where many of its tasks open; a task that once
+    opened there does not own the next session started there."""
+    monkeypatch.setenv("CLAUDE_CODE_ENTRYPOINT", "cli")
+    (stateful / "config.toml").open("a").write(f'[projects.os]\ndir = "{repo}"\n')
+    earlier = tasks.add("Earlier work", {"project": "os", "worktree": str(repo), "branch": "main"})
+    subprocess.run(["git", "-C", str(repo), "checkout", "-q", "main"], check=True)
+    event("session-start", cwd=str(repo), source="startup")
+    assert "wk adopt" in json.loads(capsys.readouterr().out)["hookSpecificOutput"]["additionalContext"]
+    monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "s9")
+    assert cli.main(["adopt", "New work", "-C", str(repo)]) == 0
+    tasks.invalidate()
+    assert tasks.get(earlier["uuid"]).get("session") is None

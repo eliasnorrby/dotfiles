@@ -76,8 +76,9 @@ class Tasks:
     def by_branch(self, branch):
         return self.by_field("branch", branch)
 
-    def by_worktree(self, path):
-        """The task whose worktree is `path` or contains it; deepest wins."""
+    def by_worktree(self, path, ignore=()):
+        """The task whose worktree is `path` or contains it; deepest wins.
+        Worktrees in `ignore` (shared directories) name no task."""
         path = os.path.realpath(path)
         matches = []
         for task in self.all():
@@ -85,6 +86,8 @@ class Tasks:
             if not worktree:
                 continue
             worktree = os.path.realpath(worktree)
+            if worktree in ignore:
+                continue
             if path == worktree or path.startswith(worktree + os.sep):
                 matches.append((len(worktree), task))
         if not matches:

@@ -86,7 +86,9 @@ def test_a_pr_goes_to_the_task_of_its_branch(tasks, world):
 def test_a_pr_whose_branch_has_no_task_goes_to_the_sessions(tasks, world):
     from wk import hooks
 
-    parent = tasks.add("investigation", {"issue": "ACME-1", "worktree": str(world)})
-    hooks.claude_post_tool_use(pr_created(world), head_of=lambda url: "me/a-side-quest")
+    checkout = world / "checkout"  # its own; home is shared and names no task
+    checkout.mkdir()
+    parent = tasks.add("investigation", {"issue": "ACME-1", "worktree": str(checkout)})
+    hooks.claude_post_tool_use(pr_created(checkout), head_of=lambda url: "me/a-side-quest")
     tasks.invalidate()
     assert tasks.get(parent["uuid"])["prs"] == "#77"
