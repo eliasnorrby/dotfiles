@@ -14,3 +14,4 @@
 
 # Claude Code syncs claude.ai account skills here (since 2.1.280); not ours
 /ai/claude/skills/synced/
+__pycache__/
