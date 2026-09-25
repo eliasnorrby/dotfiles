@@ -20,6 +20,12 @@ it may change what they mean.
 
 When committing, ensure the message is at most 72 characters in width.
 
+Prefer staging individual files over directories, and never `git add -A`: a
+directory drags in whatever else is lying there (a `__pycache__`, a scratch
+file). Files one by one is sometimes impractical, so make it a habit to run
+`git status` before every commit and check that what's staged is what you
+meant to stage.
+
 Use conventional commit messages when that pattern is used in the project.
 
 Here's a model commit message:
