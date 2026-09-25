@@ -44,6 +44,12 @@
     }
   },
   "notification-visibility": {
+    "fires-through-focus": {
+      "state": "enabled",
+      "override-urgency": "critical",
+      "app-name": "^Slack$",
+      "summary": "(?i)\\bfires\\b"
+    },
     "example-name": {
       "state": "muted",
       "urgency": "Low",
