@@ -38,9 +38,11 @@ vault = "acme"
 dir = "~/.dotfiles"
 
 # Vaults, by directory name under defaults.vaults_dir. drain: empty its
-# inbox unattended (`wiki_checkpoint drain`, dotfiles topic ai/os).
+# inbox unattended (`wiki_checkpoint drain`, dotfiles topic ai/os). about:
+# what it holds, in a line every Claude session is handed at start.
 [vaults.acme]
 drain = true
+about = "work at Acme: the platform, customers, incidents and decisions"
 
 # Repositories wk knows about.
 [repos."acme/app"]

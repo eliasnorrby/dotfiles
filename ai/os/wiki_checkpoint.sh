@@ -151,6 +151,28 @@ log_wiki_read() {
   esac
 }
 
+# What every session is handed at start: the wikis there are, one line each
+# (vaults.<name>.about in wk's config), and how to use them.
+vaults_note() {
+  local v name about
+  echo "Elias's wikis are LLM-maintained Obsidian vaults (each one's CLAUDE.md is its schema):"
+  for v in "$(vaults_dir)"/*/; do
+    v="${v%/}"
+    [ -f "$v/index.md" ] || continue
+    name=$(basename "$v")
+    about=$(wk config get "vaults.$name.about" 2>/dev/null) || about=""
+    echo "- $name: ${about:+$about; }entry point $v/index.md"
+  done
+  cat <<'EOF'
+Anything that reaches into the past (what was written, discussed or decided;
+a system, customer, incident or decision with history) starts there, with the
+recall skill: index.md, then the hubs, then their pages, before Slack, the
+tracker, GitHub or transcripts, and before grepping for the request's words.
+Say whether the wiki had the answer; if you had to go wider, suggest where it
+belongs in the wiki.
+EOF
+}
+
 # What a work session is handed at start: where its wiki is and the list of
 # hubs and topics, which each list their pages. The full index is a read away.
 wiki_map() {
@@ -530,10 +552,15 @@ cmd_hook() {
       ;;
     session-start)
       local vault
-      in_scope "$cwd" || exit 0
-      vault=$(session_vault "$cwd") || exit 0
-      log_usage start "$sid" "$cwd" "" "${vault##*/}" ""
-      emit_context SessionStart "$(wiki_map "$vault" "$(cached_issue "$sid" "$cwd")")"
+      # Headless runs (the drain) get nothing; every other session is told
+      # where the wikis are, and a work session gets its vault's map too.
+      case "${CLAUDE_CODE_ENTRYPOINT:-}" in sdk*) exit 0 ;; esac
+      if in_scope "$cwd" && vault=$(session_vault "$cwd"); then
+        log_usage start "$sid" "$cwd" "" "${vault##*/}" ""
+        emit_context SessionStart "$(wiki_map "$vault" "$(cached_issue "$sid" "$cwd")")"$'\n\n'"$(vaults_note)"
+      else
+        emit_context SessionStart "$(vaults_note)"
+      fi
       ;;
     post-tool-use)
       local command vaults p
