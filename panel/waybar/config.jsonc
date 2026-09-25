@@ -18,6 +18,7 @@
     "memory",
     // "tray",
     "custom/pacman",
+    "custom/focus",
     "clock",
     "custom/notification",
     "custom/power",
@@ -127,6 +128,18 @@
     "tooltip-format": "System updates available",
     "exec-if": "exit 0",
     "signal": 8,
+  },
+  // Pomodoro timer (notifications/focus). Left click starts focus or ends it
+  // early, middle click skips the phase, right click stops the timer.
+  "custom/focus": {
+    "format": "{}",
+    "return-type": "json",
+    "exec": "focus waybar",
+    "interval": 1,
+    "signal": 9,
+    "on-click": "focus toggle",
+    "on-click-middle": "focus skip",
+    "on-click-right": "focus stop",
   },
   "custom/notification": {
     "tooltip": true,

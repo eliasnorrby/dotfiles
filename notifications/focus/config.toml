@@ -1,0 +1,5 @@
+# Lengths in minutes. `focus start 50` overrides the focus length once.
+focus = 25
+break = 5
+long_break = 15
+long_break_every = 4

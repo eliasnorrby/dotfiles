@@ -137,6 +137,9 @@ topics:
     - name: swaync
       state: present
       config: "{{ swaync_config }}"
+    - name: focus
+      state: present
+      config: "{{ focus_config }}"
   wm:
     - name: hyprland
       state: present

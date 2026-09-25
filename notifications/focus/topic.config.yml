@@ -1,0 +1,10 @@
+focus_config:
+  path: notifications/focus
+  links:
+    - config.toml
+    - src: focus.py
+      dest: "{{ xdg_bin_home }}/"
+      rename: focus
+  pacman_packages:
+    - libnotify  # notify-send for the break-over nudge
+    - libpulse  # paplay for the chimes

@@ -80,6 +80,7 @@ window#waybar {
 #custom-notification,
 #custom-hyprvoice,
 #custom-recorder,
+#custom-focus,
 #custom-pacman {
   border-radius: 10px;
   background-color: rgba(36, 39, 58, 0.7);
@@ -96,6 +97,16 @@ window#waybar {
 
 #custom-notification {
   padding-right: 15px;
+}
+
+#custom-focus.focus {
+  background-color: @peach;
+  color: @mantle;
+}
+
+#custom-focus.break {
+  background-color: @green;
+  color: @mantle;
 }
 
 #network {
@@ -125,6 +136,7 @@ window#waybar {
 #custom-notification:hover,
 #custom-hyprvoice:hover,
 #custom-recorder:hover,
+#custom-focus:hover,
 #custom-pacman:hover {
   background-color: rgba(73, 77, 100, 0.7);
   transition: all 0.3s linear;
