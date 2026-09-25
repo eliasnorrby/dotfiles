@@ -128,6 +128,21 @@ esac
 
 bell
 
+# During focus (the `focus` timer, notifications/focus) the bell still rings,
+# since the tmux keybinds for reaching sessions that need input run on it, but
+# the sound stays off unless this pane is the one being looked at. The desktop
+# notification is sent as usual: swaync's do-not-disturb holds it for the break.
+sound=1
+if command -v focus >/dev/null 2>&1 && [ "$(focus phase 2>/dev/null)" = focus ]; then
+  sound=0
+  if [ -n "$TMUX_PANE" ]; then
+    looked_at="$(tmux display-message -p -t "$TMUX_PANE" '#{pane_active}#{window_active}#{session_attached}' 2>/dev/null)"
+    case "$looked_at" in
+      11[1-9]*) sound=1 ;;
+    esac
+  fi
+fi
+
 # Set notification message and sound based on type and platform
 if [[ "$notification_type" == "done" ]]; then
   message="Claude is done."
@@ -147,7 +162,9 @@ elif command -v notify-send >/dev/null 2>&1; then
 fi
 
 # Play sound
-if command -v afplay >/dev/null 2>&1; then
+if [ "$sound" -eq 0 ]; then
+  exit 0
+elif command -v afplay >/dev/null 2>&1; then
   afplay -v 3 "$macos_sound"
 elif command -v paplay >/dev/null 2>&1 && [[ -f "$linux_sound" ]]; then
   paplay "$linux_sound"
