@@ -3,3 +3,15 @@ focus = 25
 break = 5
 long_break = 15
 long_break_every = 4
+
+# The break brief: a headless Claude session that says whether anything in
+# Slack needs Elias now (brief.md). Off, and the break is just a break.
+[brief]
+enabled = true
+model = "sonnet"
+slack_user = "U02K3N3KKM5"
+# Channels where every message is worth a look, and channels only counted.
+fires = ["fires"]
+watch = ["d_logging"]
+max_budget_usd = 1.0
+timeout_seconds = 240

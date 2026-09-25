@@ -2,15 +2,20 @@
 """focus: a pomodoro timer that holds notifications while you work.
 
 Focus turns swaync's do-not-disturb on, so whatever arrives collects in the
-control center instead of popping up; the break turns it off, opens the
-control center and chimes, so the held items come up together. The break
-starts on its own when focus ends. The next focus waits for you: hyper+S or a
-click on the waybar module. Every fourth break is a long one.
+control center instead of popping up; the break turns it off and chimes, and
+a headless Claude session (the break brief, brief.md) says whether anything in
+Slack needs you before the next focus. The break starts on its own when focus
+ends. The next focus waits for you: hyper+S or a click on the waybar module.
+Every fourth break is a long one.
 
     focus toggle          idle or break -> start focus; focus -> break now
     focus start [MINUTES] start focus (a break in progress ends now)
     focus stop            back to idle from any phase, dnd off, cycle reset
     focus skip            end the current phase now
+    focus brief [HOURS]   run the break brief now (the break runs it itself),
+                          over the last HOURS instead of since the last brief
+    focus seen            you have read Slack yourself: the next brief starts
+                          from now
     focus status          one line for a terminal
     focus phase           print focus, break or idle (for other scripts)
     focus waybar          JSON for the waybar module; also applies a due
@@ -22,26 +27,60 @@ Other scripts read the phase: claude_notification keeps quiet during focus
 unless its pane is the one being looked at, and tmux (`@focus`, set here)
 hides the bell highlight until the break.
 
-Files, under $XDG_STATE_HOME/focus: state.json, and log.jsonl with one line
-per finished phase (planned and actual length, whether it was cut short), for
-tuning the lengths in ~/.config/focus/config.toml.
+Files, under $XDG_STATE_HOME/focus: state.json; log.jsonl with one line per
+finished phase (planned and actual length, whether it was cut short) and one
+per brief (verdict, cost, duration), for tuning the lengths and reviewing the
+briefs' calls; briefs/ with each brief's full text. Config in
+~/.config/focus/config.toml.
 """
 
 import json
 import os
+import re
 import subprocess
 import sys
 import time
 import tomllib
 from datetime import datetime
 
-DEFAULTS = {"focus": 25, "break": 5, "long_break": 15, "long_break_every": 4}
+DEFAULTS = {
+    "focus": 25, "break": 5, "long_break": 15, "long_break_every": 4,
+    "brief": {
+        "enabled": True, "model": "sonnet", "slack_user": "", "fires": [], "watch": [],
+        "max_budget_usd": 1.0, "timeout_seconds": 240,
+    },
+}
 SOUNDS = "/usr/share/sounds/freedesktop/stereo"
 CHIME = {"break": f"{SOUNDS}/complete.oga", "idle": f"{SOUNDS}/bell.oga"}
 TIMER_UNIT = "focus-tick"
+BRIEF_UNIT = "focus-brief"
 WAYBAR_SIGNAL = 9  # custom/focus listens on RTMIN+9
 ICONS = {"focus": "\U000f051b", "break": "\U000f0176", "idle": "\U000f051b"}  # timer, coffee
+# What a state carries across phases: the position in the cycle, and where
+# the last brief left off.
+CARRIED = ("count", "last_brief")
 IDLE = {"phase": "idle", "count": 0}
+
+# The brief's Slack tools, under either of the names the MCP server goes by
+# (the claude.ai connector in a headless session, the plugin in a terminal).
+SLACK_TOOLS = [
+    f"mcp__{server}__slack_{tool}"
+    for server in ("claude_ai_Slack", "plugin_slack_slack")
+    for tool in (
+        "search_public_and_private", "search_public", "read_channel", "read_thread",
+        "search_channels", "search_users", "read_user_profile", "send_message",
+    )
+]
+VERDICT_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "verdict": {"type": "string", "enum": ["clear", "attention"]},
+        "headline": {"type": "string"},
+        "items": {"type": "integer"},
+        "link": {"type": "string"},
+    },
+    "required": ["verdict", "headline"],
+}
 
 
 def xdg(kind, default):
@@ -51,7 +90,9 @@ def xdg(kind, default):
 STATE_DIR = os.path.join(xdg("STATE", "~/.local/state"), "focus")
 STATE = os.path.join(STATE_DIR, "state.json")
 LOG = os.path.join(STATE_DIR, "log.jsonl")
+BRIEFS = os.path.join(STATE_DIR, "briefs")
 CONFIG = os.path.join(xdg("CONFIG", "~/.config"), "focus", "config.toml")
+BRIEF_TEMPLATE = os.path.join(os.path.dirname(os.path.realpath(__file__)), "brief.md")
 
 
 # -- plumbing -----------------------------------------------------------------
@@ -60,9 +101,10 @@ CONFIG = os.path.join(xdg("CONFIG", "~/.config"), "focus", "config.toml")
 def config():
     try:
         with open(CONFIG, "rb") as handle:
-            return {**DEFAULTS, **tomllib.load(handle)}
+            loaded = tomllib.load(handle)
     except (OSError, tomllib.TOMLDecodeError):
-        return dict(DEFAULTS)
+        loaded = {}
+    return {**DEFAULTS, **loaded, "brief": {**DEFAULTS["brief"], **loaded.get("brief", {})}}
 
 
 def read_state():
@@ -81,21 +123,35 @@ def write_state(state):
     os.replace(temporary, STATE)
 
 
-def log(state, ended, cut_short):
-    """One line per finished phase, the data for tuning the lengths."""
+def next_state(previous, **fields):
+    """A new phase, keeping what carries across phases."""
+    state = {key: previous[key] for key in CARRIED if key in previous}
+    state.update(fields)
+    return state
+
+
+def log(line):
     os.makedirs(STATE_DIR, exist_ok=True)
-    line = {
+    with open(LOG, "a", encoding="utf-8") as handle:
+        handle.write(json.dumps(line) + "\n")
+
+
+def log_phase(state, ended, cut_short):
+    """One line per finished phase, the data for tuning the lengths."""
+    log({
         "phase": state["phase"],
-        "started": datetime.fromtimestamp(state["started"]).isoformat(timespec="seconds"),
-        "ended": datetime.fromtimestamp(ended).isoformat(timespec="seconds"),
+        "started": iso(state["started"]),
+        "ended": iso(ended),
         "planned_min": state["planned"],
         "actual_min": round((ended - state["started"]) / 60, 1),
         "cut_short": cut_short,
         "n": state["count"],
         "long": state.get("long", False),
-    }
-    with open(LOG, "a", encoding="utf-8") as handle:
-        handle.write(json.dumps(line) + "\n")
+    })
+
+
+def iso(epoch):
+    return datetime.fromtimestamp(epoch).isoformat(timespec="seconds")
 
 
 def run(*command, **kwargs):
@@ -124,24 +180,31 @@ def chime(phase):
             pass
 
 
+def notify(title, body="", urgency="normal"):
+    run("notify-send", "-a", "focus", "-u", urgency, title, body)
+
+
 def refresh_waybar():
     run("pkill", f"-RTMIN+{WAYBAR_SIGNAL}", "-x", "waybar")
+
+
+def transient(unit, *command, on_active=None):
+    """Run a command as a transient user unit, so it outlives this process
+    and shows up in systemctl."""
+    cancel(unit)
+    timer = [f"--on-active={max(1, int(on_active))}", "--timer-property=AccuracySec=1s"] if on_active else []
+    run("systemd-run", "--user", "--quiet", "--collect", f"--unit={unit}", *timer,
+        sys.executable, os.path.abspath(__file__), *command)
+
+
+def cancel(unit):
+    run("systemctl", "--user", "stop", "--quiet", f"{unit}.timer", f"{unit}.service")
 
 
 def schedule_tick(seconds):
     """A transient timer fires `focus tick` when the phase ends; the waybar
     poll applies the transition too, in case the timer doesn't."""
-    cancel_tick()
-    run(
-        "systemd-run", "--user", "--quiet", "--collect",
-        f"--unit={TIMER_UNIT}", f"--on-active={max(1, int(seconds))}",
-        "--timer-property=AccuracySec=1s",
-        sys.executable, os.path.abspath(__file__), "tick",
-    )
-
-
-def cancel_tick():
-    run("systemctl", "--user", "stop", "--quiet", f"{TIMER_UNIT}.timer", f"{TIMER_UNIT}.service")
+    transient(TIMER_UNIT, "tick", on_active=seconds)
 
 
 # -- transitions --------------------------------------------------------------
@@ -152,11 +215,12 @@ def start(state, minutes=None):
     if state["phase"] == "focus":
         return state, "already focusing"
     if state["phase"] == "break":
-        log(state, now, cut_short=True)
+        log_phase(state, now, cut_short=True)
         if state.get("long"):
             state["count"] = 0
     minutes = minutes or config()["focus"]
-    state = {"phase": "focus", "started": now, "ends": now + minutes * 60, "planned": minutes, "count": state["count"]}
+    state = next_state(state, phase="focus", started=now, ends=now + minutes * 60, planned=minutes)
+    state.setdefault("count", 0)
     write_state(state)
     dnd(True)
     tmux_focus(True)
@@ -166,21 +230,22 @@ def start(state, minutes=None):
 
 
 def end_focus(state, cut_short):
-    """Focus ends: the break starts on its own, and the held notifications
-    come up together."""
+    """Focus ends: the break starts on its own, the chime says so, and the
+    brief goes to work."""
     now = time.time()
-    log(state, now, cut_short)
+    log_phase(state, now, cut_short)
     settings = config()
     count = state["count"] + 1
     long = settings["long_break_every"] > 0 and count % settings["long_break_every"] == 0
     minutes = settings["long_break"] if long else settings["break"]
-    state = {"phase": "break", "started": now, "ends": now + minutes * 60, "planned": minutes, "count": count, "long": long}
+    state = next_state(state, phase="break", started=now, ends=now + minutes * 60, planned=minutes, count=count, long=long)
     write_state(state)
     dnd(False)
     tmux_focus(False)
     chime("break")
-    run("swaync-client", "-op", "-sw")
     schedule_tick(minutes * 60)
+    if settings["brief"]["enabled"]:
+        transient(BRIEF_UNIT, "brief")
     refresh_waybar()
     return state, f"{'long ' if long else ''}break for {minutes} min"
 
@@ -188,13 +253,13 @@ def end_focus(state, cut_short):
 def end_break(state, cut_short):
     """The break ends with a nudge; the next focus waits for the hotkey."""
     now = time.time()
-    log(state, now, cut_short)
-    state = {"phase": "idle", "count": 0 if state.get("long") else state["count"]}
+    log_phase(state, now, cut_short)
+    state = next_state(state, phase="idle", count=0 if state.get("long") else state["count"])
     write_state(state)
-    cancel_tick()
+    cancel(TIMER_UNIT)
     if not cut_short:
         chime("idle")
-        run("notify-send", "-a", "focus", "-u", "normal", "Break over", "hyper+S starts the next focus")
+        notify("Break over", "hyper+S starts the next focus")
     refresh_waybar()
     return state, "idle"
 
@@ -202,10 +267,10 @@ def end_break(state, cut_short):
 def stop(state):
     now = time.time()
     if state["phase"] != "idle":
-        log(state, now, cut_short=True)
-    state = dict(IDLE)
+        log_phase(state, now, cut_short=True)
+    state = next_state(state, phase="idle", count=0)
     write_state(state)
-    cancel_tick()
+    cancel(TIMER_UNIT)
     dnd(False)
     tmux_focus(False)
     refresh_waybar()
@@ -233,6 +298,142 @@ def tick(state):
     if state["phase"] == "focus":
         return end_focus(state, cut_short=False)
     return end_break(state, cut_short=False)
+
+
+def seen(state):
+    """Elias has read Slack himself: the next brief starts from now."""
+    state["last_brief"] = time.time()
+    write_state(state)
+    return state, "next brief starts from now"
+
+
+# -- the break brief ----------------------------------------------------------
+
+
+def tasks():
+    """Pending tasks, from taskwarrior, most urgent first."""
+    result = run("task", "rc.verbose=nothing", "status:pending", "export")
+    try:
+        pending = json.loads(result.stdout) if result else []
+    except ValueError:
+        pending = []
+    return sorted(pending, key=lambda task: -task.get("urgency", 0))
+
+
+def local_facts(since):
+    """What the desktop knows on its own: agents waiting for input, PRs that
+    turned sour during the focus, and the task to pick up next. No model
+    needed for any of it."""
+    pending = tasks()
+    label = lambda task: f"{task['id']} {task['description']}"  # noqa: E731
+    waiting = [label(t) for t in pending if t.get("state") == "input"]
+    sour = [
+        f"{label(t)} ({t['action']}: {t.get('health') or t.get('decision')})"
+        for t in pending
+        if t.get("action") in ("fix", "review") and t.get("health") in ("failing", "conflict")
+        and datetime.fromisoformat(t["modified"].replace("Z", "+00:00")).timestamp() >= since
+    ]
+    next_up = [label(t) for t in pending if t.get("state") not in ("input",)][:1]
+    lines = []
+    if waiting:
+        lines.append("Agents waiting: " + "; ".join(waiting))
+    if sour:
+        lines.append("PRs: " + "; ".join(sour))
+    if next_up:
+        lines.append("Next: " + next_up[0])
+    return lines
+
+
+def brief_prompt(since, settings):
+    with open(BRIEF_TEMPLATE, encoding="utf-8") as handle:
+        template = handle.read()
+    now = time.time()
+    fill = {
+        "user": settings["slack_user"],
+        "since": iso(since),
+        "since_ts": str(int(since)),
+        "threads_since_ts": str(int(now - 14 * 86400)),
+        "now": iso(now),
+        "fires": ", ".join(f"#{c}" for c in settings["fires"]) or "none",
+        "watch": ", ".join(f"#{c}" for c in settings["watch"]) or "none",
+    }
+    for key, value in fill.items():
+        template = template.replace("{{" + key + "}}", value)
+    return template
+
+
+def ask_claude(prompt, settings):
+    """A headless session with only the Slack tools. Returns (verdict, raw
+    result) or (None, error text)."""
+    command = [
+        "claude", "-p", "--model", settings["model"], "--output-format", "json",
+        "--tools", "", "--allowedTools", ",".join(SLACK_TOOLS), "--permission-mode", "dontAsk",
+        "--json-schema", json.dumps(VERDICT_SCHEMA),
+        "--max-budget-usd", str(settings["max_budget_usd"]), "--no-session-persistence",
+    ]
+    try:
+        result = subprocess.run(command, input=prompt, capture_output=True, text=True,
+                                timeout=settings["timeout_seconds"], cwd=os.path.expanduser("~"))
+    except subprocess.TimeoutExpired:
+        return None, f"timed out after {settings['timeout_seconds']}s"
+    except OSError as error:
+        return None, str(error)
+    try:
+        output = json.loads(result.stdout)
+    except ValueError:
+        return None, (result.stderr or result.stdout or "no output")[-500:]
+    if output.get("is_error"):
+        return None, "; ".join(output.get("errors") or [output.get("subtype") or "error"])
+    verdict = output.get("structured_output")
+    if not isinstance(verdict, dict):
+        # Without structured output, the last JSON object in the reply is it.
+        found = re.findall(r"\{[^{}]*\}", output.get("result") or "")
+        try:
+            verdict = json.loads(found[-1]) if found else None
+        except ValueError:
+            verdict = None
+    if not isinstance(verdict, dict) or verdict.get("verdict") not in ("clear", "attention"):
+        return None, (output.get("result") or "no verdict")[-500:]
+    verdict["cost_usd"] = output.get("total_cost_usd")
+    verdict["duration_s"] = round((output.get("duration_ms") or 0) / 1000)
+    return verdict, output.get("result") or ""
+
+
+def brief(state, hours=None):
+    """The break brief: the desktop's own facts go straight into the
+    notification; a headless Claude session judges Slack. Fails open: when
+    the session fails, the notification says so, Elias looks himself, and
+    the window stays open for the next brief."""
+    settings = config()["brief"]
+    started = time.time()
+    if hours:
+        since = started - hours * 3600
+    else:
+        since = state.get("last_brief") or state.get("started") or started - 3600
+    facts = local_facts(since)
+    verdict, raw = ask_claude(brief_prompt(since, settings), settings) if settings["slack_user"] else (None, "no slack_user in config")
+    if verdict is None:
+        title, body = "Break: brief failed, look yourself", raw.strip().splitlines()[-1] if raw.strip() else ""
+    elif verdict["verdict"] == "clear":
+        title, body = "Break: all clear", ""
+    else:
+        title, body = f"Break: {verdict['headline']}", "In your Slack DM"
+    body = "\n".join(filter(None, [body, *facts]))
+    notify(title, body)
+    state = read_state()  # the phase may have moved on while the session ran
+    if verdict is not None:
+        state["last_brief"] = started
+        write_state(state)
+    os.makedirs(BRIEFS, exist_ok=True)
+    with open(os.path.join(BRIEFS, datetime.fromtimestamp(started).strftime("%Y-%m-%d %H%M") + ".md"), "w", encoding="utf-8") as handle:
+        handle.write(f"# Brief {iso(started)}\n\nSince {iso(since)}.\n\n{title}\n{body}\n\n## Claude\n\n{raw}\n")
+    log({
+        "phase": "brief", "started": iso(started), "since": iso(since),
+        "duration_s": round(time.time() - started),
+        **{key: (verdict or {}).get(key) for key in ("verdict", "headline", "items", "cost_usd")},
+        "failed": verdict is None,
+    })
+    return state, title
 
 
 # -- display ------------------------------------------------------------------
@@ -277,8 +478,11 @@ def main(argv):
     elif command == "start":
         minutes = int(argv[2]) if len(argv) > 2 else None
         print(start(state, minutes)[1])
-    elif command in ("stop", "skip", "toggle"):
-        print({"stop": stop, "skip": skip, "toggle": toggle}[command](state)[1])
+    elif command == "brief":
+        hours = float(argv[2]) if len(argv) > 2 else None
+        print(brief(state, hours)[1])
+    elif command in ("stop", "skip", "toggle", "seen"):
+        print({"stop": stop, "skip": skip, "toggle": toggle, "seen": seen}[command](state)[1])
     else:
         print(__doc__.strip(), file=sys.stderr)
         return 2
