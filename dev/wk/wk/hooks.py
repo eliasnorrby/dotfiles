@@ -120,9 +120,10 @@ to another task, adopt that one with --task. Only a one-off question answered in
 task."""
 
 CLEARED = """\
-This window is tied to task {id} ({description}). If what you are asked now is other work, move this \
-session to it before starting: `wk adopt --task <id>` for a pending task, `wk adopt "<short description>"` \
-for new work."""
+This window was tied to task {id} ({description}), but this new session is not recorded on it yet. As soon \
+as you know what you are asked to do, and before you start, register it: `wk adopt --task {id}` if it is \
+the same work, `wk adopt --task <id>` for another pending task, `wk adopt "<short description>"` for new \
+work."""
 
 
 def _interactive():
@@ -187,6 +188,13 @@ def claude_event(event, payload):
             return
         agent = {"uuid": uuid, "pane": os.environ.get("TMUX_PANE"), "status": None}
         agent["pid"] = int(os.environ.get("CLAUDE_PID") or 0) or os.getppid()
+        if event == "session-start" and payload.get("source") == "clear":
+            # /clear starts a new session in a window that still names the
+            # work before it, and the new session may be about something
+            # else. It stays unattached, so the task keeps leading back to
+            # the conversation that did its work, until the session adopts
+            # a task (`wk adopt`, which the CLEARED context asks for).
+            agent["uuid"] = None
     status = _agent_status(event, payload, agent.get("status"))
     if status is None or status == agent.get("status"):
         return

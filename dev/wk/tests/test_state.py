@@ -175,3 +175,25 @@ def test_a_shared_directory_names_no_task(tasks, stateful, repo, monkeypatch, ca
     assert cli.main(["adopt", "New work", "-C", str(repo)]) == 0
     tasks.invalidate()
     assert tasks.get(earlier["uuid"]).get("session") is None
+
+
+def test_a_cleared_session_waits_to_name_its_task(tasks, stateful, monkeypatch, capsys):
+    """/clear leaves the window naming the task before it. The new session
+    must not take that task over until it says it is the same work."""
+    monkeypatch.setenv("CLAUDE_CODE_ENTRYPOINT", "cli")
+    earlier = tasks.add("Earlier work", {"session": "old"})
+    monkeypatch.setattr("wk.tmux.current_task", lambda: earlier["uuid"])
+    event("session-start", "fresh", source="clear")
+    told = json.loads(capsys.readouterr().out)["hookSpecificOutput"]["additionalContext"]
+    assert f"wk adopt --task {earlier['id']}" in told
+    event("user-prompt-submit", "fresh")
+    tasks.invalidate()
+    assert tasks.get(earlier["uuid"])["session"] == "old"
+    assert state_of(tasks, earlier) != "working"
+
+    monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "fresh")
+    assert cli.main(["adopt", "New work"]) == 0
+    tasks.invalidate()
+    new = next(t for t in tasks.all() if t["description"] == "New work")
+    assert new["session"] == "fresh" and state.read_agent("fresh")["uuid"] == new["uuid"]
+    assert tasks.get(earlier["uuid"])["session"] == "old"
