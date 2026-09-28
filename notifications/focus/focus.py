@@ -3,8 +3,8 @@
 
 Focus turns swaync's do-not-disturb on, so whatever arrives collects in the
 control center instead of popping up; the break turns it off and chimes, and
-a headless Claude session (the break brief, brief.md) says whether anything in
-Slack needs you before the next focus. The break starts on its own when focus
+a headless Claude session (the break brief, brief.md) says whether anyone
+wrote to you during the focus with something that can't wait. The break starts on its own when focus
 ends. The next focus waits for you: hyper+S or a click on the waybar module.
 Every fourth break is a long one.
 
@@ -48,7 +48,7 @@ from datetime import datetime
 DEFAULTS = {
     "focus": 25, "break": 5, "long_break": 15, "long_break_every": 4,
     "brief": {
-        "enabled": True, "model": "sonnet", "slack_user": "", "fires": [], "watch": [],
+        "enabled": True, "model": "sonnet", "slack_user": "",
         "max_budget_usd": 1.5, "timeout_seconds": 240,
     },
 }
@@ -341,40 +341,6 @@ def seen(state):
 # -- the break brief ----------------------------------------------------------
 
 
-def tasks():
-    """Pending tasks, from taskwarrior, most urgent first."""
-    result = run("task", "rc.verbose=nothing", "status:pending", "export")
-    try:
-        pending = json.loads(result.stdout) if result else []
-    except ValueError:
-        pending = []
-    return sorted(pending, key=lambda task: -task.get("urgency", 0))
-
-
-def local_facts(since):
-    """What the desktop knows on its own: agents waiting for input, PRs that
-    turned sour during the focus, and the task to pick up next. No model
-    needed for any of it."""
-    pending = tasks()
-    label = lambda task: f"{task['id']} {task['description']}"  # noqa: E731
-    waiting = [label(t) for t in pending if t.get("state") == "input"]
-    sour = [
-        f"{label(t)} ({t['action']}: {t.get('health') or t.get('decision')})"
-        for t in pending
-        if t.get("action") in ("fix", "review") and t.get("health") in ("failing", "conflict")
-        and datetime.fromisoformat(t["modified"].replace("Z", "+00:00")).timestamp() >= since
-    ]
-    next_up = [label(t) for t in pending if t.get("state") not in ("input",)][:1]
-    lines = []
-    if waiting:
-        lines.append("Agents waiting: " + "; ".join(waiting))
-    if sour:
-        lines.append("PRs: " + "; ".join(sour))
-    if next_up:
-        lines.append("Next: " + next_up[0])
-    return lines
-
-
 def brief_prompt(since, settings):
     with open(BRIEF_TEMPLATE, encoding="utf-8") as handle:
         template = handle.read()
@@ -385,8 +351,6 @@ def brief_prompt(since, settings):
         "since_ts": str(int(since)),
         "threads_since_ts": str(int(now - 14 * 86400)),
         "now": iso(now),
-        "fires": ", ".join(f"#{c}" for c in settings["fires"]) or "none",
-        "watch": ", ".join(f"#{c}" for c in settings["watch"]) or "none",
     }
     for key, value in fill.items():
         template = template.replace("{{" + key + "}}", value)
@@ -443,26 +407,25 @@ def ask_claude_twice(prompt, settings):
 
 
 def brief(state, hours=None):
-    """The break brief: the desktop's own facts go straight into the
-    notification; a headless Claude session judges Slack. Fails open: when
-    the session fails, the notification says so, Elias looks himself, and
-    the window stays open for the next brief."""
+    """The break brief: a headless Claude session says whether anyone wrote
+    to Elias during the focus with something that can't wait. One line as a
+    notification; the items, if any, in his Slack DM. Fails open: when the
+    session fails, the notification says so, Elias looks himself, and the
+    window stays open for the next brief."""
     settings = config()["brief"]
     started = time.time()
     if hours:
         since = started - hours * 3600
     else:
         since = state.get("last_brief") or state.get("started") or started - 3600
-    facts = local_facts(since)
     verdict, raw = ask_claude_twice(brief_prompt(since, settings), settings) if settings["slack_user"] else (None, "no slack_user in config")
     if verdict is None:
-        title, body = "Break: brief failed, look yourself", raw.strip().splitlines()[-1] if raw.strip() else ""
+        title = "Brief failed, have a look at Slack yourself"
     elif verdict["verdict"] == "clear":
-        title, body = "Break: all clear", ""
+        title = "All is well, enjoy your break!"
     else:
-        title, body = f"Break: {verdict['headline']}", "In your Slack DM"
-    body = "\n".join(filter(None, [body, *facts]))
-    notify(title, body)
+        title = verdict["headline"]
+    notify(title, "" if verdict is None or verdict["verdict"] == "clear" else "In your Slack DM")
     if verdict is not None:
         with locked():
             state = read_state()  # the phase may have moved on while the session ran
@@ -470,7 +433,7 @@ def brief(state, hours=None):
             write_state(state)
     os.makedirs(BRIEFS, exist_ok=True)
     with open(os.path.join(BRIEFS, datetime.fromtimestamp(started).strftime("%Y-%m-%d %H%M") + ".md"), "w", encoding="utf-8") as handle:
-        handle.write(f"# Brief {iso(started)}\n\nSince {iso(since)}.\n\n{title}\n{body}\n\n## Claude\n\n{raw}\n")
+        handle.write(f"# Brief {iso(started)}\n\nSince {iso(since)}.\n\n{title}\n\n## Claude\n\n{raw}\n")
     log({
         "phase": "brief", "started": iso(started), "since": iso(since),
         "duration_s": round(time.time() - started),
