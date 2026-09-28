@@ -73,5 +73,11 @@ End your reply with the verdict as JSON, nothing after it:
 `verdict` is `clear` or `attention`; `headline` is one line of at most 80
 characters for a desktop notification, naming the people and the matter;
 `items` is how many bullets you posted (0 when clear); `link` is the link to
-the message you posted, or empty. If a search failed or you ran out of turns,
-say so in `headline` with verdict `attention`, so he looks himself.
+the message you posted, or empty. If you could not do the job (the Slack
+tools are missing, a search failed, you ran out of turns), add `error` with
+what went wrong; the timer retries and, failing that, tells him to look
+himself:
+
+```json
+{"verdict": "attention", "headline": "Brief could not run", "items": 0, "link": "", "error": "no Slack tools available"}
+```

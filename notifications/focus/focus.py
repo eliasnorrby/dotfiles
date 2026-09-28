@@ -34,9 +34,11 @@ briefs' calls; briefs/ with each brief's full text. Config in
 ~/.config/focus/config.toml.
 """
 
+import fcntl
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -47,7 +49,7 @@ DEFAULTS = {
     "focus": 25, "break": 5, "long_break": 15, "long_break_every": 4,
     "brief": {
         "enabled": True, "model": "sonnet", "slack_user": "", "fires": [], "watch": [],
-        "max_budget_usd": 1.0, "timeout_seconds": 240,
+        "max_budget_usd": 1.5, "timeout_seconds": 240,
     },
 }
 SOUNDS = "/usr/share/sounds/freedesktop/stereo"
@@ -78,6 +80,7 @@ VERDICT_SCHEMA = {
         "headline": {"type": "string"},
         "items": {"type": "integer"},
         "link": {"type": "string"},
+        "error": {"type": "string"},
     },
     "required": ["verdict", "headline"],
 }
@@ -173,11 +176,10 @@ def tmux_focus(on):
 
 
 def chime(phase):
+    """Waits for the sound: in a transient unit, a child left behind is
+    killed when the unit's main process exits."""
     if os.path.exists(CHIME[phase]):
-        try:
-            subprocess.Popen(["paplay", CHIME[phase]], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        except OSError:
-            pass
+        run("paplay", CHIME[phase])
 
 
 def notify(title, body="", urgency="normal"):
@@ -190,21 +192,48 @@ def refresh_waybar():
 
 def transient(unit, *command, on_active=None):
     """Run a command as a transient user unit, so it outlives this process
-    and shows up in systemctl."""
-    cancel(unit)
+    and shows up in systemctl. Each gets its own name: a tick runs inside
+    the service its timer started, so a fixed name would collide with the
+    running one, and stopping "the old unit" would stop us. The user
+    manager's PATH is whatever it happened to import, so ours goes along."""
+    name = f"{unit}-{int(time.time() * 1000)}"
     timer = [f"--on-active={max(1, int(on_active))}", "--timer-property=AccuracySec=1s"] if on_active else []
-    run("systemd-run", "--user", "--quiet", "--collect", f"--unit={unit}", *timer,
+    run("systemd-run", "--user", "--quiet", "--collect", f"--unit={name}", f"--setenv=PATH={path()}", *timer,
         sys.executable, os.path.abspath(__file__), *command)
 
 
-def cancel(unit):
-    run("systemctl", "--user", "stop", "--quiet", f"{unit}.timer", f"{unit}.service")
+def path():
+    """PATH with the directories the units need, wherever we were started."""
+    wanted = [os.path.expanduser("~/.local/bin"), os.path.dirname(shutil.which("claude") or "/usr/bin/claude")]
+    return os.pathsep.join(dict.fromkeys([*wanted, *os.environ.get("PATH", "").split(os.pathsep)]))
+
+
+def cancel(unit, services=False):
+    """Stop the unit's pending timers, and its running services only when
+    asked: the service running us may be one of them."""
+    run("systemctl", "--user", "stop", "--quiet", f"{unit}-*.timer", *([f"{unit}-*.service"] if services else []))
 
 
 def schedule_tick(seconds):
     """A transient timer fires `focus tick` when the phase ends; the waybar
     poll applies the transition too, in case the timer doesn't."""
+    cancel(TIMER_UNIT)
     transient(TIMER_UNIT, "tick", on_active=seconds)
+
+
+class locked:
+    """One transition at a time: the timer and waybar's poll both see a
+    phase end, and only the first may act on it. Re-read the state inside."""
+
+    def __enter__(self):
+        os.makedirs(STATE_DIR, exist_ok=True)
+        self.handle = open(os.path.join(STATE_DIR, "lock"), "w")
+        fcntl.flock(self.handle, fcntl.LOCK_EX)
+        return self
+
+    def __exit__(self, *_):
+        fcntl.flock(self.handle, fcntl.LOCK_UN)
+        self.handle.close()
 
 
 # -- transitions --------------------------------------------------------------
@@ -245,6 +274,7 @@ def end_focus(state, cut_short):
     chime("break")
     schedule_tick(minutes * 60)
     if settings["brief"]["enabled"]:
+        cancel(BRIEF_UNIT, services=True)  # a brief still running from the last break is stale
         transient(BRIEF_UNIT, "brief")
     refresh_waybar()
     return state, f"{'long ' if long else ''}break for {minutes} min"
@@ -256,8 +286,9 @@ def end_break(state, cut_short):
     log_phase(state, now, cut_short)
     state = next_state(state, phase="idle", count=0 if state.get("long") else state["count"])
     write_state(state)
-    cancel(TIMER_UNIT)
-    if not cut_short:
+    if cut_short:
+        cancel(TIMER_UNIT)
+    else:
         chime("idle")
         notify("Break over", "hyper+S starts the next focus")
     refresh_waybar()
@@ -394,9 +425,21 @@ def ask_claude(prompt, settings):
             verdict = None
     if not isinstance(verdict, dict) or verdict.get("verdict") not in ("clear", "attention"):
         return None, (output.get("result") or "no verdict")[-500:]
+    if verdict.get("error"):
+        return None, verdict["error"]
     verdict["cost_usd"] = output.get("total_cost_usd")
     verdict["duration_s"] = round((output.get("duration_ms") or 0) / 1000)
     return verdict, output.get("result") or ""
+
+
+def ask_claude_twice(prompt, settings):
+    """The MCP connectors are sometimes not up when the session starts, and
+    the model then finds no Slack tools. One retry covers that."""
+    verdict, raw = ask_claude(prompt, settings)
+    if verdict is None:
+        time.sleep(5)
+        verdict, raw = ask_claude(prompt, settings)
+    return verdict, raw
 
 
 def brief(state, hours=None):
@@ -411,7 +454,7 @@ def brief(state, hours=None):
     else:
         since = state.get("last_brief") or state.get("started") or started - 3600
     facts = local_facts(since)
-    verdict, raw = ask_claude(brief_prompt(since, settings), settings) if settings["slack_user"] else (None, "no slack_user in config")
+    verdict, raw = ask_claude_twice(brief_prompt(since, settings), settings) if settings["slack_user"] else (None, "no slack_user in config")
     if verdict is None:
         title, body = "Break: brief failed, look yourself", raw.strip().splitlines()[-1] if raw.strip() else ""
     elif verdict["verdict"] == "clear":
@@ -420,10 +463,11 @@ def brief(state, hours=None):
         title, body = f"Break: {verdict['headline']}", "In your Slack DM"
     body = "\n".join(filter(None, [body, *facts]))
     notify(title, body)
-    state = read_state()  # the phase may have moved on while the session ran
     if verdict is not None:
-        state["last_brief"] = started
-        write_state(state)
+        with locked():
+            state = read_state()  # the phase may have moved on while the session ran
+            state["last_brief"] = started
+            write_state(state)
     os.makedirs(BRIEFS, exist_ok=True)
     with open(os.path.join(BRIEFS, datetime.fromtimestamp(started).strftime("%Y-%m-%d %H%M") + ".md"), "w", encoding="utf-8") as handle:
         handle.write(f"# Brief {iso(started)}\n\nSince {iso(since)}.\n\n{title}\n{body}\n\n## Claude\n\n{raw}\n")
@@ -465,24 +509,26 @@ def waybar(state):
 
 def main(argv):
     command = argv[1] if len(argv) > 1 else "status"
-    state = read_state()
-    if command == "waybar":
-        state, _ = tick(state)
-        print(waybar(state))
-    elif command == "phase":
-        print(state["phase"])
+    if command == "phase":
+        print(read_state()["phase"])
     elif command == "status":
-        print(status_line(state))
-    elif command == "tick":
-        tick(state)
-    elif command == "start":
-        minutes = int(argv[2]) if len(argv) > 2 else None
-        print(start(state, minutes)[1])
+        print(status_line(read_state()))
     elif command == "brief":
         hours = float(argv[2]) if len(argv) > 2 else None
-        print(brief(state, hours)[1])
-    elif command in ("stop", "skip", "toggle", "seen"):
-        print({"stop": stop, "skip": skip, "toggle": toggle, "seen": seen}[command](state)[1])
+        print(brief(read_state(), hours)[1])
+    elif command in ("waybar", "tick", "start", "stop", "skip", "toggle", "seen"):
+        with locked():
+            state = read_state()
+            if command == "waybar":
+                state, _ = tick(state)
+                print(waybar(state))
+            elif command == "tick":
+                tick(state)
+            elif command == "start":
+                minutes = int(argv[2]) if len(argv) > 2 else None
+                print(start(state, minutes)[1])
+            else:
+                print({"stop": stop, "skip": skip, "toggle": toggle, "seen": seen}[command](state)[1])
     else:
         print(__doc__.strip(), file=sys.stderr)
         return 2
