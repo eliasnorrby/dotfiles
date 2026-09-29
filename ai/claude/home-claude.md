@@ -76,25 +76,41 @@ After each hop, check the commit count against what it was before. If it
 changed, stop. Branches already pushed can be restored with
 `git branch -f <branch> origin/<branch>`.
 
-## Comments posted under my name (GitHub, Slack)
+## Comments posted under my name (GitHub, Slack, Linear)
 
 When you write something that goes out under my name — a PR comment, a reply
-in a review thread, a Slack message — open it with an emoji marker on its own
-line, then a blank line, then the body. The marker is the whole disclaimer;
-don't also say in words that you composed it.
+in a review thread, a Slack message, a Linear comment — open it with an emoji
+marker on its own line, then a blank line, then the body. The marker is the
+whole disclaimer; don't also say in words that you composed it.
 
 - GitHub: `:robot: :speech_balloon:`
 - Linear: `:robot_face: :speech_balloon:`
-- Slack: `:claude: :speech_balloon:` (matches what Edvin posts). Slack already
-  appends its own "Sent using Claude" footer — don't add another.
+- Slack: `:claude: :speech_balloon:`. Slack already appends its own "Sent
+  using Claude" footer — don't add another.
 
-Example of the shape:
+The marker differs per platform: `:robot:` is not a Slack emoji and renders as
+literal text there. Pick the line for the platform you are posting to, not the
+one in the example.
+
+Example of the shape, on GitHub:
 
 ```
 :robot: :speech_balloon:
 
 Rebased onto master and re-ran the backend suite — all green.
 ```
+
+The same reply in Slack:
+
+```
+:claude: :speech_balloon:
+
+Rebased onto master and re-ran the backend suite — all green.
+```
+
+The marker exists to tell my own words from my agent's. A bot with an account
+of its own (Copilot, CodeRabbit, Bugbot, ...) is already labelled by the
+platform and must not add it.
 
 ## Shell
 
