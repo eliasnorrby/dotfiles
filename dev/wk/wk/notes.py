@@ -111,7 +111,7 @@ def issue_of(task):
     empty."""
     if task.get("issue"):
         return task["issue"]
-    match = re.search(r"\b([A-Z]+-\d+)\b", task.get("description", ""))
+    match = re.search(r"(?<![A-Z-])([A-Z]+-\d+)\b", task.get("description", ""))
     return match.group(1) if match else None
 
 

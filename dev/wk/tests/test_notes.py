@@ -38,6 +38,13 @@ def test_issue_key_is_picked_out_of_the_description(config, tasks):
     assert "issue: ACME-44" in open(path).read()
 
 
+def test_a_project_id_is_not_an_issue_key(config, tasks, world):
+    task = tasks.add("Read up on Project Solidarity (P-ACME-134)")
+    path = notes.ensure(config, tasks, task)
+    assert path == str(world / f"vaults/personal/tasks/{TODAY} Read up on Project Solidarity (P-ACME-134).md")
+    assert "issue:" not in open(path).read()
+
+
 def test_a_second_call_finds_the_same_note(config, tasks):
     task = tasks.add("same", {"issue": "ACME-1", "project": "work"})
     first = notes.ensure(config, tasks, task)
