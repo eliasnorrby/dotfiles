@@ -506,7 +506,11 @@ def cmd_start(args, out):
             command, resumed = shlex.join(["claude", "--resume", session]), True
         else:
             session = str(uuids.uuid4())
-            prompt = args.prompt if args.prompt is not None else config.data.get("start", {}).get("prompt", "")
+            # The configured prompt kicks off work on a task of my own; a
+            # review is someone else's PR, so it starts with no prompt.
+            prompt = args.prompt
+            if prompt is None and kind_of(task) != "review":
+                prompt = config.data.get("start", {}).get("prompt", "")
             command = shlex.join(["claude", "--session-id", session] + ([prompt] if prompt else []))
     opened = workspace.ensure_window(
         config, tasks, task, cwd, branch=args.on, command=command, plain_dir=plain_dir, follow_session=True

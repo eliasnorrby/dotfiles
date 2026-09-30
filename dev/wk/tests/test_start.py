@@ -32,6 +32,24 @@ def test_start_strings_the_steps_together(wk, tasks, app, tmux_server, world, ca
     assert command.strip('"') == f"claude --session-id {task['session']} /lg"
 
 
+def test_start_gives_a_review_no_prompt(wk, tasks, app, tmux_server, world, capsys):  # noqa: F811
+    (world / "config.toml").open("a").write('[start]\nprompt = "/lg"\n')
+    (world / "bin").mkdir()
+    (world / "bin" / "claude").write_text("#!/bin/sh\nsleep 30\n")
+    (world / "bin" / "claude").chmod(0o755)
+    path = f"{world / 'bin'}:{os.environ['PATH']}"
+    subprocess.run(tmux_server + ["set-environment", "-g", "PATH", path], check=True)
+    task = tasks.add(
+        "Their PR",
+        {"prs": "#9", "repo": "acme/app", "action": "review", "branch": "them/feature", "worktree": str(app)},
+    )
+    assert wk("start", "--no-switch", "--json", task["uuid"]) == 0
+    assert json.loads(capsys.readouterr().out)["claude"] is True
+    window = next(w for w in workspace.tmux.windows() if w["task"] == task["uuid"])
+    command = option(tmux_server, window["id"], "pane_start_command")
+    assert command.strip('"') == f"claude --session-id {tasks.get(task['uuid'])['session']}"
+
+
 def test_start_new_is_untracked_work_in_the_main_checkout(wk, tasks, app, tmux_server):  # noqa: F811
     assert wk("start", "--new", "Tidy the prompt", "--no-claude", "--no-switch", "-C", str(app)) == 0
     task = next(t for t in tasks.all() if t["description"] == "Tidy the prompt")
