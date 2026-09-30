@@ -42,6 +42,9 @@ context.work.write=project:work
 context.dotfiles.read=pro:dotfiles
 context.dotfiles.write=pro:dotfiles
 
+context.os.read=project:os
+context.os.write=project:os
+
 # A sub-task (partof set) shows only while it has a window or an agent of its
 # own. Otherwise its parent stands for it, carrying its PRs (subprs) and their
 # status; `task partof:<uuid>` lists them.
