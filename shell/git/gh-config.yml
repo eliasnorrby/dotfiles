@@ -17,6 +17,9 @@ aliases:
     auto: '!gh fill && gh pr merge --auto --squash'
     fill: '!git push -u && gh pr create --fill'
     squash: pr merge --auto --squash
+    # Stacked PRs can't go through `gh pr merge`; use the async merge API.
+    # Takes a PR number, defaulting to the current branch's PR.
+    amerge: '!gh api -X PUT "repos/{owner}/{repo}/pulls/${1:-$(gh pr view --json number --jq .number)}/merge-async" -f merge_method=squash'
     wait: pr checks --watch
     merge: '!gh auto && sleep 3 && gh wait && git prm'
     url: 'repo view --json url --jq .url'
