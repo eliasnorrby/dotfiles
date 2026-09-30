@@ -26,8 +26,10 @@ own DM.
 ## Judge
 
 Needs him now: a question put to him that is still unanswered; someone
-blocked on him; production trouble in his area; a decision that expires
-before tomorrow. Not now: FYI, chat he is already part of, thanks and
+blocked on him; an invitation to talk now (a huddle, a call, "har du tid",
+"kan vi ta det nu"), even mid-thread and even if he was chatting there
+earlier; production trouble in his area; a decision that expires before
+tomorrow. Not now: FYI, chat he is already part of, thanks and
 praise, merged PRs, review requests, anything someone else has since
 answered.
 
@@ -41,7 +43,7 @@ notification. If something does, post one message to his own DM
 (`slack_send_message` with channel `{{user}}`), and make it short:
 
 ```
-:robot: :speech_balloon:
+:claude: :speech_balloon:
 
 *Needs you before the next focus*
 • Olof, in #c_kommun: asks whether X should be Y before the deploy — <link|open>
