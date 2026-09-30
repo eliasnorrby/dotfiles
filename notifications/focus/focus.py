@@ -366,8 +366,12 @@ def ask_claude(prompt, settings):
         "--json-schema", json.dumps(VERDICT_SCHEMA),
         "--max-budget-usd", str(settings["max_budget_usd"]), "--no-session-persistence",
     ]
+    # Slack comes from the plugin alone. With the claude.ai connectors on,
+    # Claude Code's dedup can drop the plugin as the connector's duplicate
+    # and the connector as the plugin's, leaving the session without Slack.
+    env = {**os.environ, "ENABLE_CLAUDEAI_MCP_SERVERS": "false"}
     try:
-        result = subprocess.run(command, input=prompt, capture_output=True, text=True,
+        result = subprocess.run(command, input=prompt, capture_output=True, text=True, env=env,
                                 timeout=settings["timeout_seconds"], cwd=os.path.expanduser("~"))
     except subprocess.TimeoutExpired:
         return None, f"timed out after {settings['timeout_seconds']}s"
