@@ -47,3 +47,6 @@ tmux_config:
     - src: tmux_remove_worktree.sh
       dest: "{{ xdg_bin_home }}/"
       rename: tmux_remove_worktree
+    - src: tmux_client_is_remote.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: tmux_client_is_remote
