@@ -325,6 +325,12 @@ cmd_friction() {
 # leaves a task note), and anything else only after SESSION_AGE seconds, by
 # which time no session is still holding it: work a session abandoned, or the
 # owner's own edits to files sessions may also write.
+#
+# A move can also arrive half done: a session that checkpoints between the
+# archive hook and the sweep commits the note by its new path alone, and the
+# sweep then sees a lone deletion with no untracked half to pair it with.
+# That is still the hook's move, so a deletion whose counterpart across an
+# archive/ boundary is already tracked is taken as well.
 sweep_vault() {
   local vault="$1" min_age="$2" session_age="$3" now entry status path mtime base i age
   local -a paths=() statuses=() entries=()
@@ -372,7 +378,7 @@ sweep_vault() {
     case "$status" in *D) ;; *) continue ;; esac
     # A session's own deletion carries no age; it waits for the session.
     if vault_allows_write "$vault" "$path"; then
-      [ -n "${moved[$base]:-}" ] || continue
+      [ -n "${moved[$base]:-}" ] || archive_counterpart_tracked "$vault" "$path" || continue
     fi
     paths+=("$path")
   done
@@ -385,6 +391,22 @@ sweep_vault() {
     [ ${#paths[@]} -le 30 ] || echo "…"
   )
   cmd_commit "$vault" -- "${paths[@]}" <<<"$message"
+}
+
+# Whether the other end of an archive move is already in git: for a deleted
+# DIR/NAME that is DIR/archive/NAME, and for a deleted DIR/archive/NAME (a
+# reopened task) it is DIR/NAME. Args: VAULT REL_PATH
+archive_counterpart_tracked() {
+  local vault="$1" path="$2" dir base other
+  dir="${path%/*}"
+  base="${path##*/}"
+  [ "$dir" != "$path" ] || return 1
+  case "$dir" in
+    */archive) other="${dir%/archive}/$base" ;;
+    archive) other="$base" ;;
+    *) other="$dir/archive/$base" ;;
+  esac
+  git -C "$vault" ls-files --error-unmatch -- "$other" >/dev/null 2>&1
 }
 
 cmd_sweep() {
