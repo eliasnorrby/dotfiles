@@ -171,6 +171,23 @@ def test_closed_unmerged_pr_deletes_a_pr_only_item(world_with_sync, tasks):
     assert tasks.get(uuid)["status"] == "deleted"
 
 
+def test_closed_pr_leaves_the_list_but_a_merged_one_stays(world_with_sync, tasks):
+    tracked = tasks.add("Fix the thing", {"issue": "ACME-13", "prs": "#12,#13,#14", "repo": "acme/app"})
+    sync(tasks, GitHub(mine=[pr(14, "me/acme-13-fix")], states={"node12": "MERGED", "node13": "CLOSED"}))
+    tracked = tasks.get(tracked["uuid"])
+    assert listed_prs(tracked) == ["12", "14"]
+    assert [p["number"] for p in cache.read_prs(tracked["uuid"])] == ["12", "14"]
+
+
+def test_a_closed_pr_listed_before_is_swept(world_with_sync, tasks):
+    tracked = tasks.add("Fix the thing", {"issue": "ACME-13", "prs": "#12,#13", "repo": "acme/app"})
+    cache.write_prs(tracked["uuid"], [{"number": "12", "id": "node12", "repo": "acme/app", "state": "CLOSED"}])
+    report = sync(tasks, GitHub(mine=[pr(13, "me/acme-13-fix")]))
+    assert "drop #12 from Fix the thing (closed unmerged)" in report.lines
+    assert listed_prs(tasks.get(tracked["uuid"])) == ["13"]
+    assert sync(tasks, GitHub(mine=[pr(13, "me/acme-13-fix")])).lines == []
+
+
 def test_one_of_a_stack_merging_keeps_the_rest(world_with_sync, tasks):
     sync(tasks, GitHub(mine=[pr(20, "a"), pr(21, "b", "a")]))
     uuid = tasks.by_pr("20")["uuid"]

@@ -25,8 +25,9 @@ uda.branch.label=Branch
 uda.worktree.type=string
 uda.worktree.label=Worktree
 # prs / repo: my pull requests fold into the work item they belong to. prs
-# lists them in stack order ("#10,#12"). Per-PR detail lives in wk's cache,
-# since UDAs are scalar. No '#' in the label: it would start a comment.
+# lists them in stack order ("#10,#12"), merged ones first and closed ones
+# dropped. Per-PR detail lives in wk's cache, since UDAs are scalar. No '#'
+# in the label: it would start a comment.
 uda.prs.type=string
 uda.prs.label=PR
 uda.repo.type=string

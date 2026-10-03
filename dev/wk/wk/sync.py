@@ -187,19 +187,27 @@ class Sync:
 
     def _settle_vanished(self, groups, below, open_keys):
         """PRs listed on a task but no longer open were merged or closed.
-        They stay listed: the task is the hub for everything that touched it,
-        before and after it is done. What changes is that they no longer
-        count towards the status, and a PR-only item with nothing open left
-        is finished."""
+        A merged one stays listed: the task is the hub for everything that
+        landed on it, before and after it is done. A closed one leaves the
+        list, since nothing of it survives to point back at. Either way it
+        no longer counts towards the status, and a PR-only item with nothing
+        open left is finished."""
         vanished = []
+        stale = {}  # closed PRs listed before closed ones were dropped
         for task in self._open_tasks():
             if is_review(task) or not task.get("repo"):
                 continue
             cached = {pr["number"]: pr for pr in cache.read_prs(task["uuid"])}
             for number in listed_prs(task):
-                settled = cached.get(number, {}).get("state") in ("MERGED", "CLOSED")
-                if (task["repo"], number) not in open_keys and not settled:
+                state = cached.get(number, {}).get("state")
+                if state == "CLOSED":
+                    stale.setdefault(task["uuid"], []).append(number)
+                elif (task["repo"], number) not in open_keys and state != "MERGED":
                     vanished.append((task, number, cached.get(number)))
+        for uuid, numbers in stale.items():
+            task = self.tasks.get(uuid)
+            self.report.did(f"drop {format_prs(numbers)} from {task['description']} (closed unmerged)")
+            self._modify(task, {"prs": format_prs(self._keep_prs(task, numbers))})
         if not vanished:
             return
 
@@ -219,25 +227,36 @@ class Sync:
             task = self.tasks.get(uuid)
             for number, state, _ in settled:
                 self.report.did(f"#{number} {state.lower()} ({task['description']})")
+            closed = [number for number, state, _ in settled if state == "CLOSED"]
             if not self.report.dry_run:
-                # Remembered as settled, so the next sync does not ask again.
+                # Merged ones are remembered as settled, so the next sync
+                # does not ask again; closed ones are no longer listed to
+                # ask about.
                 entries = {pr["number"]: pr for pr in cache.read_prs(uuid)}
                 for number, state, pr in settled:
                     entries[number] = {**pr, "repo": task["repo"], "state": state}
-                cache.write_prs(uuid, [entries[n] for n in listed_prs(task) if n in entries])
+                cache.write_prs(uuid, [entries[n] for n in self._keep_prs(task, closed) if n in entries])
+            changes = {"prs": format_prs(self._keep_prs(task, closed))} if closed else {}
             if uuid in groups or task.get("issue"):
                 # Still-open PRs set the status below; an issue's fate is the
                 # tracker's to decide, so the task itself stays open.
                 if uuid not in groups and uuid not in below:
-                    self._modify(task, {"action": "", "decision": "", "health": ""})
+                    changes.update({"action": "", "decision": "", "health": ""})
+                if changes:
+                    self._modify(task, changes)
             elif any(state == "MERGED" for _, state, _ in settled):
                 self.report.did(f"complete {task['description']}")
                 if not self.report.dry_run:
+                    self._modify(task, changes)
                     self.tasks.done(task)
             else:
                 self.report.did(f"delete {task['description']} (closed unmerged)")
                 if not self.report.dry_run:
                     self.tasks.delete(task)
+
+    @staticmethod
+    def _keep_prs(task, dropped):
+        return [number for number in listed_prs(task) if number not in dropped]
 
     def _update_work_item(self, task, prs, known, first_sync, below=()):
         """`prs` are the task's own open PRs, `below` its sub-tasks'. Either
