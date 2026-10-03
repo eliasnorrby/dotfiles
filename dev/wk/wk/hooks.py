@@ -116,8 +116,9 @@ without asking:
 `--project <name>` when the work belongs elsewhere (projects: {projects}).
 
 Either starts the task, ties this window and session to it and names the session. When the work moves on \
-to another task, adopt that one with --task. Only a one-off question answered in a turn or two needs no \
-task."""
+to another task, adopt that one with --task. Two things need no task: a one-off question answered in a \
+turn or two, and recording a source in the wiki (the `record` skill), which is an operation on the wiki, \
+logged there."""
 
 CLEARED = """\
 This window was tied to task {id} ({description}), but this new session is not recorded on it yet. As soon \

@@ -38,7 +38,9 @@ the as-built description, and the roadmap and decisions hang under it.
 - **Something to do on the OS**: a task in project `os`, with its note in the
   personal vault's `tasks/` (`wk` creates both).
 - **Knowledge**: the vault's wiki, by its schema. Checkpoint with the
-  `wiki-checkpoint` skill as usual.
+  `wiki-checkpoint` skill as usual. A source Elias hands over to be filed (a
+  PR comment, a thread, an issue) goes in with the `record` skill: an
+  operation on the wiki, logged there, no task of its own.
 - **A skill**: by what it knows. A procedure useful anywhere Elias works goes
   in the dotfiles (`ai/claude/skills/`, or the topic it belongs to, linked one
   by one into `~/.claude/skills/`); facts it needs about an employer come from
