@@ -9,4 +9,6 @@ exec toggle_stateful_popup \
   --title=Tasks \
   --color=green \
   --global \
+  -w 95% \
+  -h 95% \
   taskwarrior-tui
