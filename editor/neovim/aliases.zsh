@@ -11,5 +11,6 @@ alias vc='nvim +Claude'
 # has no --continue entrypoint (yet)
 # alias vcc='nvim +ClaudeCodeContinue'
 # Claude in a plain fullscreen terminal buffer, no sidekick: vim motions over
-# the transcript via normal mode, nothing else
-alias V='nvim "+terminal claude" +startinsert'
+# the transcript via normal mode, nothing else. A script (ai/claude), so it
+# takes claude's flags: V --resume <id>, V --continue
+alias V='claude_vim'
