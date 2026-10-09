@@ -83,7 +83,13 @@ fragment pr on PullRequest {
   headRefName baseRefName reviewDecision
   latestOpinionatedReviews(first: 10) { nodes { state author { login } } }
   reviewRequests(first: 10) { nodes { requestedReviewer { __typename ... on User { login } ... on Team { slug } } } }
-  commits(last: 1) { nodes { commit { statusCheckRollup { state } } } }
+  commits(last: 1) { nodes { commit { statusCheckRollup {
+    state
+    contexts(first: 100) { totalCount nodes {
+      ... on CheckRun { status conclusion }
+      ... on StatusContext { state }
+    } }
+  } } } }
   labels(first: 10) { nodes { name } }
 }
 """.replace("PAGE_MINE", str(PAGE_MINE)).replace("PAGE_REVIEW", str(PAGE_REVIEW))
@@ -115,6 +121,35 @@ def _graphql(query, variables, run):
     return body["data"]
 
 
+# What the rollup folds into FAILURE that nobody has to fix: a check run that
+# was cancelled, most often because a newer run of the same workflow took its
+# place (`cancel-in-progress`), or that was skipped or awaits approval.
+FAILED_STATES = ("FAILURE", "ERROR")
+FAILED_CONCLUSIONS = ("FAILURE", "TIMED_OUT", "STARTUP_FAILURE")
+PENDING_STATES = ("PENDING", "EXPECTED")
+PENDING_CONCLUSIONS = ("ACTION_REQUIRED",)
+
+
+def checks_of(rollup):
+    """The rollup's state, recomputed from its contexts when GitHub says
+    FAILURE: a cancelled check run is a failure to the rollup but not to me.
+    Falls back to GitHub's word when the contexts were cut short."""
+    state = rollup.get("state")
+    contexts = rollup.get("contexts") or {}
+    nodes = [node for node in contexts.get("nodes") or [] if node]
+    if state != "FAILURE" or not nodes or contexts.get("totalCount", len(nodes)) > len(nodes):
+        return state
+    for node in nodes:
+        if node.get("state") in FAILED_STATES or node.get("conclusion") in FAILED_CONCLUSIONS:
+            return "FAILURE"
+    for node in nodes:
+        if node.get("state") in PENDING_STATES or node.get("conclusion") in PENDING_CONCLUSIONS:
+            return "PENDING"
+        if "status" in node and node["status"] != "COMPLETED":
+            return "PENDING"
+    return "SUCCESS"
+
+
 def _normalise(node):
     commits = (node.get("commits") or {}).get("nodes") or []
     rollup = (commits[0]["commit"].get("statusCheckRollup") or {}) if commits else {}
@@ -132,7 +167,7 @@ def _normalise(node):
         "draft": node["isDraft"],
         "mergeable": node.get("mergeable"),
         "decision": node.get("reviewDecision"),
-        "checks": rollup.get("state"),
+        "checks": checks_of(rollup),
         "labels": [label["name"] for label in (node.get("labels") or {}).get("nodes") or []],
         "reviews": [{"login": (r.get("author") or {}).get("login"), "state": r["state"]} for r in reviews],
         "requested": [
