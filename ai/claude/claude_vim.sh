@@ -18,4 +18,12 @@ for arg in "$@"; do
   command+=" $(printf '%q' "$arg")"
 done
 
-CLAUDE_VIM_COMMAND="$command" exec nvim '+terminal eval "$CLAUDE_VIM_COMMAND"' +startinsert
+# nvim exists only to host Claude, so quit it when Claude exits cleanly
+# (/exit, ctrl-d) instead of leaving a "[Process exited 0]" buffer that
+# wants a key press and then an empty buffer to :q. `confirm` asks before
+# dropping changes to other buffers. A failure leaves the buffer up, so an
+# error (a bad --resume id, say) stays readable.
+on_exit='lua vim.api.nvim_create_autocmd("TermClose", { buffer = 0, once = true, callback = function() if vim.v.event.status == 0 then vim.schedule(function() vim.cmd("confirm qall") end) end end })'
+
+# shellcheck disable=SC2016 # expanded by the shell :terminal runs, not here
+CLAUDE_VIM_COMMAND="$command" exec nvim '+terminal eval "$CLAUDE_VIM_COMMAND"' "+$on_exit" +startinsert
