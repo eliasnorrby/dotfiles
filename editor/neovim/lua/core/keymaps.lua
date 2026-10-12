@@ -190,6 +190,10 @@ u.map('n', 'k', 'gk')
 -- terminals; this makes it work in plain :terminal buffers too (V alias).
 u.map('t', '<C-q>', '<C-\\><C-n>', { desc = 'exit terminal mode' })
 
+-- Swallow Ctrl+Z in terminal mode. Passed through, it stops the job (a
+-- Claude session, say) and there is no job-control shell to resume it.
+u.map('t', '<C-z>', '<Nop>', { desc = 'disabled: would suspend the job' })
+
 wk.add({
   { '<leader>c', group = '+quickfix' },
   { '<leader>co', '<cmd>copen<CR>', desc = 'open' },
