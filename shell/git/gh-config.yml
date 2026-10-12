@@ -9,20 +9,20 @@ prompt: enabled
 pager:
 # Aliases allow you to create nicknames for gh commands
 aliases:
-    pc: pr create
-    base: pr view --json baseRefName --jq '.baseRefName'
-    co: pr checkout
-    auto: '!gh fill && gh pr merge --auto --squash'
-    fill: '!git push -u && gh pr create --fill'
-    squash: pr merge --auto --squash
-    # Stacked PRs can't go through `gh pr merge`; use the async merge API.
-    # Takes a PR number, defaulting to the current branch's PR.
-    amerge: '!gh api -X PUT "repos/{owner}/{repo}/pulls/${1:-$(gh pr view --json number --jq .number)}/merge-async" -f merge_method=squash'
-    wait: pr checks --watch
-    merge: '!gh auto && sleep 3 && gh wait && git prm'
-    url: 'repo view --json url --jq .url'
-    merged: '![ $(gh pr view --json state --jq .state) == "MERGED" ]'
-    done: '!gh merged && git prd && git rt'
+  pc: pr create
+  base: pr view --json baseRefName --jq '.baseRefName'
+  co: pr checkout
+  auto: "!gh fill && gh pr merge --auto --squash"
+  fill: "!git push -u && gh pr create --fill"
+  squash: pr merge --auto --squash
+  # Stacked PRs can't go through `gh pr merge`; use the async merge API.
+  # Takes a PR number, defaulting to the current branch's PR.
+  amerge: '!gh api -X PUT "repos/{owner}/{repo}/pulls/${1:-$(gh pr view --json number --jq .number)}/merge-async" -f merge_method=squash'
+  wait: pr checks --watch
+  merge: "!gh auto && sleep 3 && gh wait && git prm"
+  url: "repo view --json url --jq .url"
+  merged: '![ $(gh pr view --json state --jq .state) == "MERGED" ]'
+  done: "!gh merged && git prd && git rt"
 # The path to a unix socket through which send HTTP connections. If blank, HTTP traffic will be handled by net/http.DefaultTransport.
 http_unix_socket:
 # What web browser gh should use when opening URLs. If blank, will refer to environment.
