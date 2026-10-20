@@ -121,6 +121,16 @@ def resolved(args, tasks, allow_selection=True):
     return resolve(tasks, locator_from(args, allow_selection), cwd), cwd
 
 
+def claude_command(config, *flags):
+    """A shell line that runs Claude with these flags, through the launcher
+    the config names (start.claude; `claude` itself by default)."""
+    import shlex
+
+    from .workspace import claude_launcher
+
+    return shlex.join(claude_launcher(config) + list(flags))
+
+
 def note_of(config, tasks, task, create):
     """The task's note and the vault it lives in. Without `create` this only
     looks: a plain resolve must not write anything."""
@@ -466,7 +476,6 @@ def cmd_start(args, out):
     """The one-gesture kickoff: task, note, worktree, window, Claude. Every
     step exists as a command of its own; this only strings them together. It
     never reads the clipboard and never opens a picker, so Claude can call it."""
-    import shlex
     import uuid as uuids
 
     from . import git, state, workspace
@@ -503,7 +512,7 @@ def cmd_start(args, out):
     if not args.no_claude:
         session = task.get("session")
         if session and state.resumable(session):
-            command, resumed = shlex.join(["claude", "--resume", session]), True
+            command, resumed = claude_command(config, "--resume", session), True
         else:
             session = str(uuids.uuid4())
             # The configured prompt kicks off work on a task of my own; a
@@ -511,7 +520,7 @@ def cmd_start(args, out):
             prompt = args.prompt
             if prompt is None and kind_of(task) != "review":
                 prompt = config.data.get("start", {}).get("prompt", "")
-            command = shlex.join(["claude", "--session-id", session] + ([prompt] if prompt else []))
+            command = claude_command(config, "--session-id", session, *([prompt] if prompt else []))
     opened = workspace.ensure_window(
         config, tasks, task, cwd, branch=args.on, command=command, plain_dir=plain_dir, follow_session=True
     )
@@ -630,17 +639,43 @@ def cmd_menu(args, out):
 def _resume(args, tasks, task, session):
     """Bring the task's window up and resume its Claude session there, in a
     new pane: whatever runs in the window already is left alone."""
-    import shlex
-
     from . import tmux, workspace
 
     config, _ = context(args)
     cwd = os.path.realpath(os.getcwd())
-    command = shlex.join(["claude", "--resume", session])
+    command = claude_command(config, "--resume", session)
     opened = workspace.ensure_window(config, tasks, task, cwd, command=command)
     if not opened.created_window:
         tmux.run("split-window", "-h", "-t", opened.window, "-c", opened.directory, command)
     workspace.go(opened)
+    return 0
+
+
+def cmd_snapshot(args, out):
+    """Record the task-tied windows, to bring them back with `wk resume`."""
+    from . import resume
+
+    config, tasks = context(args)
+    windows = resume.take(tasks)
+    json_path, md_path = resume.write(config, windows)
+    lines = [f"{len(windows)} task-tied window(s) recorded in {json_path}", f"to resume by hand: {md_path}"]
+    for entry in windows:
+        label = entry["issue"] or entry["name"]
+        how = f"Claude {entry['claude']}" if entry["claude"] else "no Claude"
+        lines.append(f"{entry['session']}:{label}  {entry['directory']}  {how}")
+    out.result({"windows": windows, "path": json_path, "markdown": md_path}, lines)
+    return 0
+
+
+def cmd_resume(args, out):
+    """Reopen the last snapshot's windows and resume their Claude sessions."""
+    from . import resume
+
+    config, tasks = context(args)
+    snapshot = resume.read(args.file)
+    results = resume.restore(config, tasks, snapshot, dry_run=args.dry_run)
+    lines = [f"snapshot taken {snapshot['taken']}"] + resume.describe(results)
+    out.result({"taken": snapshot["taken"], "windows": results}, lines)
     return 0
 
 
@@ -934,6 +969,14 @@ def build_parser():
     p = sub.add_parser("menu", parents=[common, where], help="pick among the actions valid for a task")
     p.add_argument("--list", action="store_true", help="print the actions instead of asking")
     p.set_defaults(run=cmd_menu)
+
+    p = sub.add_parser("snapshot", parents=[common], help="record the task-tied windows, to resume after a reboot")
+    p.set_defaults(run=cmd_snapshot)
+
+    p = sub.add_parser("resume", parents=[common], help="reopen the snapshot's windows, Claude sessions resumed")
+    p.add_argument("--dry-run", action="store_true", help="say what would be opened")
+    p.add_argument("--file", metavar="SNAPSHOT", help="a snapshot other than the last one taken")
+    p.set_defaults(run=cmd_resume)
 
     p = sub.add_parser("show", parents=[common, where], help="what wk knows about a task")
     p.set_defaults(run=cmd_show)

@@ -96,7 +96,17 @@ def tmux_server(monkeypatch, world):
     """A private tmux server. Never the default socket."""
     socket = f"wk-test-{os.getpid()}"
     base = ["tmux", "-L", socket, "-f", "/dev/null"]
-    subprocess.run(base + ["new-session", "-d", "-s", "main", "-c", str(world)], check=True)
+    # Stand-ins for claude and the like go in <world>/bin, which leads PATH
+    # on the server. The server and its first session take their environment
+    # from the client that starts them, and a session's copy wins over the
+    # global one, so a later `set-environment -g` would never reach a window.
+    # And the windows run their command under a plain sh: a login shell such
+    # as zsh would source the real rc files and reset PATH, so the stand-in
+    # would never be found (and the real claude run).
+    (world / "bin").mkdir(exist_ok=True)
+    env = {**os.environ, "PATH": f"{world / 'bin'}:{os.environ['PATH']}"}
+    subprocess.run(base + ["new-session", "-d", "-s", "main", "-c", str(world)], check=True, env=env)
+    subprocess.run(base + ["set-option", "-g", "default-shell", "/bin/sh"], check=True)
     monkeypatch.setenv("WK_TMUX_SOCKET", socket)
     yield base
     subprocess.run(base + ["kill-server"], capture_output=True)

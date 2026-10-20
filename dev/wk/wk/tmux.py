@@ -64,13 +64,32 @@ def run(*args):
 
 
 def windows():
-    """Every window on the server, popups excluded."""
-    fields = "#{window_id}\t#{session_name}\t#{@task}\t#{@worktree}"
+    """Every window on the server, popups excluded, in tmux's order."""
+    fields = "#{window_id}\t#{session_name}\t#{@task}\t#{@worktree}\t#{window_index}\t#{window_name}"
     rows = []
     for line in (_tmux("list-windows", "-a", "-F", fields) or "").splitlines():
-        window, session, task, worktree = (line.split("\t") + ["", "", ""])[:4]
+        window, session, task, worktree, index, name = (line.split("\t") + [""] * 5)[:6]
         if not session.startswith(POPUP_PREFIX):
-            rows.append({"id": window, "session": session, "task": task, "worktree": worktree})
+            rows.append(
+                {
+                    "id": window,
+                    "session": session,
+                    "task": task,
+                    "worktree": worktree,
+                    "index": int(index or 0),
+                    "name": name,
+                }
+            )
+    return rows
+
+
+def panes(window):
+    """A window's panes, in order: id and current directory."""
+    fields = "#{pane_id}\t#{pane_current_path}"
+    rows = []
+    for line in (_tmux("list-panes", "-t", window, "-F", fields) or "").splitlines():
+        pane, path = (line.split("\t") + [""])[:2]
+        rows.append({"id": pane, "path": path})
     return rows
 
 

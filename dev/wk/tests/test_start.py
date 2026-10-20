@@ -13,7 +13,7 @@ pytestmark = [needs_task, needs_tmux]
 def test_start_strings_the_steps_together(wk, tasks, app, tmux_server, world, capsys):  # noqa: F811
     (world / "config.toml").open("a").write('[start]\nprompt = "/lg"\n')
     # A stand-in for claude, so the window does not depend on the real one.
-    (world / "bin").mkdir()
+    (world / "bin").mkdir(exist_ok=True)
     (world / "bin" / "claude").write_text("#!/bin/sh\nsleep 30\n")
     (world / "bin" / "claude").chmod(0o755)
     path = f"{world / 'bin'}:{os.environ['PATH']}"
@@ -34,7 +34,7 @@ def test_start_strings_the_steps_together(wk, tasks, app, tmux_server, world, ca
 
 def test_start_gives_a_review_no_prompt(wk, tasks, app, tmux_server, world, capsys):  # noqa: F811
     (world / "config.toml").open("a").write('[start]\nprompt = "/lg"\n')
-    (world / "bin").mkdir()
+    (world / "bin").mkdir(exist_ok=True)
     (world / "bin" / "claude").write_text("#!/bin/sh\nsleep 30\n")
     (world / "bin" / "claude").chmod(0o755)
     path = f"{world / 'bin'}:{os.environ['PATH']}"

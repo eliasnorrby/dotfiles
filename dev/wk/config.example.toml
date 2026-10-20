@@ -60,6 +60,7 @@ tracker_interval = 300   # seconds between issue-tracker polls
 
 [start]
 prompt = "/lg"           # Claude's first prompt in `wk start`
+# claude = "claude_vim"  # what runs Claude (start, resume); takes claude's flags
 
 # Desktop notifications from sync, each on its own switch.
 [notify]

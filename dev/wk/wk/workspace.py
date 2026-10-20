@@ -112,15 +112,33 @@ def plain_directory(config, task, plain_dir=None):
     return os.path.expanduser("~")
 
 
+def claude_launcher(config):
+    """The command that runs Claude, as argv: `claude` itself, or the wrapper
+    start.claude names (one that passes claude's flags through)."""
+    import shlex
+
+    return shlex.split(config.data.get("start", {}).get("claude") or "claude")
+
+
 def ensure_window(
-    config, tasks, task, cwd, branch=None, command=None, fetch_issue=None, plain_dir=None, follow_session=False
+    config,
+    tasks,
+    task,
+    cwd,
+    branch=None,
+    command=None,
+    fetch_issue=None,
+    plain_dir=None,
+    follow_session=False,
+    in_session=None,
 ):
     """Find or create the task's window, without switching to it. `plain_dir`
     is where a task without a branch of its own gets its window; without it,
     the task's own directory, then the project's. With `follow_session`, a
     task without a window of its own opens where its Claude session is live:
     a sub-task handed to a background agent is worked on in the window of
-    the session that runs the agent."""
+    the session that runs the agent. `in_session` names the tmux session the
+    window goes in, over the one the repository would get it."""
     for window in tmux.windows():
         if window["task"] == task["uuid"]:
             return Opened(window["id"], window["session"], window["worktree"] or cwd)
@@ -161,7 +179,7 @@ def ensure_window(
         else:
             session = config.data["defaults"].get("session") or "main"
             tasks.modify(task, {"worktree": directory})
-    session = re.sub(r"[.:]", "-", session)
+    session = in_session or re.sub(r"[.:]", "-", session)
 
     # A window made for this checkout by other means (prefix W, or a parent's
     # agent working on this sub-issue's branch) is where the work is. It is
