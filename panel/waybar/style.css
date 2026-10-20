@@ -70,9 +70,9 @@ window#waybar {
 }
 
 #clock,
-#cpu,
+#custom-cpu-graph,
 #memory,
-#network,
+#mpris,
 #pulseaudio,
 #language,
 #tray,
@@ -109,15 +109,10 @@ window#waybar {
   color: @mantle;
 }
 
-#network {
+#custom-cpu-graph {
   border-radius: 10px 0 0 10px;
   margin-left: 4px;
   margin-right: 0px;
-}
-
-#cpu {
-  margin: 0;
-  border-radius: 0;
 }
 
 #memory {
@@ -127,9 +122,9 @@ window#waybar {
 }
 
 #clock:hover,
-#cpu:hover,
+#custom-cpu-graph:hover,
 #memory:hover,
-#network:hover,
+#mpris:hover,
 #pulseaudio:hover,
 #language:hover,
 #tray:hover,
@@ -150,12 +145,36 @@ window#waybar {
   color: @flamingo;
 }
 
-#network {
+#mpris {
   color: @blue;
 }
 
-#cpu {
+#mpris.playing {
+  color: @green;
+  animation: breathe 3s ease-in-out infinite;
+}
+
+#mpris.paused,
+#mpris.stopped {
+  color: @subtext0;
+}
+
+@keyframes breathe {
+  50% {
+    color: @teal;
+  }
+}
+
+#custom-cpu-graph {
   color: @peach;
+}
+
+#custom-cpu-graph.high {
+  color: @yellow;
+}
+
+#custom-cpu-graph.critical {
+  color: @red;
 }
 
 #memory {
@@ -193,10 +212,6 @@ window#waybar {
 
 #pulseaudio.muted {
   color: @subtext0;
-}
-
-#network.disconnected {
-  color: @red;
 }
 
 #tray>.passive {

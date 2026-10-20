@@ -13,8 +13,9 @@
     "custom/recorder",
     "hyprland/language",
     "pulseaudio",
-    "network",
-    "cpu",
+    "mpris",
+    "custom/cpu-graph",
+    // "network",
     "memory",
     // "tray",
     "custom/pacman",
@@ -66,9 +67,14 @@
     "format-alt": "{:%Y-%m-%d %H:%M}",
     "tooltip-format": "<tt>{calendar}</tt>",
   },
-  "cpu": {
-    "format": " {usage}%",
-    "interval": 5,
+  // Scrolling CPU history (see scripts/cpu_graph.py): 24 columns, one
+  // sample per 5 s, so two minutes. The script runs continuously and
+  // emits a line per sample; no interval needed.
+  "custom/cpu-graph": {
+    "format": " {}",
+    "return-type": "json",
+    "exec": "cpu_graph -w 24 -i 5",
+    "restart-interval": 5,
     "on-click": "focus_or_run btop.desktop",
   },
   "memory": {
@@ -83,6 +89,30 @@
     "format-disconnected": "󰖪 ",
     "tooltip-format": "{ifname}: {ipaddr}",
     "on-click": "focus_or_run btop.desktop",
+  },
+  // Now playing, via playerctld (follows whichever player was last active).
+  // Click: play/pause, middle: previous, right: next.
+  "mpris": {
+    "format": "{player_icon} {dynamic}",
+    "format-paused": "{status_icon} <i>{dynamic}</i>",
+    "dynamic-order": ["title", "artist"],
+    "dynamic-len": 40,
+    "title-len": 28,
+    "artist-len": 20,
+    "tooltip-format": "{player}: {title}\n{artist} — {album}\n{length}",
+    "player-icons": {
+      "default": "",
+      "spotify": "",
+      "chromium": "",
+      "firefox": "",
+    },
+    "status-icons": {
+      "paused": "",
+      "stopped": "",
+    },
+    // Browser tabs would otherwise hijack the module from Spotify
+    // (a paused Meet tab stays the "active" player). Drop to re-enable.
+    "ignored-players": ["chromium", "firefox"],
   },
   "pulseaudio": {
     "scroll-step": 5, // %, can be a float
