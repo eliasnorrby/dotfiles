@@ -7,16 +7,11 @@ import subprocess
 
 def _agent_socket():
     """The ssh agent's socket, for a process whose environment lacks it: the
-    task list launched from a desktop entry, a systemd timer. The shell finds
-    the agent through the file shell/ssh writes on start-up; so does this."""
+    task list launched from a desktop entry, a systemd timer. It is systemd's
+    ssh-agent.socket, at the fixed path shell/ssh points every shell at."""
     runtime = os.environ.get("XDG_RUNTIME_DIR") or f"/run/user/{os.getuid()}"
-    try:
-        with open(os.path.join(runtime, "ssh-agent.env"), encoding="utf-8") as handle:
-            match = re.search(r"SSH_AUTH_SOCK=([^;\s]+)", handle.read())
-    except OSError:
-        return None
-    socket = match.group(1) if match else None
-    return socket if socket and os.path.exists(socket) else None
+    socket = os.path.join(runtime, "ssh-agent.socket")
+    return socket if os.path.exists(socket) else None
 
 
 def environment():
@@ -89,8 +84,6 @@ def worktree_for_branch(directory, branch):
 
 def slug(directory):
     """owner/name, from the origin remote."""
-    import re
-
     url = _git(directory, "remote", "get-url", "origin") or ""
     match = re.search(r"[:/]([^/:]+)/([^/]+?)(?:\.git)?/?$", url)
     return f"{match.group(1)}/{match.group(2)}" if match else None
