@@ -23,3 +23,11 @@
     dest: /usr/lib/ssh/ssh-askpass
   become: yes
   when: is_arch
+
+- name: enable the ssh agent socket
+  systemd:
+    name: ssh-agent.socket
+    scope: user
+    enabled: true
+    state: started
+  when: is_arch
