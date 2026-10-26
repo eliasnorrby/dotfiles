@@ -22,6 +22,10 @@ keys:
             anchor: true
             value: auto_branch_pruner
             name: Prune branches
+          - key: w
+            anchor: true
+            value: auto_worktree_pruner
+            name: Prune worktrees
       - key: s
         value: status
         immediate: true
@@ -131,6 +135,10 @@ keys:
             value: tmux_remove_worktree
             anchor: true
             immediate: true
+          - key: p
+            name: prune
+            anchor: true
+            value: auto_worktree_pruner
           - key: r
             name: reset
             value: wr
