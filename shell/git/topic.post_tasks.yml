@@ -1,0 +1,7 @@
+---
+# A post task, not a topic task: topic tasks run before the package install,
+# so gh would not exist yet on a fresh machine.
+- name: install gh-stack extension
+  command:
+    cmd: gh extension install github/gh-stack
+    creates: "{{ xdg_data_home }}/gh/extensions/gh-stack"
