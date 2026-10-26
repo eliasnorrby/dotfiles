@@ -6,7 +6,7 @@
 # all of them: every branch its HEAD reflog has switched to or from, plus the
 # one checked out now. It goes only when the checked-out branch's PR is MERGED
 # or CLOSED and none of those branches still has an OPEN PR. The PR lookup is
-# one batched GraphQL query per 50 branches, not one `gh` call per branch.
+# batched (pr_lib.sh), not one `gh` call per branch.
 #
 # A worktree is also kept when it is the main one, the one you're standing in,
 # detached, locked, open in a tmux pane (a shell there would be left in a
@@ -18,13 +18,15 @@
 #   -n  dry run: print what would be removed, remove nothing
 set -uo pipefail
 
-# Shared helpers (main_worktree, is_in_git_repo), installed on PATH by the git
-# topic; located at run time.
+# Shared helpers (main_worktree, is_in_git_repo; lookup_prs), installed on
+# PATH by the git topic; located at run time.
 # shellcheck disable=SC1090,SC1091
-source "$(command -v worktree_lib.sh)" || {
-  echo "worktree_lib.sh not found on PATH" >&2
-  exit 1
-}
+for lib in worktree_lib.sh pr_lib.sh; do
+  source "$(command -v "$lib")" || {
+    echo "$lib not found on PATH" >&2
+    exit 1
+  }
+done
 
 ORANGE=$(tput setaf 3)
 PURPLE=$(tput setaf 5)
@@ -37,12 +39,9 @@ NC=$(tput sgr 0) # No Color
 STATE_LENGTH=8
 ACTION_LENGTH=12
 
-# GitHub caps a query's cost, not its aliases; 50 lookups stay well inside it.
-CHUNK=50
-
 DRY_RUN=false
 
-declare -A PR_STATE # branch -> OPEN, MERGED, CLOSED or empty (no PR)
+declare -A PR_STATE # filled by lookup_prs
 
 main() {
   local opt
@@ -130,41 +129,6 @@ held_branches() {
     git -C "$path" reflog show HEAD --format=%gs 2>/dev/null \
       | sed -n 's/^checkout: moving from \(.*\) to \(.*\)$/\1\n\2/p'
   } | grep -vxE '[0-9a-f]{7,40}|HEAD' | grep -vxF "${DEFAULT_BRANCH:-HEAD}" | sort -u
-}
-
-# Fill PR_STATE for the given branches. A branch with several PRs counts as
-# OPEN if any is open, else MERGED if any merged, else CLOSED.
-lookup_prs() {
-  local repo owner name
-  repo=$(gh repo view --json owner,name --jq '.owner.login + " " + .name') || return 1
-  read -r owner name <<<"$repo"
-
-  local -a all=("$@") args
-  local start i vars fields key state out
-  for ((start = 0; start < ${#all[@]}; start += CHUNK)); do
-    # shellcheck disable=SC2016 # GraphQL variables, not shell ones
-    vars='$owner: String!, $name: String!'
-    fields=''
-    args=(-f "owner=$owner" -f "name=$name")
-    for ((i = start; i < start + CHUNK && i < ${#all[@]}; i++)); do
-      vars+=", \$b$i: String!"
-      fields+=" b$i: pullRequests(headRefName: \$b$i, first: 20) { nodes { state } }"
-      args+=(-f "b$i=${all[$i]}")
-    done
-    out=$(gh api graphql "${args[@]}" \
-      -f query="query($vars) { repository(owner: \$owner, name: \$name) {$fields } }" \
-      --jq '.data.repository | to_entries[]
-        | [(.key | ltrimstr("b")),
-           (.value.nodes | map(.state)
-             | if index("OPEN") then "OPEN"
-               elif index("MERGED") then "MERGED"
-               elif index("CLOSED") then "CLOSED"
-               else "" end)]
-        | @tsv') || return 1
-    while IFS=$'\t' read -r key state; do
-      PR_STATE[${all[$key]}]=$state
-    done <<<"$out"
-  done
 }
 
 # Every directory a tmux pane is in, one per line; empty without a server.

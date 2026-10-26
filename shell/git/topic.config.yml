@@ -39,6 +39,10 @@ git_config:
     - src: worktree_lib.sh
       dest: "{{ xdg_bin_home }}/"
       rename: worktree_lib.sh
+    # Sourced (not run) by the auto pruners via `command -v`.
+    - src: pr_lib.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: pr_lib.sh
     - src: branch_pruner.sh
       dest: "{{ xdg_bin_home }}/"
       rename: branch_pruner
