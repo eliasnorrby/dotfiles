@@ -81,11 +81,32 @@ def branch_for(config, task, fetch_issue=None):
 
 
 def worktree_dir(main, branch):
-    """<main>/.worktrees/<lowercase issue key>, a deterministic path per
-    issue; else the branch minus its author prefix."""
+    """Where a new worktree for `branch` goes: <main>/.worktrees/<lowercase
+    issue key>, short for the usual one branch per issue; else, or when the
+    key's path is taken (a stack of PRs on one issue), the branch minus its
+    author prefix; numbered if even that is taken."""
+    rest = branch.split("/", 1)[-1].replace("/", "-")
     key = issue_key_in(branch)
-    name = key.lower() if key else branch.split("/", 1)[-1].replace("/", "-")
-    return os.path.join(main, ".worktrees", name)
+    names = [key.lower(), rest] if key else [rest]
+    names += [f"{rest}-{n}" for n in range(2, 100)]
+    paths = (os.path.join(main, ".worktrees", name) for name in names)
+    return next(path for path in paths if not os.path.exists(path))
+
+
+def checkout(main, branch):
+    """The worktree holding `branch`, created when there is none, and whether
+    it was created. A worktree is a branch's, not an issue's."""
+    directory = git.worktree_for_branch(main, branch)
+    if directory:
+        return directory, False
+    directory = worktree_dir(main, branch)
+    git.add_worktree(main, directory, branch)
+    return directory, True
+
+
+def _repo_session(config, repo, main):
+    session = config.data["repos"].get(repo or "", {}).get("session") or os.path.basename(main)
+    return re.sub(r"[.:]", "-", session)
 
 
 def window_name(task):
@@ -156,16 +177,18 @@ def ensure_window(
         raise WkError("a branch needs a repository: run this from inside one, or set `repo` on the task")
     created_worktree = False
     if main:
-        branch = branch or branch_for(config, task, fetch_issue)
-        directory = task.get("worktree") if os.path.isdir(task.get("worktree") or "") else None
-        directory = directory or git.worktree_for_branch(main, branch)
-        if not directory:
-            directory = worktree_dir(main, branch)
-            if not os.path.isdir(directory):
-                git.add_worktree(main, directory, branch)
-                created_worktree = True
+        recorded = task.get("worktree")
+        if not branch and recorded and git.is_repo(recorded):
+            # The task's checkout is where its work is, also after it moved
+            # on to another branch (the next PR of a stack, say): the task
+            # follows it.
+            directory = recorded
+            branch = git.branch(recorded) or branch_for(config, task, fetch_issue)
+        else:
+            branch = branch or branch_for(config, task, fetch_issue)
+            directory, created_worktree = checkout(main, branch)
         tasks.modify(task, {"branch": branch, "worktree": directory, "repo": repo})
-        session = config.data["repos"].get(repo or "", {}).get("session") or os.path.basename(main)
+        session = _repo_session(config, repo, main)
     else:
         directory = plain_directory(config, task, plain_dir)
         if git.is_repo(directory):

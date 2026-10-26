@@ -108,6 +108,34 @@ def test_a_window_already_on_the_checkout_is_used_but_not_taken_over(wk, tasks, 
     assert [w["task"] for w in windows if w["worktree"] == directory] == [parent["uuid"]]
 
 
+def test_a_stack_on_one_issue_gets_a_worktree_per_branch(wk, tasks, app, tmux_server):
+    for branch in ("them/acme-7-bottom", "them/acme-7-top"):
+        git(app, "push", "-q", "origin", f"HEAD:refs/heads/{branch}")
+    bottom = tasks.add("bottom", {"branch": "them/acme-7-bottom", "repo": "acme/app", "action": "review"})
+    top = tasks.add("top", {"branch": "them/acme-7-top", "repo": "acme/app", "action": "review"})
+    assert wk("open", "--no-switch", bottom["uuid"]) == 0
+    assert wk("open", "--no-switch", top["uuid"]) == 0
+
+    assert tasks.get(bottom["uuid"])["worktree"] == str(app / ".worktrees" / "acme-7")
+    worktree = tasks.get(top["uuid"])["worktree"]
+    assert worktree == str(app / ".worktrees" / "acme-7-top")
+    assert git(worktree, "branch", "--show-current").stdout.strip() == "them/acme-7-top"
+    assert {w["task"] for w in workspace.tmux.windows()} >= {bottom["uuid"], top["uuid"]}
+
+
+def test_a_task_follows_its_worktree_to_another_branch(wk, tasks, app, tmux_server):
+    task = tasks.add("Fix the thing", {"issue": "ACME-12", "project": "work"})
+    wk("open", "--no-switch", task["uuid"])
+    worktree = tasks.get(task["uuid"])["worktree"]
+    git(worktree, "checkout", "-q", "-b", "me/acme-12-next")
+    window = next(w for w in workspace.tmux.windows() if w["task"] == task["uuid"])
+    subprocess.run(tmux_server + ["kill-window", "-t", window["id"]], check=True)
+
+    assert wk("open", "--no-switch", task["uuid"]) == 0
+    assert tasks.get(task["uuid"])["worktree"] == worktree
+    assert tasks.get(task["uuid"])["branch"] == "me/acme-12-next"
+
+
 def test_a_plain_todo_gets_a_window_and_nothing_else(wk, tasks, app, tmux_server, world):
     task = tasks.add("Write the agenda", {"project": "work"})
     assert wk("open", "--no-switch", task["uuid"]) == 0
