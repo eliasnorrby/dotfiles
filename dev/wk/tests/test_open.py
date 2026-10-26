@@ -136,6 +136,29 @@ def test_a_task_follows_its_worktree_to_another_branch(wk, tasks, app, tmux_serv
     assert tasks.get(task["uuid"])["branch"] == "me/acme-12-next"
 
 
+def test_their_branch_is_checked_out_without_a_task(wk, tasks, app, tmux_server, monkeypatch):
+    git(app, "push", "-q", "origin", "HEAD:refs/heads/them/acme-7-fix")
+    monkeypatch.setattr("wk.platform.read_clipboard", lambda: "them/acme-7-fix")
+    assert wk("open", "--no-switch", "--from", "clipboard", "-C", str(app)) == 0
+    assert tasks.all() == []
+    window = next(w for w in workspace.tmux.windows() if w["worktree"] == str(app / ".worktrees" / "acme-7"))
+    assert not window["task"]
+    assert option(tmux_server, window["id"], "window_name") == "acme-7-fix"
+
+    before = workspace.tmux.windows()
+    assert wk("open", "--no-switch", "--from", "clipboard", "-C", str(app)) == 0
+    assert workspace.tmux.windows() == before
+
+
+def test_their_branch_leads_to_its_review_item(wk, tasks, app, tmux_server, monkeypatch):
+    git(app, "push", "-q", "origin", "HEAD:refs/heads/them/acme-7-fix")
+    review = tasks.add("their fix", {"branch": "them/acme-7-fix", "repo": "acme/app", "action": "review"})
+    monkeypatch.setattr("wk.platform.read_clipboard", lambda: "them/acme-7-fix")
+    assert wk("open", "--no-switch", "--from", "clipboard", "-C", str(app)) == 0
+    assert [t["uuid"] for t in tasks.all()] == [review["uuid"]]
+    assert any(w["task"] == review["uuid"] for w in workspace.tmux.windows())
+
+
 def test_a_plain_todo_gets_a_window_and_nothing_else(wk, tasks, app, tmux_server, world):
     task = tasks.add("Write the agenda", {"project": "work"})
     assert wk("open", "--no-switch", task["uuid"]) == 0

@@ -225,6 +225,27 @@ def ensure_window(
     return Opened(window, session, directory, created_window=True, created_worktree=created_worktree)
 
 
+def ensure_branch_window(config, cwd, branch):
+    """Find or create a window on a checkout of `branch` that no task is
+    for: someone else's branch, checked out for a look. Not every checkout is
+    a piece of work; the window carries @worktree but no @task."""
+    main = git.main_worktree(cwd) if git.is_repo(cwd) else None
+    if not main:
+        raise WkError("a branch needs a repository: run this from inside one")
+    directory, created_worktree = checkout(main, branch)
+    for window in tmux.windows():
+        if window["worktree"] == directory:
+            return Opened(window["id"], window["session"], directory, created_worktree=created_worktree)
+    session = _repo_session(config, git.slug(main), main)
+    if not tmux.has_session(session):
+        tmux.new_session(session, main)
+    window = tmux.new_window(session, directory, _slug(branch.split("/", 1)[-1], 24) or branch)
+    if not window:
+        raise WkError(f"could not create a tmux window in session {session}")
+    tmux.set_window_options(window, {"@worktree": directory, "@desc": branch})
+    return Opened(window, session, directory, created_window=True, created_worktree=created_worktree)
+
+
 def _session_window(task):
     """The window of the live Claude session recorded on the task, if any."""
     from . import state

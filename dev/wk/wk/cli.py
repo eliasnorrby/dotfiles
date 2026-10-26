@@ -348,16 +348,27 @@ def _workable_locator(config, args):
 def cmd_open(args, out):
     from . import git, workspace
     from .resolve import resolve
+    from .tasks import is_open
 
     config, tasks = context(args)
     cwd = os.path.realpath(args.directory or os.getcwd())
     found = _workable_locator(config, args)
+    if found and found.kind == "branch" and not found.value.startswith(workspace.branch_prefix(config)):
+        # Someone else's branch is their work, not mine, whatever issue it
+        # names. An open task that records it (a review item, or work I took
+        # on) leads there; anything else is a look, which needs no task.
+        task = tasks.by_branch(found.value)
+        if task and is_open(task):
+            opened = workspace.ensure_window(config, tasks, task, cwd, follow_session=True)
+        else:
+            task, opened = None, workspace.ensure_branch_window(config, cwd, found.value)
+        return _opened(args, out, tasks, task, opened)
     resolution = resolve(tasks, found, cwd)
     task = resolution.task or _import_missing(config, tasks, resolution, args.offline, cwd)
     branch = args.on or (found.value if found and found.kind == "branch" else None)
     if not task and branch:
-        # A branch that belongs to no issue (a colleague's, checked out for a
-        # look) is still a piece of work, and gets a task like any other.
+        # A branch of mine that belongs to no issue (trying something out) is
+        # still a piece of work, and gets a task like any other.
         repo = git.slug(cwd) if git.is_repo(cwd) else None
         words = branch.split("/", 1)[-1].replace("-", " ").replace("_", " ")
         attrs = {"branch": branch, "repo": repo, "project": config.project_for_repo(repo)}
@@ -368,10 +379,16 @@ def cmd_open(args, out):
     opened = workspace.ensure_window(
         config, tasks, task, cwd, branch=branch, plain_dir=args.directory_in, follow_session=True
     )
+    return _opened(args, out, tasks, task, opened)
+
+
+def _opened(args, out, tasks, task, opened):
+    from . import workspace
+
     if not args.no_switch:
         workspace.go(opened)
     payload = {
-        "task": describe(tasks.get(task["uuid"])),
+        "task": describe(tasks.get(task["uuid"])) if task else None,
         "window": opened.window,
         "session": opened.session,
         "directory": opened.directory,
