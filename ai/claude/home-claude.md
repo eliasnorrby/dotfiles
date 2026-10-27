@@ -54,12 +54,18 @@ Further paragraphs come after blank lines.
 - Use a hanging indent
 ```
 
-## Rebasing a stack of PRs
+## Stacks of PRs
 
-When a branch that others are stacked on gets rewritten — rebased onto master,
-amended, or given a new commit — plain `git rebase <parent>` on the children is
-wrong. It tries to replay the parent's old commits, which either conflicts or
-silently duplicates them.
+A stack is a GitHub stack, managed with the `gh stack` extension. Where the
+repo ships the `gh-stack` skill, load it and let `gh stack rebase` and
+`gh stack sync` replay the branches; don't cascade `git rebase --onto` by
+hand.
+
+Only where the stack isn't a `gh stack` one, rebase by hand. When a branch
+that others are stacked on gets rewritten — rebased onto master, amended, or
+given a new commit — plain `git rebase <parent>` on the children is wrong. It
+tries to replay the parent's old commits, which either conflicts or silently
+duplicates them.
 
 Capture every parent's tip **before** rewriting anything, then replay only each
 child's own commits:
