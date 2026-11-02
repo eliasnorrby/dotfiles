@@ -8,20 +8,19 @@ vim.keymap.set('n', 'gf', function()
   end
 end, { noremap = false, expr = true })
 
+-- Read mode hides the gutter and locks the buffer; leaving it goes back to
+-- rendered and editable. render-markdown owns conceal, so the rendering itself
+-- is left alone.
 local toggle_read_mode = function()
   local is_in_read_mode = not vim.opt_local.modifiable:get()
   if is_in_read_mode then
     vim.opt_local.number = true
     vim.opt_local.relativenumber = true
-    vim.opt_local.conceallevel = 0
-    vim.opt_local.concealcursor = ''
     vim.opt_local.list = true
     vim.opt_local.modifiable = true
   else
     vim.opt_local.number = false
     vim.opt_local.relativenumber = false
-    vim.opt_local.conceallevel = 2
-    vim.opt_local.concealcursor = 'nc'
     vim.opt_local.list = false
     vim.opt_local.modifiable = false
   end

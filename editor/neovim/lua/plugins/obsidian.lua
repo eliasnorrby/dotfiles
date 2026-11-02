@@ -56,8 +56,12 @@ return {
       default_tags = { 'daily-notes' },
       template = nil,
     },
+    -- render-markdown draws the notes; the checkbox states are the ones it knows
     ui = {
       enable = false,
+    },
+    checkbox = {
+      order = { ' ', 'x', '-' },
     },
     templates = {
       folder = '_meta/templates',
