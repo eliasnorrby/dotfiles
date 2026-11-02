@@ -63,7 +63,8 @@ return {
 
     require('mason-lspconfig').setup({
       ensure_installed = servers,
-      automatic_enable = true,
+      -- ts_ls is started on demand, see with_ts_ls below
+      automatic_enable = { exclude = { 'ts_ls' } },
     })
 
     local diagnostics_config = require('config.diagnostics')
@@ -93,21 +94,103 @@ return {
       },
     })
 
+    -- tsserver holds several GB per nvim instance in a large monorepo, and
+    -- most sessions never ask it anything. Instead of enabling it up front,
+    -- it starts on entering insert mode or on the first LSP action in a
+    -- TypeScript buffer, and the action runs once it has attached.
+    -- :TsLsToggle stops it and keeps insert mode from starting it again.
+    local ts_filetypes = vim.lsp.config.ts_ls.filetypes
+    local ts_pending = vim.api.nvim_create_augroup('UserTsLsPending', { clear = true })
+
+    local function ts_ls_attached(bufnr)
+      return #vim.lsp.get_clients({ bufnr = bufnr, name = 'ts_ls' }) > 0
+    end
+
+    local function start_ts_ls(bufnr, on_attach)
+      if vim.b[bufnr].ts_ls_starting then
+        vim.notify('ts_ls is still starting')
+        return
+      end
+      vim.b[bufnr].ts_ls_starting = true
+      local id = vim.api.nvim_create_autocmd('LspAttach', {
+        group = ts_pending,
+        buffer = bufnr,
+        callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if not client or client.name ~= 'ts_ls' then
+            return
+          end
+          vim.b[bufnr].ts_ls_starting = nil
+          if on_attach then
+            vim.schedule(function()
+              if vim.api.nvim_get_current_buf() == bufnr then
+                on_attach()
+              end
+            end)
+          end
+          return true
+        end,
+      })
+      -- A buffer outside any TypeScript project never gets a client
+      vim.defer_fn(function()
+        if vim.b[bufnr].ts_ls_starting and not ts_ls_attached(bufnr) then
+          vim.b[bufnr].ts_ls_starting = nil
+          pcall(vim.api.nvim_del_autocmd, id)
+          vim.notify('ts_ls did not attach', vim.log.levels.WARN)
+        end
+      end, 15000)
+      vim.notify('Starting ts_ls')
+      vim.lsp.enable('ts_ls')
+    end
+
+    local function with_ts_ls(fn)
+      return function()
+        local bufnr = vim.api.nvim_get_current_buf()
+        if not vim.tbl_contains(ts_filetypes, vim.bo[bufnr].filetype) or ts_ls_attached(bufnr) then
+          return fn()
+        end
+        start_ts_ls(bufnr, fn)
+      end
+    end
+
+    vim.api.nvim_create_user_command('TsLsToggle', function()
+      if vim.lsp.is_enabled('ts_ls') then
+        vim.g.ts_ls_off = true
+        vim.api.nvim_clear_autocmds({ group = ts_pending })
+        for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+          vim.b[bufnr].ts_ls_starting = nil
+        end
+        vim.lsp.enable('ts_ls', false)
+        vim.notify('Stopped ts_ls')
+      else
+        vim.g.ts_ls_off = nil
+        local bufnr = vim.api.nvim_get_current_buf()
+        if vim.tbl_contains(ts_filetypes, vim.bo[bufnr].filetype) then
+          start_ts_ls(bufnr)
+        else
+          vim.lsp.enable('ts_ls')
+          vim.notify('Enabled ts_ls')
+        end
+      end
+    end, { desc = 'Start or stop ts_ls' })
+
     local set_lsp_keymaps = function(_, bufnr)
       local wk = require('which-key')
+      local telescope = require('telescope.builtin')
 
       wk.add({
         {
           buffer = bufnr,
-          { '<leader>rn', vim.lsp.buf.rename, desc = 'Rename' },
-          { '<leader>,', vim.lsp.buf.code_action, desc = 'Code action' },
-          { '<leader>sd', require('telescope.builtin').lsp_document_symbols, desc = 'Document Symbols' },
-          { '<leader>sw', require('telescope.builtin').lsp_dynamic_workspace_symbols, desc = 'Workspace Symbols' },
-          { 'gd', require('telescope.builtin').lsp_definitions, desc = 'Goto Definition' },
-          { 'gr', require('telescope.builtin').lsp_references, desc = 'Goto References' },
-          { 'gI', vim.lsp.buf.implementation, desc = 'Goto Implementation' },
+          { '<leader>rn', with_ts_ls(vim.lsp.buf.rename), desc = 'Rename' },
+          { '<leader>,', with_ts_ls(vim.lsp.buf.code_action), desc = 'Code action' },
+          { '<leader>sd', with_ts_ls(telescope.lsp_document_symbols), desc = 'Document Symbols' },
+          { '<leader>sw', with_ts_ls(telescope.lsp_dynamic_workspace_symbols), desc = 'Workspace Symbols' },
+          { 'gd', with_ts_ls(telescope.lsp_definitions), desc = 'Goto Definition' },
+          { 'gr', with_ts_ls(telescope.lsp_references), desc = 'Goto References' },
+          { 'gI', with_ts_ls(vim.lsp.buf.implementation), desc = 'Goto Implementation' },
           { '<leader>lr', '<cmd>LspRestart<cr>', desc = 'Restart LSP' },
           { '<leader>li', '<cmd>LspInfo<cr>', desc = 'LSP info' },
+          { '<leader>lt', '<cmd>TsLsToggle<cr>', desc = 'Toggle ts_ls' },
           {
             '[d',
             function()
@@ -126,7 +209,7 @@ return {
         },
       })
 
-      vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr, desc = 'Hover Documentation' })
+      vim.keymap.set('n', 'K', with_ts_ls(vim.lsp.buf.hover), { buffer = bufnr, desc = 'Hover Documentation' })
     end
 
     -- local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -166,6 +249,30 @@ return {
     end, { desc = 'Restart LSP servers for current buffer' })
 
     local lsp_group = vim.api.nvim_create_augroup('UserLspAttach', { clear = true })
+    -- A TypeScript buffer needs the keymaps before any client attaches, since
+    -- they are what starts ts_ls
+    vim.api.nvim_create_autocmd('FileType', {
+      group = lsp_group,
+      pattern = ts_filetypes,
+      callback = function(args)
+        set_lsp_keymaps(nil, args.buf)
+      end,
+    })
+    vim.api.nvim_create_autocmd('InsertEnter', {
+      group = lsp_group,
+      callback = function(args)
+        local bufnr = args.buf
+        if
+          vim.g.ts_ls_off
+          or vim.b[bufnr].ts_ls_starting
+          or not vim.tbl_contains(ts_filetypes, vim.bo[bufnr].filetype)
+          or ts_ls_attached(bufnr)
+        then
+          return
+        end
+        start_ts_ls(bufnr)
+      end,
+    })
     vim.api.nvim_create_autocmd('LspAttach', {
       group = lsp_group,
       desc = 'Set buffer-local keymaps and options after an LSP client attaches',
