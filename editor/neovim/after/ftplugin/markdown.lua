@@ -8,6 +8,10 @@ vim.keymap.set('n', 'gf', function()
   end
 end, { noremap = false, expr = true })
 
+vim.keymap.set('n', 'go', function()
+  require('config.markdown_links').follow()
+end, { buffer = true, desc = 'Follow a link by its label' })
+
 -- Read mode hides the gutter and locks the buffer; leaving it goes back to
 -- rendered and editable. render-markdown owns conceal, so the rendering itself
 -- is left alone.
