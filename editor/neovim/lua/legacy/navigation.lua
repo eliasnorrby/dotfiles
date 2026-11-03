@@ -1,6 +1,6 @@
 -- Unified ctrl-hjkl navigation across vim windows, tmux panes and Hyprland
 -- windows. The `navigate` script (shell/tmux topic) handles the hop out of
--- vim: tmux pane if one exists in the direction, Hyprland window otherwise.
+-- vim - tmux pane if one exists in the direction, Hyprland window otherwise.
 
 local to_navigate_dir = { h = 'l', j = 'd', k = 'u', l = 'r' }
 
