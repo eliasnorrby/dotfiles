@@ -42,8 +42,11 @@ def subdir_for_vault(config, vault_path):
 
 def slugify(text):
     """Make a description safe for a filename without mangling it beyond
-    recognition: these names are meant to be read in Obsidian's file list."""
-    slug = re.sub(r"[/:\\]", "-", text)
+    recognition: these names are meant to be read in Obsidian's file list.
+    A wikilink reads # as a heading and ^ as a block, so a name with either
+    can't be linked; they go, as do the brackets and the pipe."""
+    slug = re.sub(r"[/:\\|]", "-", text)
+    slug = re.sub(r"[#^\[\]]", "", slug)
     slug = re.sub(r"\s+", " ", slug).strip()
     return slug[:60].rstrip()
 

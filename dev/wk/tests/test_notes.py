@@ -45,6 +45,12 @@ def test_a_project_id_is_not_an_issue_key(config, tasks, world):
     assert "issue:" not in open(path).read()
 
 
+def test_a_name_keeps_out_what_breaks_a_wikilink(config, tasks):
+    task = tasks.add("Review the [stack] (from #11374) | ^x")
+    path = notes.ensure(config, tasks, task)
+    assert os.path.basename(path) == f"{TODAY} Review the stack (from 11374) - x.md"
+
+
 def test_a_second_call_finds_the_same_note(config, tasks):
     task = tasks.add("same", {"issue": "ACME-1", "project": "work"})
     first = notes.ensure(config, tasks, task)
