@@ -55,17 +55,20 @@ carries what it cannot find out alone:
   base (`git switch -c <branch> <base>`; the parent's branch when the pieces
   stack on it, else the default branch);
 - to push and open the PR with `gh pr create`;
-- to record its work in its task note only (the vault's `CLAUDE.md` says how)
-  and commit just that file with
-  `wiki_checkpoint commit "<vault>" -- "<note>"`. Other agents are writing to
-  the same vault at the same time: the daily note, `index.md` and the
-  parent's note are yours, not theirs. If it runs `wiki_checkpoint resolve`,
-  it must pass `--issue <ISSUE-KEY>`: without it, it finds the parent, whose
-  window it runs in;
+- to record its work in its task note (the vault's `CLAUDE.md` says how),
+  add or refresh its own one-line bullet under `## Worked on` in today's
+  daily, and commit those two files with
+  `wiki_checkpoint commit "<vault>" -- "<note>" "<daily>"`; a task note
+  committed without a daily link is refused. Other agents are writing to the
+  same vault at the same time: it re-reads the daily right before its edit
+  and touches only its own bullet; `index.md` and the parent's note are
+  yours, not theirs. If it runs `wiki_checkpoint resolve`, it must pass
+  `--issue <ISSUE-KEY>`: without it, it finds the parent, whose window it
+  runs in;
 - to report back the PR, what it did, and anything left open.
 
 When they report, check the PRs, then checkpoint: the parent's task note
-lists the pieces and their PRs, and today's daily gets the bullets.
+lists the pieces and their PRs, and today's daily gets the parent's bullet.
 
 ## 3. Interactive branching
 

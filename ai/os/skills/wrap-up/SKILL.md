@@ -53,7 +53,9 @@ note cold in a month:
   tracked, ask, with the AskUserQuestion tool; a check he'll do in passing
   ("see if the chime is audible") is a line in the report, not a task.
 - Commit exactly the files you touched with `wiki_checkpoint commit`, then
-  `wiki_checkpoint mark`.
+  `wiki_checkpoint mark`. New follow-up notes record no work done today, so
+  they go in a commit of their own with the trailer
+  `No-Daily: follow-up filed`.
 
 ## 3. Close the task
 

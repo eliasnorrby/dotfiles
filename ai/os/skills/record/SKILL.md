@@ -59,6 +59,9 @@ write that a PR or issue is open on the source's word alone.
 - Not the daily, where the vault's dailies are yours: it records what Elias
   did, and the recording is a wiki operation. The exception is a source
   that belongs to a task worked on that day; then the task's bullet covers it.
+  A commit that touches a task note is refused without that bullet; when
+  the task wasn't worked on today, add the trailer
+  `No-Daily: recorded a source` before `Co-Authored-By` instead.
 
 ## 5. Log and commit
 

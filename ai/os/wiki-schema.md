@@ -352,6 +352,14 @@ MSG
 ```
 
 which serialises commits across sessions and refuses to commit the whole tree.
+Where the dailies are yours, it also refuses a task note that today's daily
+doesn't link (directly or through the task's parent): every day a task is
+worked on gets its bullet, on the fifth day of a long session as on the
+first, and the note and the daily go in one commit. A commit that records no
+work done today (a status flip, a typo, a source filed for a task nobody
+worked on today) says so with a `No-Daily: <why>` trailer before
+`Co-Authored-By`.
+
 A shared file (`index.md`, `log.md`, a daily) is committed whole, so your
 commit may carry another session's lines from that file, and "nothing to
 commit" may mean someone else's commit carried yours. Both are fine.

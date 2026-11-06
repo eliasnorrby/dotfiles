@@ -73,8 +73,11 @@ Commit each item's changes as its own ingest operation, through
 `wiki_checkpoint commit "<vault>" -- <files>` with every file you touched and
 nothing else (the jot's old and new path included), subject `ingest: <what>`
 as the log entry says it, and the trailer line the prompt gives before
-`Co-Authored-By`. Your question jots go in the same commit. Never `git add
--A`, never the whole tree. A file that keeps changing under you, a lock that
+`Co-Authored-By`. Your question jots go in the same commit. A commit that
+touches a task note is refused unless today's daily links it; when the jot
+records work Elias did today, give the task its bullet, otherwise add the
+trailer `No-Daily: ingest of a jot` as well. Never `git add -A`, never the
+whole tree. A file that keeps changing under you, a lock that
 times out, a rule you cannot follow: `wiki_checkpoint friction`, and move on.
 
 ## Finally

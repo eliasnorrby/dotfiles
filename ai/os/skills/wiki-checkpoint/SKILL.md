@@ -92,7 +92,16 @@ MSG
 
 List every file you edited and nothing else. Never `git add -A`, `git add .`
 or `git commit -a` in a vault: other sessions have work in progress there.
-"Nothing to commit" is fine. Then:
+"Nothing to commit" is fine.
+
+A commit that carries a task note is refused unless today's daily links that
+note or its parent's. That holds on every day of a long session, not just the
+first: the daily is the only record of which days a task was worked on. So
+the task note and the daily normally go in the same commit. When the commit
+records no work done today (a status flip, a typo), add a trailer line before
+`Co-Authored-By` instead: `No-Daily: <why>`.
+
+Then:
 
 ```
 wiki_checkpoint mark

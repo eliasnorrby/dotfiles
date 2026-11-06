@@ -15,6 +15,8 @@
 #   wiki_checkpoint commit VAULT -- FILE...
 #                                      Commit exactly these files, message on
 #                                      stdin. Serialized across sessions.
+#                                      Refuses a task note that today's daily
+#                                      does not link (see daily_gaps).
 #   wiki_checkpoint sweep [--min-age SECONDS] [--vault DIR]
 #                                      Commit what has settled in every vault
 #                                      (the owner's jots and moves, hook-made
@@ -232,8 +234,62 @@ cmd_resolve() {
   jq -r '"issue=\(.issue // "")", "task=\(.task.uuid)", "vault=\(.vault)", "note=\(.note)"' <<<"$result"
 }
 
+# The note a task's parent (taskwarrior's partof) keeps, by basename, for the
+# task whose note is NOTE (vault-relative, without .md). Args: NOTE
+parent_note() {
+  task rc.verbose=nothing rc.hooks=off note.any: export 2>/dev/null | jq -r --arg n "$1" '
+    (map({key: .uuid, value: .note}) | from_entries) as $notes
+    | .[] | select(.note == $n) | .partof // empty | $notes[.] // empty
+    | split("/") | last' 2>/dev/null | head -n 1
+}
+
+# A session that lives for days appends to its task note and commits that file
+# alone, and the day drops out of the daily: the daily is the record of what
+# was worked on when, and nothing else catches it. So a commit carrying a task
+# note (wiki/tasks/, not archive/, which is wk's move) needs today's daily to
+# link that note or its parent's, or a `No-Daily: <reason>` trailer in the
+# message for a commit that records no work done today. Applies where the
+# vault keeps task notes under wiki/tasks/ and dailies/ beside them. Prints
+# the notes that fail, one per line. Args: VAULT MESSAGE REL_PATH...
+daily_gaps() {
+  local vault="$1" message="$2" path name links parent
+  shift 2
+  [ -d "$vault/dailies" ] || return 0
+  grep -qE '^No-Daily: *[^[:space:]]' <<<"$message" && return 0
+  # Link targets by basename: [[A]], [[dir/A|alias]], [[A#heading]].
+  links=$(grep -oP '\[\[\K[^]|#]+' "$vault/dailies/$(date +%F).md" 2>/dev/null \
+    | sed -e 's#.*/##' -e 's#\.md$##')
+  for path in "$@"; do
+    case "$path" in
+      wiki/tasks/archive/*) continue ;;
+      wiki/tasks/*.md) ;;
+      *) continue ;;
+    esac
+    # A deletion, or the old half of a move.
+    [ -f "$vault/$path" ] || continue
+    name=$(basename "$path" .md)
+    grep -qxF -- "$name" <<<"$links" && continue
+    parent=$(parent_note "${path%.md}")
+    [ -n "$parent" ] && grep -qxF -- "$parent" <<<"$links" && continue
+    printf '%s\n' "$path"
+  done
+}
+
+# Vault-relative paths, one per line. Args: VAULT PATH...
+vault_paths() {
+  local vault="$1" path
+  shift
+  for path in "$@"; do
+    case "$path" in
+      "$vault"/*) path="${path#"$vault"/}" ;;
+      /*) die "outside the vault: $path" ;;
+    esac
+    printf '%s\n' "$path"
+  done
+}
+
 cmd_commit() {
-  local vault="${1:-}" message
+  local vault="${1:-}" message gaps today
   [ -n "$vault" ] && [ -d "$vault/.git" ] || die "not a git repository: ${vault:-<none>}"
   shift
   [ "${1:-}" = "--" ] && shift
@@ -243,14 +299,39 @@ cmd_commit() {
   [ -n "$message" ] || die "empty commit message on stdin"
 
   local -a paths=()
-  local path
-  for path in "$@"; do
-    case "$path" in
-      "$vault"/*) path="${path#"$vault"/}" ;;
-      /*) die "outside the vault: $path" ;;
-    esac
-    paths+=("$path")
-  done
+  mapfile -t paths < <(vault_paths "$vault" "$@")
+  [ ${#paths[@]} -eq $# ] || exit 1
+  gaps=$(daily_gaps "$vault" "$message" "${paths[@]}")
+  local -a gap_list=()
+  [ -z "$gaps" ] || mapfile -t gap_list <<<"$gaps"
+  if [ ${#gap_list[@]} -gt 0 ]; then
+    today="dailies/$(date +%F).md"
+    {
+      echo "Refused: today's daily ($today) links neither of these task notes nor their parent's:"
+      printf '  %s\n' "${gap_list[@]}"
+      echo
+      echo "Every day a task is worked on gets one bullet under \`## Worked on\` in that day's daily"
+      echo "(the vault's CLAUDE.md, \"Daily\"): \`- [[<note title>]] — what moved today\`. Re-read the"
+      echo "daily, add or refresh the bullet, then commit the note and $today together."
+      echo
+      echo "If this commit records no work done today (a status flip, a typo, a source filed for a"
+      echo "task nobody worked on today), say so in a trailer line before Co-Authored-By instead:"
+      echo
+      echo "  No-Daily: <why>"
+    } >&2
+    exit 1
+  fi
+  vault_commit "$vault" "${paths[@]}" <<<"$message"
+}
+
+# Commit exactly these vault-relative paths, message on stdin, under the
+# vault's lock, and push to its backup remote. No daily check: the sweep and
+# friction reports commit through here. Args: VAULT REL_PATH...
+vault_commit() {
+  local vault="$1" message path
+  shift
+  local -a paths=("$@")
+  message=$(cat)
 
   ( 
     flock -w "$lock_wait" 9 || die "another checkpoint held the commit lock for over ${lock_wait}s"
@@ -313,7 +394,7 @@ cmd_friction() {
 
   local message
   message=$(printf 'friction: %s\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n' "$slug")
-  cmd_commit "$vault" -- "$file" <<<"$message" >/dev/null 2>&1 || true
+  vault_commit "$vault" "${file#"$vault"/}" <<<"$message" >/dev/null 2>&1 || true
   printf '%s\n' "$file"
 }
 
@@ -395,7 +476,7 @@ sweep_vault() {
     printf '%s\n' "${paths[@]}" | head -n 30
     [ ${#paths[@]} -le 30 ] || echo "…"
   )
-  cmd_commit "$vault" -- "${paths[@]}" <<<"$message"
+  vault_commit "$vault" "${paths[@]}" <<<"$message"
 }
 
 # Whether the other end of an archive move is already in git: for a deleted
