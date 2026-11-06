@@ -256,9 +256,11 @@ daily_gaps() {
   shift 2
   [ -d "$vault/dailies" ] || return 0
   grep -qE '^No-Daily: *[^[:space:]]' <<<"$message" && return 0
-  # Link targets by basename: [[A]], [[dir/A|alias]], [[A#heading]].
-  links=$(grep -oP '\[\[\K[^]|#]+' "$vault/dailies/$(date +%F).md" 2>/dev/null \
-    | sed -e 's#.*/##' -e 's#\.md$##')
+  # Link targets by basename: [[A]], [[dir/A|alias]], [[A#heading]]. Both
+  # with and without what follows a #, since some task notes have a # in
+  # their name.
+  links=$(grep -oP '\[\[\K[^]|]+' "$vault/dailies/$(date +%F).md" 2>/dev/null \
+    | sed -e 'p' -e 's/#.*//' | sed -e 's#^.*/##' -e 's#\.md$##')
   for path in "$@"; do
     case "$path" in
       wiki/tasks/archive/*) continue ;;
