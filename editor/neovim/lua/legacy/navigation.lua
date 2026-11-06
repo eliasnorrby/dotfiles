@@ -22,16 +22,12 @@ end
 
 for dir in pairs(to_navigate_dir) do
   local desc = 'Navigate ' .. dir .. ' (win/tmux/wm)'
-  vim.keymap.set('n', '<c-' .. dir .. '>', function()
-    unified_nav(dir)
-  end, { silent = true, desc = desc })
   -- Also from terminal buffers: ctrl-hjkl is reserved for navigation
   -- everywhere and must never reach the terminal job (ctrl-j used to insert
-  -- a newline in claude).
-  vim.keymap.set('t', '<c-' .. dir .. '>', function()
-    vim.cmd.stopinsert()
-    vim.schedule(function()
-      unified_nav(dir)
-    end)
+  -- a newline in claude). Terminal mode is left alone: switching vim windows
+  -- ends it anyway, and when the hop goes out to tmux or Hyprland the
+  -- terminal keeps following its output.
+  vim.keymap.set({ 'n', 't' }, '<c-' .. dir .. '>', function()
+    unified_nav(dir)
   end, { silent = true, desc = desc })
 end
