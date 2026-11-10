@@ -11,6 +11,9 @@ arch_config:
     - src: safe-suspend.sh
       dest: "{{ xdg_bin_home }}/"
       rename: safe-suspend
+    - src: safe-hibernate.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: safe-hibernate
     - src: chrome-personal.desktop
       dest: "{{ xdg_applications_dir }}/"
     - src: chrome-work.desktop
