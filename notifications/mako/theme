@@ -1,12 +1,12 @@
 # carborange: orange border for anything asking for attention, coal when urgent
 
-background-color=#1b1d21E6
+background-color=#191c21E6
 text-color=#e4e4e2
-border-color=#ffa759
-progress-color=over #24262b
+border-color=#f5b35e
+progress-color=over #222529
 
 [urgency=low]
-border-color=#54575d
+border-color=#52565d
 
 [urgency=high]
 border-color=#d8573c

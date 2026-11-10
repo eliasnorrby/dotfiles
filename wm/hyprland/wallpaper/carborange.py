@@ -14,8 +14,8 @@ import sys
 
 from PIL import Image, ImageDraw
 
-GROUND = (0x11, 0x12, 0x15)
-DOT = (0x2D, 0x30, 0x35)
+GROUND = (0x0F, 0x11, 0x15)
+DOT = (0x2B, 0x2E, 0x34)
 PITCH = 64  # physical px; 43 logical at 1.5x
 RADIUS = 2.6
 

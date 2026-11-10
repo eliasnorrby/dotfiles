@@ -6,7 +6,7 @@
   separatorcolor:              @surface1;
   urgent-foreground:           @red;
   alternate-urgent-background: @lightbg;
-  lightbg:                     #16181b66;
+  lightbg:                     #14161a66;
   background-color:            transparent;
   border-color:                @peach;
   normal-background:           transparent;
@@ -87,7 +87,7 @@ element-icon {
 }
 window {
     padding:          16px;
-    background-color: #1b1d21ae;
+    background-color: #191c21ae;
     border:           2px;
     border-radius:    12px;
 }

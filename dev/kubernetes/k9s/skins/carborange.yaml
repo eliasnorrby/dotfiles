@@ -5,19 +5,19 @@
 foreground: &foreground "#e4e4e2"
 background: &background default
 
-black: &black "#16181b"
+black: &black "#14161a"
 blue: &blue "#f6f6f4"
-green: &green "#ffa759"
-grey: &grey "#54575d"
-cyan: &cyan "#bfc1c5"
-purple: &purple "#bfc1c5"
+green: &green "#f5b35e"
+grey: &grey "#52565d"
+cyan: &cyan "#bdc0c5"
+purple: &purple "#bdc0c5"
 red: &red "#d8573c"
 yellow: &yellow "#ffcfa3"
 peach: &peach "#ffcfa3"
-pink: &pink "#bfc1c5"
+pink: &pink "#bdc0c5"
 lavender: &lavender "#f6f6f4"
-sky: &sky "#bfc1c5"
-overlay: &overlay "#3b3e44"
+sky: &sky "#bdc0c5"
+overlay: &overlay "#393d44"
 
 k9s:
   body:
