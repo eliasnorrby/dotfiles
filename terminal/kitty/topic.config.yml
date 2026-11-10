@@ -3,6 +3,7 @@ kitty_config:
   path: terminal/kitty
   links:
     - kitty.conf
+    - carborange.conf
     - select-and-open.py
     - src: kitty.arch.conf
       rename: kitty.local.conf

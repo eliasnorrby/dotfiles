@@ -1,0 +1,135 @@
+# carborange K9s theme (catppuccin mocha names, remapped)
+# https://catppuccin.com/palette/mocha
+
+# 🎨 Palette
+foreground: &foreground "#e4e4e2"
+background: &background default
+
+black: &black "#16181b"
+blue: &blue "#f6f6f4"
+green: &green "#ffa759"
+grey: &grey "#54575d"
+cyan: &cyan "#bfc1c5"
+purple: &purple "#bfc1c5"
+red: &red "#d8573c"
+yellow: &yellow "#ffcfa3"
+peach: &peach "#ffcfa3"
+pink: &pink "#bfc1c5"
+lavender: &lavender "#f6f6f4"
+sky: &sky "#bfc1c5"
+overlay: &overlay "#3b3e44"
+
+k9s:
+  body:
+    fgColor: *foreground
+    bgColor: *background
+    logoColor: *purple
+    logoColorMsg: *green
+    logoColorInfo: *blue
+    logoColorWarn: *yellow
+    logoColorError: *red
+
+  prompt:
+    fgColor: *foreground
+    bgColor: *background
+    suggestColor: *grey
+    border:
+      command: *blue
+      default: *grey
+
+  help:
+    fgColor: *foreground
+    bgColor: *background
+    sectionColor: *lavender
+    keyColor: *peach
+    numKeyColor: *pink
+
+  dialog:
+    fgColor: *foreground
+    bgColor: *background
+    buttonFgColor: *background
+    buttonBgColor: *blue
+    buttonFocusFgColor: *black
+    buttonFocusBgColor: *yellow
+    labelFgColor: *lavender
+    fieldFgColor: *cyan
+
+  info:
+    fgColor: *blue
+    sectionColor: *foreground
+    cpuColor: *green
+    memColor: *cyan
+    k9sRevColor: *peach
+
+  frame:
+    border:
+      fgColor: *purple
+      focusColor: *yellow
+    menu:
+      fgColor: *foreground
+      keyColor: *peach
+      numKeyColor: *pink
+    crumbs:
+      fgColor: *black
+      bgColor: *grey
+      activeColor: *yellow
+    status:
+      newColor: *green
+      modifyColor: *yellow
+      addColor: *cyan
+      pendingColor: *blue
+      errorColor: *red
+      highlightColor: *peach
+      killColor: *overlay
+      completedColor: *grey
+    title:
+      fgColor: *foreground
+      bgColor: *background
+      highlightColor: *pink
+      counterColor: *lavender
+      filterColor: *grey
+
+  views:
+    table:
+      fgColor: *foreground
+      bgColor: *background
+      cursorFgColor: *black
+      cursorBgColor: *pink
+      markColor: *yellow
+      header:
+        fgColor: *blue
+        bgColor: *background
+        sorterColor: *yellow
+
+    yaml:
+      keyColor: *blue
+      colonColor: *foreground
+      valueColor: *green
+
+    logs:
+      fgColor: *foreground
+      bgColor: *background
+      indicator:
+        fgColor: *foreground
+        bgColor: *background
+        toggleOnColor: *green
+        toggleOffColor: *overlay
+
+    xray:
+      fgColor: *foreground
+      bgColor: *background
+      cursorColor: *pink
+      cursorTextColor: *black
+      graphicColor: *blue
+
+    picker:
+      mainColor: *cyan
+      focusColor: *yellow
+      shortcutColor: *peach
+
+    charts:
+      bgColor: *background
+      dialBgColor: *overlay
+      chartBgColor: *background
+      focusFgColor: *foreground
+      focusBgColor: *pink

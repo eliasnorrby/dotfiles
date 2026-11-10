@@ -1,1 +1,1 @@
-export K9S_SKIN=catppuccin
+export K9S_SKIN=carborange

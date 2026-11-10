@@ -1,11 +1,13 @@
-# Catppuccin Macchiato Peach
-# https://github.com/catppuccin/mako
+# carborange: orange border for anything asking for attention, coal when urgent
 
-background-color=#24273aE6
-text-color=#cad3f5
-border-color=#f5a97f
-progress-color=over #363a4f
+background-color=#1b1d21E6
+text-color=#e4e4e2
+border-color=#ffa759
+progress-color=over #24262b
+
+[urgency=low]
+border-color=#54575d
 
 [urgency=high]
-border-color=#f5a97f
+border-color=#d8573c
 default-timeout=0

@@ -9,6 +9,8 @@ hyprland_config:
     - hypridle.conf
     - hyprtoolkit.conf
     - catppuccin-macchiato.conf
+    - carborange.conf
+    - wallpaper
     - commands.yml
     - conf.d
     - xdph.conf
