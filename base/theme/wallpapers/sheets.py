@@ -7,9 +7,9 @@ the shallow gradients do not band.
 
     uv run --with numpy,pillow sheets.py [WIDTH HEIGHT] [OUT]
 
-Defaults to 3840x2160, written as sheets.png next to this script; the
-copy hyprpaper uses lives in Dropbox (see hyprpaper.conf), so pass that
-path as OUT when re-rendering.
+Defaults to 3840x2160, written as sheets.png next to this script. `theme
+build` passes the size and an output path under ~/.local/share/theme/<name>/
+and hands the palette over in THEME_PALETTE.
 """
 
 import math
