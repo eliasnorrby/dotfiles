@@ -45,6 +45,10 @@ white = "#f6f6f4"
 
 [semantic]
 accent = "orange"          # where the eye should land: active, current, cursor
+active = "orange"           # the selected thing in chrome: workspace, focus
+selected = "orange"         # rofi rows, mako border, hyprtoolkit accent
+control = "orange"          # sliders, switches, progress
+notification_border = "orange"
 accent_fg = "crust"        # text drawn on the accent
 alert = "coal"             # something broke
 note = "peach"             # warnings, hashes, numbers: notable, not urgent

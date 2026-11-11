@@ -27,6 +27,8 @@
 @define-color mantle {{mantle}};
 @define-color crust {{crust}};
 @define-color accent {{accent}};
+@define-color active {{active}};
+@define-color selected {{selected}};
 @define-color accent_fg {{accent_fg}};
 @define-color alert {{alert}};
 @define-color note {{note}};
@@ -74,12 +76,12 @@ window#waybar {
 }
 
 #workspaces button:hover {
-  color: @accent;
+  color: @active;
   transition: all 0.3s linear;
 }
 
 #workspaces button.active {
-  background-color: @accent;
+  background-color: @active;
   color: @accent_fg;
   transition: all 0.3s linear;
 }
@@ -119,7 +121,7 @@ window#waybar {
 }
 
 #custom-focus.focus {
-  background-color: @accent;
+  background-color: @active;
   color: @mantle;
 }
 
@@ -213,7 +215,7 @@ window#waybar {
 }
 
 #custom-power:hover {
-  background-color: @accent;
+  background-color: @active;
   transition: all 0.3s linear;
 }
 

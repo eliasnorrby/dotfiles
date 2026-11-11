@@ -28,7 +28,9 @@
   mantle: {{mantle}};
   crust: {{crust}};
   accent: {{accent}};
-  accent_fg: {{accent_fg}};
+  active: {{active}};
+  selected: {{selected}};
+  accent-fg: {{accent_fg}};
   alert: {{alert}};
   note: {{note}};
   info: {{info}};

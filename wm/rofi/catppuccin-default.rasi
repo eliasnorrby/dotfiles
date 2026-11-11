@@ -7,7 +7,7 @@
   urgent-foreground:           @alert;
   alternate-urgent-background: @lightbg;
   background-color:            transparent;
-  border-color:                @accent;
+  border-color:                @selected;
   normal-background:           transparent;
   selected-urgent-background:  @alert;
   alternate-active-background: @lightbg;
@@ -15,17 +15,17 @@
   alternate-normal-foreground: @foreground;
   urgent-background:           @background;
   selected-normal-foreground:  @crust;
-  active-foreground:           @accent;
+  active-foreground:           @selected;
   background:                  @base;
-  selected-active-background:  @accent;
+  selected-active-background:  @selected;
   active-background:           @background;
-  selected-normal-background:  @accent;
+  selected-normal-background:  @selected;
   alternate-normal-background: transparent;
   foreground:                  @text;
   selected-urgent-foreground:  @background;
   normal-foreground:           @foreground;
   alternate-urgent-foreground: @alert;
-  alternate-active-foreground: @accent;
+  alternate-active-foreground: @selected;
 
 }
 element {
@@ -115,7 +115,7 @@ scrollbar {
     padding:       0;
     handle-width:  8px;
     border:        0;
-    handle-color:  @accent;
+    handle-color:  @selected;
     border-radius: @radius;
 }
 sidebar {

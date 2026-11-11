@@ -27,11 +27,11 @@ trough slider {
   border-radius: {{chrome.radius}}px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
   transition: all 0.2s ease;
-  background-color: {{accent}};
+  background-color: {{control}};
 }
 
 trough slider:hover {
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.8), 0 0 8px {{accent}};
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.8), 0 0 8px {{control}};
 }
 
 trough {
@@ -40,7 +40,7 @@ trough {
 
 /* notifications */
 .notification-background {
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.8), inset 0 0 0 1px {{accent}};
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.8), inset 0 0 0 1px {{notification_border}};
   border-radius: {{chrome.radius}}px;
   margin: 18px;
   background: rgba({{mantle.rgb}}, 0.95);
@@ -127,7 +127,7 @@ trough {
 
 .notification.low progress,
 .notification.normal progress {
-  background-color: {{accent}};
+  background-color: {{control}};
 }
 
 .notification progress,
@@ -218,7 +218,7 @@ scrollbar trough {
 }
 
 .widget-dnd>switch:checked {
-  background: {{accent}};
+  background: {{control}};
 }
 
 .widget-dnd>switch slider {
@@ -316,7 +316,7 @@ scrollbar trough {
 }
 
 .widget-volume trough highlight {
-  background: {{accent}};
+  background: {{control}};
 }
 
 .widget-backlight trough highlight {

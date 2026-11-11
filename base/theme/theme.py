@@ -191,7 +191,7 @@ def reload(pal):
     runtime = Path(os.environ.get("XDG_RUNTIME_DIR", "/tmp"))
     for sock in list(runtime.glob("nvim.*.0")) + list(Path("/tmp").glob("nvim*/0")):
         subprocess.run(["nvim", "--server", str(sock), "--remote-send",
-                        "<Cmd>lua require('core.theme').apply()<CR>"],
+                        "<Cmd>lua package.loaded['core.theme'] = nil require('core.theme').apply()<CR>"],
                        capture_output=True, timeout=5)
     if have("hyprctl") and running("Hyprland"):
         subprocess.run(["hyprctl", "reload"], capture_output=True)

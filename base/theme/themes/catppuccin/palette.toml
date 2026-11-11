@@ -39,6 +39,10 @@ white = "#ffffff"
 
 [semantic]
 accent = "yellow"
+active = "mauve"           # the selected thing in chrome: workspace, focus
+selected = "peach"         # rofi rows, mako border, hyprtoolkit accent
+control = "blue"          # sliders, switches, progress
+notification_border = "surface1"
 accent_fg = "crust"
 alert = "red"
 note = "yellow"
