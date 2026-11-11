@@ -7,7 +7,7 @@
 }
 
 trough highlight {
-  background: #cad3f5;
+  background: #e4e4e2;
 }
 
 scale {
@@ -18,42 +18,42 @@ scale trough {
   margin: 0rem 1rem;
   min-height: 8px;
   min-width: 70px;
-  border-radius: 12.6px;
+  border-radius: 0;
 }
 
 trough slider {
   margin: -10px;
-  border-radius: 12.6px;
+  border-radius: 0;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
   transition: all 0.2s ease;
-  background-color: #8aadf4;
+  background-color: #f5b35e;
 }
 
 trough slider:hover {
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.8), 0 0 8px #8aadf4;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.8), 0 0 8px #f5b35e;
 }
 
 trough {
-  background-color: #363a4f;
+  background-color: #222529;
 }
 
 /* notifications */
 .notification-background {
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.8), inset 0 0 0 1px #494d64;
-  border-radius: 12.6px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.8), inset 0 0 0 1px #f5b35e;
+  border-radius: 0;
   margin: 18px;
-  background: rgba(30, 32, 48, 0.95);
-  color: #cad3f5;
+  background: rgba(20, 22, 26, 0.95);
+  color: #e4e4e2;
   padding: 0;
 }
 
 .notification-background .notification {
   padding: 7px;
-  border-radius: 12.6px;
+  border-radius: 0;
 }
 
 .notification-background .notification.critical {
-  box-shadow: inset 0 0 7px 0 #ed8796;
+  box-shadow: inset 0 0 7px 0 #d8573c;
 }
 
 .notification .notification-content {
@@ -66,16 +66,16 @@ trough {
 }
 
 .notification-content .summary {
-  color: #cad3f5;
+  color: #e4e4e2;
   font-weight: 700;
 }
 
 .notification-content .time {
-  color: #a5adcb;
+  color: #a6a9ae;
 }
 
 .notification-content .body {
-  color: #b8c0e0;
+  color: #bdc0c5;
 }
 
 .notification>*:last-child>* {
@@ -85,23 +85,23 @@ trough {
 .notification-background .close-button {
   margin: 7px;
   padding: 2px;
-  border-radius: 6.3px;
-  color: #24273a;
-  background-color: #ed8796;
+  border-radius: 0;
+  color: #e4e4e2;
+  background-color: #393d44;
 }
 
 .notification-background .close-button:hover {
-  background-color: #ee99a0;
+  background-color: #52565d;
 }
 
 .notification-background .close-button:active {
-  background-color: #f5bde6;
+  background-color: #f5b35e;
 }
 
 .notification .notification-action {
-  border-radius: 7px;
-  color: #cad3f5;
-  box-shadow: inset 0 0 0 1px #494d64;
+  border-radius: 0;
+  color: #e4e4e2;
+  box-shadow: inset 0 0 0 1px #2b2e34;
   margin: 4px;
   padding: 8px;
   font-size: 0.2rem;
@@ -109,39 +109,39 @@ trough {
 }
 
 .notification .notification-action {
-  background-color: #363a4f;
+  background-color: #222529;
 }
 
 .notification .notification-action:hover {
-  background-color: #494d64;
+  background-color: #2b2e34;
 }
 
 .notification .notification-action:active {
-  background-color: #5b6078;
+  background-color: #393d44;
 }
 
 .notification.critical progress {
-  background-color: #ed8796;
+  background-color: #d8573c;
 }
 
 .notification.low progress,
 .notification.normal progress {
-  background-color: #8aadf4;
+  background-color: #f5b35e;
 }
 
 .notification progress,
 .notification trough,
 .notification progressbar {
-  border-radius: 12.6px;
+  border-radius: 0;
   padding: 3px 0;
 }
 
 /* control center */
 .control-center {
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.8), inset 0 0 0 1px #363a4f;
-  border-radius: 12.6px;
-  background-color: rgba(36, 39, 58, 0.95);
-  color: #cad3f5;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.8), inset 0 0 0 1px #222529;
+  border-radius: 0;
+  background-color: rgba(25, 28, 33, 0.95);
+  color: #e4e4e2;
   padding: 14px;
   margin-right: 20px;
   margin-top: 20px;
@@ -149,14 +149,14 @@ trough {
 }
 
 .control-center .notification-background {
-  background: rgba(30, 32, 48, 0.90);
-  border-radius: 7px;
-  box-shadow: inset 0 0 0 1px #494d64;
+  background: rgba(20, 22, 26, 0.90);
+  border-radius: 0;
+  box-shadow: inset 0 0 0 1px #2b2e34;
   margin: 4px 10px;
 }
 
 .control-center .notification-background .notification {
-  border-radius: 7px;
+  border-radius: 0;
 }
 
 .control-center .notification-background .notification.low {
@@ -164,24 +164,24 @@ trough {
 }
 
 .control-center .widget-title>label {
-  color: #cad3f5;
+  color: #e4e4e2;
   font-size: 1.3em;
 }
 
 .control-center .widget-title button {
-  border-radius: 7px;
-  color: #cad3f5;
-  background-color: #363a4f;
-  box-shadow: inset 0 0 0 1px #494d64;
+  border-radius: 0;
+  color: #e4e4e2;
+  background-color: #222529;
+  box-shadow: inset 0 0 0 1px #2b2e34;
   padding: 8px;
 }
 
 .control-center .widget-title button:hover {
-  background-color: #494d64;
+  background-color: #2b2e34;
 }
 
 .control-center .widget-title button:active {
-  background-color: #5b6078;
+  background-color: #393d44;
 }
 
 .control-center .notification-group {
@@ -189,7 +189,7 @@ trough {
 }
 
 .control-center .notification-group:focus .notification-background {
-  background-color: #363a4f;
+  background-color: #222529;
 }
 
 scrollbar slider {
@@ -205,58 +205,58 @@ scrollbar trough {
 .widget-dnd {
   margin-top: 20px;
   margin-bottom: 15px;
-  border-radius: 8px;
+  border-radius: 0;
   font-size: 1.1rem;
 }
 
 .widget-dnd>switch {
   font-size: initial;
-  border-radius: 8px;
-  background: #363a4f;
+  border-radius: 0;
+  background: #222529;
   box-shadow: none;
 }
 
 .widget-dnd>switch:checked {
-  background: #8aadf4;
+  background: #f5b35e;
 }
 
 .widget-dnd>switch slider {
-  background: #494d64;
-  border-radius: 8px;
+  background: #2b2e34;
+  border-radius: 0;
 }
 
 /* mpris */
 .widget-mpris-player {
-  background: #363a4f;
-  border-radius: 12.6px;
-  color: #cdd6f4;
+  background: #222529;
+  border-radius: 0;
+  color: #e4e4e2;
 }
 
 .mpris-overlay {
-  background-color: #363a4f;
+  background-color: #222529;
   opacity: 0.9;
   padding: 15px 10px;
 }
 
 .widget-mpris-album-art {
   -gtk-icon-size: 100px;
-  border-radius: 12.6px;
+  border-radius: 0;
   margin: 0 10px;
 }
 
 .widget-mpris-title {
   font-size: 1.2rem;
-  color: #cad3f5;
+  color: #e4e4e2;
 }
 
 .widget-mpris-subtitle {
   font-size: 1rem;
-  color: #b8c0e0;
+  color: #bdc0c5;
 }
 
 .widget-mpris button {
-  border-radius: 12.6px;
-  color: #cad3f5;
+  border-radius: 0;
+  color: #e4e4e2;
   margin: 0 5px;
   padding: 2px;
 }
@@ -266,11 +266,11 @@ scrollbar trough {
 }
 
 .widget-mpris button:hover {
-  background-color: #363a4f;
+  background-color: #222529;
 }
 
 .widget-mpris button:active {
-  background-color: #494d64;
+  background-color: #2b2e34;
 }
 
 .widget-mpris button:disabled {
@@ -283,17 +283,17 @@ scrollbar trough {
 }
 
 .widget-menubar>box>.menu-button-bar> :last-child {
-  color: #ed8796;
+  color: #d8573c;
 }
 
 .power-buttons button:hover,
 .powermode-buttons button:hover,
 .screenshot-buttons button:hover {
-  background: #363a4f;
+  background: #222529;
 }
 
 .control-center .widget-label>label {
-  color: #cad3f5;
+  color: #e4e4e2;
   font-size: 2rem;
 }
 
@@ -310,21 +310,21 @@ scrollbar trough {
 }
 
 .widget-volume label {
-  color: #7dc4e4;
+  color: #bdc0c5;
   padding: 0 1rem;
 }
 
 .widget-volume trough highlight {
-  background: #7dc4e4;
+  background: #f5b35e;
 }
 
 .widget-backlight trough highlight {
-  background: #eed49f;
+  background: #ffcfa3;
 }
 
 .widget-backlight label {
   font-size: 1.5rem;
-  color: #eed49f;
+  color: #ffcfa3;
 }
 
 .widget-backlight .KB {
