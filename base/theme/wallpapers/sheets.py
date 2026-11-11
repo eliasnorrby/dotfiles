@@ -109,7 +109,7 @@ def main():
         args = args[2:]
     out = args[0] if args else os.path.join(
         os.path.dirname(os.path.abspath(__file__)), "sheets.png")
-    render(width, height).save(out, optimize=True)
+    render(width, height).save(out, compress_level=3)
     print(out)
 
 

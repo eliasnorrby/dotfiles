@@ -23,6 +23,7 @@ and {{meta.NAME}} read those tables. Standard library only.
 
 import json
 import os
+import time
 import re
 import shutil
 import subprocess
@@ -50,6 +51,17 @@ EXPORTS = {
     "k9s.yaml": ["~/.config/k9s/skins/system.yaml"],
     "yazi.toml": ["~/.config/yazi/theme.toml", "~/.config/yazi-picker/theme.toml"],
 }
+
+DEBUG = os.environ.get("THEME_DEBUG")
+
+
+def timed(label, fn, *args, **kwargs):
+    start = time.time()
+    result = fn(*args, **kwargs)
+    if DEBUG:
+        print(f"theme: {label}: {time.time() - start:.2f}s", file=sys.stderr)
+    return result
+
 
 TOKEN = re.compile(r"\{\{\s*([a-zA-Z_][\w.]*?)(?:\.(hex|rgb|argb))?\s*\}\}")
 HEX = re.compile(r"^#?([0-9a-fA-F]{6})$")
@@ -132,6 +144,14 @@ def screen_size():
 def build_wallpaper(pal, out):
     spec = pal.wallpaper
     target = out / "wallpaper"
+    if "script" in spec:
+        # Rendering is slow and goes through uv, so keep the last render
+        # unless the script or the palette changed since.
+        png = target.with_suffix(".png")
+        script = HERE / spec["script"]
+        palette_file = THEMES / pal.name / "palette.toml"
+        if png.exists() and png.stat().st_mtime > max(script.stat().st_mtime, palette_file.stat().st_mtime):
+            return
     for stale in out.glob("wallpaper*"):
         stale.unlink()
     if "file" in spec:
@@ -148,13 +168,18 @@ def build_wallpaper(pal, out):
         script = HERE / spec["script"]
         target = target.with_suffix(".png")
         w, h = screen_size()
-        cmd = ["python3", str(script), str(w), str(h), str(target)]
+        env = dict(os.environ, THEME_PALETTE=str(THEMES / pal.name / "palette.toml"))
+        args = [str(script), str(w), str(h), str(target)]
         if spec.get("uv"):
             # --no-project: uv would otherwise sync whatever project the caller
-            # happens to be in, which can take minutes and looks like a hang.
-            cmd = ["uv", "run", "--quiet", "--no-project", "--with", spec["uv"], str(script), str(w), str(h), str(target)]
-        env = dict(os.environ, THEME_PALETTE=str(THEMES / pal.name / "palette.toml"))
-        subprocess.run(cmd, check=True, env=env, cwd=HERE)
+            # happens to be in. --offline first: uv resolves against PyPI on
+            # every run otherwise, and a slow PyPI stalls the switch.
+            base = ["uv", "run", "--quiet", "--no-project", "--with", spec["uv"]]
+            done = subprocess.run(base + ["--offline"] + args, env=env, cwd=HERE)
+            if done.returncode != 0:
+                subprocess.run(base + args, check=True, env=env, cwd=HERE)
+        else:
+            subprocess.run(["python3"] + args, check=True, env=env, cwd=HERE)
     else:
         return
     # A fixed name for configs to point at, whatever the format.
@@ -166,11 +191,13 @@ def build(name):
     pal = Palette(name)
     out = DATA / name
     out.mkdir(parents=True, exist_ok=True)
-    for tmpl in sorted(TEMPLATES.iterdir()):
-        if tmpl.name.startswith("."):
-            continue
-        (out / tmpl.name).write_text(pal.render(tmpl.read_text()))
-    build_wallpaper(pal, out)
+    def templates():
+        for tmpl in sorted(TEMPLATES.iterdir()):
+            if tmpl.name.startswith("."):
+                continue
+            (out / tmpl.name).write_text(pal.render(tmpl.read_text()))
+    timed("templates", templates)
+    timed("wallpaper", build_wallpaper, pal, out)
     print(f"theme: built {name} -> {out}")
     return out
 
@@ -191,10 +218,18 @@ def reload(pal):
         subprocess.run(["tmux", "source-file", os.path.expanduser("~/.config/tmux/tmux.conf")],
                        capture_output=True)
     runtime = Path(os.environ.get("XDG_RUNTIME_DIR", "/tmp"))
+    procs = []
     for sock in list(runtime.glob("nvim.*.0")) + list(Path("/tmp").glob("nvim*/0")):
-        subprocess.run(["nvim", "--server", str(sock), "--remote-send",
-                        "<Cmd>lua package.loaded['core.theme'] = nil require('core.theme').apply()<CR>"],
-                       capture_output=True, timeout=5)
+        procs.append((sock, subprocess.Popen(
+            ["nvim", "--server", str(sock), "--remote-send",
+             "<Cmd>lua package.loaded['core.theme'] = nil require('core.theme').apply()<CR>"],
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)))
+    for sock, proc in procs:
+        try:
+            proc.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            print(f"theme: neovim at {sock.name} did not answer", file=sys.stderr)
     if have("hyprctl") and running("Hyprland"):
         subprocess.run(["hyprctl", "reload"], capture_output=True)
         if running("hyprpaper"):
@@ -242,7 +277,7 @@ def set_theme(name, do_reload=True):
         claude_themes.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(out / "claude.json", claude_themes / "system.json")
     if do_reload:
-        reload(Palette(name))
+        timed("reload", reload, Palette(name))
 
 
 def main(argv):
