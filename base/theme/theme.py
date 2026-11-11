@@ -150,9 +150,11 @@ def build_wallpaper(pal, out):
         w, h = screen_size()
         cmd = ["python3", str(script), str(w), str(h), str(target)]
         if spec.get("uv"):
-            cmd = ["uv", "run", "--quiet", "--with", spec["uv"], str(script), str(w), str(h), str(target)]
+            # --no-project: uv would otherwise sync whatever project the caller
+            # happens to be in, which can take minutes and looks like a hang.
+            cmd = ["uv", "run", "--quiet", "--no-project", "--with", spec["uv"], str(script), str(w), str(h), str(target)]
         env = dict(os.environ, THEME_PALETTE=str(THEMES / pal.name / "palette.toml"))
-        subprocess.run(cmd, check=True, env=env)
+        subprocess.run(cmd, check=True, env=env, cwd=HERE)
     else:
         return
     # A fixed name for configs to point at, whatever the format.

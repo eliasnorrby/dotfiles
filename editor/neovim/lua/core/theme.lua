@@ -87,6 +87,9 @@ function M.refresh_lualine()
   if not spec or not spec._.loaded then
     return
   end
+  -- lazy caches evaluated opts on the plugin; drop that so the opts
+  -- function runs again and reads the new palette.
+  spec._.cache = {}
   local opts = require('lazy.core.plugin').values(spec, 'opts', false)
   require('lualine').setup(opts)
 end
