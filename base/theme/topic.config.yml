@@ -1,0 +1,7 @@
+---
+theme_config:
+  path: base/theme
+  links:
+    - src: theme.py
+      dest: "{{ xdg_bin_home }}/"
+      rename: theme

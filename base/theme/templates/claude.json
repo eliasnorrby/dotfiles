@@ -1,0 +1,30 @@
+{
+  "name": "{{meta.title}} (system)",
+  "base": "dark-ansi",
+  "overrides": {
+    "claude": "{{accent}}",
+    "success": "{{good}}",
+    "warning": "{{note}}",
+    "error": "{{alert}}",
+    "merged": "{{special}}",
+    "inactive": "{{muted}}",
+    "subtle": "{{dim}}",
+    "suggestion": "{{accent}}",
+    "permission": "{{accent}}",
+    "remember": "{{subtext1}}",
+    "promptBorder": "{{dim}}",
+    "bashBorder": "{{accent}}",
+    "planMode": "{{plan}}",
+    "autoAccept": "{{accent}}",
+    "ide": "{{info}}",
+    "fastMode": "{{note}}",
+    "diffAdded": "{{diff_added_bg}}",
+    "diffRemoved": "{{diff_removed_bg}}",
+    "diffAddedWord": "{{diff_added_word}}",
+    "diffRemovedWord": "{{diff_removed_word}}",
+    "diffAddedDimmed": "{{diff_added_dim}}",
+    "diffRemovedDimmed": "{{diff_removed_dim}}",
+    "userMessageBackground": "{{message_bg}}",
+    "userMessageBackgroundHover": "{{message_bg_hover}}"
+  }
+}

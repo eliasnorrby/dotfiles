@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the carborange sheets wallpaper: four sheets of grey stacked from
+"""Render the sheets wallpaper: four sheets of grey stacked from
 the left over the ground, each edge a straight line tilted 67.5 degrees from horizontal
 (rising to the right), each sheet casting a soft shadow on the one beneath.
 Everything is computed in floating point and dithered once at the end, so
@@ -19,10 +19,32 @@ import sys
 import numpy as np
 from PIL import Image
 
+
+def palette():
+    """The theme's greys, from the palette `theme build` points at through
+    THEME_PALETTE, else carborange's own."""
+    path = os.environ.get("THEME_PALETTE")
+    colours = {
+        "crust": "#0f1115", "mantle": "#14161a", "base": "#191c21",
+        "surface0": "#222529", "surface1": "#2b2e34", "surface2": "#393d44",
+    }
+    if path:
+        import tomllib
+        with open(path, "rb") as f:
+            colours.update(tomllib.load(f)["colors"])
+    return {k: tuple(int(v.lstrip("#")[i:i + 2], 16) for i in (0, 2, 4))
+            for k, v in colours.items()}
+
+
+def mix(a, b, t):
+    return tuple(round(x + (y - x) * t) for x, y in zip(a, b))
+
+
+P = palette()
 # Ground, right of the last sheet: a shallow gradient darkened at the corners.
-GROUND_LEFT = (0x39, 0x3D, 0x44)   # surface2
-GROUND_RIGHT = (0x30, 0x34, 0x3A)  # surface2, a shade down
-VIGNETTE = (0x14, 0x16, 0x1A)      # mantle
+GROUND_LEFT = P["surface2"]
+GROUND_RIGHT = mix(P["surface2"], P["surface1"], 0.6)
+VIGNETTE = P["mantle"]
 VIGNETTE_STRENGTH = 0.45
 
 # Sheets, left to right: (edge x at mid height as a fraction of width,
@@ -33,10 +55,10 @@ VIGNETTE_STRENGTH = 0.45
 # side of its mid-height x, about 0.116 of the width here, so edges at
 # 0.29 and 0.71 leave the same margin bottom-left and top-right.
 SHEETS = [
-    (0.29, (0x0B, 0x0C, 0x0F)),  # below crust
-    (0.43, (0x14, 0x16, 0x1A)),  # mantle
-    (0.57, (0x1E, 0x21, 0x26)),  # between base and surface0
-    (0.71, (0x2B, 0x2E, 0x34)),  # surface1
+    (0.29, mix(P["crust"], (0, 0, 0), 0.3)),       # below crust
+    (0.43, P["mantle"]),
+    (0.57, mix(P["base"], P["surface0"], 0.5)),
+    (0.71, P["surface1"]),
 ]
 TILT_DEG = 67.5
 SHADOW_WIDTH = 0.030   # of width; how far the shadow reaches right of an edge

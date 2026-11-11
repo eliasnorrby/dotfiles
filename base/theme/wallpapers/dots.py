@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the carborange wallpaper: a dot grid on carbon that fades toward
+"""Render the dot grid wallpaper: a dot grid on carbon that fades toward
 the centre, so a transparent terminal sits on near-flat grey and the grid
 shows in the gaps.
 
@@ -14,8 +14,23 @@ import sys
 
 from PIL import Image, ImageDraw
 
-GROUND = (0x0F, 0x11, 0x15)
-DOT = (0x2B, 0x2E, 0x34)
+
+def palette():
+    """The theme's greys, from the palette `theme build` points at through
+    THEME_PALETTE, else carborange's own."""
+    path = os.environ.get("THEME_PALETTE")
+    colours = {"crust": "#0f1115", "surface1": "#2b2e34"}
+    if path:
+        import tomllib
+        with open(path, "rb") as f:
+            colours.update(tomllib.load(f)["colors"])
+    return {k: tuple(int(v.lstrip("#")[i:i + 2], 16) for i in (0, 2, 4))
+            for k, v in colours.items()}
+
+
+P = palette()
+GROUND = P["crust"]
+DOT = P["surface1"]
 PITCH = 64  # physical px; 43 logical at 1.5x
 RADIUS = 2.6
 
@@ -48,7 +63,7 @@ def main():
         width, height = int(args[0]), int(args[1])
         args = args[2:]
     out = args[0] if args else os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "carborange.png"
+        os.path.dirname(os.path.abspath(__file__)), "dots.png"
     )
     render(width, height).save(out, optimize=True)
     print(out)

@@ -1,0 +1,108 @@
+# carborange: carbon greys, one orange, a coal for errors.
+# The 26 catppuccin names are kept so every consumer's template is shared
+# with the catppuccin palette; the hues collapse into tiers:
+#   red/maroon -> coal, green/yellow -> orange, peach -> peach tint,
+#   rosewater/flamingo -> cream, blue/sapphire/lavender -> white,
+#   mauve/pink/teal/sky -> silver.
+
+[meta]
+name = "carborange"
+title = "Carborange"
+flavour = "macchiato"   # the catppuccin engine flavour neovim builds on
+dark = true
+
+[colors]
+rosewater = "#ffe9d6"
+flamingo = "#ffe9d6"
+pink = "#bdc0c5"
+mauve = "#bdc0c5"
+red = "#d8573c"
+maroon = "#d8573c"
+peach = "#ffcfa3"
+yellow = "#ffcfa3"
+green = "#f5b35e"
+teal = "#bdc0c5"
+sky = "#bdc0c5"
+sapphire = "#f6f6f4"
+blue = "#f6f6f4"
+lavender = "#f6f6f4"
+text = "#e4e4e2"
+subtext1 = "#bdc0c5"
+subtext0 = "#a6a9ae"
+overlay2 = "#8c9097"
+overlay1 = "#6c7077"
+overlay0 = "#52565d"
+surface2 = "#393d44"
+surface1 = "#2b2e34"
+surface0 = "#222529"
+base = "#191c21"
+mantle = "#14161a"
+crust = "#0f1115"
+# carborange's own
+orange = "#f5b35e"
+coal = "#d8573c"
+white = "#f6f6f4"
+
+[semantic]
+accent = "orange"          # where the eye should land: active, current, cursor
+accent_fg = "crust"        # text drawn on the accent
+alert = "coal"             # something broke
+note = "peach"             # warnings, hashes, numbers: notable, not urgent
+good = "orange"            # added, passing, staged
+info = "white"             # directories, functions, info
+special = "mauve"          # keywords, the "selected" slot in chrome
+muted = "overlay2"
+dim = "overlay0"
+cursor = "orange"
+cursor_text = "base"
+selection_bg = "surface2"
+selection_fg = "text"
+url = "orange"
+border_active = "orange"
+border_inactive = "overlay0"
+border_alert = "coal"
+tab_active_bg = "orange"
+tab_active_fg = "crust"
+tab_inactive_bg = "mantle"
+tab_inactive_fg = "subtext1"
+tab_bar_bg = "crust"
+mark1 = "orange"
+mark2 = "peach"
+mark3 = "subtext1"
+# Claude Code
+diff_added_bg = "#2b2e34"
+diff_removed_bg = "#38262a"
+diff_added_word = "#3d4149"
+diff_removed_word = "#54302f"
+diff_added_dim = "#222529"
+diff_removed_dim = "#2a2124"
+message_bg = "surface0"
+message_bg_hover = "surface1"
+plan = "subtext1"
+
+[ansi]
+black = "surface1"
+red = "coal"
+green = "orange"
+yellow = "orange"
+blue = "white"
+magenta = "subtext1"
+cyan = "subtext1"
+white = "subtext1"
+bright_black = "overlay0"
+bright_red = "coal"
+bright_green = "orange"
+bright_yellow = "peach"
+bright_blue = "white"
+bright_magenta = "subtext1"
+bright_cyan = "subtext1"
+bright_white = "white"
+
+[chrome]
+radius = 0
+kitty_opacity = 0.8
+window_opacity = 0.9
+
+[wallpaper]
+script = "wallpapers/sheets.py"
+uv = "numpy,pillow"

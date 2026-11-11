@@ -47,6 +47,9 @@ topics:
     - name: task
       state: present
       config: "{{ task_config }}"
+    - name: theme
+      state: present
+      config: "{{ theme_config }}"
     - name: tailscale
       state: present
       config: "{{ tailscale_config }}"

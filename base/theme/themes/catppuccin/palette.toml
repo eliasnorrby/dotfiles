@@ -1,0 +1,99 @@
+# catppuccin macchiato, as the desktop was themed before carborange.
+# The semantic layer records which hue each consumer used to borrow.
+
+[meta]
+name = "catppuccin"
+title = "Catppuccin Macchiato"
+flavour = "macchiato"
+dark = true
+
+[colors]
+rosewater = "#f4dbd6"
+flamingo = "#f0c6c6"
+pink = "#f5bde6"
+mauve = "#c6a0f6"
+red = "#ed8796"
+maroon = "#ee99a0"
+peach = "#f5a97f"
+yellow = "#eed49f"
+green = "#a6da95"
+teal = "#8bd5ca"
+sky = "#91d7e3"
+sapphire = "#7dc4e4"
+blue = "#8aadf4"
+lavender = "#b7bdf8"
+text = "#cad3f5"
+subtext1 = "#b8c0e0"
+subtext0 = "#a5adcb"
+overlay2 = "#939ab7"
+overlay1 = "#8087a2"
+overlay0 = "#6e738d"
+surface2 = "#5b6078"
+surface1 = "#494d64"
+surface0 = "#363a4f"
+base = "#24273a"
+mantle = "#1e2030"
+crust = "#181926"
+
+[semantic]
+accent = "yellow"
+accent_fg = "crust"
+alert = "red"
+note = "yellow"
+good = "green"
+info = "blue"
+special = "mauve"
+muted = "overlay2"
+dim = "overlay0"
+cursor = "rosewater"
+cursor_text = "base"
+selection_bg = "rosewater"
+selection_fg = "base"
+url = "rosewater"
+border_active = "lavender"
+border_inactive = "overlay0"
+border_alert = "yellow"
+tab_active_bg = "mauve"
+tab_active_fg = "crust"
+tab_inactive_bg = "mantle"
+tab_inactive_fg = "text"
+tab_bar_bg = "crust"
+mark1 = "lavender"
+mark2 = "mauve"
+mark3 = "sapphire"
+# Claude Code: the greens and reds of the stock dark theme, on this base
+diff_added_bg = "#2a3d3a"
+diff_removed_bg = "#4a2b38"
+diff_added_word = "#3b5a4e"
+diff_removed_word = "#6a3a4c"
+diff_added_dim = "#2b3340"
+diff_removed_dim = "#332a3a"
+message_bg = "surface0"
+message_bg_hover = "surface1"
+plan = "blue"
+
+[ansi]
+black = "surface1"
+red = "red"
+green = "green"
+yellow = "yellow"
+blue = "blue"
+magenta = "pink"
+cyan = "teal"
+white = "subtext1"
+bright_black = "surface2"
+bright_red = "red"
+bright_green = "green"
+bright_yellow = "yellow"
+bright_blue = "blue"
+bright_magenta = "pink"
+bright_cyan = "teal"
+bright_white = "subtext0"
+
+[chrome]
+radius = 10
+kitty_opacity = 1.0
+window_opacity = 0.9
+
+[wallpaper]
+file = "~/.wallpaper"

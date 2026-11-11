@@ -65,6 +65,9 @@ topics:
     - name: task
       state: present
       config: "{{ task_config }}"
+    - name: theme
+      state: present
+      config: "{{ theme_config }}"
     - name: systemd
       state: present
       config: "{{ systemd_config }}"
