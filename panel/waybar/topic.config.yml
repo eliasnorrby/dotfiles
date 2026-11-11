@@ -3,7 +3,6 @@ waybar_config:
   path: panel/waybar
   links:
     - config.jsonc
-    - style.css
     - power_menu.xml
     - src: scripts/check_updates.sh
       dest: "{{ xdg_bin_home }}/"

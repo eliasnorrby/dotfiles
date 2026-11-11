@@ -1,1 +1,1 @@
-export K9S_SKIN=carborange
+export K9S_SKIN=system

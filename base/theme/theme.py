@@ -37,6 +37,20 @@ DATA = Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local/share")) / "th
 CONFIG = Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config")) / "theme"
 CURRENT = CONFIG / "current"
 
+# Consumers that cannot include a file get a symlink to the rendered one,
+# at a fixed place under their own config dir. Made on `theme set` when the
+# parent dir exists, so the same list serves arch and macOS.
+EXPORTS = {
+    "hyprtoolkit.conf": ["~/.config/hypr/hyprtoolkit.conf"],
+    "waybar.css": ["~/.config/waybar/style.css"],
+    "swaync.css": ["~/.config/swaync/style.css"],
+    "mako.ini": ["~/.config/mako/theme"],
+    "rofi.rasi": ["~/.config/rofi/system.rasi"],
+    "btop.theme": ["~/.config/btop/themes/system.theme"],
+    "k9s.yaml": ["~/.config/k9s/skins/system.yaml"],
+    "yazi.toml": ["~/.config/yazi/theme.toml", "~/.config/yazi-picker/theme.toml"],
+}
+
 TOKEN = re.compile(r"\{\{\s*([a-zA-Z_][\w.]*?)(?:\.(hex|rgb|argb))?\s*\}\}")
 HEX = re.compile(r"^#?([0-9a-fA-F]{6})$")
 
@@ -192,6 +206,23 @@ def reload(pal):
         subprocess.run(["makoctl", "reload"], capture_output=True)
 
 
+def export():
+    """Point each consumer's fixed path at current/<file>. A real file in
+    the way is left alone and reported; a symlink is replaced."""
+    for rendered, dests in EXPORTS.items():
+        for dest in dests:
+            dest = Path(os.path.expanduser(dest))
+            if not dest.parent.parent.exists():
+                continue
+            dest.parent.mkdir(exist_ok=True)
+            if dest.exists() and not dest.is_symlink():
+                print(f"theme: not replacing a real file: {dest}", file=sys.stderr)
+                continue
+            if dest.is_symlink():
+                dest.unlink()
+            dest.symlink_to(CURRENT / rendered)
+
+
 def set_theme(name, do_reload=True):
     out = build(name)
     CONFIG.mkdir(parents=True, exist_ok=True)
@@ -201,6 +232,7 @@ def set_theme(name, do_reload=True):
     tmp.symlink_to(out)
     tmp.replace(CURRENT)
     print(f"theme: current -> {name}")
+    export()
     # Claude Code watches ~/.claude/themes for writes; a symlink that
     # silently changes target is not one, so copy the rendered file in.
     claude_themes = Path.home() / ".claude/themes"

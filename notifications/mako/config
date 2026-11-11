@@ -1,6 +1,5 @@
 # Appearance
 font=Noto Sans 12
-border-radius=10
 border-size=1
 padding=12
 margin=15
@@ -13,4 +12,4 @@ layer=overlay
 anchor=top-right
 
 # Theme
-include=~/.config/mako/theme
+include=~/.config/theme/current/mako.ini

@@ -1,23 +1,22 @@
-# Catppuccin Mocha K9s Theme
-# https://catppuccin.com/palette/mocha
+# {{meta.title}}, rendered by `theme build`. Do not edit; edit the palette.
 
 # 🎨 Palette
-foreground: &foreground "#cdd6f4"
+foreground: &foreground "{{text}}"
 background: &background default
 
-black: &black "#181825"
-blue: &blue "#89b4fa"
-green: &green "#a6e3a1"
-grey: &grey "#6c7086"
-cyan: &cyan "#94e2d5"
-purple: &purple "#cba6f7"
-red: &red "#f38ba8"
-yellow: &yellow "#f9e2af"
-peach: &peach "#fab387"
-pink: &pink "#f5c2e7"
-lavender: &lavender "#b4befe"
-sky: &sky "#89dceb"
-overlay: &overlay "#585b70"
+black: &black "{{mantle}}"
+blue: &blue "{{blue}}"
+green: &green "{{green}}"
+grey: &grey "{{overlay0}}"
+cyan: &cyan "{{teal}}"
+purple: &purple "{{mauve}}"
+red: &red "{{red}}"
+yellow: &yellow "{{yellow}}"
+peach: &peach "{{peach}}"
+pink: &pink "{{pink}}"
+lavender: &lavender "{{lavender}}"
+sky: &sky "{{sky}}"
+overlay: &overlay "{{surface2}}"
 
 k9s:
   body:

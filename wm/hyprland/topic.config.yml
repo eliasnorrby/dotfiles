@@ -7,9 +7,6 @@ hyprland_config:
     - hyprpaper.conf
     - hyprlock.conf
     - hypridle.conf
-    - hyprtoolkit.conf
-    - catppuccin-macchiato.conf
-    - carborange.conf
     - commands.yml
     - conf.d
     - xdph.conf

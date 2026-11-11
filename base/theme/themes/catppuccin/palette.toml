@@ -34,6 +34,8 @@ surface0 = "#363a4f"
 base = "#24273a"
 mantle = "#1e2030"
 crust = "#181926"
+# for templates that need a plain white
+white = "#ffffff"
 
 [semantic]
 accent = "yellow"
@@ -71,6 +73,22 @@ diff_removed_dim = "#332a3a"
 message_bg = "surface0"
 message_bg_hover = "surface1"
 plan = "blue"
+# waybar modules, swaync, yazi icons
+module_language = "green"
+module_audio = "flamingo"
+module_media = "blue"
+module_media_playing = "green"
+module_media_breathe = "teal"
+module_cpu = "peach"
+module_memory = "pink"
+power_bg = "peach"
+power_fg = "mantle"
+close_bg = "red"
+close_fg = "base"
+close_hover = "maroon"
+close_active = "pink"
+icon_dir = "blue"
+icon_file = "text"
 
 [ansi]
 black = "surface1"

@@ -3,7 +3,6 @@ swaync_config:
   path: notifications/swaync
   links:
     - config.json
-    - style.css
   pacman_packages:
     - swaync
     - libnotify # for notify-send

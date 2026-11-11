@@ -1,32 +1,31 @@
-@import "carborange"
+@import "system"
 
 * {
   selected-active-foreground:  @background;
   lightfg:                     @text;
   separatorcolor:              @surface1;
-  urgent-foreground:           @red;
+  urgent-foreground:           @alert;
   alternate-urgent-background: @lightbg;
-  lightbg:                     #14161a66;
   background-color:            transparent;
-  border-color:                @peach;
+  border-color:                @accent;
   normal-background:           transparent;
-  selected-urgent-background:  @red;
+  selected-urgent-background:  @alert;
   alternate-active-background: @lightbg;
   spacing:                     2;
   alternate-normal-foreground: @foreground;
   urgent-background:           @background;
   selected-normal-foreground:  @crust;
-  active-foreground:           @peach;
+  active-foreground:           @accent;
   background:                  @base;
-  selected-active-background:  @peach;
+  selected-active-background:  @accent;
   active-background:           @background;
-  selected-normal-background:  @peach;
+  selected-normal-background:  @accent;
   alternate-normal-background: transparent;
   foreground:                  @text;
   selected-urgent-foreground:  @background;
   normal-foreground:           @foreground;
-  alternate-urgent-foreground: @red;
-  alternate-active-foreground: @peach;
+  alternate-urgent-foreground: @alert;
+  alternate-active-foreground: @accent;
 
 }
 element {
@@ -34,7 +33,7 @@ element {
     cursor:        pointer;
     spacing:       8px;
     border:        0;
-    border-radius: 0;
+    border-radius: @radius;
     margin:        2px 0;
 }
 element normal.normal {
@@ -87,9 +86,9 @@ element-icon {
 }
 window {
     padding:          16px;
-    background-color: #191c21ae;
+    background-color: @window-background;
     border:           2px;
-    border-radius:    0;
+    border-radius:    @radius;
 }
 mainbox {
     padding: 0;
@@ -116,8 +115,8 @@ scrollbar {
     padding:       0;
     handle-width:  8px;
     border:        0;
-    handle-color:  @peach;
-    border-radius: 0;
+    handle-color:  @accent;
+    border-radius: @radius;
 }
 sidebar {
     border-color: @separatorcolor;

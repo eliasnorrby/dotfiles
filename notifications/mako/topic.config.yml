@@ -3,7 +3,6 @@ mako_config:
   path: notifications/mako
   links:
     - config
-    - theme
   pacman_packages:
     - mako
     - libnotify # for notify-send

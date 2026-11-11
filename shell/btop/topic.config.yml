@@ -7,7 +7,6 @@ btop_config:
     - btop
   links:
     - btop.conf
-    - themes
     - src: btop.desktop
       dest: "{{ xdg_applications_dir }}/"
       condition: "{{ is_arch }}"

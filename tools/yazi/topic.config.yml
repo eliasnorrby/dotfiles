@@ -5,15 +5,12 @@ yazi_config:
   links:
     - yazi.toml
     - keymap.toml
-    - theme.toml
     - src: picker/keymap.toml
       dest: "{{ yazi_picker_home }}/"
       rename: keymap.toml
     - src: picker/yazi.toml
       dest: "{{ yazi_picker_home }}/"
       rename: yazi.toml
-    - src: theme.toml
-      dest: "{{ yazi_picker_home }}/"
     - src: capture_picker.sh
       dest: "{{ xdg_bin_home }}/"
       rename: capture_picker

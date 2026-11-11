@@ -2,9 +2,6 @@
 kubernetes_config:
   path: dev/kubernetes
   links:
-    - src: k9s/skins
-      dest: "{{ k9s_config_dir }}/"
-      rename: skins
     - src: update_kubectl_token.sh
       dest: "{{ xdg_bin_home }}/"
       rename: update_kubectl_token

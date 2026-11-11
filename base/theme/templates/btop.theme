@@ -1,0 +1,91 @@
+# {{meta.title}}, rendered by `theme build`. Do not edit; edit the palette.
+
+# Main background (leave empty for terminal transparency)
+theme[main_bg]="{{base}}"          # base
+
+# Main text color
+theme[main_fg]="{{text}}"          # text
+
+# Title color for boxes
+theme[title]="{{text}}"            # text
+
+# Highlight color for keyboard shortcuts
+theme[hi_fg]="{{yellow}}"            # yellow
+
+# Background color of selected item in processes box
+theme[selected_bg]="{{yellow}}"      # yellow
+
+# Foreground color of selected item in processes box
+theme[selected_fg]="{{base}}"      # base (for contrast)
+
+# Color of inactive/disabled text
+theme[inactive_fg]="{{overlay0}}"      # subtext0
+
+# Text on top of graphs (uptime, net scaling, etc.)
+theme[graph_text]="{{text}}"       # text
+
+# Background color of percentage meters
+theme[meter_bg]="{{overlay0}}"         # subtext0
+
+# Misc colors (mini cpu graphs, mem details, status text)
+theme[proc_misc]="{{mauve}}"        # mauve
+
+# CPU box outline color
+theme[cpu_box]="{{mauve}}"          # mauve
+
+# Memory/disks box outline color
+theme[mem_box]="{{teal}}"          # teal
+
+# Net up/down box outline color
+theme[net_box]="{{red}}"          # red
+
+# Processes box outline color
+theme[proc_box]="{{yellow}}"         # yellow
+
+# Box divider line and small boxes line color
+theme[div_line]="{{overlay0}}"         # subtext0
+
+# Temperature graph colors
+theme[temp_start]="{{mauve}}"       # mauve
+theme[temp_mid]="{{flamingo}}"         # flamingo
+theme[temp_end]="{{special}}"         # lavender
+
+# CPU graph colors
+theme[cpu_start]="{{mauve}}"        # mauve
+theme[cpu_mid]="{{flamingo}}"          # flamingo
+theme[cpu_end]="{{special}}"          # lavender
+
+# Mem/Disk free meter
+theme[free_start]="{{teal}}"       # teal
+theme[free_mid]="{{teal}}"         # teal
+theme[free_end]="{{sapphire}}"         # sapphire
+
+# Mem/Disk cached meter
+theme[cached_start]="{{teal}}"     # teal
+theme[cached_mid]="{{teal}}"       # teal
+theme[cached_end]="{{sapphire}}"       # sapphire
+
+# Mem/Disk available meter
+theme[available_start]="{{teal}}"  # teal
+theme[available_mid]="{{teal}}"    # teal
+theme[available_end]="{{sapphire}}"    # sapphire
+
+# Mem/Disk used meter
+theme[used_start]="{{green}}"       # green
+theme[used_mid]="{{green}}"         # green
+theme[used_end]="{{sky}}"         # sky
+
+# Download graph colors
+theme[download_start]="{{red}}"   # red
+theme[download_mid]="{{maroon}}"     # maroon
+theme[download_end]="{{peach}}"     # peach
+
+# Upload graph colors
+theme[upload_start]="{{sapphire}}"     # sapphire
+theme[upload_mid]="{{blue}}"       # blue
+theme[upload_end]="{{lavender}}"       # lavender
+
+# Process box gradient (threads, mem, cpu usage)
+theme[process_start]="{{yellow}}"    # yellow
+theme[process_mid]="{{peach}}"      # peach
+theme[process_end]="{{rosewater}}"      # rosewater
