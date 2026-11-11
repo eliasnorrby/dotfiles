@@ -26,6 +26,8 @@ claude_config:
       dest: "{{ claude_home }}/"
     - src: statusline.sh
       dest: "{{ claude_home }}/"
+    - src: themes
+      dest: "{{ claude_home }}/"
     - src: home-claude.md
       dest: ~/
       rename: CLAUDE.md

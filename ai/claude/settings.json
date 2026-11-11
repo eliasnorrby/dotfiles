@@ -197,7 +197,7 @@
       "effortLevel": "high"
     }
   },
-  "theme": "auto",
+  "theme": "custom:carborange",
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true
