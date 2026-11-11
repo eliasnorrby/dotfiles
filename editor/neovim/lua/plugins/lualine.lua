@@ -15,7 +15,8 @@ return {
       },
     }
 
-    local custom_theme = require('lualine.themes.catppuccin-macchiato')
+    local custom_theme = require('lualine.themes.catppuccin-' .. (vim.g.desktop_flavour or 'macchiato'))
+    local palette = require('catppuccin.palettes').get_palette()
     local default_fg = custom_theme.normal.c.fg
 
     custom_theme.normal.c.bg = 'NONE'
@@ -31,7 +32,7 @@ return {
         return '󰉼'
       end,
       color = function()
-        return vim.g.disable_autoformat and { fg = '#5B6078' } or { fg = '#A6DA95' }
+        return vim.g.disable_autoformat and { fg = palette.surface2 } or { fg = palette.green }
       end,
     }
 
@@ -45,11 +46,11 @@ return {
       symbols = {
         status = {
           hl = {
-            enabled = '#A6DA95',
-            sleep = '#CAD3F5',
-            disabled = '#5B6078',
-            warning = '#EED49F',
-            unknown = '#5B6078',
+            enabled = palette.green,
+            sleep = palette.text,
+            disabled = palette.surface2,
+            warning = palette.yellow,
+            unknown = palette.surface2,
           },
         },
       },
@@ -65,9 +66,9 @@ return {
       end,
       color = function()
         local colors = {
-          enabled = '#A6DA95',
-          disabled = '#5B6078',
-          warning = '#EED49F',
+          enabled = palette.green,
+          disabled = palette.surface2,
+          warning = palette.yellow,
         }
 
         if vim.g.copilot_enabled == false or vim.b.copilot_enabled == false then
@@ -95,7 +96,7 @@ return {
         end
         return '󰒋 ' .. env
       end,
-      color = { fg = '#939ab7' },
+      color = { fg = palette.overlay2 },
     }
 
     return {

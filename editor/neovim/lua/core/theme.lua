@@ -72,6 +72,23 @@ function M.apply()
   })
   vim.cmd.colorscheme('catppuccin')
   vim.g.desktop_theme = theme.name
+  vim.g.desktop_flavour = theme.flavour
+  M.refresh_lualine()
+end
+
+-- lualine bakes its colours at setup, so re-run it with the plugin's opts
+-- evaluated afresh (they read the engine's palette).
+function M.refresh_lualine()
+  for _, flavour in ipairs({ 'latte', 'frappe', 'macchiato', 'mocha' }) do
+    package.loaded['lualine.themes.catppuccin-' .. flavour] = nil
+  end
+  local ok, lazy = pcall(require, 'lazy.core.config')
+  local spec = ok and lazy.plugins['lualine.nvim'] or nil
+  if not spec or not spec._.loaded then
+    return
+  end
+  local opts = require('lazy.core.plugin').values(spec, 'opts', false)
+  require('lualine').setup(opts)
 end
 
 return M
