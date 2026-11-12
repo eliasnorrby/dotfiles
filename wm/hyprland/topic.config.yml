@@ -25,6 +25,9 @@ hyprland_config:
     - src: launch_on_workspace.sh
       dest: "{{ xdg_bin_home }}/"
       rename: launch_on_workspace
+    - src: after_sleep.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: hypr_after_sleep
     - src: reload_services.sh
       dest: "{{ xdg_bin_home }}/"
       rename: reload_services
