@@ -91,6 +91,9 @@ sleep 0.4 # let the apps settle under the cover
 # So: back to the monitor-sized float (instant, same pixels bar aside),
 # fade that with the opacity property under a slowed fade curve, then
 # close it once invisible, without animation.
+# The curve is put back from the config line afterwards rather than by a
+# reload: waybar rebuilds its workspace pill on every config reload.
+fade_default="$(grep -hE '^\s*animation\s*=\s*fade,' ~/.config/hypr/conf.d/*.conf | tail -1 | sed -E 's/^\s*animation\s*=\s*//')"
 hyprctl keyword animation "fade, 1, 7, almostLinear" >/dev/null
 hyprctl dispatch fullscreen 0 >/dev/null
 sleep 0.05
@@ -99,5 +102,5 @@ hyprctl dispatch setprop "address:$addr" opacity 0 >/dev/null
 sleep 0.8
 hyprctl dispatch setprop "address:$addr" no_anim 1 >/dev/null
 hyprctl dispatch closewindow "address:$addr" >/dev/null
-hyprctl reload >/dev/null # the fade curve back to what the config says
+[ -n "$fade_default" ] && hyprctl keyword animation "$fade_default" >/dev/null
 [ -n "$prev" ] && hyprctl dispatch focuswindow "address:$prev" >/dev/null
