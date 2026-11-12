@@ -85,7 +85,7 @@ hyprctl dispatch fullscreen 0 >/dev/null
 sleep 0.15
 
 if [ -n "$target" ]; then theme set "$target"; else theme cycle; fi
-sleep 0.4 # let the apps settle under the cover
+sleep 0.2 # let the apps settle under the cover
 
 # Fade. A fullscreen window is drawn at full opacity whatever its own
 # says, and closing it fades mpv's last buffer, which mpv blanks on quit.
@@ -95,12 +95,12 @@ sleep 0.4 # let the apps settle under the cover
 # The curve is put back from the config line afterwards rather than by a
 # reload: waybar rebuilds its workspace pill on every config reload.
 fade_default="$(grep -hE '^\s*animation\s*=\s*fade,' ~/.config/hypr/conf.d/*.conf | tail -1 | sed -E 's/^\s*animation\s*=\s*//')"
-hyprctl keyword animation "fade, 1, 7, almostLinear" >/dev/null
+hyprctl keyword animation "fade, 1, 5, almostLinear" >/dev/null
 hyprctl dispatch fullscreen 0 >/dev/null
 sleep 0.05
 hyprctl dispatch setprop "address:$addr" no_anim 0 >/dev/null
 hyprctl dispatch setprop "address:$addr" opacity 0 >/dev/null
-sleep 0.8
+sleep 0.55
 hyprctl dispatch setprop "address:$addr" no_anim 1 >/dev/null
 hyprctl dispatch closewindow "address:$addr" >/dev/null
 [ -n "$fade_default" ] && hyprctl keyword animation "$fade_default" >/dev/null
