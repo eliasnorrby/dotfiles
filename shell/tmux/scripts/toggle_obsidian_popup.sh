@@ -6,7 +6,7 @@
 exec toggle_stateful_popup \
   --session=obsidian \
   --title=Obsidian \
-  --color=#c6a0f6 \
+  --color=magenta \
   --global \
   -x R \
   -w '55%' \

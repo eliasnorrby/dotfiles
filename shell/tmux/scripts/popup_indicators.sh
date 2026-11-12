@@ -55,7 +55,7 @@ if tmux has-session -t "$tasks_popup" 2>/dev/null; then
 fi
 
 if tmux has-session -t "$obsidian_popup" 2>/dev/null; then
-  obsidian_active="#[fg=#c6a0f6]󰙏 #[fg=default]"
+  obsidian_active="#[fg=magenta]󰙏 #[fg=default]"
 fi
 
 if tmux has-session -t "$reminders_popup" 2>/dev/null; then
