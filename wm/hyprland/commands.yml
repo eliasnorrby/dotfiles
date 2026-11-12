@@ -63,7 +63,7 @@ keys:
     keys:
       - key: t
         name: theme
-        value: theme cycle
+        value: theme_transition
       - key: w
         name: waybar
         value: pkill -USR1 waybar
