@@ -66,24 +66,38 @@ if [ -z "$addr" ]; then
   if [ -n "$target" ]; then theme set "$target"; else theme cycle; fi
   exit 0
 fi
+# Still invisible: size it to the monitor by address (no focus needed), show
+# it, and only then take focus for the fullscreen that also covers the bar.
+# Doing it in this order keeps the previous window's unfocus (border and
+# dim) under the cover rather than in front of the user.
+read -r mon_w mon_h < <(hyprctl monitors -j | python3 -c '
+import json, sys
+m = json.load(sys.stdin)[0]
+print(int(m["width"] / m["scale"]), int(m["height"] / m["scale"]))')
+hyprctl dispatch resizewindowpixel "exact $mon_w $mon_h,address:$addr" >/dev/null
+hyprctl dispatch movewindowpixel "exact 0 0,address:$addr" >/dev/null
+sleep 0.1
+hyprctl dispatch setprop "address:$addr" opacity 1 >/dev/null
+sleep 0.05
 hyprctl dispatch focuswindow "address:$addr" >/dev/null
 hyprctl dispatch fullscreen 0 >/dev/null
-sleep 0.15 # the fullscreen frame is ready
-# Mapped invisible by rule; opaque now, instantly, since animation is off.
-hyprctl dispatch setprop "address:$addr" opacity 1 >/dev/null
-sleep 0.1
+sleep 0.15
 
 if [ -n "$target" ]; then theme set "$target"; else theme cycle; fi
 sleep 0.4 # let the apps settle under the cover
 
-# Fade: a fullscreen window is drawn at fullscreen_opacity whatever its
-# own opacity says, so the cover cannot be dimmed in place. Its close is
-# the fade instead: the window rule gives it the `fade` style, animation
-# is switched back on, and windowsOut is slowed for the moment and put
-# back once the cover is gone.
-hyprctl keyword animation "windowsOut, 1, 4, almostLinear, fade" >/dev/null
+# Fade. A fullscreen window is drawn at full opacity whatever its own
+# says, and closing it fades mpv's last buffer, which mpv blanks on quit.
+# So: back to the monitor-sized float (instant, same pixels bar aside),
+# fade that with the opacity property under a slowed fade curve, then
+# close it once invisible, without animation.
+hyprctl keyword animation "fade, 1, 7, almostLinear" >/dev/null
+hyprctl dispatch fullscreen 0 >/dev/null
+sleep 0.05
 hyprctl dispatch setprop "address:$addr" no_anim 0 >/dev/null
+hyprctl dispatch setprop "address:$addr" opacity 0 >/dev/null
+sleep 0.8
+hyprctl dispatch setprop "address:$addr" no_anim 1 >/dev/null
 hyprctl dispatch closewindow "address:$addr" >/dev/null
-sleep 0.45
-hyprctl reload >/dev/null # windowsOut back to what the config says
+hyprctl reload >/dev/null # the fade curve back to what the config says
 [ -n "$prev" ] && hyprctl dispatch focuswindow "address:$prev" >/dev/null
