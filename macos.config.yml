@@ -34,7 +34,7 @@ topics:
     - name: gemini
       state: present
       config: "{{ gemini_config }}"
-    - name: general
+    - name: ai
       state: present
       config: "{{ ai_config }}"
   base:

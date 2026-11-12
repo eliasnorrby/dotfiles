@@ -40,7 +40,7 @@ topics:
     - name: gemini
       state: absent
       config: "{{ gemini_config }}"
-    - name: general
+    - name: ai
       state: absent
       config: "{{ ai_config }}"
     - name: herdr
