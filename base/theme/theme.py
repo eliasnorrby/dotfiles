@@ -11,6 +11,7 @@ configs reference files under it.
     theme build [NAME...]      render (all themes by default)
     theme set NAME [--no-reload]
                                build, relink current, reload running apps
+    theme cycle                the next theme in the list, and a notification
     theme current              the current theme's name
     theme get TOKEN [NAME]     one resolved value, for scripts
     theme reload               re-run the reload hooks for the current theme
@@ -348,6 +349,18 @@ def set_theme(name, do_reload=True):
         timed("reload", reload)
 
 
+def cycle():
+    names = themes()
+    if not names:
+        sys.exit("theme: no themes")
+    cur = current()
+    nxt = names[(names.index(cur) + 1) % len(names)] if cur in names else names[0]
+    set_theme(nxt)
+    title = Palette(nxt).meta.get("title", nxt)
+    if shutil.which("notify-send"):
+        subprocess.run(["notify-send", "-a", "theme", "-t", "2500", "Theme", title])
+
+
 def main(argv):
     cmd = argv[0] if argv else "list"
     args = argv[1:]
@@ -362,6 +375,8 @@ def main(argv):
         if not args:
             sys.exit(__doc__)
         set_theme(args[0], do_reload="--no-reload" not in args)
+    elif cmd == "cycle":
+        cycle()
     elif cmd == "current":
         print(current() or "")
     elif cmd == "get":

@@ -58,6 +58,9 @@ keys:
   - key: t
     name: toggle
     keys:
+      - key: t
+        name: theme
+        value: theme cycle
       - key: w
         name: waybar
         value: pkill -USR1 waybar
