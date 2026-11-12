@@ -27,30 +27,32 @@
   "hyprland/workspaces": {
     "format": "{windows}",
     "on-click": "activate",
-    "window-rewrite-default": "•",
+    "window-rewrite-default": "• ",
+    "format-window-separator": "",
     // "format-window-separator": "",
     // "window-rewrite-default": "",
     "window-rewrite": {
-      "class<kitty>": "",
+      "class<kitty>": " ",
       "class<TmuxKitty>": " ",
       "class<HerdrKitty>": " ",
-      "class<DotfilesKitty>": "",
+      "class<DotfilesKitty>": " ",
       "class<ChromeWork>": " ",
       "class<ChromePersonal>": " ",
       "class<Slack>": " ",
-      "class<teams-for-linux>": "",
+      "class<teams-for-linux>": " ",
       "class<spotify>": " ",
-      "class<1password>": "",
-      "class<obsidian>": "",
-      "class<Notion>": "",
-      "class<BtopKitty>": "",
+      "class<1password>": " ",
+      "class<obsidian>": " ",
+      "class<Notion>": " ",
+      "class<BtopKitty>": " ",
       // pwas
-      "class<chrome-kjgfgldnnfoeklkmfkjfagphfepbbdan-Default>": "", // google meet
+      "class<chrome-kjgfgldnnfoeklkmfkjfagphfepbbdan-Default>": " ", // google meet
       "class<chrome-bgdbmehlmdmddlgneophbcddadgknlpm-Default>": " ", // linear
-      "class<chrome-fmpnliohjhemenmnlpbfagaolkdacoja-Default>": "", // claude
+      "class<chrome-fmpnliohjhemenmnlpbfagaolkdacoja-Default>": " ", // claude
       "class<chrome-dcllmfmjlkpljanfegjgohmlnfipachj-Default>": "󰧑 ", // brain.fm
       // misc
       "class<WhichCmd>": "",
+      "class<ThemeCover>": "",
     },
   },
   "hyprland/language": {
