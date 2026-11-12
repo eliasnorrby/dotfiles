@@ -35,7 +35,7 @@
       "class<kitty>": " ",
       "class<TmuxKitty>": " ",
       "class<HerdrKitty>": " ",
-      "class<DotfilesKitty>": " ",
+      "class<DotfilesKitty>": "",
       "class<ChromeWork>": " ",
       "class<ChromePersonal>": " ",
       "class<Slack>": " ",
@@ -48,7 +48,7 @@
       // pwas
       "class<chrome-kjgfgldnnfoeklkmfkjfagphfepbbdan-Default>": " ", // google meet
       "class<chrome-bgdbmehlmdmddlgneophbcddadgknlpm-Default>": " ", // linear
-      "class<chrome-fmpnliohjhemenmnlpbfagaolkdacoja-Default>": " ", // claude
+      "class<chrome-fmpnliohjhemenmnlpbfagaolkdacoja-Default>": "", // claude
       "class<chrome-dcllmfmjlkpljanfegjgohmlnfipachj-Default>": "󰧑 ", // brain.fm
       // misc
       "class<WhichCmd>": "",
