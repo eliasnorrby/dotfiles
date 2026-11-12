@@ -6,6 +6,9 @@ keys:
   - key: i
     name: import issue
     value: wk import --from clipboard --notify
+  - key: c
+    name: clear clipboard
+    value: wl-copy --clear
   - key: a
     name: apps
     keys:
