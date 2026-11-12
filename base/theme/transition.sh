@@ -29,6 +29,16 @@ cleanup() {
 }
 trap cleanup EXIT
 
+# From which-cmd the launcher's dim-around is still fading when we start;
+# a grab of a dimmed desktop would be the cover. Wait for it to go.
+if hyprctl clients -j | grep -q '"class": "WhichCmd"'; then
+  for _ in $(seq 1 50); do
+    hyprctl clients -j | grep -q '"class": "WhichCmd"' || break
+    sleep 0.02
+  done
+  sleep 0.35 # the dim fades with hyprland's `fade` animation
+fi
+
 grim "$shot"
 
 # The cover's window rules live in hyprland's conf.d (theme.conf): a float
@@ -58,15 +68,22 @@ if [ -z "$addr" ]; then
 fi
 hyprctl dispatch focuswindow "address:$addr" >/dev/null
 hyprctl dispatch fullscreen 0 >/dev/null
-sleep 0.2 # the frame matches the grab from here on
+sleep 0.15 # the fullscreen frame is ready
+# Mapped invisible by rule; opaque now, instantly, since animation is off.
+hyprctl dispatch setprop "address:$addr" opacity 1 >/dev/null
+sleep 0.1
 
 if [ -n "$target" ]; then theme set "$target"; else theme cycle; fi
 sleep 0.4 # let the apps settle under the cover
 
-# Fade: hyprland animates the opacity property with its `fade` curve.
-# Re-enable animation on the cover first, since it was mapped without.
+# Fade: a fullscreen window is drawn at fullscreen_opacity whatever its
+# own opacity says, so the cover cannot be dimmed in place. Its close is
+# the fade instead: the window rule gives it the `fade` style, animation
+# is switched back on, and windowsOut is slowed for the moment and put
+# back once the cover is gone.
+hyprctl keyword animation "windowsOut, 1, 4, almostLinear, fade" >/dev/null
 hyprctl dispatch setprop "address:$addr" no_anim 0 >/dev/null
-hyprctl dispatch setprop "address:$addr" opacity 0 >/dev/null
-sleep 0.45
 hyprctl dispatch closewindow "address:$addr" >/dev/null
+sleep 0.45
+hyprctl reload >/dev/null # windowsOut back to what the config says
 [ -n "$prev" ] && hyprctl dispatch focuswindow "address:$prev" >/dev/null
