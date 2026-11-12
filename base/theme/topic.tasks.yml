@@ -1,0 +1,10 @@
+---
+# Nothing under ~/.config/theme/current exists until a theme has been set,
+# and the app configs reference it, so make sure one is on.
+- name: check for a current theme
+  stat:
+    path: "{{ xdg_config_home }}/theme/current"
+  register: theme_current
+- name: set the default theme
+  command: "{{ dotfiles }}/base/theme/theme.py set {{ theme_default }} --no-reload"
+  when: not theme_current.stat.exists

@@ -43,8 +43,6 @@ CURRENT = CONFIG / "current"
 # parent dir exists, so the same list serves arch and macOS.
 EXPORTS = {
     "hyprtoolkit.conf": ["~/.config/hypr/hyprtoolkit.conf"],
-    "waybar.css": ["~/.config/waybar/style.css"],
-    "swaync.css": ["~/.config/swaync/style.css"],
     "mako.ini": ["~/.config/mako/theme"],
     "rofi.rasi": ["~/.config/rofi/system.rasi"],
     "btop.theme": ["~/.config/btop/themes/system.theme"],
@@ -144,6 +142,9 @@ def screen_size():
 def build_wallpaper(pal, out):
     spec = pal.wallpaper
     target = out / "wallpaper"
+    if "script" in spec and not shutil.which("hyprpaper"):
+        # Nothing here would show it, and rendering needs uv and numpy.
+        return
     if "script" in spec:
         # Rendering is slow and goes through uv, so keep the last render
         # unless the script or the palette changed since.
@@ -187,6 +188,49 @@ def build_wallpaper(pal, out):
     link.symlink_to(target.name)
 
 
+def yazi_icons(pal):
+    """Yazi's default icon rules, recoloured. The defaults are embedded in
+    the binary, so fetch the preset for the installed version (cached), and
+    fall back to the copy under presets/ when offline."""
+    import urllib.request
+    cache = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "theme"
+    cache.mkdir(parents=True, exist_ok=True)
+    preset = HERE / "presets" / "yazi-theme-dark.toml"
+    try:
+        ver = subprocess.run(["yazi", "--version"], capture_output=True, text=True, timeout=5).stdout
+        ver = re.search(r"Version:\s*([\d.]+)", ver).group(1)
+        cached = cache / f"yazi-theme-dark-{ver}.toml"
+        if not cached.exists():
+            url = f"https://raw.githubusercontent.com/sxyazi/yazi/v{ver}/yazi-config/preset/theme-dark.toml"
+            with urllib.request.urlopen(url, timeout=10) as r:
+                cached.write_bytes(r.read())
+        preset = cached
+    except Exception as e:
+        print(f"theme: yazi preset: using the committed copy ({e})", file=sys.stderr)
+    text = preset.read_text()
+    icon = text[text.index("[icon]"):]
+    colours = {"dir": pal.lookup("icon_dir"), "file": pal.lookup("icon_file"),
+               "exec": pal.lookup("accent"), "broken": pal.lookup("alert")}
+    out, section = [], None
+    for line in icon.splitlines():
+        m = re.match(r"^(globs|dirs|files|exts|conds)\s*=", line)
+        if m:
+            section = m.group(1)
+        if "fg = " in line:
+            c = colours["dir"] if section == "dirs" else colours["file"]
+            if section == "conds":
+                if re.search(r'if = "(dir|dummy|dir & hovered)"', line):
+                    c = colours["dir"]
+                elif re.search(r'if = "(orphan|broken)"', line):
+                    c = colours["broken"]
+                elif re.search(r'if = "exec"', line):
+                    c = colours["exec"]
+            line = re.sub(r'fg = "[^"]*"', f'fg = "{c}"', line)
+        out.append(line)
+    return ("# Icons: yazi's default rules for the installed version, with the colours\n"
+            "# flattened. Directories, files, executables, broken links.\n" + "\n".join(out).rstrip() + "\n")
+
+
 def build(name):
     pal = Palette(name)
     out = DATA / name
@@ -195,7 +239,10 @@ def build(name):
         for tmpl in sorted(TEMPLATES.iterdir()):
             if tmpl.name.startswith("."):
                 continue
-            (out / tmpl.name).write_text(pal.render(tmpl.read_text()))
+            text = tmpl.read_text()
+            if "{{yazi.icons}}" in text:
+                text = text.replace("{{yazi.icons}}", yazi_icons(pal))
+            (out / tmpl.name).write_text(pal.render(text))
     timed("templates", templates)
     timed("wallpaper", build_wallpaper, pal, out)
     print(f"theme: built {name} -> {out}")

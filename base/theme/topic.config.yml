@@ -5,3 +5,6 @@ theme_config:
     - src: theme.py
       dest: "{{ xdg_bin_home }}/"
       rename: theme
+
+# The theme a fresh machine starts on; `theme set` changes it locally.
+theme_default: carborange

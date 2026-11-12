@@ -1,4 +1,4 @@
-theme = "catppuccin-macchiato"
+theme = "terminal"       # follow the terminal's ANSI palette, repaint when it changes
 mode = "auto"
 vcs = "git"          # git, jj, sl
 watch = false
