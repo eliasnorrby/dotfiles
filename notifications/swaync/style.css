@@ -1,7 +1,6 @@
 /* Colours and radii come from the desktop theme; see base/theme. */
 @import url("../theme/current/swaync.css");
 
-* the desktop theme, rendered by `theme build`. Do not edit; edit the palette. */
 * {
   all: unset;
   font-size: 16px;
