@@ -9,6 +9,9 @@ topics:
       state: present
       config: "{{ notes_config }}"
   tools:
+    - name: glamour
+      state: present
+      config: "{{ glamour_config }}"
     - name: obsidian
       state: present
       config: "{{ obsidian_config }}"

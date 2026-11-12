@@ -1,0 +1,13 @@
+---
+# glamour renders Markdown in the terminal: gh uses it for PR and issue
+# bodies, glow is its standalone reader. The style here uses only the
+# sixteen ANSI slots, so it follows the terminal palette and the theme
+# switcher without being rendered.
+glamour_config:
+  path: tools/glamour
+  links:
+    - style.json
+  brew_formulae:
+    - glow
+  pacman_packages:
+    - glow
