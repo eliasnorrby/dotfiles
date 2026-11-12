@@ -79,6 +79,7 @@ hyprctl dispatch movewindowpixel "exact 0 0,address:$addr" >/dev/null
 sleep 0.1
 hyprctl dispatch setprop "address:$addr" opacity 1 >/dev/null
 sleep 0.05
+hyprctl dispatch setprop "address:$addr" no_focus 0 >/dev/null
 hyprctl dispatch focuswindow "address:$addr" >/dev/null
 hyprctl dispatch fullscreen 0 >/dev/null
 sleep 0.15
