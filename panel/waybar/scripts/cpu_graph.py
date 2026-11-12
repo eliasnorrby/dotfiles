@@ -138,7 +138,7 @@ def main():
     history = deque([0.0] * size, maxlen=size)
 
     prev = read_stat()
-    first = True
+    fresh_snapshot = False
     # Resume from the state a previous process left, if it is for this
     # shape and recent enough for its snapshot to give a real sample.
     try:
@@ -147,29 +147,31 @@ def main():
             history = deque(saved["history"], maxlen=size)
             if time.time() - saved["time"] < 3 * args.interval:
                 prev = {k: tuple(v) for k, v in saved["stat"].items()}
-                first = False  # the snapshot is fresh: sample right away
+                fresh_snapshot = True
     except Exception:
         pass
 
+    def sample():
+        nonlocal prev
+        cur = read_stat()
+        pct = usage(prev, cur)
+        prev = cur
+        history.append(pct["cpu"])
+        tmp = STATE.with_suffix(".tmp")
+        tmp.write_text(json.dumps({"size": size, "interval": args.interval, "time": time.time(),
+                                   "stat": cur, "history": list(history)}))
+        tmp.replace(STATE)
+        return pct
+
+    # The first line goes out at once: a real sample against a fresh saved
+    # snapshot, else the saved (or empty) history as it is.
+    if fresh_snapshot:
+        pct = sample()
+    else:
+        pct = {k: 0.0 for k in prev}
+    total = history[-1] if history else 0.0
+
     while True:
-        if first:
-            # Nothing to diff against yet: show the (saved) history now rather
-            # than leave the module blank for an interval.
-            first = False
-            cur = prev
-            pct = {k: 0.0 for k in cur}
-            total = history[-1] if history else 0.0
-        else:
-            time.sleep(args.interval)
-            cur = read_stat()
-            pct = usage(prev, cur)
-            prev = cur
-            total = pct["cpu"]
-            history.append(total)
-            tmp = STATE.with_suffix(".tmp")
-            tmp.write_text(json.dumps({"size": size, "interval": args.interval, "time": time.time(),
-                                       "stat": cur, "history": list(history)}))
-            tmp.replace(STATE)
 
         with open("/proc/loadavg") as f:
             load = " ".join(f.read().split()[:3])
@@ -188,6 +190,9 @@ def main():
             ),
             flush=True,
         )
+        time.sleep(args.interval)
+        pct = sample()
+        total = pct["cpu"]
 
 
 if __name__ == "__main__":
