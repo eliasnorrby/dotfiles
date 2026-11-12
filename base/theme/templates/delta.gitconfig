@@ -1,0 +1,17 @@
+# {{meta.title}}, rendered by `theme build`. Do not edit; edit the palette.
+# Included from the git config's [include] section; delta reads [delta].
+[delta]
+  syntax-theme = none
+  minus-style = syntax "{{diff_removed_bg}}"
+  minus-emph-style = syntax "{{diff_removed_word}}"
+  plus-style = syntax "{{diff_added_bg}}"
+  plus-emph-style = syntax "{{diff_added_word}}"
+  line-numbers-minus-style = "{{alert}}"
+  line-numbers-plus-style = "{{good}}"
+  line-numbers-zero-style = "{{dim}}"
+  line-numbers-left-style = "{{dim}}"
+  line-numbers-right-style = "{{dim}}"
+  file-style = "{{accent}}" bold
+  file-decoration-style = "{{dim}}" ul
+  hunk-header-style = "{{muted}}"
+  hunk-header-decoration-style = "{{dim}}" box

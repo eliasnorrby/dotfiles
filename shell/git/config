@@ -11,6 +11,9 @@
   conflictstyle = diff3
 [delta]
   navigate = true
+[include]
+  # delta's colours come from the desktop theme; see base/theme
+  path = ~/.config/theme/current/delta.gitconfig
 [push]
   default = current
 [pull]
