@@ -172,3 +172,7 @@ don't derail the task for it.
 Sessions outside an issue branch have nowhere to checkpoint yet; `resolve` says
 so and that is fine.
 
+On a machine that does not register work (`tasks.register = false` in wk's
+config; the session is told at start), the vaults are synced copies, read-only
+there: read them, but skip the checkpoints.
+

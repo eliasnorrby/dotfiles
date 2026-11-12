@@ -46,13 +46,17 @@
 #                                      note that it ended with uncaptured work
 #                                      (session-end), keep the file tools out
 #                                      of a vault's private/ and off
-#                                      everything but the wiki layer
+#                                      everything but the wiki layer, and out
+#                                      of a vault with no repository
 #                                      (pre-tool-use), and log every read of a
 #                                      wiki page (pre-tool-use, post-tool-use).
 #
 # Nothing here names a vault, a tracker or a company. A session is in scope
 # when `wk` can tell which task it belongs to; the vault follows from the
-# task's project through wk's configuration.
+# task's project through wk's configuration. A machine whose taskwarrior is
+# not the register (tasks.register = false in wk's config) has no session in
+# scope, and a vault without a repository is a synced copy maintained on
+# another machine: readable, never written.
 #
 # Several sessions checkpoint into the same vault, so `commit` never sweeps
 # the working tree: it commits only the paths it is given, under a lock.
@@ -101,6 +105,7 @@ in_scope() {
   case "$(cd "$dir" && pwd -P)/" in
     "$(vaults_dir)"/*) return 1 ;;
   esac
+  [ "$(wk config get tasks.register 2>/dev/null)" != false ] || return 1
   wk resolve --json -C "$dir" 2>/dev/null | jq -e '.ok or (.issue != null)' >/dev/null 2>&1
 }
 
@@ -156,14 +161,19 @@ log_wiki_read() {
 # What every session is handed at start: the wikis there are, one line each
 # (vaults.<name>.about in wk's config), and how to use them.
 vaults_note() {
-  local v name about
+  local v name about synced=""
   echo "Elias's wikis are LLM-maintained Obsidian vaults (each one's CLAUDE.md is its schema):"
   for v in "$(vaults_dir)"/*/; do
     v="${v%/}"
     [ -f "$v/index.md" ] || continue
     name=$(basename "$v")
     about=$(wk config get "vaults.$name.about" 2>/dev/null) || about=""
-    echo "- $name: ${about:+$about; }entry point $v/index.md"
+    if [ -d "$v/.git" ]; then
+      echo "- $name: ${about:+$about; }entry point $v/index.md"
+    else
+      synced=1
+      echo "- $name (read-only here): ${about:+$about; }entry point $v/index.md"
+    fi
   done
   cat <<'EOF'
 Anything that reaches into the past (what was written, discussed or decided;
@@ -172,6 +182,11 @@ recall skill: index.md, then the hubs, then their pages, before Slack, the
 tracker, GitHub or transcripts, and before grepping for the request's words.
 Say whether the wiki had the answer; if you had to go wider, suggest where it
 belongs in the wiki.
+EOF
+  [ -z "$synced" ] || cat <<'EOF'
+A vault marked read-only here is a synced copy, maintained on another machine:
+read it, but write nothing into it and don't checkpoint. Say what should be
+recorded instead, so it can be done there.
 EOF
 }
 
@@ -622,6 +637,10 @@ hook_pre_tool_use() {
     sid=$(jq -r '.session_id // empty' <<<"$input" 2>/dev/null)
     cwd=$(jq -r '.cwd // empty' <<<"$input" 2>/dev/null)
     [ -n "$sid" ] && log_wiki_read "$sid" "$cwd" "$tool" "$path"
+    return 0
+  fi
+  if [ ! -d "$vaults/$vault/.git" ]; then
+    emit_deny "This vault is a synced copy, read-only on this machine: it is maintained on another, where its commits happen. Write nothing into it; say what should change instead."
     return 0
   fi
   vault_allows_write "$vaults/$vault" "$rel" && return 0
