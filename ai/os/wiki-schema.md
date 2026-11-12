@@ -25,6 +25,7 @@ wiki/              yours
   people/          one page per person worth linking to
 raw/               sources that stay. Read, never edit, move or delete.
   jots/            Elias's jots once they have been ingested
+common/            working files Elias and you both edit, in place
 private/           Elias's own notes that are never ingested. Don't read it.
 _meta/
   attachments/     images and files embedded from notes
@@ -44,16 +45,28 @@ then file it where the vault says archived material goes.
 notes that are Elias's alone. A note that must never be ingested does not
 belong in `raw/`, whose whole purpose is to be ingested; it belongs here.
 
+**`common/` is shared**: working documents Elias and his agents both keep up
+to date, a PR tracker, say. Read and edit them in place, but only for what
+the file is for (ticking off a merged PR, adding a new one): keep its
+structure and conventions, make small targeted edits, and re-read it right
+before each edit, since other sessions write there too. They are not wiki
+pages, so the wiki's processes leave them alone: no checkpoint, ingest or
+lint moves, archives, restructures, splits, renames or rewrites them, none
+moves into `wiki/`, and the wiki's rules (frontmatter, one H1, links,
+`## Sources`, currency) don't apply to them. Wiki pages may link to them.
+Deleting or moving one is Elias's call.
+
 The rule that makes this safe: **you write only to the wiki layer**: `wiki/`,
 `dailies/` where the vault gives them to you, `_meta/friction/`, `index.md`,
-`log.md`, the vault's `CLAUDE.md`, and your own digests in `inbox/`; a vault
-may open a few more paths in `_meta/claude-writable`. Everything else in the
-vault is Elias's: his jots and notes, `raw/`, `private/`, `_meta/attachments/`
-and `_meta/templates/`, the Obsidian configuration. Conversation transcripts,
-PRs and issues are also raw sources; they live outside the vault and are
-linked, not copied. A `PreToolUse` hook (`wiki_checkpoint hook pre-tool-use`)
-enforces the list for the file tools and refuses `private/` entirely; it does
-not watch Bash, so a move Elias asks for still goes through `git mv`.
+`log.md`, the vault's `CLAUDE.md`, and your own digests in `inbox/`; plus the
+files in `common/`, on the terms above. A vault may open a few more paths in
+`_meta/claude-writable`. Everything else in the vault is Elias's: his jots
+and notes, `raw/`, `private/`, `_meta/attachments/` and `_meta/templates/`,
+the Obsidian configuration. Conversation transcripts, PRs and issues are also
+raw sources; they live outside the vault and are linked, not copied. A
+`PreToolUse` hook (`wiki_checkpoint hook pre-tool-use`) enforces the list for
+the file tools and refuses `private/` entirely; it does not watch Bash, so a
+move Elias asks for still goes through `git mv`.
 
 ## Note types
 
@@ -364,9 +377,10 @@ A shared file (`index.md`, `log.md`, a daily) is committed whole, so your
 commit may carry another session's lines from that file, and "nothing to
 commit" may mean someone else's commit carried yours. Both are fine.
 
-Subjects: `checkpoint: <ISSUE-KEY> <what moved>` for checkpoints; for
-everything else mirror the log entry (`ingest: …`, `lint: …`, `schema: …`,
-`restructure: …`). One commit per operation. Never rewrite history. Elias's
+Subjects: `checkpoint: <ISSUE-KEY> <what moved>` for checkpoints;
+`common: <file> <what changed>` for an edit to a file in `common/`, which
+gets no `log.md` entry; for everything else mirror the log entry (`ingest:
+…`, `lint: …`, `schema: …`, `restructure: …`). One commit per operation. Never rewrite history. Elias's
 own files (new jots in `inbox/`, `raw/`, his notes, attachments) and the
 moves made by hooks are committed by a timer (`wiki_checkpoint sweep`, as
 `auto: sweep <vault>`) once they have sat untouched for five minutes; leave

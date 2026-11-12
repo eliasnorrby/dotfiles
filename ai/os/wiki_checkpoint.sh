@@ -560,13 +560,14 @@ emit_deny() {
 }
 
 # Where the file tools may write inside a vault: the wiki layer and the files
-# that carry it. Everything else in a vault is the owner's. A vault extends the
+# that carry it, and common/, the working files the owner and Claude both edit
+# in place. Everything else in a vault is the owner's. A vault extends the
 # list with path prefixes, one per line, in _meta/claude-writable (a vault with
 # no wiki yet that keeps a few project notes for Claude, say).
 vault_allows_write() {
   local vault="$1" rel="$2" prefix
   case "$rel" in
-    wiki/* | dailies/* | _meta/friction/* | index.md | log.md | CLAUDE.md) return 0 ;;
+    wiki/* | dailies/* | common/* | _meta/friction/* | index.md | log.md | CLAUDE.md) return 0 ;;
     inbox/*)
       # Only Claude's own digests: a file it creates, or one it marked as a
       # digest. The owner's jots there carry no frontmatter.
@@ -624,7 +625,7 @@ hook_pre_tool_use() {
     return 0
   fi
   vault_allows_write "$vaults/$vault" "$rel" && return 0
-  emit_deny "Your file tools write only to the wiki layer of a vault (wiki/, dailies/, _meta/friction/, index.md, log.md, CLAUDE.md, and your own digests in inbox/); ${rel:-the vault root} is the owner's. If it really must change, that is his call and a git mv or an edit he asks for. See the vault's CLAUDE.md."
+  emit_deny "Your file tools write only to the wiki layer of a vault (wiki/, dailies/, _meta/friction/, index.md, log.md, CLAUDE.md, and your own digests in inbox/) and to the shared files in common/; ${rel:-the vault root} is the owner's. If it really must change, that is his call and a git mv or an edit he asks for. See the vault's CLAUDE.md."
 }
 
 # Hooks must never get in the way: every path exits 0, and anything unexpected
