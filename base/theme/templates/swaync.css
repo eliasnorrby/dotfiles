@@ -80,10 +80,22 @@
 @define-color tab_inactive_fg {{tab_inactive_fg}};
 @define-color url {{url}};
 
-/* The chrome, where the theme decides. */
+/* The chrome, where the theme decides: the outer radius on panels and
+   cards, the small one on buttons, switches and bars. */
 scale trough { border-radius: {{chrome.radius}}px; }
+trough slider { border-radius: {{chrome.radius}}px; }
+.notification-background { border-radius: {{chrome.radius}}px; }
 .notification-background .notification { border-radius: {{chrome.radius}}px; }
+.notification-background .close-button { border-radius: {{chrome.radius_small}}px; }
+.notification .notification-action { border-radius: {{chrome.radius_small}}px; }
 .notification progress, .notification trough, .notification progressbar { border-radius: {{chrome.radius}}px; }
-.control-center .notification-background .notification { border-radius: {{chrome.radius}}px; }
-.widget-dnd { border-radius: {{chrome.radius}}px; }
+.control-center { border-radius: {{chrome.radius}}px; }
+.control-center .notification-background { border-radius: {{chrome.radius_small}}px; }
+.control-center .notification-background .notification { border-radius: {{chrome.radius_small}}px; }
+.control-center .widget-title button { border-radius: {{chrome.radius_small}}px; }
+.widget-dnd { border-radius: {{chrome.radius_small}}px; }
+.widget-dnd>switch { border-radius: {{chrome.radius_small}}px; }
+.widget-dnd>switch slider { border-radius: {{chrome.radius_small}}px; }
+.widget-mpris-player { border-radius: {{chrome.radius}}px; }
 .widget-mpris-album-art { border-radius: {{chrome.radius}}px; }
+.widget-mpris button { border-radius: {{chrome.radius}}px; }

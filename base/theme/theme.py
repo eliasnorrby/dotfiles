@@ -153,9 +153,9 @@ def build_wallpaper(pal, out):
         palette_file = THEMES / pal.name / "palette.toml"
         if png.exists() and png.stat().st_mtime > max(script.stat().st_mtime, palette_file.stat().st_mtime):
             return
-    for stale in out.glob("wallpaper*"):
-        stale.unlink()
     if "file" in spec:
+        for stale in out.glob("wallpaper*"):
+            stale.unlink()
         src = Path(os.path.expanduser(spec["file"]))
         if not src.exists():
             print(f"theme: {pal.name}: wallpaper file missing: {src}", file=sys.stderr)
@@ -168,9 +168,10 @@ def build_wallpaper(pal, out):
     elif "script" in spec:
         script = HERE / spec["script"]
         target = target.with_suffix(".png")
+        fresh = out / "wallpaper.rendering.png"
         w, h = screen_size()
         env = dict(os.environ, THEME_PALETTE=str(THEMES / pal.name / "palette.toml"))
-        args = [str(script), str(w), str(h), str(target)]
+        args = [str(script), str(w), str(h), str(fresh)]
         if spec.get("uv"):
             # --no-project: uv would otherwise sync whatever project the caller
             # happens to be in. --offline first: uv resolves against PyPI on
@@ -181,6 +182,10 @@ def build_wallpaper(pal, out):
                 subprocess.run(base + args, check=True, env=env, cwd=HERE)
         else:
             subprocess.run(["python3"] + args, check=True, env=env, cwd=HERE)
+        for stale in out.glob("wallpaper*"):
+            if stale != fresh:
+                stale.unlink()
+        fresh.replace(target)
     else:
         return
     # A fixed name for configs to point at, whatever the format.
@@ -249,21 +254,27 @@ def build(name):
     return out
 
 
-def reload(pal):
+def reload():
     """Tell running apps to pick the new files up. Each hook is skipped when
     its app is not running or its tool is not installed, so the same list
-    serves arch and macOS."""
+    serves arch and macOS. The wallpaper goes first: it is the largest
+    surface, and everything else changing while it lags is what the eye
+    notices."""
     def running(proc):
         return subprocess.run(["pgrep", "-x", proc], capture_output=True).returncode == 0
 
     def have(tool):
         return shutil.which(tool) is not None
 
+    if have("hyprctl") and running("hyprpaper"):
+        wallpaper = (CURRENT / "wallpaper").resolve()
+        swapped = subprocess.run(["hyprctl", "hyprpaper", "wallpaper", f",{wallpaper}"],
+                                 capture_output=True, text=True)
+        if swapped.returncode != 0 or "error" in swapped.stdout:
+            subprocess.run(["pkill", "-x", "hyprpaper"])
+            subprocess.run(["hyprctl", "dispatch", "exec", "hyprpaper"], capture_output=True)
     if running("kitty"):
         subprocess.run(["pkill", "-SIGUSR1", "-x", "kitty"])
-    if have("tmux"):
-        subprocess.run(["tmux", "source-file", os.path.expanduser("~/.config/tmux/tmux.conf")],
-                       capture_output=True)
     runtime = Path(os.environ.get("XDG_RUNTIME_DIR", "/tmp"))
     procs = []
     for sock in list(runtime.glob("nvim.*.0")) + list(Path("/tmp").glob("nvim*/0")):
@@ -279,9 +290,6 @@ def reload(pal):
             print(f"theme: neovim at {sock.name} did not answer", file=sys.stderr)
     if have("hyprctl") and running("Hyprland"):
         subprocess.run(["hyprctl", "reload"], capture_output=True)
-        if running("hyprpaper"):
-            subprocess.run(["pkill", "-x", "hyprpaper"])
-            subprocess.run(["hyprctl", "dispatch", "exec", "hyprpaper"], capture_output=True)
     if running("waybar"):
         subprocess.run(["pkill", "-SIGUSR2", "-x", "waybar"])
     if running("swaync") and have("swaync-client"):
@@ -291,17 +299,30 @@ def reload(pal):
 
 
 def export():
-    """Point each consumer's fixed path at current/<file>. A real file in
-    the way is left alone and reported; a symlink is replaced."""
+    """Point each consumer's fixed path at current/<file>, where the
+    consumer is configured here at all (its config dir exists). What the
+    old setup left behind is migrated: a parent that is itself a symlink
+    (btop's themes and k9s' skins dirs used to link into the repo) becomes
+    a real directory, and a real file in the way (yazi's downloaded theme)
+    is kept beside the link as <name>.pre-theme."""
     for rendered, dests in EXPORTS.items():
         for dest in dests:
             dest = Path(os.path.expanduser(dest))
-            if not dest.parent.parent.exists():
-                continue
-            dest.parent.mkdir(exist_ok=True)
+            parent = dest.parent
+            if parent.is_symlink():
+                if not parent.parent.exists():
+                    continue
+                parent.unlink()
+                parent.mkdir()
+            elif not parent.exists():
+                if parent.parent.exists() and parent.name in ("themes", "skins"):
+                    parent.mkdir()
+                else:
+                    continue
             if dest.exists() and not dest.is_symlink():
-                print(f"theme: not replacing a real file: {dest}", file=sys.stderr)
-                continue
+                keep = dest.with_name(dest.name + ".pre-theme")
+                dest.replace(keep)
+                print(f"theme: kept the old {dest.name} as {keep.name}", file=sys.stderr)
             if dest.is_symlink():
                 dest.unlink()
             dest.symlink_to(CURRENT / rendered)
@@ -324,7 +345,7 @@ def set_theme(name, do_reload=True):
         claude_themes.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(out / "claude.json", claude_themes / "system.json")
     if do_reload:
-        timed("reload", reload, Palette(name))
+        timed("reload", reload)
 
 
 def main(argv):
@@ -351,10 +372,9 @@ def main(argv):
             sys.exit("theme: no current theme")
         print(Palette(name).lookup(args[0]))
     elif cmd == "reload":
-        name = current()
-        if not name:
+        if not current():
             sys.exit("theme: no current theme")
-        reload(Palette(name))
+        reload()
     else:
         sys.exit(__doc__)
 

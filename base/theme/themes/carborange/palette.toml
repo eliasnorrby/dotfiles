@@ -121,6 +121,7 @@ bright_white = "white"
 
 [chrome]
 radius = 0
+radius_small = 0
 kitty_opacity = 0.8
 window_opacity = 0.9
 

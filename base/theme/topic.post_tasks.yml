@@ -1,0 +1,14 @@
+---
+# After links and packages: make sure a theme is on and its rendered files
+# and export links exist. A machine that has chosen a theme keeps it; the
+# re-render picks up new templates and exports without switching.
+- name: find the current theme
+  command: "{{ dotfiles }}/base/theme/theme.py current"
+  register: theme_current
+  changed_when: false
+- name: set the default theme when none is on
+  command: "{{ dotfiles }}/base/theme/theme.py set {{ theme_default }} --no-reload"
+  when: theme_current.stdout == ""
+- name: re-render the current theme
+  command: "{{ dotfiles }}/base/theme/theme.py set {{ theme_current.stdout }} --no-reload"
+  when: theme_current.stdout != ""

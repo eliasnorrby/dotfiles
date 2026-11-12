@@ -115,6 +115,7 @@ bright_white = "subtext0"
 
 [chrome]
 radius = 10
+radius_small = 6
 kitty_opacity = 1.0
 window_opacity = 0.9
 
