@@ -15,6 +15,9 @@ from .errors import NotFound, WkError
 
 KIND_FLAGS = ("task", "issue", "pr", "branch", "dir", "window")
 
+# Commands that create or change tasks, refused where tasks.register is off.
+REGISTERING = ("import", "note", "annotate", "open", "adopt", "start", "menu", "sync", "attach-pr")
+
 
 def kind_of(task):
     """What sort of work item this is. Derived, never stored: `review` is the
@@ -143,6 +146,16 @@ def note_of(config, tasks, task, create):
             raise
         path = None
     return path, (notes.vault_of(config, path) if path else None)
+
+
+def refuse_unless_registering(args):
+    from .config import Config
+
+    if args.command not in REGISTERING and not getattr(args, "ensure", False) and not getattr(args, "do_import", False):
+        return
+    config = Config.load()
+    if not config.registers_work:
+        raise WkError(f"this machine does not register work (tasks.register = false in {config.path})")
 
 
 # -- commands --------------------------------------------------------------
@@ -1038,6 +1051,7 @@ def main(argv):
     out = Output(args)
     code = 1
     try:
+        refuse_unless_registering(args)
         code = args.run(args, out) or 0
     except WkError as err:
         out.error(err)

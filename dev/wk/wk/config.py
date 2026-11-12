@@ -22,6 +22,7 @@ DEFAULTS = {
         "archive": "archive",
         "flag": "󰎞",
     },
+    "tasks": {"register": True},
     "teams": {},
     "projects": {},
     "repos": {},
@@ -85,6 +86,13 @@ class Config:
             else:
                 raise NotFound(f"no such config key: {dotted}")
         return node
+
+    @property
+    def registers_work(self):
+        """Whether this machine's taskwarrior is the register of work. Off on a
+        machine that borrows the setup without the register: tasks made there
+        would be strangers to the notes, the trackers and the other machine."""
+        return self.data["tasks"]["register"] is not False
 
     @property
     def vaults_dir(self):

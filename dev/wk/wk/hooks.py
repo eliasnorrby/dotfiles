@@ -67,6 +67,8 @@ def claude_post_tool_use(payload, head_of=None):
         return
     if not PR_CREATE_RE.search((payload.get("tool_input") or {}).get("command", "")):
         return
+    if not _registers_work():
+        return
     url = PR_URL_RE.search(json.dumps(payload.get("tool_response", "")))
     if not url:
         return
@@ -127,6 +129,18 @@ the same work, `wk adopt --task <id>` for another pending task, `wk adopt "<shor
 work."""
 
 
+NOT_REGISTERED = """\
+This machine does not register work (tasks.register = false in wk's config): its taskwarrior is not the \
+register the notes and trackers know, so no task is tied to this session and none should be. Don't adopt \
+or create one (wk refuses to here); go straight to the request."""
+
+
+def _registers_work():
+    from .config import Config
+
+    return Config.load().registers_work
+
+
 def _interactive():
     """Headless runs (`claude -p`, the SDK) are scheduled jobs, not work
     sessions: they get no task."""
@@ -184,6 +198,10 @@ def claude_event(event, payload):
     if agent is None:
         if event == "post-tool-use":
             return  # the hot path: a session without a task costs nothing more
+        if not _registers_work():
+            if event == "session-start" and payload.get("source") in (None, "startup", "clear") and _interactive():
+                _emit_context("SessionStart", NOT_REGISTERED)
+            return
         uuid = _session_task(event, payload)
         if not uuid:
             return

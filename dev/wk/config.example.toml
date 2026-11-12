@@ -18,6 +18,13 @@ tracker = "linear"       # tracker for issue keys of teams not listed below
 merge = "squash"         # how the menu merges a PR: merge, squash or rebase; unset: gh asks
 # branch_prefix = "me/"  # default: $USER/. Marks a clipboard branch as mine.
 
+[tasks]
+# Whether this machine's taskwarrior is the register of work. Off on a machine
+# that borrows the setup while the register lives on another: Claude sessions
+# get no task and are told not to adopt one, and the commands that create or
+# change tasks (import, adopt, open, start, sync, …) refuse.
+register = true
+
 [notes]
 # Candidates, since vaults need not share a layout: the first one that exists
 # in the chosen vault wins; a vault with none gets the first.

@@ -197,3 +197,23 @@ def test_a_cleared_session_waits_to_name_its_task(tasks, stateful, monkeypatch, 
     new = next(t for t in tasks.all() if t["description"] == "New work")
     assert new["session"] == "fresh" and state.read_agent("fresh")["uuid"] == new["uuid"]
     assert tasks.get(earlier["uuid"])["session"] == "old"
+
+
+def test_a_machine_that_does_not_register_work_keeps_its_tasks_out(tasks, stateful, repo, monkeypatch, capsys):
+    """The register lives on one machine; a session elsewhere gets no task,
+    even one its own taskwarrior would resolve, and wk refuses to make one."""
+    monkeypatch.setenv("CLAUDE_CODE_ENTRYPOINT", "cli")
+    (stateful / "config.toml").open("a").write("[tasks]\nregister = false\n")
+    task = tasks.add("the thing", {"issue": "ACME-12"})
+    event("session-start", cwd=str(repo), source="startup")
+    told = json.loads(capsys.readouterr().out)["hookSpecificOutput"]["additionalContext"]
+    assert "does not register work" in told and "wk adopt" not in told
+    event("user-prompt-submit")
+    assert state.agents() == {}
+    assert state_of(tasks, task) == ""
+    assert cli.main(["adopt", "Tidy the prompt", "-C", str(repo)]) == 1
+    assert cli.main(["resolve", "--ensure", "-C", str(repo)]) == 1
+    assert "does not register work" in capsys.readouterr().err
+    assert cli.main(["resolve", "-C", str(repo)]) == 0, "looking is still fine"
+    tasks.invalidate()
+    assert len(tasks.all()) == 1
