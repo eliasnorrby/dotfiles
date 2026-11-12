@@ -268,10 +268,20 @@ def reload():
         return shutil.which(tool) is not None
 
     if have("hyprctl") and running("hyprpaper"):
+        # hyprpaper 0.8 takes `wallpaper MONITOR,path` and silently ignores
+        # the form without a monitor, so address each monitor by name.
         wallpaper = (CURRENT / "wallpaper").resolve()
-        swapped = subprocess.run(["hyprctl", "hyprpaper", "wallpaper", f",{wallpaper}"],
-                                 capture_output=True, text=True)
-        if swapped.returncode != 0 or "error" in swapped.stdout:
+        ok = False
+        try:
+            mons = json.loads(subprocess.run(["hyprctl", "monitors", "-j"], capture_output=True,
+                                             text=True, timeout=3).stdout)
+            for mon in mons:
+                done = subprocess.run(["hyprctl", "hyprpaper", "wallpaper", f"{mon['name']},{wallpaper}"],
+                                      capture_output=True, text=True, timeout=5)
+                ok = ok or (done.returncode == 0 and "error" not in done.stdout)
+        except Exception:
+            ok = False
+        if not ok:
             subprocess.run(["pkill", "-x", "hyprpaper"])
             subprocess.run(["hyprctl", "dispatch", "exec", "hyprpaper"], capture_output=True)
     if running("kitty"):
