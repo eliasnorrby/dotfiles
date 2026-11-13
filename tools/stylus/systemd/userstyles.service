@@ -1,0 +1,14 @@
+[Unit]
+Description=userstyles: serve the current theme's userstyles to Stylus on localhost
+
+[Service]
+# Stylus refuses file URLs as update URLs (http and https only), so the
+# rendered styles are served from ~/.config/theme over the loopback
+# interface; each style's update URL points here, and localhost is exempt
+# from Stylus's rule that an update's version must grow.
+Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin
+ExecStart=%h/.local/bin/userstyles serve
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

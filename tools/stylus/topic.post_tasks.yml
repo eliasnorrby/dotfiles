@@ -1,0 +1,11 @@
+---
+# Stylus can only pull updates over http, so the rendered styles are served
+# on localhost; the unit must be running for a theme switch to reach Chrome.
+- name: enable the userstyles server
+  systemd:
+    name: userstyles.service
+    scope: user
+    enabled: true
+    state: started
+    daemon_reload: true
+  when: is_arch

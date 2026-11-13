@@ -6,27 +6,33 @@ Every catppuccin userstyle takes its colours from one shared LESS file
 so a userstyle is rendered by inlining a copy of that lib in which the
 theme's flavour carries the theme's colours and the accent is the theme's
 accent. `theme build` calls this for every theme; the rendered styles land
-in the theme's output dir, and the update URL in each points at
-$XDG_CONFIG_HOME/theme/current/userstyles/, so Stylus pulls the current
-theme's version on its next update check ("Check all styles for updates"
-in the manager, or the interval in its options). An update URL on the
-local disk is exempt from Stylus's rule that the version must grow.
+in the theme's output dir, and `userstyles serve` (a user unit on arch)
+serves $XDG_CONFIG_HOME/theme on localhost. Each style's update URL points
+at its file under current/ there, so Stylus pulls the current theme's
+version on its next update check ("Check all styles for updates" in the
+manager, or the interval in its options). Stylus only downloads over http
+and https, which is why a server and not a file URL; localhost is exempt
+from its rule that an update's version must grow.
 
     userstyles build THEME [--refresh]   render styles.txt for the theme
+    userstyles serve                     serve ~/.config/theme on localhost
     userstyles fetch                     refresh the upstream sources
     userstyles list                      the styles, and which are cached
     userstyles filter HEX...             the CSS filter chain for a colour
 
 The sites are the slugs in styles.txt, one per line (the directory names
-under styles/ in github.com/catppuccin/userstyles). Sources are fetched
+under styles/ in github.com/catppuccin/userstyles). A site's own touches
+go in overrides/<slug>.less: LESS in the theme's {{token}} syntax, rendered
+with the palette and appended after the upstream code, so a declaration on
+the same selectors wins. Sources are fetched
 once into $XDG_CACHE_HOME/userstyles and refreshed by `fetch`; a build
 never needs the network when the cache is warm, and a style whose source
 is missing is skipped with a warning rather than failing the build.
 
-Setup, once per machine: Stylus needs "Allow access to file URLs" in
-chrome://extensions, then import <theme dir>/userstyles/import.json from
-the manager's Backup section. Styles with the same name are replaced in
-place, and Stylus offers to remove the ones the import leaves out.
+Setup, once per machine: import <theme dir>/userstyles/import.json from
+the Stylus manager's Backup section. Styles with the same name are
+replaced in place, and Stylus offers to remove the ones the import leaves
+out. Re-import whenever styles.txt changes; a switch needs no import.
 
 Standard library only; the palette comes from base/theme/theme.py.
 """
@@ -45,8 +51,10 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 STYLES = HERE / "styles.txt"
+OVERRIDES = HERE / "overrides"
 PRESETS = HERE / "presets"
 CACHE = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "userstyles"
+PORT = 7414  # loopback only; the update URLs carry it
 
 UPSTREAM = "https://github.com/catppuccin/userstyles/raw/main/styles/{slug}/catppuccin.user.less"
 STD_URL = "https://userstyles.catppuccin.com/lib/std/v1.less"
@@ -400,6 +408,9 @@ def render_style(slug, text, lib, pal, update_url, accent_name):
         print(f"userstyles: {slug}: does not import the std lib, left as upstream", file=sys.stderr)
     else:
         text = STD_IMPORT.sub(lambda m: lib.rstrip("\n"), text, count=1)
+    override = OVERRIDES / f"{slug}.less"
+    if override.exists():
+        text = text.rstrip("\n") + "\n\n" + pal.render(override.read_text())
     text = re.sub(r"^(@updateURL\s+).*$", lambda m: m.group(1) + update_url, text, count=1, flags=re.M)
     # The theme's flavour is the default dark flavour, so a fresh install
     # lands on it without a visit to the style's settings.
@@ -447,7 +458,7 @@ def build(name, refresh=False, out=None):
         text = source(slug, refresh)
         if text is None:
             continue
-        url = f"file://{theme.CURRENT}/userstyles/{slug}.user.less"
+        url = f"http://localhost:{PORT}/{theme.CURRENT.name}/userstyles/{slug}.user.less"
         rendered, entry = render_style(slug, text, lib, pal, url, accent_name)
         if rendered is None:
             continue
@@ -459,6 +470,30 @@ def build(name, refresh=False, out=None):
             stale.unlink()
     (out / "import.json").write_text(json.dumps(bundle, indent=1, ensure_ascii=False))
     print(f"userstyles: {name}: {len(bundle)} styles -> {out}")
+
+
+def serve():
+    """~/.config/theme over the loopback interface, for Stylus's update
+    checks. The directory is looked up per request, so `current` is
+    followed wherever it points now."""
+    import http.server
+    theme = theme_module()
+    root = str(theme.CONFIG)
+
+    class Handler(http.server.SimpleHTTPRequestHandler):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, directory=root, **kwargs)
+
+        def end_headers(self):
+            self.send_header("Cache-Control", "no-store")
+            super().end_headers()
+
+        def log_message(self, fmt, *args):
+            pass
+
+    with http.server.ThreadingHTTPServer(("127.0.0.1", PORT), Handler) as httpd:
+        print(f"userstyles: serving {root} on http://localhost:{PORT}/", flush=True)
+        httpd.serve_forever()
 
 
 def main(argv):
@@ -474,6 +509,8 @@ def main(argv):
             names = [n for n in names if n != out]
         for name in names:
             build(name, refresh="--refresh" in args, out=out)
+    elif cmd == "serve":
+        serve()
     elif cmd == "fetch":
         std(refresh=True)
         for slug in slugs():

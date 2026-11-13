@@ -1,11 +1,16 @@
 ---
 # Stylus (the browser extension) and the catppuccin userstyles it applies,
-# recoloured per theme by `userstyles` (called from `theme build`). The
-# sites are listed in styles.txt; see userstyles.py for the one-time Stylus
-# setup on a new machine.
+# recoloured per theme by `userstyles` (called from `theme build`) and
+# served to Stylus on localhost by `userstyles serve`. The sites are listed
+# in styles.txt; see userstyles.py for the one-time Stylus setup on a new
+# machine.
 stylus_config:
   path: tools/stylus
   links:
     - src: userstyles.py
       dest: "{{ xdg_bin_home }}/"
       rename: userstyles
+    - src: systemd/userstyles.service
+      dest: "{{ xdg_config_home }}/systemd/user/"
+      rename: userstyles.service
+      condition: "{{ is_arch }}"

@@ -1,0 +1,26 @@
+/* GitHub: diffs in the palette's diff colours (the ones Claude Code's
+   diff uses) rather than tints of green and red, which under carborange
+   turn additions into an orange wash. The selectors match the upstream
+   style's so the later declaration wins. */
+@-moz-document domain("github.com"), domain("gist.github.com") {
+  @media (prefers-color-scheme: dark) {
+    [data-color-mode][data-color-mode="auto"][data-dark-theme="dark"] {
+      .diff();
+    }
+  }
+  [data-color-mode="light"][data-light-theme="dark"],
+  [data-color-mode="dark"][data-dark-theme="dark"] {
+    .diff();
+  }
+
+  .diff() {
+    --diffBlob-additionNum-bgColor: {{diff_added_word}};
+    --diffBlob-additionLine-bgColor: {{diff_added_bg}};
+    --diffBlob-additionWord-bgColor: {{diff_added_word}};
+    --diffBlob-deletionNum-bgColor: {{diff_removed_word}};
+    --diffBlob-deletionLine-bgColor: {{diff_removed_bg}};
+    --diffBlob-deletionWord-bgColor: {{diff_removed_word}};
+    --color-prettylights-syntax-markup-inserted-bg: {{diff_added_word}};
+    --color-prettylights-syntax-markup-deleted-bg: {{diff_removed_word}};
+  }
+}
