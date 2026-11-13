@@ -63,7 +63,9 @@ hyprland_config:
     - hyprpolkitagent
     - xdg-desktop-portal-hyprland
     - wtype
+    # hyprvoice's local transcription; ggml-vulkan runs it on the GPU
+    - whisper-cpp
+    - ggml-vulkan
   aur_packages:
     - catppuccin-cursors-macchiato
     - hyprvoice-bin
-    - whisper.cpp
