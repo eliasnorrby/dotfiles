@@ -1,0 +1,34 @@
+# The catppuccin userstyles to render, one slug per line: the directory
+# names under styles/ in github.com/catppuccin/userstyles. Trimmed to the
+# sites in use (Chrome history, November 2026); the catalogue is at
+# https://github.com/catppuccin/userstyles/tree/main/styles
+
+# Google
+google
+gmail
+google-drive
+
+# Work
+github
+claude
+vercel
+linkedin
+stack-overflow
+npm
+
+# Social, media
+youtube
+reddit
+twitter
+spotify-web
+whatsapp-web
+
+# Reading
+wikipedia
+hacker-news
+dev.to
+arch-wiki
+neovim.io
+
+# The extension's own manager page
+stylus

@@ -251,6 +251,10 @@ def build(name):
             (out / tmpl.name).write_text(pal.render(text))
     timed("templates", templates)
     timed("wallpaper", build_wallpaper, pal, out)
+    if shutil.which("userstyles"):
+        # The browser userstyles (tools/stylus); nothing here is worse off
+        # when it fails, so it may.
+        timed("userstyles", subprocess.run, ["userstyles", "build", name])
     print(f"theme: built {name} -> {out}")
     return out
 

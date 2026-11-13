@@ -12,6 +12,9 @@ topics:
     - name: glamour
       state: present
       config: "{{ glamour_config }}"
+    - name: stylus
+      state: present
+      config: "{{ stylus_config }}"
     - name: obsidian
       state: present
       config: "{{ obsidian_config }}"
