@@ -3,6 +3,10 @@
   community.general.pacman:
     name: "{{ pacman_packages }}"
     state: present
+    # A package something else pulled in first (go, as yay's makedepend)
+    # would otherwise stay a dependency, and show up as an orphan
+    reason: explicit
+    reason_for: all
   when: pacman_packages | length > 0
   become: yes
 
