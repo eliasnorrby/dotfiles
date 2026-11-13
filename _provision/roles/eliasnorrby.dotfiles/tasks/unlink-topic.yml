@@ -13,14 +13,29 @@
         path: "{{ xdg_config_home + '/' + topic_config_dirname }}"
         state: absent
 
-    - name: unlink files
-      file:
+    - name: find the topic's links
+      stat:
         path: "{{ link_path }}"
-        state: absent
+        follow: false
+        get_checksum: false
       vars:
         link_path: "{{ (item.dest | default(xdg_config_home + '/' + topic_config_dirname + '/')) | regex_replace('/$', '/' + (item.rename | default(item.src | default(item)))) }}"
-      when: topic.config.links is defined
-      loop: "{{ topic.config.links }}"
+      loop: "{{ topic.config.links | default([]) }}"
+      register: topic_links
+
+    # Only links into this topic: a present topic may own the same path
+    # (bspwm and hyprland both link a `navigate`)
+    - name: unlink files
+      file:
+        path: "{{ item.stat.path }}"
+        state: absent
+      when:
+        - item.stat.islnk | default(false)
+        - item.stat.lnk_target.startswith(topic_data_path + '/')
+          or item.stat.lnk_target == (item.item.absolute | default(''))
+      loop: "{{ topic_links.results }}"
+      loop_control:
+        label: "{{ item.stat.path | default(item.item) }}"
   vars:
     topic_data_path: "{{ dotfiles_data + '/' + (topic.config.path | replace('/', '.')) + '.topic' }}"
     topic_config_dirname: "{{ topic.config.dirname | default(topic.name) }}"
