@@ -14,11 +14,11 @@ PROGRAM="$3"
 shift 3
 
 # Switch to workspace
-hyprctl dispatch workspace "$WORKSPACE"
+hyprctl dispatch "hl.dsp.focus({ workspace = '$WORKSPACE' })"
 
 # Check if window with class exists on this workspace
 if hyprctl clients -j | jq -e ".[] | select(.workspace.id == $WORKSPACE and (.class == \"$CLASS\" or .initialClass == \"$CLASS\"))" >/dev/null  2>&1; then
-  hyprctl dispatch focuswindow "class:$CLASS"
+  hyprctl dispatch "hl.dsp.focus({ window = 'class:$CLASS' })"
 else
   if command -v "$PROGRAM" >/dev/null  2>&1; then
     exec "$PROGRAM" "$@"

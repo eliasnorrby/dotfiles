@@ -9,4 +9,4 @@ if [ -z "$PINNED_ADDR" ]; then
   exit 1
 fi
 
-hyprctl dispatch focuswindow "address:$PINNED_ADDR"
+hyprctl dispatch "hl.dsp.focus({ window = 'address:$PINNED_ADDR' })"

@@ -33,7 +33,7 @@ keys:
         value: kitty -e browse_clients
       - key: e
         name: exit
-        value: hyprctl dispatch exit
+        value: hyprctl dispatch "hl.dsp.exit()"
   - key: r
     name: reload
     keys:

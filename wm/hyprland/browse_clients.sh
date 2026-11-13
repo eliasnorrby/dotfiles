@@ -25,7 +25,7 @@ main() {
   [ -z "$selected" ] && exit 0
 
   address=$(echo "$selected" | cut -f1)
-  hyprctl dispatch focuswindow "address:$address"
+  hyprctl dispatch "hl.dsp.focus({ window = 'address:$address' })"
 }
 
 case "$1" in

@@ -287,7 +287,7 @@ def reload():
             ok = False
         if not ok:
             subprocess.run(["pkill", "-x", "hyprpaper"])
-            subprocess.run(["hyprctl", "dispatch", "exec", "hyprpaper"], capture_output=True)
+            subprocess.run(["hyprctl", "dispatch", "hl.dsp.exec_cmd('hyprpaper')"], capture_output=True)
     if running("kitty"):
         subprocess.run(["pkill", "-SIGUSR1", "-x", "kitty"])
     runtime = Path(os.environ.get("XDG_RUNTIME_DIR", "/tmp"))

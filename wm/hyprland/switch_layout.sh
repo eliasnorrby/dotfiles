@@ -84,8 +84,7 @@ variant=$(printf '%s' "$variants" | cut -d, -f$((index + 1)))
 
 printf '%s\n' "$index" >"$state_file"
 
-hyprctl keyword input:kb_variant "$variant" >/dev/null
-hyprctl keyword input:kb_layout "$layout" >/dev/null
+hyprctl eval "hl.config({ input = { kb_layout = '$layout', kb_variant = '$variant' } })" >/dev/null
 
 key=$((first_key + index))
 ydotool key "$key:1" "$key:0"

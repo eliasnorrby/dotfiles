@@ -84,5 +84,6 @@ def focus_terminal(pid):
     # A visible special workspace (where the task list lives) would stay on
     # top of the window being focused, unless that window is on it.
     if special and special[0] and window.get("workspace", {}).get("name") != special[0]:
-        _quiet(["hyprctl", "dispatch", "togglespecialworkspace", special[0].removeprefix("special:")])
-    _quiet(["hyprctl", "dispatch", "focuswindow", f"address:{window['address']}"])
+        name = special[0].removeprefix("special:")
+        _quiet(["hyprctl", "dispatch", f"hl.dsp.workspace.toggle_special('{name}')"])
+    _quiet(["hyprctl", "dispatch", f"hl.dsp.focus({{ window = 'address:{window['address']}' }})"])

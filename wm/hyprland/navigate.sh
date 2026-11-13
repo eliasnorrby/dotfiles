@@ -27,10 +27,10 @@ main() {
 
 map_dir() {
   case $dir in
-    l | left)  hypr_dir=l   tmux_select_dir=L   tmux_lookup_dir=left     vim_key=h   ;;
-    r | right) hypr_dir=r   tmux_select_dir=R   tmux_lookup_dir=right    vim_key=l   ;;
-    u | up)    hypr_dir=u   tmux_select_dir=U   tmux_lookup_dir=top      vim_key=k   ;;
-    d | down)  hypr_dir=d   tmux_select_dir=D   tmux_lookup_dir=bottom   vim_key=j   ;;
+    l | left)  hypr_dir=left    tmux_select_dir=L   tmux_lookup_dir=left     vim_key=h   ;;
+    r | right) hypr_dir=right   tmux_select_dir=R   tmux_lookup_dir=right    vim_key=l   ;;
+    u | up)    hypr_dir=up      tmux_select_dir=U   tmux_lookup_dir=top      vim_key=k   ;;
+    d | down)  hypr_dir=down    tmux_select_dir=D   tmux_lookup_dir=bottom   vim_key=j   ;;
     *)
       echo "Invalid dir: $dir"
       exit 1
@@ -65,7 +65,7 @@ hyprland_select() {
     export HYPRLAND_INSTANCE_SIGNATURE
   fi
 
-  hyprctl dispatch movefocus $hypr_dir
+  hyprctl dispatch "hl.dsp.focus({ direction = '$hypr_dir' })"
 }
 
 tmux_select() {

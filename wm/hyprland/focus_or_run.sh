@@ -55,8 +55,8 @@ ACTIVE_CLASS=$(hyprctl activewindow -j | jq -r '.class')
 if [ "$ACTIVE_CLASS" = "$CLASS" ] && echo "$WINDOW_INFO" | grep -q '^special:'; then
   # Focused and in special workspace - hide it
   SPECIAL_NAME=$(echo "$WINDOW_INFO" | sed 's/^special://')
-  hyprctl dispatch togglespecialworkspace "$SPECIAL_NAME"
+  hyprctl dispatch "hl.dsp.workspace.toggle_special('$SPECIAL_NAME')"
 else
   # Not focused - just focus (works for both regular and special workspaces)
-  hyprctl dispatch focuswindow "class:$CLASS"
+  hyprctl dispatch "hl.dsp.focus({ window = 'class:$CLASS' })"
 fi

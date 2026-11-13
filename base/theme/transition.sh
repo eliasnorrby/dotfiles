@@ -41,7 +41,7 @@ fi
 
 grim "$shot"
 
-# The cover's window rules live in hyprland's conf.d (theme.conf): a float
+# The cover's window rules live in hyprland's config (config/theme.lua): a float
 # at the origin, mapped without animation, drawn opaque, undecorated. They
 # are in the config because the switch reloads hyprland, which drops
 # runtime rules. Fullscreen (over the bar) only takes through the
@@ -74,14 +74,18 @@ read -r mon_w mon_h < <(hyprctl monitors -j | python3 -c '
 import json, sys
 m = json.load(sys.stdin)[0]
 print(int(m["width"] / m["scale"]), int(m["height"] / m["scale"]))')
-hyprctl dispatch resizewindowpixel "exact $mon_w $mon_h,address:$addr" >/dev/null
-hyprctl dispatch movewindowpixel "exact 0 0,address:$addr" >/dev/null
+# hyprctl dispatch takes a Lua dispatcher, hl.dsp.<$1>
+dsp() { hyprctl dispatch "hl.dsp.$1" >/dev/null; }
+cover="window = 'address:$addr'"
+
+dsp "window.resize({ $cover, x = $mon_w, y = $mon_h })"
+dsp "window.move({ $cover, x = 0, y = 0 })"
 sleep 0.1
-hyprctl dispatch setprop "address:$addr" opacity 1 >/dev/null
+dsp "window.set_prop({ $cover, prop = 'opacity', value = '1' })"
 sleep 0.05
-hyprctl dispatch setprop "address:$addr" no_focus 0 >/dev/null
-hyprctl dispatch focuswindow "address:$addr" >/dev/null
-hyprctl dispatch fullscreen 0 >/dev/null
+dsp "window.set_prop({ $cover, prop = 'no_focus', value = '0' })"
+dsp "focus({ $cover })"
+dsp "window.fullscreen({ mode = 'fullscreen' })"
 sleep 0.15
 
 if [ -n "$target" ]; then theme set "$target"; else theme cycle; fi
@@ -92,16 +96,19 @@ sleep 0.2 # let the apps settle under the cover
 # So: back to the monitor-sized float (instant, same pixels bar aside),
 # fade that with the opacity property under a slowed fade curve, then
 # close it once invisible, without animation.
-# The curve is put back from the config line afterwards rather than by a
+# The curve is put back as it was read from hyprland rather than by a
 # reload: waybar rebuilds its workspace pill on every config reload.
-fade_default="$(grep -hE '^\s*animation\s*=\s*fade,' ~/.config/hypr/conf.d/*.conf | tail -1 | sed -E 's/^\s*animation\s*=\s*//')"
-hyprctl keyword animation "fade, 1, 5, almostLinear" >/dev/null
-hyprctl dispatch fullscreen 0 >/dev/null
+fade_default="$(hyprctl animations -j | python3 -c '
+import json, sys
+a = next(a for a in json.load(sys.stdin)[0] if a["name"] == "fade")
+print("leaf = \"fade\", enabled = %s, speed = %s, bezier = \"%s\"" % (str(a["enabled"]).lower(), a["speed"], a["bezier"]))')"
+hyprctl eval "hl.animation({ leaf = 'fade', enabled = true, speed = 5, bezier = 'almostLinear' })" >/dev/null
+dsp "window.fullscreen({ mode = 'fullscreen' })"
 sleep 0.05
-hyprctl dispatch setprop "address:$addr" no_anim 0 >/dev/null
-hyprctl dispatch setprop "address:$addr" opacity 0 >/dev/null
+dsp "window.set_prop({ $cover, prop = 'no_anim', value = '0' })"
+dsp "window.set_prop({ $cover, prop = 'opacity', value = '0' })"
 sleep 0.55
-hyprctl dispatch setprop "address:$addr" no_anim 1 >/dev/null
-hyprctl dispatch closewindow "address:$addr" >/dev/null
-[ -n "$fade_default" ] && hyprctl keyword animation "$fade_default" >/dev/null
-[ -n "$prev" ] && hyprctl dispatch focuswindow "address:$prev" >/dev/null
+dsp "window.set_prop({ $cover, prop = 'no_anim', value = '1' })"
+dsp "window.close({ $cover })"
+[ -n "$fade_default" ] && hyprctl eval "hl.animation({ $fade_default })" >/dev/null
+[ -n "$prev" ] && dsp "focus({ window = 'address:$prev' })"

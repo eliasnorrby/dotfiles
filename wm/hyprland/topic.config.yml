@@ -3,12 +3,12 @@ hyprland_config:
   dirname: hypr
   path: wm/hyprland
   links:
-    - hyprland.conf
+    - hyprland.lua
+    - config
     - hyprpaper.conf
     - hyprlock.conf
     - hypridle.conf
     - commands.yml
-    - conf.d
     - xdph.conf
     - src: xdph_share_picker.sh
       dest: "{{ xdg_bin_home }}/"
@@ -37,9 +37,6 @@ hyprland_config:
     - src: special_paste.sh
       dest: "{{ xdg_bin_home }}/"
       rename: special_paste
-    - src: send_home.sh
-      dest: "{{ xdg_bin_home }}/"
-      rename: send_home
     - src: hyprvoice_toggle.sh
       dest: "{{ xdg_bin_home }}/"
       rename: hyprvoice_toggle

@@ -5,10 +5,10 @@
 # it by restarting hyprpaper. Its IPC rejects reload requests on the
 # installed version, so a restart is the only way.
 
-hyprctl dispatch dpms on >/dev/null
+hyprctl dispatch "hl.dsp.dpms({ action = 'enable' })" >/dev/null
 
 if pgrep -x hyprpaper >/dev/null; then
   pkill -x hyprpaper
   sleep 0.5
 fi
-hyprctl dispatch exec hyprpaper >/dev/null
+hyprctl dispatch "hl.dsp.exec_cmd('hyprpaper')" >/dev/null

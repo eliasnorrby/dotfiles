@@ -89,7 +89,7 @@ main() {
   printf '%s' "$html" | wl-copy --type text/html
   # Let wl-copy take clipboard ownership before pasting
   sleep 0.2
-  hyprctl dispatch sendshortcut "CTRL, V, activewindow" >/dev/null
+  hyprctl dispatch "hl.dsp.send_shortcut({ mods = 'CTRL', key = 'V' })" >/dev/null
 
   # Give the target time to fetch the offer, then restore the clipboard
   sleep 0.5

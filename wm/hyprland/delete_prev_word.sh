@@ -9,9 +9,9 @@ class=$(hyprctl activewindow -j | jq -r '.class')
 
 case "$class" in
   *[Kk]itty* | *[Aa]lacritty* | *[Ff]oot* | *[Ww]ezterm* | org.gnome.[Tt]erminal* | TaskwarriorTui)
-    hyprctl dispatch sendshortcut "CTRL, W, activewindow"
+    hyprctl dispatch "hl.dsp.send_shortcut({ mods = 'CTRL', key = 'W' })"
     ;;
   *)
-    hyprctl dispatch sendshortcut "CTRL, BackSpace, activewindow"
+    hyprctl dispatch "hl.dsp.send_shortcut({ mods = 'CTRL', key = 'BackSpace' })"
     ;;
 esac

@@ -18,4 +18,4 @@ class=$(sed -n 's/^StartupWMClass=//p' "$entry" | head -1)
 [ -n "$launch" ] || exec chrome-work "$url"
 
 eval "$launch --app-launch-url-for-shortcuts-menu-item=\"\$url\"" >/dev/null 2>&1 &
-[ -n "$class" ] && hyprctl dispatch focuswindow "class:$class" >/dev/null 2>&1
+[ -n "$class" ] && hyprctl dispatch "hl.dsp.focus({ window = 'class:$class' })" >/dev/null 2>&1
