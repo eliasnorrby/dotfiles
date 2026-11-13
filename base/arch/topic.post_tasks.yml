@@ -78,6 +78,56 @@
   become: true
   tags: ["never", "sudo_enabled"]
 
+- name: restrict /boot to root
+  block:
+    # systemd-boot's random seed lives on /boot, and vfat takes its
+    # permissions from the mount: 0022 leaves it readable by everyone.
+    # Takes effect on the next mount of /boot (a reboot).
+    - name: set fmask and dmask on the /boot vfat mount
+      replace:
+        path: /etc/fstab
+        regexp: '^(\S+\s+/boot\s+vfat\s+\S*\b{{ item }}=)\d+'
+        replace: '\g<1>0077'
+      loop: [fmask, dmask]
+
+  become: true
+  tags: ["never", "sudo_enabled"]
+
+# Before the hibernation block, so the entry gets its resume parameters
+# kept up to date with the others.
+- name: boot entry for the fallback kernel (linux-lts)
+  block:
+    - name: find the main boot entry
+      shell: grep -lE '^linux\s+/vmlinuz-linux$' /boot/loader/entries/*.conf | head -1
+      register: main_entry
+      changed_when: false
+      failed_when: main_entry.stdout == ""
+
+    - name: read the main boot entry
+      slurp:
+        src: "{{ main_entry.stdout }}"
+      register: main_entry_content
+
+    - name: write the linux-lts boot entry from the main one
+      copy:
+        dest: /boot/loader/entries/arch-lts.conf
+        content: >-
+          {{ main_entry_content.content | b64decode
+             | regex_replace('(?m)^#.*\n', '')
+             | regex_replace('(?m)^title\s.*$', 'title   Arch Linux (linux-lts)')
+             | regex_replace('/vmlinuz-linux$', '/vmlinuz-linux-lts', multiline=True)
+             | regex_replace('/initramfs-linux\.img', '/initramfs-linux-lts.img') }}
+
+    # Without a default, systemd-boot may pick the LTS entry first
+    - name: keep the main kernel as the default boot entry
+      lineinfile:
+        path: /boot/loader/loader.conf
+        regexp: '^#?default\s'
+        line: "default {{ main_entry.stdout | basename }}"
+
+  become: true
+  tags: ["never", "sudo_enabled"]
+
 - name: configure hibernation (resume from swapfile)
   block:
     - name: get root partition UUID
@@ -132,7 +182,8 @@
 - name: notice about sudo (swap & hibernation)
   debug:
     msg: |
-      The swap and hibernation tasks require sudo and have been skipped.
+      The tasks for swap, hibernation, /boot and the fallback kernel's boot
+      entry require sudo and have been skipped.
       Run with --tags sudo_enabled --become to apply them.
   when: "'sudo_enabled' not in ansible_run_tags"
   tags: ["always"]

@@ -38,6 +38,7 @@ arch_config:
     # base
     - earlyoom
     - systembus-notify # earlyoom notifications
+    - linux-lts # fallback kernel; its boot entry comes from topic.post_tasks
     - vim
     - man-db
     - man-pages
