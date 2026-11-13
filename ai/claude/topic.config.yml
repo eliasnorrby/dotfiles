@@ -22,6 +22,12 @@ claude_config:
     - src: claude_vim.sh
       dest: "{{ xdg_bin_home }}/"
       rename: claude_vim
+    - src: claude.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: claude
+    - src: claude_context.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: claude_context
     - src: settings.json
       dest: "{{ claude_home }}/"
     - src: statusline.sh
@@ -37,6 +43,9 @@ claude_config:
     - src: skills/c
       dest: "{{ claude_home }}/skills/"
       rename: c
+    - src: skills/claude-context
+      dest: "{{ claude_home }}/skills/"
+      rename: claude-context
     - src: skills/delegate
       dest: "{{ claude_home }}/skills/"
       rename: delegate

@@ -207,6 +207,17 @@ ansible-playbook playbook.yml --check --diff
 - Skills are linked one by one into `~/.claude/skills/`, each by the topic it
   belongs to; `ai/claude/skills/` holds the general ones.
 
+### Claude Code contexts (ai/claude)
+
+- `claude` in `$XDG_BIN_HOME` is a wrapper: it adds the flags of the context
+  that applies to the working directory (which connectors are blocked, which
+  plugins are off, which MCP servers are added) and runs the real binary.
+- A tree declares a context with a machine-local `claude-context.json` at its
+  root; `~/claude-context.json` is the fallback under home, and where none is
+  found no context applies. None of them are in this repository.
+  `claude_context [dir]` says which applies; `CLAUDE_CONTEXT=none` opts out;
+  the `claude-context` skill sets one up. Details in `ai/claude/README.md`.
+
 ### Git Configuration
 
 - **Location**: `shell/git/`
