@@ -2,7 +2,9 @@ hl.on('hyprland.start', function()
   hl.exec_cmd('hyprpaper')
   hl.exec_cmd('hypridle')
   hl.exec_cmd('waybar')
-  hl.exec_cmd('swaync')
+  -- Through its unit: swaync is D-Bus activated, so an exec'd copy races
+  -- the activation and the unit fails at every login
+  hl.exec_cmd('systemctl --user start swaync')
   hl.exec_cmd('systembus-notify') -- earlyoom notifications
   hl.exec_cmd('playerctld daemon') -- track most recently active MPRIS player
 

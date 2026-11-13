@@ -121,9 +121,31 @@ hl.bind(mainMod .. ' + T', exec('task_quick_add'))
 hl.bind('SUPER + R', exec('hyprvoice_toggle'))
 hl.bind('SUPER + SHIFT + R', exec('hyprvoice_toggle cancel'))
 
+-- Tapping SUPER alone. Since 0.57 a release bind only checks the mods held
+-- when SUPER_L went down, so a SUPER_L released mid-chord fires too (keyd's
+-- hyper layer presses Super first, then lets it go before sending an
+-- arrow). So run only if nothing else was pressed between SUPER_L down and
+-- up: the key just released is also the last one pressed.
+local lastPressed, lastReleased
+hl.on('input.keyboard.key', function(keycode, _, state)
+  if state == 1 then
+    lastPressed = keycode
+  elseif state == 0 then
+    lastReleased = keycode
+  end
+end)
+
+local function onTap(cmd)
+  return function()
+    if lastPressed == lastReleased then
+      hl.exec_cmd(cmd)
+    end
+  end
+end
+
 hl.bind(
   'SUPER + SUPER_L',
-  exec(
+  onTap(
     'pgrep wcmd || kitty -o cursor_trail=0 --class WhichCmd -e wcmd --config ~/.config/hypr/commands.yml build --exec'
   ),
   { release = true }
@@ -143,7 +165,7 @@ hl.window_rule({
 
 hl.bind(
   'CTRL + SUPER + SUPER_L',
-  exec(
+  onTap(
     "tmux display-popup -E -b rounded -y P -w 45% -h 12 -T ' which-cmd ' 'wcmd --config ~/.config/tmux/commands.yml build --exec'"
   ),
   { release = true }
