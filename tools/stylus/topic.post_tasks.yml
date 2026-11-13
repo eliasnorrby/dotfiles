@@ -9,3 +9,14 @@
     state: started
     daemon_reload: true
   when: is_arch
+
+# Upstream only reaches Stylus through the rendered copies, so refetch and
+# re-render daily; Stylus's own scheduled check picks the result up.
+- name: enable the daily userstyles refetch
+  systemd:
+    name: userstyles-fetch.timer
+    scope: user
+    enabled: true
+    state: started
+    daemon_reload: true
+  when: is_arch

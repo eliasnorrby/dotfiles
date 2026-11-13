@@ -21,7 +21,9 @@ from its rule that an update's version must grow.
     userstyles filter HEX...             the CSS filter chain for a colour
 
 The sites are the slugs in styles.txt, one per line (the directory names
-under styles/ in github.com/catppuccin/userstyles). A site's own touches
+under styles/ in github.com/catppuccin/userstyles). Upstream reaches
+Stylus only through these renders, so userstyles-fetch.timer refetches and
+rebuilds daily on arch. A site's own touches
 go in overrides/<slug>.less: LESS in the theme's {{token}} syntax, rendered
 with the palette and appended after the upstream code, so a declaration on
 the same selectors wins. Sources are fetched

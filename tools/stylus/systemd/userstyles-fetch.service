@@ -1,0 +1,11 @@
+[Unit]
+Description=userstyles: refetch the upstream userstyles and re-render the themes
+
+[Service]
+Type=oneshot
+# The user manager's PATH is whatever the session happened to import; name
+# what this needs (userstyles, theme, uv for the wallpaper) instead.
+Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin
+# Stylus then installs the re-rendered styles on its own scheduled check.
+ExecStart=/bin/sh -c 'userstyles fetch && theme build'
+TimeoutStartSec=300

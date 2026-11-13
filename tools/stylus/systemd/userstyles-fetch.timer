@@ -1,0 +1,11 @@
+[Unit]
+Description=userstyles: refetch upstream daily
+
+[Timer]
+OnBootSec=15min
+OnUnitInactiveSec=1d
+AccuracySec=1h
+Persistent=true
+
+[Install]
+WantedBy=timers.target
