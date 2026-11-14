@@ -529,11 +529,17 @@ def cmd_start(args, out):
             raise NotFound(f"no task for {args.partof}")
         tasks.modify(task, {"partof": parent["uuid"]})
         task = tasks.get(task["uuid"])
+    # The repository the work is in: the one --in names (a sub-issue of
+    # another repository than the session's), else the one here.
+    here = os.path.realpath(plain_dir) if plain_dir and git.is_repo(plain_dir) else cwd
+    if here != cwd and not task.get("repo"):
+        tasks.modify(task, {"repo": git.slug(here)})
+        task = tasks.get(task["uuid"])
 
     note, _vault = note_of(config, tasks, task, create=True)
     task = tasks.get(task["uuid"])
     if args.background:
-        return _start_background(args, out, config, tasks, task, note, cwd)
+        return _start_background(args, out, config, tasks, task, note, here)
     # A task worked on before carries on in its session: a live one is found
     # where it runs (follow_session), one that has ended is resumed in the
     # new window. Only a task no session has touched starts a fresh one.
@@ -552,7 +558,7 @@ def cmd_start(args, out):
                 prompt = config.data.get("start", {}).get("prompt", "")
             command = claude_command(config, "--session-id", session, *([prompt] if prompt else []))
     opened = workspace.ensure_window(
-        config, tasks, task, cwd, branch=args.on, command=command, plain_dir=plain_dir, follow_session=True
+        config, tasks, task, here, branch=args.on, command=command, plain_dir=plain_dir, follow_session=True
     )
     launched = bool(command) and opened.created_window
     if launched:

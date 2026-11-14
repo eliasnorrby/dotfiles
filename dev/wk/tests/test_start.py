@@ -104,6 +104,24 @@ def test_background_names_the_branch_and_ties_the_session(wk, tasks, app, tmux_s
     assert not (app / ".worktrees").exists()
 
 
+def test_background_in_another_repository_works_there(wk, tasks, app, tmux_server, world, monkeypatch, capsys):  # noqa: F811
+    # A sub-issue in acme/infra, handed out by a session in acme/app.
+    monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "orchestrator")
+    origin = world / "acme" / "infra.git"
+    git(world, "init", "-q", "--bare", "-b", "main", str(origin))
+    infra = world / "infra"
+    git(world, "clone", "-q", str(origin), str(infra))
+    git(infra, "commit", "-q", "--allow-empty", "-m", "init")
+    parent = tasks.add("Investigate", {"issue": "ACME-1", "project": "work"})
+    child = tasks.add("Infra part", {"issue": "ACME-3", "project": "work"})
+    argv = ["start", "ACME-3", "--partof", "ACME-1", "--background", "--json", "-C", str(app), "--in", str(infra)]
+    assert wk(*argv) == 0
+    payload = json.loads(capsys.readouterr().out)
+    child = tasks.get(child["uuid"])
+    assert (child["repo"], child["partof"]) == ("acme/infra", parent["uuid"])
+    assert payload["repository"] == str(infra)
+
+
 def test_start_resumes_the_session_the_task_already_has(wk, tasks, app, tmux_server, world, capsys):  # noqa: F811
     task = tasks.add("Fix the thing", {"issue": "ACME-12", "project": "work", "session": "earlier"})
     transcripts = world / ".claude" / "projects" / "-somewhere"
