@@ -18,6 +18,12 @@ Run it from the directory the work is happening in. It prints `issue`, `task`,
 `vault` and `note` (the task note, created if it didn't exist, along with the
 taskwarrior task).
 
+Run it at the start of **every** checkpoint, not just the first: it is local
+and cheap, and the note can move under you. When the task is closed (a PR
+merged, the issue closed elsewhere), wk moves its note into `archive/` at
+once, mid-session or not. Write to the `note` this run printed, never a path
+remembered from an earlier checkpoint.
+
 It asks `wk` which task this session belongs to: the task its tmux window was
 opened for, else the one whose worktree this is, else the issue on the branch.
 That covers work without an issue too. If this session is about a different

@@ -83,3 +83,37 @@ def test_the_message_can_come_from_a_file(vault, world):
     result = checkpoint("commit", vault, "-F", world / "msg.txt", "--", vault / "wiki/page.md")
     assert result.returncode == 0, result.stderr
     assert last_commit(vault).startswith("from a file\n")
+
+
+def test_a_note_moved_away_is_not_committed_as_a_deletion(vault):
+    """The task closed mid-checkpoint and wk moved its note: committing the
+    old path would record a deletion and leave the archived copy untracked."""
+    os.rename(vault / NOTE, vault / ARCHIVED)
+    head = git(vault, "rev-parse", "HEAD")
+
+    result = checkpoint("commit", vault, "--", NOTE, "wiki/page.md", message="checkpoint\n")
+
+    assert result.returncode != 0
+    assert f"the note moved to {ARCHIVED}" in result.stderr
+    assert git(vault, "rev-parse", "HEAD") == head
+    assert git(vault, "diff", "--cached", "--name-only") == ""
+
+
+def test_a_path_that_never_was_is_refused(vault):
+    result = checkpoint("commit", vault, "--", "wiki/nothing.md", message="checkpoint\n")
+    assert result.returncode != 0
+    assert "wiki/nothing.md does not exist" in result.stderr
+
+
+def test_a_deliberate_move_still_commits_both_sides(vault):
+    git(vault, "mv", NOTE, "wiki/tasks/ACME-1 Renamed.md")
+    result = checkpoint("commit", vault, "--", NOTE, "wiki/tasks/ACME-1 Renamed.md", message="rename\n")
+    assert result.returncode == 0, result.stderr
+    assert git(vault, "log", "-1", "--format=", "--name-status", "-M").startswith("R100")
+
+
+def test_a_deliberate_deletion_still_commits(vault):
+    git(vault, "rm", "-q", "wiki/page.md")
+    result = checkpoint("commit", vault, "--", "wiki/page.md", message="drop\n")
+    assert result.returncode == 0, result.stderr
+    assert last_commit(vault) == "drop\n\nD\twiki/page.md"

@@ -325,6 +325,29 @@ vault_arg() {
   printf '%s' "$vault"
 }
 
+# A checkpoint never means to delete. A listed file that is gone was moved
+# under the session (wk archives the note of a task closed meanwhile), and
+# committing it would record a deletion and leave the new copy untracked. So
+# a missing path goes through only as a deletion staged on purpose: a git rm,
+# or the old name of a git mv. Explains each refusal on stderr; fails when
+# there was one. Args: VAULT REL_PATH...
+vanished_paths() {
+  local vault="$1" path other refused=""
+  shift
+  for path in "$@"; do
+    [ ! -e "$vault/$path" ] || continue
+    [ -z "$(git -C "$vault" diff --cached --no-renames --name-only --diff-filter=D -- "$path")" ] || continue
+    refused=1
+    other=$(archive_counterpart "$path") && [ -e "$vault/$other" ] || other=""
+    if [ -n "$other" ]; then
+      echo "Refused: $path no longer exists; the note moved to $other. Edit that and commit it." >&2
+    else
+      echo "Refused: $path does not exist. To delete it on purpose, git rm it first." >&2
+    fi
+  done
+  [ -z "$refused" ]
+}
+
 cmd_commit() {
   local vault="" message_file="" message gaps today
   while [ $# -gt 0 ]; do
@@ -371,6 +394,7 @@ cmd_commit() {
   local -a paths=()
   mapfile -t paths < <(vault_paths "$vault" "$@")
   [ ${#paths[@]} -eq $# ] || exit 1
+  vanished_paths "$vault" "${paths[@]}" || exit 1
   gaps=$(daily_gaps "$vault" "$message" "${paths[@]}")
   local -a gap_list=()
   [ -z "$gaps" ] || mapfile -t gap_list <<<"$gaps"
@@ -561,20 +585,27 @@ sweep_vault() {
   vault_commit "$vault" "${paths[@]}" <<<"$message"
 }
 
-# Whether the other end of an archive move is already in git: for a deleted
-# DIR/NAME that is DIR/archive/NAME, and for a deleted DIR/archive/NAME (a
-# reopened task) it is DIR/NAME. Args: VAULT REL_PATH
-archive_counterpart_tracked() {
-  local vault="$1" path="$2" dir base other
+# The other end of an archive move: DIR/archive/NAME for DIR/NAME, and
+# DIR/NAME for DIR/archive/NAME (a reopened task). A file at the vault root
+# has none. Args: REL_PATH
+archive_counterpart() {
+  local path="$1" dir base
   dir="${path%/*}"
   base="${path##*/}"
   [ "$dir" != "$path" ] || return 1
   case "$dir" in
-    */archive) other="${dir%/archive}/$base" ;;
-    archive) other="$base" ;;
-    *) other="$dir/archive/$base" ;;
+    */archive) printf '%s' "${dir%/archive}/$base" ;;
+    archive) printf '%s' "$base" ;;
+    *) printf '%s' "$dir/archive/$base" ;;
   esac
-  git -C "$vault" ls-files --error-unmatch -- "$other" >/dev/null 2>&1
+}
+
+# Whether the other end of an archive move is already in git. Args: VAULT
+# REL_PATH
+archive_counterpart_tracked() {
+  local other
+  other=$(archive_counterpart "$2") || return 1
+  git -C "$1" ls-files --error-unmatch -- "$other" >/dev/null 2>&1
 }
 
 cmd_sweep() {
