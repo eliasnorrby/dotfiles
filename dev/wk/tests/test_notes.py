@@ -96,7 +96,9 @@ def test_closing_archives_and_reopening_restores(config, tasks, world):
 
     # The cached path is stale now, as it is after `task undo`: found by uuid.
     assert notes.move_for_status(config, task, closed=False) == "wiki/tasks/ACME-4 archive me"
-    assert "status: active" in open(path).read()
+    text = open(path).read()
+    assert "status: active" in text
+    assert "closed:" not in text
 
 
 def test_frontmatter_edits_leave_the_body_alone(tmp_path):
@@ -104,6 +106,13 @@ def test_frontmatter_edits_leave_the_body_alone(tmp_path):
     note.write_text("---\ntask: x\nstatus: active\n---\n\nstatus: in the body\n")
     notes.set_frontmatter(str(note), {"status": "done", "closed": "2026-01-01"})
     assert note.read_text() == "---\ntask: x\nstatus: done\nclosed: 2026-01-01\n---\n\nstatus: in the body\n"
+
+
+def test_a_key_set_to_none_is_removed_from_the_frontmatter_only(tmp_path):
+    note = tmp_path / "n.md"
+    note.write_text("---\ntask: x\nclosed: 2026-01-01\nclosed_by: me\n---\n\nclosed: in the body\n")
+    notes.set_frontmatter(str(note), {"closed": None})
+    assert note.read_text() == "---\ntask: x\nclosed_by: me\n---\n\nclosed: in the body\n"
 
 
 def test_no_note_nothing_to_move(config, tasks):

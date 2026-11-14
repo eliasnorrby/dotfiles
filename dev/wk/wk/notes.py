@@ -191,8 +191,9 @@ def ensure(config, tasks, task, create_missing=True, repair=True):
 
 def set_frontmatter(path, values):
     """Set frontmatter keys, inserting them before the closing delimiter when
-    the note does not carry them yet. Confined to the frontmatter block so a
-    matching line in the note body is left alone."""
+    the note does not carry them yet; a value of None removes the key.
+    Confined to the frontmatter block so a matching line in the note body is
+    left alone."""
     with open(path, encoding="utf-8") as handle:
         lines = handle.read().split("\n")
     if not lines or lines[0] != "---":
@@ -203,9 +204,12 @@ def set_frontmatter(path, values):
         return
     block = lines[1:end]
     for key, value in values.items():
+        if value is None:
+            block = [line for line in block if not _is_key(line, key)]
+            continue
         line = f"{key}: {value}"
         for index, existing in enumerate(block):
-            if existing.startswith(f"{key}: "):
+            if _is_key(existing, key):
                 block[index] = line
                 break
         else:
@@ -214,6 +218,10 @@ def set_frontmatter(path, values):
     with open(temporary, "w", encoding="utf-8") as handle:
         handle.write("\n".join(lines[:1] + block + lines[end:]))
     os.replace(temporary, path)
+
+
+def _is_key(line, key):
+    return line == f"{key}:" or line.startswith(f"{key}: ")
 
 
 def move_for_status(config, task, closed):
@@ -237,7 +245,8 @@ def move_for_status(config, task, closed):
         today = datetime.date.today().isoformat()
         set_frontmatter(destination, {"status": "done", "closed": today})
     else:
-        set_frontmatter(destination, {"status": "active"})
+        # A reopened task is not closed, whenever it was.
+        set_frontmatter(destination, {"status": "active", "closed": None})
     if path != destination:
         commit_move(vault_path, path, destination)
     return os.path.splitext(os.path.relpath(destination, vault_path))[0]
