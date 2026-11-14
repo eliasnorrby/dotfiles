@@ -17,6 +17,7 @@ import subprocess
 from .errors import WkError
 
 FRONTMATTER_BYTES = 4096
+CLOSED = ("completed", "deleted")
 
 TEMPLATE = """---
 {frontmatter}
@@ -120,8 +121,37 @@ def issue_of(task):
     return match.group(1) if match else None
 
 
-def create(config, vault_path, task):
+def is_closed(task):
+    return task.get("status") in CLOSED
+
+
+def closed_on(task):
+    """The day the task closed, in local time: its `end`, else today."""
+    try:
+        moment = datetime.datetime.strptime(task.get("end", ""), "%Y%m%dT%H%M%SZ")
+    except ValueError:
+        return datetime.date.today().isoformat()
+    return moment.replace(tzinfo=datetime.UTC).astimezone().date().isoformat()
+
+
+def home_of(config, vault_path, closed):
+    """Where a task's note belongs: the task folder, or its archive while the
+    task is closed."""
     directory = os.path.join(vault_path, subdir_for_vault(config, vault_path))
+    return os.path.join(directory, config.archive_subdir) if closed else directory
+
+
+def is_archived(config, path):
+    """Whether a note's path (vault-relative or not) is in an archive."""
+    return os.path.basename(os.path.dirname(path)) == config.archive_subdir
+
+
+def create(config, vault_path, task):
+    """A new note for the task, where its status says it belongs: a task
+    that closed before it had a note (the hook that archives had nothing to
+    move then) gets its note in the archive, done, at once."""
+    closed = is_closed(task)
+    directory = home_of(config, vault_path, closed)
     description = task.get("description", "")
     issue = issue_of(task)
     today = datetime.date.today().isoformat()
@@ -146,7 +176,8 @@ def create(config, vault_path, task):
         frontmatter.append(f"issue: {issue}")
     if task.get("project"):
         frontmatter.append(f"project: {task['project']}")
-    frontmatter += [f"created: {today}", "status: active"]
+    frontmatter.append(f"created: {today}")
+    frontmatter += ["status: done", f"closed: {closed_on(task)}"] if closed else ["status: active"]
 
     with open(path, "x", encoding="utf-8") as handle:
         # The heading is the file name, so heading and link target agree.
@@ -232,9 +263,7 @@ def move_for_status(config, task, closed):
     if not path:
         return None
     vault_path = vault_of(config, path)
-    directory = os.path.join(vault_path, subdir_for_vault(config, vault_path))
-    if closed:
-        directory = os.path.join(directory, config.archive_subdir)
+    directory = home_of(config, vault_path, closed)
     os.makedirs(directory, exist_ok=True)
     destination = os.path.join(directory, os.path.basename(path))
     if path != destination:
@@ -242,8 +271,7 @@ def move_for_status(config, task, closed):
             return None
         os.rename(path, destination)
     if closed:
-        today = datetime.date.today().isoformat()
-        set_frontmatter(destination, {"status": "done", "closed": today})
+        set_frontmatter(destination, {"status": "done", "closed": closed_on(task)})
     else:
         # A reopened task is not closed, whenever it was.
         set_frontmatter(destination, {"status": "active", "closed": None})

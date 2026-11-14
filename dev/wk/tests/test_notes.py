@@ -101,6 +101,27 @@ def test_closing_archives_and_reopening_restores(config, tasks, world):
     assert "closed:" not in text
 
 
+def test_a_note_for_a_task_closed_already_starts_in_the_archive(config, tasks, world):
+    """No hook will archive it later: that moment has passed."""
+    task = tasks.add("done before its note", {"issue": "ACME-5", "project": "work"})
+    tasks.done(task)
+    tasks._task([task["uuid"], "modify", "end:2026-10-09T12:00:00"])
+    tasks.invalidate()
+
+    path = notes.ensure(config, tasks, tasks.get(task["uuid"]))
+
+    assert path == str(world / "vaults/acme/wiki/tasks/archive/ACME-5 done before its note.md")
+    assert f"created: {TODAY}\nstatus: done\nclosed: 2026-10-09\n---" in open(path).read()
+    assert tasks.get(task["uuid"])["note"] == "wiki/tasks/archive/ACME-5 done before its note"
+
+
+def test_the_archive_records_the_day_the_task_closed(config, tasks, world):
+    task = tasks.add("closed last week", {"issue": "ACME-6", "project": "work"})
+    notes.ensure(config, tasks, task)
+    moved = notes.move_for_status(config, {**tasks.get(task["uuid"]), "end": "20261009T120000Z"}, closed=True)
+    assert "closed: 2026-10-09\n" in (world / "vaults/acme" / (moved + ".md")).read_text()
+
+
 def test_frontmatter_edits_leave_the_body_alone(tmp_path):
     note = tmp_path / "n.md"
     note.write_text("---\ntask: x\nstatus: active\n---\n\nstatus: in the body\n")
