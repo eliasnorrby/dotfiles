@@ -115,3 +115,16 @@ When Arch is hibernated, its root filesystem has uncommitted state.
 **Never mount it from Windows** (or any other OS). Windows won't
 mount ext4 by default, but if you use third-party ext4 drivers,
 disable them or exclude the Arch partition.
+
+## Wifi
+
+NetworkManager (from the install, not a topic) handles wired and wifi.
+Profiles autoconnect; with the cable in, wired wins the default route.
+
+```bash
+nmtui                                  # TUI: "Activate a connection"
+nmcli dev wifi list                    # scan
+nmcli dev wifi connect <ssid> --ask    # connect, prompts for password
+nmcli connection                       # saved profiles
+nmcli connection delete <name>         # forget one
+```
