@@ -191,7 +191,8 @@ class Sync:
         landed on it, before and after it is done. A closed one leaves the
         list, since nothing of it survives to point back at. Either way it
         no longer counts towards the status, and a PR-only item with nothing
-        open left is finished."""
+        open left is finished: one without an issue or sub-tasks, whose PRs
+        are its own (see _held_open)."""
         vanished = []
         stale = {}  # closed PRs listed before closed ones were dropped
         for task in self._open_tasks():
@@ -223,25 +224,31 @@ class Sync:
             if state in ("MERGED", "CLOSED"):
                 outcome.setdefault(task["uuid"], []).append((number, state, pr or {"number": number, "id": node}))
 
+        parents = self._parents()
         for uuid, settled in outcome.items():
             task = self.tasks.get(uuid)
             for number, state, _ in settled:
                 self.report.did(f"#{number} {state.lower()} ({task['description']})")
             closed = [number for number, state, _ in settled if state == "CLOSED"]
+            entries = {pr["number"]: pr for pr in cache.read_prs(uuid)}
+            heads = {pr.get("head") for pr in entries.values()} | {pr.get("head") for _, _, pr in settled}
             if not self.report.dry_run:
                 # Merged ones are remembered as settled, so the next sync
                 # does not ask again; closed ones are no longer listed to
                 # ask about.
-                entries = {pr["number"]: pr for pr in cache.read_prs(uuid)}
                 for number, state, pr in settled:
                     entries[number] = {**pr, "repo": task["repo"], "state": state}
                 cache.write_prs(uuid, [entries[n] for n in self._keep_prs(task, closed) if n in entries])
             changes = {"prs": format_prs(self._keep_prs(task, closed))} if closed else {}
-            if uuid in groups or task.get("issue"):
+            held = self._held_open(task, groups, parents, heads)
+            if held:
                 # Still-open PRs set the status below; an issue's fate is the
-                # tracker's to decide, so the task itself stays open.
+                # tracker's to decide; a task that is more than its PRs
+                # outlives them. Either way the task itself stays open.
                 if uuid not in groups and uuid not in below:
                     changes.update({"action": "", "decision": "", "health": ""})
+                    if not task.get("issue"):
+                        self.report.did(f"keep {task['description']} open ({held})")
                 if changes:
                     self._modify(task, changes)
             elif any(state == "MERGED" for _, state, _ in settled):
@@ -253,6 +260,41 @@ class Sync:
                 self.report.did(f"delete {task['description']} (closed unmerged)")
                 if not self.report.dry_run:
                     self.tasks.delete(task)
+
+    def _parents(self):
+        """The tasks that an open or recently completed task is part of. A
+        parent is more than its own PRs: its sub-tasks' work goes on after
+        any one PR lands, and they finish one by one, so it stays a parent
+        for a while after the last of them."""
+        horizon = (now() - datetime.timedelta(days=RECENTLY_CLOSED_DAYS)).strftime("%Y%m%dT%H%M%SZ")
+        return {
+            task["partof"]
+            for task in self.tasks.all()
+            if task.get("partof")
+            and (is_open(task) or (task.get("status") == "completed" and task.get("end", "") >= horizon))
+        }
+
+    @staticmethod
+    def _held_open(task, groups, parents, heads):
+        """Why the task outlives the PRs that just settled, or None for a
+        PR-only item, which ends with them. `heads` are the head branches of
+        its PRs, as far as they are known.
+
+        A task without an issue ends with its PRs only when they are its
+        own: one was opened from the task's branch. What sync or `wk import`
+        made of a PR records that branch, and so does a task adopted on it.
+        A session's task that merely had a side PR attached (a fix split out
+        of a review, a sub-task's PR its parent collected) has another
+        branch, or none, and is not done when that PR lands."""
+        if task["uuid"] in groups:
+            return "PRs still open"
+        if task.get("issue"):
+            return "the tracker decides"
+        if task["uuid"] in parents:
+            return "it has sub-tasks"
+        if not task.get("branch") or task["branch"] not in heads:
+            return "not its own PR"
+        return None
 
     @staticmethod
     def _keep_prs(task, dropped):
@@ -275,7 +317,9 @@ class Sync:
         if prs:
             changes["prs"] = format_prs(listed)
             changes["repo"] = prs[0]["repo"]
-        if not current.get("branch") and len(prs) == 1:
+        if not current.get("branch") and current.get("issue") and len(prs) == 1:
+            # Never on a task without an issue: its branch is what makes a PR
+            # its own (see _held_open), and a PR attached to it is no proof.
             changes["branch"] = prs[0]["head"]
         before = {key: str(current.get(key, "")) for key in changes}
         if before != changes:

@@ -333,3 +333,57 @@ def test_a_parent_with_no_prs_of_its_own_still_answers_for_its_sub_tasks(world_w
     parent = tasks.get(parent["uuid"])
     assert "prs" not in parent
     assert (parent["subprs"], parent["action"]) == ("#31", "merge")
+
+
+def test_a_parent_outlives_a_merged_pr(world_with_sync, tasks):
+    # An orchestration task: no issue, and a PR that landed on it.
+    parent = tasks.add("database access", {"branch": "me/database-access", "prs": "#12", "repo": "acme/app"})
+    tasks.add("one part", {"issue": "ACME-2", "partof": parent["uuid"]})
+    sync(tasks, GitHub(mine=[pr(12, "me/database-access")]))  # even one from the parent's own branch
+    report = sync(tasks, GitHub(states={"node12": "MERGED"}))
+    parent = tasks.get(parent["uuid"])
+    assert parent["status"] == "pending"
+    assert "action" not in parent
+    assert "keep database access open (it has sub-tasks)" in report.lines
+
+
+def test_a_recently_finished_sub_task_still_makes_a_parent(world_with_sync, tasks):
+    parent = tasks.add("database access", {"branch": "me/database-access", "prs": "#12", "repo": "acme/app"})
+    child = tasks.add("one part", {"issue": "ACME-2", "partof": parent["uuid"]})
+    tasks.done(child)
+    sync(tasks, GitHub(mine=[pr(12, "me/database-access")]))
+    sync(tasks, GitHub(states={"node12": "MERGED"}))
+    assert tasks.get(parent["uuid"])["status"] == "pending"
+
+
+def test_a_side_pr_does_not_finish_the_task_it_hangs_on(world_with_sync, tasks):
+    review = tasks.add("review the stack", {"branch": "me/review-notes", "prs": "#12", "repo": "acme/app"})
+    branchless = tasks.add("plan the quarter", {"prs": "#13", "repo": "acme/app"})
+    sync(tasks, GitHub(mine=[pr(12, "me/fix-split-out"), pr(13, "me/another-fix")]))
+    assert "branch" not in tasks.get(branchless["uuid"])  # a side PR names no branch of the task's
+    report = sync(tasks, GitHub(states={"node12": "MERGED", "node13": "MERGED"}))
+    assert tasks.get(review["uuid"])["status"] == "pending"
+    assert tasks.get(branchless["uuid"])["status"] == "pending"
+    assert "keep review the stack open (not its own PR)" in report.lines
+
+    closed = tasks.add("review another", {"branch": "me/notes", "prs": "#14", "repo": "acme/app"})
+    sync(tasks, GitHub(mine=[pr(14, "me/fix-abandoned")]))
+    sync(tasks, GitHub(states={"node14": "CLOSED"}))
+    closed = tasks.get(closed["uuid"])
+    assert closed["status"] == "pending" and "prs" not in closed
+
+
+def test_a_task_adopted_on_its_branch_finishes_with_its_pr(world_with_sync, tasks):
+    task = tasks.add("tidy up", {"branch": "me/tidy-up", "prs": "#12", "repo": "acme/app"})
+    sync(tasks, GitHub(mine=[pr(12, "me/tidy-up")]))
+    sync(tasks, GitHub(states={"node12": "MERGED"}))
+    assert tasks.get(task["uuid"])["status"] == "completed"
+
+
+def test_a_stack_finishes_when_its_last_pr_lands(world_with_sync, tasks):
+    sync(tasks, GitHub(mine=[pr(20, "a"), pr(21, "b", "a")]))
+    uuid = tasks.by_pr("20")["uuid"]
+    sync(tasks, GitHub(mine=[pr(21, "b", "main")], states={"node20": "MERGED"}))
+    assert tasks.get(uuid)["status"] == "pending"
+    sync(tasks, GitHub(states={"node21": "MERGED"}))
+    assert tasks.get(uuid)["status"] == "completed"
