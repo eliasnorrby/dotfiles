@@ -252,10 +252,12 @@ class Sync:
                 if changes:
                     self._modify(task, changes)
             elif any(state == "MERGED" for _, state, _ in settled):
+                merged = format_prs(number for number, state, _ in settled if state == "MERGED")
                 self.report.did(f"complete {task['description']}")
                 if not self.report.dry_run:
                     self._modify(task, changes)
                     self.tasks.done(task)
+                    self._tell_sessions(task, f"{merged} merged")
             else:
                 self.report.did(f"delete {task['description']} (closed unmerged)")
                 if not self.report.dry_run:
@@ -295,6 +297,22 @@ class Sync:
         if not task.get("branch") or task["branch"] not in heads:
             return "not its own PR"
         return None
+
+    def _tell_sessions(self, task, reason):
+        """Leave word for the live Claude sessions on the task, handed to them
+        with their next prompt: a session should hear it from wk, not from a
+        note that moved away under it."""
+        from . import state
+
+        label = " ".join(filter(None, [task.get("issue"), task["description"]]))
+        text = (
+            f"wk sync completed task {task['uuid'][:8]} ({label}): {reason}. Its note is archived now."
+            f" If the work goes on, reopen it (`task {task['uuid']} modify status:pending end:`)"
+            " before the next checkpoint."
+        )
+        for session_id, agent in state.agents().items():
+            if agent.get("uuid") == task["uuid"]:
+                state.post_notice(session_id, text)
 
     @staticmethod
     def _keep_prs(task, dropped):
@@ -429,6 +447,7 @@ class Sync:
                 self.report.did(f"complete {issue['key']} {task['description']} (issue {issue['state']})")
                 if not self.report.dry_run:
                     self.tasks.done(task)
+                    self._tell_sessions(task, f"{issue['key']} was {issue['state']} in the tracker")
             elif not closed and was_closed and task.get("status") == "completed":
                 self.report.did(f"revive {issue['key']} {task['description']} (issue reopened)")
                 if not self.report.dry_run:

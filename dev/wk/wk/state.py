@@ -60,6 +60,44 @@ def remove_agent(session_id):
         os.remove(os.path.join(agents_dir(), f"{session_id}.json"))
     except OSError:
         pass
+    take_notices(session_id)
+
+
+def _notices_path(session_id):
+    return os.path.join(xdg("state"), "notices", f"{session_id}.json")
+
+
+def post_notice(session_id, text):
+    """Leave word for a Claude session, handed to it with its next prompt
+    (UserPromptSubmit). A file of its own, not the agent file: the hooks
+    rewrite that one on every event and would race a writer from outside."""
+    path = _notices_path(session_id)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    try:
+        with open(path, encoding="utf-8") as handle:
+            notices = json.load(handle)
+    except (OSError, ValueError):
+        notices = []
+    if text in notices:
+        return
+    temporary = f"{path}.tmp.{os.getpid()}"
+    with open(temporary, "w", encoding="utf-8") as handle:
+        json.dump(notices + [text], handle)
+    os.replace(temporary, path)
+
+
+def take_notices(session_id):
+    """The notices left for a session, removed as they are read. Cheap when
+    there are none: one failed open."""
+    path = _notices_path(session_id)
+    try:
+        with open(path, encoding="utf-8") as handle:
+            text = handle.read()
+        os.remove(path)
+        notices = json.loads(text)
+    except (OSError, ValueError):
+        return []
+    return [notice for notice in notices if isinstance(notice, str)] if isinstance(notices, list) else []
 
 
 def agents():

@@ -387,3 +387,38 @@ def test_a_stack_finishes_when_its_last_pr_lands(world_with_sync, tasks):
     assert tasks.get(uuid)["status"] == "pending"
     sync(tasks, GitHub(states={"node21": "MERGED"}))
     assert tasks.get(uuid)["status"] == "completed"
+
+
+def test_the_session_is_told_when_sync_completes_its_task(world_with_sync, tasks):
+    from wk import state
+
+    sync(tasks, GitHub(mine=[pr(10, "me/x")]))
+    task = tasks.by_pr("10")
+    state.write_agent("s1", {"uuid": task["uuid"], "status": "working"})
+    state.write_agent("s2", {"uuid": "someone-else", "status": "working"})
+    sync(tasks, GitHub(states={"node10": "MERGED"}))
+    assert state.take_notices("s2") == []
+    [notice] = state.take_notices("s1")
+    assert notice.startswith(f"wk sync completed task {task['uuid'][:8]} (PR 10): #10 merged.")
+    assert state.take_notices("s1") == []  # handed over once
+
+    tracked = tasks.add("Fix the thing", {"issue": "ACME-12"})
+    state.write_agent("s3", {"uuid": tracked["uuid"], "status": "working"})
+    sync(tasks, linear=Linear([{"key": "ACME-12", "title": "Fix the thing", "state": "completed", "parent": None}]))
+    [notice] = state.take_notices("s3")
+    assert "ACME-12 was completed in the tracker" in notice
+
+
+def test_a_notice_reaches_the_session_with_its_next_prompt(world_with_sync, capsys):
+    import json
+
+    from wk import hooks, state
+
+    # Already working: the prompt changes no state, so nothing else runs.
+    state.write_agent("s1", {"uuid": "u", "status": "working"})
+    state.post_notice("s1", "wk sync completed task u")
+    hooks.claude_event("user-prompt-submit", {"session_id": "s1"})
+    output = json.loads(capsys.readouterr().out)["hookSpecificOutput"]
+    assert output == {"hookEventName": "UserPromptSubmit", "additionalContext": "wk sync completed task u"}
+    hooks.claude_event("user-prompt-submit", {"session_id": "s1"})
+    assert capsys.readouterr().out == ""

@@ -253,6 +253,12 @@ def claude_event(event, payload):
     session_id = payload.get("session_id")
     if not session_id:
         return
+    if event == "user-prompt-submit":
+        # What happened to the session's task while it was not looking (sync
+        # completed it, say), told before it acts on this prompt.
+        notices = state.take_notices(session_id)
+        if notices:
+            _emit_context("UserPromptSubmit", "\n\n".join(notices))
     if event == "session-end":
         agent = state.read_agent(session_id)
         state.remove_agent(session_id)
