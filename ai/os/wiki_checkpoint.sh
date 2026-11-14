@@ -5,12 +5,13 @@
 # Claude, following the wiki-checkpoint skill; this script covers the parts
 # that should be deterministic:
 #
-#   wiki_checkpoint resolve [--issue KEY] [DIR]
+#   wiki_checkpoint resolve [--issue KEY | --task UUID|ID] [DIR]
 #                                      Which vault and task note does the work
 #                                      belong to? By default whatever `wk`
 #                                      resolves for DIR (the window's task, the
-#                                      worktree's, the branch's issue); --issue
-#                                      when the session knows better. Prints
+#                                      Claude session's, the worktree's, the
+#                                      branch's issue); --issue or --task when
+#                                      the session knows better. Prints
 #                                      key=value lines.
 #   wiki_checkpoint commit VAULT [-F FILE] -- FILE...
 #                                      Commit exactly these files, message on
@@ -224,23 +225,38 @@ EOF
 }
 
 cmd_resolve() {
-  local dir="" issue="" result rc vault
+  local dir="" issue="" task="" result rc vault
   local -a locator=()
+  local usage="usage: wiki_checkpoint resolve [--issue KEY | --task UUID|ID] [DIR]"
 
   while [ $# -gt 0 ]; do
     case "$1" in
+      -h | --help)
+        echo "$usage"
+        return 0
+        ;;
       --issue)
+        [ $# -ge 2 ] || die "$usage"
         issue="${2^^}"
         shift 2
         ;;
+      --task)
+        [ $# -ge 2 ] || die "$usage"
+        task="$2"
+        shift 2
+        ;;
+      -*) die "unknown option: $1 ($usage)" ;;
       *)
+        [ -z "$dir" ] || die "$usage"
         dir="$1"
         shift
         ;;
     esac
   done
+  [ -z "$issue" ] || [ -z "$task" ] || die "give --issue or --task, not both ($usage)"
   dir="${dir:-$PWD}"
   [ -z "$issue" ] || locator=(--issue "$issue")
+  [ -z "$task" ] || locator=(--task "$task")
 
   # Local first, so this works offline and costs nothing per checkpoint: wk
   # asks the tracker only when there is no task yet, and creates the note
@@ -248,7 +264,7 @@ cmd_resolve() {
   result=$(wk resolve --ensure --json -C "$dir" "${locator[@]}")
   rc=$?
   if [ "$rc" -eq 2 ]; then
-    echo "No task found for $dir (pass --issue KEY if you know it)" >&2
+    echo "No task found for ${task:-${issue:-$dir}} (pass --issue KEY or --task UUID if you know it)" >&2
     exit 2
   fi
   [ "$rc" -eq 0 ] || die "$(jq -r '.error.message // "wk resolve failed"' <<<"$result" 2>/dev/null)"
@@ -535,7 +551,6 @@ cmd_friction() {
   vault_commit "$vault" "${file#"$vault"/}" <<<"$message" >/dev/null 2>&1 || true
   printf '%s\n' "$file"
 }
-
 
 # Commit whatever has settled in a vault: the owner's jots and moves, task
 # notes archived by wk's hooks where `moved` could not commit them (the lock
@@ -875,9 +890,18 @@ cmd_usage() {
   local since="" vault="" write=""
   while [ $# -gt 0 ]; do
     case "$1" in
-      --since) since="$2"; shift 2 ;;
-      --vault) vault="$2"; shift 2 ;;
-      --write) write=1; shift ;;
+      --since)
+               since="$2"
+                           shift 2
+                                   ;;
+      --vault)
+               vault="$2"
+                           shift 2
+                                   ;;
+      --write)
+               write=1
+                        shift
+                              ;;
       *) die "usage: wiki_checkpoint usage [--since YYYY-MM-DD] [--vault NAME] [--write]" ;;
     esac
   done
@@ -889,7 +913,8 @@ cmd_usage() {
     v="${v%/}"
     [ -f "$v/index.md" ] || continue
     [ -z "$vault" ] || [ "${v##*/}" = "$vault" ] || continue
-    report=$(python3 - "$usage_log" "$v" "$since" "$vaults" <<'PY'
+    report=$(
+             python3 - "$usage_log" "$v" "$since" "$vaults" <<'PY'
 import collections, datetime, os, re, sys
 log, vault, since, vaults = sys.argv[1:5]
 name = os.path.basename(vault)
@@ -953,7 +978,7 @@ out += ["", f"## Hubs and topics nobody read ({len(unread_hubs)} of {len(hubs)})
         ", ".join(f"[[{h}]]" for h in unread_hubs) or "none"]
 print("\n".join(out))
 PY
-)
+    )
     if [ -n "$write" ]; then
       mkdir -p "$v/_meta/usage"
       printf '%s\n' "$report" >"$v/_meta/usage/$(date +%F).md"

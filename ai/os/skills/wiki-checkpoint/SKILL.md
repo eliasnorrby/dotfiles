@@ -25,10 +25,13 @@ once, mid-session or not. Write to the `note` this run printed, never a path
 remembered from an earlier checkpoint.
 
 It asks `wk` which task this session belongs to: the task its tmux window was
-opened for, else the one whose worktree this is, else the issue on the branch.
-That covers work without an issue too. If this session is about a different
-piece of work than that (an investigation worked on from another checkout),
-say which: `wiki_checkpoint resolve --issue KEY`.
+opened for, else the one this Claude session adopted (`wk adopt` records it,
+so this holds outside tmux and in ~/.dotfiles too), else the one whose worktree
+this is, else the issue on the branch. That covers work without an issue too.
+If this session is about a different piece of work than that (an investigation
+worked on from another checkout), say which: `wiki_checkpoint resolve --issue
+KEY`, or `--task UUID` for a task without an issue (prefer the uuid: ids shift
+as tasks close).
 
 - Exit 2 (no task found) or 3 (vault has no schema): there is nowhere to
   checkpoint. Say so in one line and carry on; don't improvise a location.
