@@ -187,7 +187,7 @@ def ensure_window(
         else:
             branch = branch or branch_for(config, task, fetch_issue)
             directory, created_worktree = checkout(main, branch)
-        tasks.modify(task, {"branch": branch, "worktree": directory, "repo": repo})
+        tasks.modify(task, {"branch": branch, "worktree": directory, "repo": repo, **_routed(config, task, repo)})
         session = _repo_session(config, repo, main)
     else:
         directory = plain_directory(config, task, plain_dir)
@@ -198,7 +198,7 @@ def ensure_window(
             session = config.data["repos"].get(slug, {}).get("session") or os.path.basename(
                 git.main_worktree(directory)
             )
-            tasks.modify(task, {"repo": slug or None, "worktree": directory})
+            tasks.modify(task, {"repo": slug or None, "worktree": directory, **_routed(config, task, slug)})
         else:
             session = config.data["defaults"].get("session") or "main"
             tasks.modify(task, {"worktree": directory})
@@ -223,6 +223,18 @@ def ensure_window(
 
     state.refresh(tasks, config, only=task["uuid"])
     return Opened(window, session, directory, created_window=True, created_worktree=created_worktree)
+
+
+def _routed(config, task, repo):
+    """A task in the default project that turns out to be work in a
+    configured repository (or a configured owner's) moves to that project,
+    however it came about: made where no repository was known, say, and only
+    now opened in one."""
+    default = config.data["defaults"]["project"]
+    if task.get("project") not in (None, "", default):
+        return {}
+    project = config.project_for_repo(repo)
+    return {"project": project} if project != default else {}
 
 
 def ensure_branch_window(config, cwd, branch):

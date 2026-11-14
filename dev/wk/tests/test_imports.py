@@ -1,6 +1,9 @@
+import subprocess
+
 import pytest
 from conftest import needs_task
 
+from wk.config import Config
 from wk.errors import NotFound, Unreachable, WkError
 from wk.imports import import_issue, import_pr
 
@@ -35,6 +38,15 @@ def test_a_closed_task_does_not_block_a_new_import(config, tasks):
     tasks._task([first.task["uuid"], "done"])
     tasks.invalidate()
     assert import_issue(config, tasks, "ACME-12", fetch=issue()).created
+
+
+def test_an_unknown_teams_issue_goes_where_it_was_named(world, tasks, repo):
+    """No team entry to go by: the repository's owner decides."""
+    subprocess.run(["git", "remote", "add", "origin", "git@github.com:acme/infra.git"], cwd=repo, check=True)
+    (world / "config.toml").open("a").write('[owners.acme]\nproject = "work"\n')
+    config = Config.load()
+    assert import_issue(config, tasks, "OPS-3", fetch=issue(), cwd=str(repo)).task["project"] == "work"
+    assert import_issue(config, tasks, "OPS-4", fetch=issue(), cwd=str(world)).task["project"] == "inbox"
 
 
 def test_unreachable_tracker_yields_a_stub_from_the_branch(config, tasks):

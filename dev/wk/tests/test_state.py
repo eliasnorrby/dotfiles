@@ -140,6 +140,15 @@ def test_adopt_lands_in_the_project_whose_dir_holds_it(tasks, stateful, monkeypa
     assert next(t for t in tasks.all() if t["description"] == "The drain")["project"] == "os"
 
 
+def test_adopt_in_a_repository_of_a_configured_owner_lands_in_its_project(tasks, stateful, repo, monkeypatch):
+    subprocess.run(["git", "remote", "add", "origin", "git@github.com:Acme/infra.git"], cwd=repo, check=True)
+    (stateful / "config.toml").open("a").write('[owners.acme]\nproject = "work"\n')
+    monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "s9")
+    assert cli.main(["adopt", "Rotate a password", "-C", str(repo)]) == 0
+    tasks.invalidate()
+    assert next(t for t in tasks.all() if t["description"] == "Rotate a password")["project"] == "work"
+
+
 def test_adopt_task_takes_over_an_existing_task(tasks, stateful, monkeypatch):
     pending = tasks.add("Lint on a schedule", {"project": "os", "session": "older"})
     monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "s9")

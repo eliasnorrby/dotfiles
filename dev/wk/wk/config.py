@@ -26,6 +26,7 @@ DEFAULTS = {
     "teams": {},
     "projects": {},
     "repos": {},
+    "owners": {},
 }
 
 
@@ -136,17 +137,31 @@ class Config:
             raise WkError(f"merge = {method!r} in {self.path}: use merge, squash or rebase")
         return [f"--{method}"] if method else []
 
-    def project_for_repo(self, repo):
-        entry = self.data["repos"].get(repo or "", {})
-        return entry.get("project") or self.data["defaults"]["project"]
-
-    def project_for_directory(self, directory, repo=None):
-        """The project work in DIRECTORY belongs to: its repository's, else
-        that of the project whose `dir` holds it (the deepest), else the
-        default. So a session in ~/os lands in `os` without being told."""
-        entry = self.data["repos"].get(repo or "", {})
+    def _repo_project(self, repo):
+        """The project a repository's work belongs to, when the configuration
+        says: its own entry's, else its GitHub owner's ([owners.<name>]), so
+        that a new repository of a configured owner needs no entry of its
+        own. Owners and names compare case-insensitively, as GitHub does."""
+        if not repo:
+            return None
+        repos = {name.lower(): entry for name, entry in self.data["repos"].items()}
+        entry = self.data["repos"].get(repo) or repos.get(repo.lower(), {})
         if entry.get("project"):
             return entry["project"]
+        owners = {name.lower(): entry for name, entry in self.data["owners"].items()}
+        return owners.get(repo.split("/", 1)[0].lower(), {}).get("project")
+
+    def project_for_repo(self, repo):
+        return self._repo_project(repo) or self.data["defaults"]["project"]
+
+    def project_for_directory(self, directory, repo=None):
+        """The project work in DIRECTORY belongs to: its repository's (or
+        the repository owner's), else that of the project whose `dir` holds
+        it (the deepest), else the default. So a session in ~/os lands in
+        `os` without being told."""
+        project = self._repo_project(repo)
+        if project:
+            return project
         directory = os.path.realpath(directory)
         found, depth = None, -1
         for name, project in self.data["projects"].items():
@@ -162,5 +177,6 @@ class Config:
         """Every project the configuration knows of, for a session choosing one."""
         names = {self.data["defaults"]["project"], *self.data["projects"]}
         names.update(entry["project"] for entry in self.data["repos"].values() if entry.get("project"))
+        names.update(entry["project"] for entry in self.data["owners"].values() if entry.get("project"))
         names.update(team["project"] for team in self.data["teams"].values() if team.get("project"))
         return sorted(names)

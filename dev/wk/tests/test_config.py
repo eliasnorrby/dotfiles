@@ -29,6 +29,17 @@ def test_team_lookup_is_case_insensitive(config):
     assert config.project_for_issue("OTHER-5") == "inbox"
 
 
+def test_an_owner_routes_the_repositories_not_listed():
+    config = Config({"repos": {"Acme/app": {"project": "app"}}, "owners": {"acme": {"project": "work"}}})
+    assert config.project_for_repo("acme/infra") == "work"
+    assert config.project_for_repo("ACME/infra") == "work"
+    assert config.project_for_repo("acme/app") == "app", "the repository's own entry wins"
+    assert config.project_for_repo("other/thing") == "inbox"
+    assert config.project_for_repo(None) == "inbox"
+    assert config.project_for_directory("/nowhere", "acme/infra") == "work"
+    assert "work" in config.project_names()
+
+
 def test_a_broken_file_is_reported(tmp_path):
     path = tmp_path / "config.toml"
     path.write_text("[defaults\n")

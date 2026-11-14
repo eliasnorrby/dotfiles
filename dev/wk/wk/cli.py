@@ -412,19 +412,27 @@ def cmd_open(args, out):
     resolution = resolve(tasks, found, cwd)
     task = resolution.task or _import_missing(config, tasks, resolution, args.offline, cwd)
     branch = args.on or (found.value if found and found.kind == "branch" else None)
+    created = None
     if not task and branch:
         # A branch of mine that belongs to no issue (trying something out) is
         # still a piece of work, and gets a task like any other.
         repo = git.slug(cwd) if git.is_repo(cwd) else None
         words = branch.split("/", 1)[-1].replace("-", " ").replace("_", " ")
-        attrs = {"branch": branch, "repo": repo, "project": config.project_for_repo(repo)}
-        task = tasks.add(words, attrs)
+        attrs = {"branch": branch, "repo": repo, "project": config.project_for_directory(cwd, repo)}
+        task = created = tasks.add(words, attrs)
     if not task:
         raise NotFound(f"no task for {resolution.issue or args.locator or cwd}")
 
-    opened = workspace.ensure_window(
-        config, tasks, task, cwd, branch=branch, plain_dir=args.directory_in, follow_session=True
-    )
+    try:
+        opened = workspace.ensure_window(
+            config, tasks, task, cwd, branch=branch, plain_dir=args.directory_in, follow_session=True
+        )
+    except WkError:
+        # A task made for a window that could not be made (run from outside
+        # any repository, say) is nothing but a stray in the inbox.
+        if created:
+            tasks.delete(created)
+        raise
     return _opened(args, out, tasks, task, opened)
 
 
@@ -557,7 +565,7 @@ def cmd_start(args, out):
     plain_dir = args.directory_in
     if args.new and not plain_dir:
         repo = git.slug(cwd) if git.is_repo(cwd) else None
-        task = tasks.add(args.new, {"repo": repo, "project": config.project_for_repo(repo)})
+        task = tasks.add(args.new, {"repo": repo, "project": config.project_for_directory(cwd, repo)})
         plain_dir = git.main_worktree(cwd) if repo else cwd
     else:
         resolution = resolve(tasks, locator_from(args), cwd)

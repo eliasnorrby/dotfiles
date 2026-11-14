@@ -198,6 +198,23 @@ def test_a_branch_from_the_clipboard_becomes_a_task(wk, tasks, app, tmux_server,
     assert task["worktree"] == str(app / ".worktrees" / "try-something")
 
 
+def test_a_branch_opened_outside_any_repository_leaves_no_task(wk, tasks, app, tmux_server, world):
+    assert wk("open", "--no-switch", "-C", str(world), "me/try-something") == 1
+    assert [t for t in tasks.all() if t["status"] != "deleted"] == []
+
+
+def test_a_task_in_the_default_project_moves_to_its_repositorys(wk, tasks, app, tmux_server):
+    """Made where no repository was known, then opened in one: the work is
+    that repository's."""
+    task = tasks.add("filter db calls", {"branch": "me/filter-db-calls", "project": "inbox"})
+    assert wk("open", "--no-switch", "-C", str(app), task["uuid"]) == 0
+    task = tasks.get(task["uuid"])
+    assert task["repo"] == "acme/app" and task["project"] == "work"
+    chosen = tasks.add("chosen elsewhere", {"branch": "me/other", "project": "tools"})
+    assert wk("open", "--no-switch", "-C", str(app), chosen["uuid"]) == 0
+    assert tasks.get(chosen["uuid"])["project"] == "tools", "a project of its own is left alone"
+
+
 def test_a_clipboard_full_of_something_else_is_not_a_branch(wk, tasks, app, tmux_server, monkeypatch):
     monkeypatch.setattr("wk.platform.read_clipboard", lambda: "someword")
     assert wk("open", "--no-switch", "--from", "clipboard", "-C", str(app)) == 2

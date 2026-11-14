@@ -10,6 +10,7 @@ The identifier is kept out of the description and stored in a UDA instead.
 import re
 from dataclasses import dataclass
 
+from . import git
 from .errors import Unreachable, WkError
 from .locator import issue_key_in
 from .tasks import is_open
@@ -31,7 +32,7 @@ def _title_from_branch(branch, key):
     return words or key
 
 
-def import_issue(config, tasks, key, offline=False, branch=None, fetch=None):
+def import_issue(config, tasks, key, offline=False, branch=None, fetch=None, cwd=None):
     existing = tasks.by_issue(key)
     if existing and is_open(existing):
         return Imported(existing, created=False)
@@ -51,7 +52,12 @@ def import_issue(config, tasks, key, offline=False, branch=None, fetch=None):
             # from what is known locally and let sync fill in the rest.
             issue = None
 
-    attrs = {"issue": key, "project": config.project_for_issue(key)}
+    # The issue's team decides; for a team the config does not know, the
+    # repository (or directory) the issue was named from.
+    project = config.team(key).get("project")
+    if not project and cwd:
+        project = config.project_for_directory(cwd, git.slug(cwd) if git.is_repo(cwd) else None)
+    attrs = {"issue": key, "project": project or config.project_for_issue(key)}
     if branch and issue_key_in(branch) == key:
         attrs["branch"] = branch
     elif issue and issue.get("branch"):
@@ -124,7 +130,7 @@ def import_pr(config, tasks, number, repo=None, offline=False, cwd=None, fetch=N
 
 def import_reference(config, tasks, reference, offline=False, branch=None, cwd=None):
     if reference.kind == "issue":
-        return import_issue(config, tasks, reference.value, offline, branch)
+        return import_issue(config, tasks, reference.value, offline, branch, cwd=cwd)
     if reference.kind == "pr":
         return import_pr(config, tasks, reference.value, reference.repo, offline, cwd)
     raise WkError(f"a {reference.kind} is not something that can be imported")
