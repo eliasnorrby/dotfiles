@@ -16,8 +16,9 @@ The prompt lists what waits, as paths relative to the vault:
 - A jot with `by: claude` in its frontmatter: a question a previous drain
   left, which Elias has since written in. Read his answer and act on it.
 
-Anything else in the inbox is not yours this run: too fresh, or a question
-still waiting for him.
+Anything else in the inbox is not yours this run: too fresh, a question
+still waiting for him, or a digest marked `status: for-review`, which a
+session left for him to read first.
 
 ## What to do with each
 

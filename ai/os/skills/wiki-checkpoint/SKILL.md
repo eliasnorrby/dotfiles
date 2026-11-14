@@ -116,7 +116,9 @@ If the process fights you (the commit lock times out, a file keeps changing
 under you, the schema is ambiguous or contradicts itself, the task note can't
 be resolved, a reminder fired at a silly moment, a permission prompt blocked a
 write), don't work around it silently and don't sink time into it. Report it
-and move on:
+and move on. The same goes for friction outside the wiki that cost you time on
+the task itself (a tool that misbehaved, a script that ought to exist): file it
+with `--scope env`.
 
 ```
 wiki_checkpoint friction "<vault>" "<short slug>" <<'REPORT'

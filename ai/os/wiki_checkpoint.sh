@@ -30,8 +30,10 @@
 #                                      vaults.<name>.drain = true in wk's
 #                                      config, or the one named. Run from a
 #                                      timer.
-#   wiki_checkpoint friction VAULT SLUG
+#   wiki_checkpoint friction [--scope wiki|env] VAULT SLUG
 #                                      File a friction report, body on stdin.
+#                                      env: about the agent's working
+#                                      environment, not the wiki.
 #   wiki_checkpoint mark               Record that this session checkpointed.
 #   wiki_checkpoint usage [--since DATE] [--vault NAME] [--write]
 #                                      How sessions use the wiki: which pages
@@ -383,9 +385,19 @@ vault_commit() {
 }
 
 cmd_friction() {
+  local usage="usage: wiki_checkpoint friction [--scope wiki|env] VAULT SLUG < body"
+  local scope=wiki
+  if [ "${1:-}" = "--scope" ]; then
+    scope="${2:-}"
+    shift 2 || die "$usage"
+  fi
+  case "$scope" in
+    wiki | env) ;;
+    *) die "$usage" ;;
+  esac
   local vault="${1:-}" slug="${2:-}" body file
   [ -n "$vault" ] && [ -d "$vault" ] || die "no such vault: ${vault:-<none>}"
-  [ -n "$slug" ] || die "usage: wiki_checkpoint friction VAULT SLUG < body"
+  [ -n "$slug" ] || die "$usage"
   body=$(cat)
   [ -n "$body" ] || die "empty report on stdin"
 
@@ -398,6 +410,7 @@ cmd_friction() {
   {
     echo '---'
     echo 'type: friction'
+    echo "scope: $scope"
     echo "created: $(date +%F)"
     echo "session: ${CLAUDE_CODE_SESSION_ID:-unknown}"
     echo "cwd: $PWD"
@@ -824,8 +837,9 @@ drain_trailer="Drain-Run"
 
 # What waits in a vault's inbox for the drain, one vault-relative path per
 # line: the owner's jots and archive requests that have sat for MIN_AGE
-# seconds, digests, and questions the drain left that the owner has since
-# written in. A question nobody has answered is waiting for him, not for it.
+# seconds, digests (not those marked `status: for-review`), and questions the
+# drain left that the owner has since written in. A question nobody has
+# answered is waiting for him, not for it.
 drain_pending() {
   local vault="$1" min_age="$2" now path rel mtime
   now=$(date +%s)
@@ -834,6 +848,8 @@ drain_pending() {
     rel="${path#"$vault"/}"
     mtime=$(stat -c %Y "$path" 2>/dev/null) || continue
     [ $((now - mtime)) -ge "$min_age" ] || continue
+    # A report a session left for the owner to read first is his to release.
+    head -n 10 "$path" | grep -q '^status: for-review$' && continue
     if head -n 10 "$path" | grep -q '^by: claude$'; then
       git -C "$vault" diff --quiet HEAD -- "$rel" 2>/dev/null \
         && [ -n "$(git -C "$vault" log -1 --format="%(trailers:key=$drain_trailer,valueonly)" -- "$rel")" ] \

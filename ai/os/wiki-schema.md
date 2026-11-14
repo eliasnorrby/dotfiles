@@ -322,6 +322,7 @@ sub-agents, which write a structured digest each; the main session then reads
 only the digests, plans pages, and writes. A digest waits in `inbox/` as
 `digest <source>.md` with frontmatter `type: digest` and `status: pending`
 (the `type` line is what lets the hook tell your digests from Elias's jots).
+A pending digest is merge input: the drain (below) will merge it unattended.
 Digests are a backfill tool, for sessions the capture loop never saw. A
 session that checkpoints itself needs no digest afterwards. If digests keep
 appearing once backfill is done, the capture loop is not working; say so.
@@ -334,17 +335,38 @@ lost their tool output, so states and titles are often missing. In particular,
 ends before its PR merges. `git log origin/master --grep='#<number>'` settles
 it in a second.
 
+## The drain
+
+Where a vault is set to be drained (`vaults.<name>.drain` in wk's config), a
+timer (`wiki-drain.timer`, daily at 17:00) runs `wiki_checkpoint drain`: a
+headless session that ingests what waits in `inbox/` by this schema, with
+nobody watching. It takes Elias's jots and archive requests once they are an
+hour old, every pending digest, and question jots of its own that he has
+written in. So anything you leave in `inbox/` is gone by evening, merged into
+pages. It leaves alone a question jot nobody has answered and a digest marked
+`status: for-review`.
+
+**A report for Elias to read before anything is merged** (a survey, options
+for a decision) is not merge input. When the work has a task, it goes in the
+task note. Otherwise write it as a digest with `status: for-review`: the drain
+skips it, and he releases it by setting `status: pending` or tells you what
+to do with it.
+
 ## Friction reports
 
-`_meta/friction/` is where a session says what got in its way while
-maintaining the wiki: a commit lock that timed out, a file that kept changing
+`_meta/friction/` is where a session says what got in its way. Mostly that
+is the wiki: a commit lock that timed out, a file that kept changing
 underneath it, a rule here that is ambiguous or contradicts another, a task
-note that couldn't be resolved, a reminder at a silly moment. One file per
-report, created with `wiki_checkpoint friction "<vault>" "<slug>"` (body on
-stdin): what you were doing, what happened with the exact error, what you did
-instead, what would have prevented it. Be candid; this is how the process gets
-fixed. Reports are exempt from the index and from linking rules. Don't edit
-other sessions' reports, except to set `status` during lint.
+note that couldn't be resolved, a reminder at a silly moment (`scope: wiki`,
+the default). It is also the place for the working environment in general:
+a tool that misbehaved, a command that killed your own shell, a script that
+ought to exist, anything in Elias's setup that cost you time on the task
+itself (`--scope env`). One file per report, created with
+`wiki_checkpoint friction [--scope env] "<vault>" "<slug>"` (body on stdin):
+what you were doing, what happened with the exact error, what you did
+instead, what would have prevented it. Be candid; this is how the process
+gets fixed. Reports are exempt from the index and from linking rules. Don't
+edit other sessions' reports, except to set `status` during lint.
 
 ## Git
 
