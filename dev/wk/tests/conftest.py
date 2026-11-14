@@ -56,7 +56,15 @@ def world(tmp_path, monkeypatch):
     monkeypatch.setenv("TASKDATA", str(data))
     monkeypatch.setenv("WK_CONFIG", str(config))
     monkeypatch.setenv("HOME", str(tmp_path))
-    for name in ("TMUX", "TMUX_PANE", "WK_TMUX_SOCKET", "LINEAR_API_KEY", "XDG_CONFIG_HOME"):
+    for name in (
+        "TMUX",
+        "TMUX_PANE",
+        "WK_TMUX_SOCKET",
+        "LINEAR_API_KEY",
+        "XDG_CONFIG_HOME",
+        "XDG_STATE_HOME",
+        "CLAUDE_CODE_SESSION_ID",
+    ):
         monkeypatch.delenv(name, raising=False)
     monkeypatch.chdir(tmp_path)
     return tmp_path

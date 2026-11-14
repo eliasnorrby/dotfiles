@@ -86,7 +86,7 @@ def claude_post_tool_use(payload, head_of=None):
     if tasks.by_pr(number, repo):
         return
     head = (head_of or _pr_head)(url.group(0)) or _head_in_command(command)
-    session = resolve(tasks, cwd=payload.get("cwd")).task
+    session = resolve(tasks, cwd=payload.get("cwd"), session=payload.get("session_id")).task
     task, why = _pr_owner(tasks, repo, head, session if session and is_open(session) else None)
     if not task:
         _emit_context(
@@ -314,7 +314,7 @@ def _session_task(event, payload):
     from .resolve import resolve
 
     cwd = payload.get("cwd") or "."
-    task = resolve(Tasks(), cwd=cwd).task
+    task = resolve(Tasks(), cwd=cwd, session=payload.get("session_id")).task
     if task and is_open(task):
         return task["uuid"]
     if source in (None, "startup", "clear") and _interactive():

@@ -80,3 +80,50 @@ def test_a_window_without_a_task_falls_back_to_its_directory(tasks, repo, tmux_s
             break
         time.sleep(0.1)
     assert resolve(tasks, parse("main:work")).task["uuid"] == task["uuid"]
+
+
+def _share(world, path):
+    (world / "config.toml").open("a").write(f'[projects.dotfiles]\ndir = "{path}"\n')
+
+
+def test_the_claude_session_finds_its_task_outside_tmux_and_in_a_shared_root(tasks, repo, world, monkeypatch):
+    """A shared root names no task by directory or branch; the session that
+    adopted one still knows it."""
+    _share(world, repo)
+    adopted = tasks.add("Lazy ts_ls", {"worktree": str(repo), "branch": "main", "session": "s1"})
+    assert resolve(tasks, cwd=str(repo)).task is None
+    monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "s1")
+    resolution = resolve(tasks, cwd=str(repo))
+    assert resolution.task["uuid"] == adopted["uuid"]
+    assert resolution.how == "session"
+    assert resolve(tasks, cwd=str(repo), session="s2").task is None
+
+
+def test_a_closed_task_no_longer_answers_for_its_session(tasks, repo, world, monkeypatch):
+    _share(world, repo)
+    tasks.done(tasks.add("Finished", {"session": "s1"}))
+    monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "s1")
+    assert resolve(tasks, cwd=str(repo)).task is None
+
+
+def test_the_window_comes_before_the_session(tasks, repo, monkeypatch):
+    window = tasks.add("the window's")
+    tasks.add("the session's", {"session": "s1"})
+    monkeypatch.setattr("wk.tmux.current_task", lambda: window["uuid"])
+    assert resolve(tasks, cwd=str(repo), session="s1").how == "window"
+
+
+def test_a_session_on_several_tasks_picks_the_one_it_moved_to(world, monkeypatch):
+    from wk import state
+    from wk.tasks import Tasks
+
+    monkeypatch.setenv("XDG_STATE_HOME", str(world / "state"))
+    tasks = Tasks()
+    tasks._all = [
+        {"uuid": "a", "status": "pending", "session": "s1", "modified": "20261101T100000Z"},
+        {"uuid": "b", "status": "pending", "session": "s1", "modified": "20261102T100000Z"},
+        {"uuid": "c", "status": "completed", "session": "s1", "modified": "20261103T100000Z"},
+    ]
+    assert tasks.by_session("s1")["uuid"] == "b", "the most recently modified open one"
+    state.write_agent("s1", {"uuid": "a"})
+    assert resolve(tasks, cwd=str(world), session="s1").task["uuid"] == "a", "the one the session tied itself to"

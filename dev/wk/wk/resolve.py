@@ -6,10 +6,13 @@ of?", answered in layers, first hit wins:
 1. the tmux window's @task option. Authoritative, because the session was put
    there on purpose; correct even when a parent's agent works on a sub-issue's
    branch.
-2. the worktree recorded on a task, matched against the directory.
-3. the branch: a task that records it, else the issue key it carries.
+2. the Claude session: the open task whose `session` is
+   $CLAUDE_CODE_SESSION_ID, as `wk adopt` and the SessionStart hook record
+   it. Holds outside tmux and in a shared root, where nothing else can tell.
+3. the worktree recorded on a task, matched against the directory.
+4. the branch: a task that records it, else the issue key it carries.
 
-Layers 2 and 3 only hold for a checkout of the task's own. A shared root (a
+Layers 3 and 4 only hold for a checkout of the task's own. A shared root (a
 project's `dir`, the default directory, home) is where many tasks open, and
 its branch is whatever the main checkout is on: being there says nothing
 about which task this is.
@@ -82,7 +85,19 @@ def _from_directory(tasks, directory):
     return _from_branch(tasks, git.branch(directory))
 
 
-def resolve(tasks, locator=None, cwd=None):
+def session_task(tasks, session):
+    """The open task the Claude session SESSION works on, if it has adopted one."""
+    from . import state
+
+    if not session:
+        return None
+    agent = state.read_agent(session) or {}
+    return tasks.by_session(session, current=agent.get("uuid"))
+
+
+def resolve(tasks, locator=None, cwd=None, session=None):
+    """SESSION is the Claude session asking; $CLAUDE_CODE_SESSION_ID when not
+    given. Only the "here" question (no locator) consults it."""
     cwd = cwd or os.getcwd()
 
     if locator is None:
@@ -90,6 +105,9 @@ def resolve(tasks, locator=None, cwd=None):
         task = tasks.get(uuid) if uuid else None
         if task:
             return Resolution(task, "window", branch=git.branch(cwd))
+        task = session_task(tasks, session or os.environ.get("CLAUDE_CODE_SESSION_ID"))
+        if task:
+            return Resolution(task, "session", branch=git.branch(cwd))
         return _from_directory(tasks, cwd)
 
     if locator.kind == "task":

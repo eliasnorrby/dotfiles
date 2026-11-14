@@ -95,6 +95,17 @@ class Tasks:
         deepest = max(length for length, _ in matches)
         return _preferred([task for length, task in matches if length == deepest])
 
+    def by_session(self, session, current=None):
+        """The open task a Claude session works on. A session may have moved
+        on from one task to the next, and each keeps its id: the one it last
+        tied itself to (`current`, from its agent file) wins, else the most
+        recently modified."""
+        if not session:
+            return None
+        matches = [t for t in self.all() if t.get("session") == session and is_open(t)]
+        chosen = next((t for t in matches if t["uuid"] == current), None)
+        return chosen or max(matches, key=lambda t: (t.get("modified", ""), t["uuid"]), default=None)
+
     def by_pr(self, number, repo=None):
         """Matches the legacy pr_number too ("#10307", "10307.000000")."""
         number = str(number).lstrip("#")
