@@ -31,7 +31,9 @@ this is, else the issue on the branch. That covers work without an issue too.
 If this session is about a different piece of work than that (an investigation
 worked on from another checkout), say which: `wiki_checkpoint resolve --issue
 KEY`, or `--task UUID` for a task without an issue (prefer the uuid: ids shift
-as tasks close).
+as tasks close). An issue filed for the work this session adopted without one
+needs no new task: `--issue KEY` gives the session's task the issue, and its
+note is renamed to match.
 
 - Exit 2 (no task found) or 3 (vault has no schema): there is nowhere to
   checkpoint. Say so in one line and carry on; don't improvise a location.

@@ -70,6 +70,32 @@ def import_issue(config, tasks, key, offline=False, branch=None, fetch=None):
     return Imported(tasks.add(issue["title"], attrs), created=True)
 
 
+def give_issue(config, tasks, task, key, offline=False, fetch=None):
+    """KEY was filed for work already under way as TASK, which has no issue:
+    rather than import a second task, TASK becomes the issue's. Its title
+    follows the tracker's when that can be asked, as sync would have it, and
+    a task still in the default project moves to the issue's. The note
+    follows (notes.follow_issue)."""
+    from . import notes
+
+    changes = {"issue": key}
+    if task.get("project") in (None, "", config.data["defaults"]["project"]):
+        changes["project"] = config.project_for_issue(key)
+    if not offline and config.tracker_for_issue(key) == "linear":
+        if fetch is None:
+            from .trackers.linear import fetch_issue as fetch
+        try:
+            issue = fetch(key)
+        except WkError:
+            issue = None
+        if issue and issue.get("title"):
+            changes["description"] = issue["title"]
+    tasks.modify(task, changes)
+    task = tasks.get(task["uuid"])
+    notes.follow_issue(config, tasks, task)
+    return tasks.get(task["uuid"])
+
+
 def import_pr(config, tasks, number, repo=None, offline=False, cwd=None, fetch=None):
     existing = tasks.by_pr(number, repo)
     if existing and is_open(existing):

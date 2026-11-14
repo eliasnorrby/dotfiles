@@ -132,6 +132,27 @@ def issue_of(task):
     return match.group(1) if match else None
 
 
+def title_for(task):
+    """The note's name, which is also its heading. An issue key is the
+    strongest identifier available, so it leads; otherwise fall back to the
+    date convention used elsewhere."""
+    description = task.get("description", "")
+    issue = issue_of(task)
+    if issue:
+        rest = slugify(re.sub(rf"^{re.escape(issue)}[\s:._-]*", "", description))
+        return f"{issue} {rest}".strip()
+    return f"{datetime.date.today().isoformat()} {slugify(description)}".strip()
+
+
+def _free_path(directory, title):
+    path = os.path.join(directory, f"{title}.md")
+    suffix = 2
+    while os.path.exists(path):
+        path = os.path.join(directory, f"{title} ({suffix}).md")
+        suffix += 1
+    return path
+
+
 def is_closed(task):
     return task.get("status") in CLOSED
 
@@ -163,17 +184,9 @@ def create(config, vault_path, task):
     move then) gets its note in the archive, done, at once."""
     closed = is_closed(task)
     directory = home_of(config, vault_path, closed)
-    description = task.get("description", "")
     issue = issue_of(task)
     today = datetime.date.today().isoformat()
-
-    # An issue key is the strongest identifier available, so it leads the
-    # filename; otherwise fall back to the date convention used elsewhere.
-    if issue:
-        rest = slugify(re.sub(rf"^{re.escape(issue)}[\s:._-]*", "", description))
-        title = f"{issue} {rest}".strip()
-    else:
-        title = f"{today} {slugify(description)}".strip()
+    title = title_for(task)
 
     # A note may already stand for this work: one backfilled before the task
     # existed, say. A second one, with a "(2)" in its name, would split the
@@ -192,6 +205,7 @@ def create(config, vault_path, task):
 
     os.makedirs(directory, exist_ok=True)
     path = os.path.join(directory, f"{title}.md")
+
     frontmatter = [f"task: {task['uuid']}"]
     if issue:
         frontmatter.append(f"issue: {issue}")
@@ -265,6 +279,69 @@ def ensure(config, tasks, task, create_missing=True, repair=True):
     if repair:
         tasks.modify(task, {"note": cached, "note_flag": config.note_flag})
     return path
+
+
+def follow_issue(config, tasks, task):
+    """The task has just been given an issue: its note follows. Renamed to
+    what create() would call it now (`<KEY> <title>.md`), into the vault the
+    task's project maps to, with `issue:` (and `project:`) in its
+    frontmatter, the heading renamed with it, and links to it elsewhere in
+    the vault repointed, since a rename outside Obsidian updates none. Its
+    content and `task:` stay. Returns the new path, or None when the task
+    has no note yet."""
+    path = find_anywhere(config, task)
+    if not path:
+        return None
+    old_vault, old_title = vault_of(config, path), os.path.splitext(os.path.basename(path))[0]
+    vault_path = vault_path_for(config, task)
+    directory = os.path.join(vault_path, subdir_for_vault(config, vault_path))
+    title = title_for(task)
+    destination = path
+    if title != old_title or os.path.dirname(path) != directory:
+        os.makedirs(directory, exist_ok=True)
+        destination = _free_path(directory, title)
+        os.rename(path, destination)
+    new_title = os.path.splitext(os.path.basename(destination))[0]
+    values = {"issue": issue_of(task)}
+    if task.get("project"):
+        values["project"] = task["project"]
+    set_frontmatter(destination, values)
+    if new_title != old_title:
+        _retitle(destination, old_title, new_title)
+        if old_vault == vault_path:
+            relink(vault_path, old_title, new_title)
+    tasks.modify(task, {"note": os.path.splitext(os.path.relpath(destination, vault_path))[0]})
+    return destination
+
+
+def _retitle(path, old, new):
+    with open(path, encoding="utf-8") as handle:
+        text = handle.read()
+    replaced = re.sub(rf"^# {re.escape(old)}$", lambda _: f"# {new}", text, count=1, flags=re.M)
+    if replaced != text:
+        with open(path, "w", encoding="utf-8") as handle:
+            handle.write(replaced)
+
+
+def relink(vault_path, old, new):
+    """Point wikilinks to the note OLD at NEW, in every note of the vault:
+    [[OLD]], [[OLD|alias]], [[OLD#heading]] and [[dir/OLD]] alike."""
+    pattern = re.compile(r"\[\[((?:[^\]|#\n]*/)?)" + re.escape(old) + r"(?=[\]|#])")
+    for root, dirs, files in os.walk(vault_path):
+        dirs[:] = [d for d in dirs if not d.startswith(".")]
+        for name in files:
+            if not name.endswith(".md"):
+                continue
+            path = os.path.join(root, name)
+            try:
+                with open(path, encoding="utf-8") as handle:
+                    text = handle.read()
+            except (OSError, UnicodeDecodeError):
+                continue
+            replaced = pattern.sub(lambda match: f"[[{match.group(1)}{new}", text)
+            if replaced != text:
+                with open(path, "w", encoding="utf-8") as handle:
+                    handle.write(replaced)
 
 
 # -- archiving -----------------------------------------------------------

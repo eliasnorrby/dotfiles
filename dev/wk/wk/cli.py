@@ -167,7 +167,11 @@ def cmd_resolve(args, out):
     task = resolution.task
 
     if not task and (args.ensure or args.do_import):
-        task = _import_missing(config, tasks, resolution, args.offline, cwd)
+        taken = _issue_for_session_task(config, tasks, resolution, args.offline, cwd)
+        if taken:
+            resolution, task = taken, taken.task
+        else:
+            task = _import_missing(config, tasks, resolution, args.offline, cwd)
     if not task:
         what = resolution.issue or args.locator or cwd
         err = NotFound(f"no task for {what}")
@@ -194,6 +198,34 @@ def cmd_resolve(args, out):
     lines += [f"{key}={payload[key]}" for key in ("issue", "vault", "note", "how") if payload[key]]
     out.result(payload, lines)
     return 0
+
+
+def _issue_for_session_task(config, tasks, resolution, offline, cwd):
+    """An issue that has no task yet, named by a session already at work on
+    a task without one (adopted before the issue was filed): that task
+    takes the issue, and its note follows, instead of a second task and
+    note being imported. Only a task this very session is recorded on, so
+    that an issue named from a window's long-lived task (an orchestration,
+    say) is still imported as work of its own. Returns the resolution of
+    the task, or None."""
+    from . import notes
+    from .imports import give_issue
+    from .resolve import resolve
+    from .tasks import is_open
+
+    if not (resolution.reference and resolution.reference.kind == "issue"):
+        return None
+    session = os.environ.get("CLAUDE_CODE_SESSION_ID")
+    here = resolve(tasks, None, cwd, session=session)
+    task = here.task
+    if here.how not in ("window", "session") or not task or not is_open(task):
+        return None
+    if not session or task.get("session") != session or notes.issue_of(task) or kind_of(task) == "review":
+        return None
+    key = resolution.reference.value
+    here.task = give_issue(config, tasks, task, key, offline)
+    here.why = f"{here.why}; it had no issue, and takes {key}"
+    return here
 
 
 def _import_missing(config, tasks, resolution, offline, cwd):
