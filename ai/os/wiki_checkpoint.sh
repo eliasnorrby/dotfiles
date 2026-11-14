@@ -12,11 +12,13 @@
 #                                      worktree's, the branch's issue); --issue
 #                                      when the session knows better. Prints
 #                                      key=value lines.
-#   wiki_checkpoint commit VAULT -- FILE...
+#   wiki_checkpoint commit VAULT [-F FILE] -- FILE...
 #                                      Commit exactly these files, message on
-#                                      stdin. Serialized across sessions.
-#                                      Refuses a task note that today's daily
-#                                      does not link (see daily_gaps).
+#                                      stdin or in FILE (-F, --message-file).
+#                                      VAULT is a vault's path or its name.
+#                                      Serialized across sessions. Refuses a
+#                                      task note that today's daily does not
+#                                      link (see daily_gaps).
 #   wiki_checkpoint sweep [--min-age SECONDS] [--vault DIR]
 #                                      Commit what has settled in every vault
 #                                      (the owner's jots and moves, hook-made
@@ -33,7 +35,8 @@
 #   wiki_checkpoint friction [--scope wiki|env] VAULT SLUG
 #                                      File a friction report, body on stdin.
 #                                      env: about the agent's working
-#                                      environment, not the wiki.
+#                                      environment, not the wiki. VAULT as
+#                                      for commit.
 #   wiki_checkpoint mark               Record that this session checkpointed.
 #   wiki_checkpoint usage [--since DATE] [--vault NAME] [--write]
 #                                      How sessions use the wiki: which pages
@@ -307,15 +310,63 @@ vault_paths() {
   done
 }
 
-cmd_commit() {
-  local vault="${1:-}" message gaps today
-  [ -n "$vault" ] && [ -d "$vault/.git" ] || die "not a git repository: ${vault:-<none>}"
-  shift
-  [ "${1:-}" = "--" ] && shift
-  [ $# -gt 0 ] || die "no files given; this command never commits the whole tree"
+commit_usage='usage: wiki_checkpoint commit VAULT [-F FILE] -- FILE... (message on stdin, or in FILE); VAULT is the vault'"'"'s path or its name'
 
-  message=$(cat)
-  [ -n "$message" ] || die "empty commit message on stdin"
+# A vault named on the command line, by path or by its name under the vaults
+# directory (as the session-start list names them). Prints an absolute path
+# without a trailing slash. Args: VAULT
+vault_arg() {
+  local vault="${1%/}"
+  case "$vault" in
+    */*) ;;
+    *) [ ! -d "$(vaults_dir)/$vault" ] || vault="$(vaults_dir)/$vault" ;;
+  esac
+  [ ! -d "$vault" ] || vault=$(cd -- "$vault" && pwd)
+  printf '%s' "$vault"
+}
+
+cmd_commit() {
+  local vault="" message_file="" message gaps today
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      -F | --message-file)
+        [ $# -ge 2 ] || die "$commit_usage"
+        message_file="$2"
+        shift 2
+        ;;
+      --message-file=*)
+        message_file="${1#*=}"
+        shift
+        ;;
+      -h | --help)
+        echo "$commit_usage"
+        exit 0
+        ;;
+      --)
+        shift
+        break
+        ;;
+      -*) die "unknown option $1; $commit_usage" ;;
+      *)
+        [ -z "$vault" ] || break
+        vault="$1"
+        shift
+        ;;
+    esac
+  done
+  [ -n "$vault" ] || die "$commit_usage"
+  vault=$(vault_arg "$vault")
+  [ -d "$vault/.git" ] || die "not a vault with a git repository: $vault (give its path, or its name under $(vaults_dir))"
+  [ $# -gt 0 ] || die "no files given; this command never commits the whole tree. $commit_usage"
+
+  if [ -n "$message_file" ]; then
+    [ -r "$message_file" ] || die "cannot read the message file: $message_file"
+    message=$(cat -- "$message_file")
+  else
+    [ ! -t 0 ] || die "no commit message: give it on stdin or with -F FILE. $commit_usage"
+    message=$(cat)
+  fi
+  [ -n "$message" ] || die "empty commit message"
 
   local -a paths=()
   mapfile -t paths < <(vault_paths "$vault" "$@")
@@ -396,8 +447,9 @@ cmd_friction() {
     *) die "$usage" ;;
   esac
   local vault="${1:-}" slug="${2:-}" body file
-  [ -n "$vault" ] && [ -d "$vault" ] || die "no such vault: ${vault:-<none>}"
-  [ -n "$slug" ] || die "$usage"
+  [ -n "$vault" ] && [ -n "$slug" ] || die "$usage (VAULT: its path or its name)"
+  vault=$(vault_arg "$vault")
+  [ -d "$vault" ] || die "no such vault: $vault"
   body=$(cat)
   [ -n "$body" ] || die "empty report on stdin"
 

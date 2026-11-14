@@ -387,6 +387,9 @@ MSG
 ```
 
 which serialises commits across sessions and refuses to commit the whole tree.
+`<vault>` is the vault's path or its name (`wiki_checkpoint commit bemlo --
+…`). Where a heredoc won't do, put the message in a file and pass `-F <file>`
+before the `--`.
 Where the dailies are yours, it also refuses a task note that today's daily
 doesn't link (directly or through the task's parent): every day a task is
 worked on gets its bullet, on the fifth day of a long session as on the
