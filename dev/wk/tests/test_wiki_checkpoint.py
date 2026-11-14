@@ -6,7 +6,9 @@ import os
 import subprocess
 
 import pytest
-from conftest import TOPIC
+from conftest import TOPIC, needs_task
+
+from wk import notes
 
 SCRIPT = TOPIC.parent.parent / "ai" / "os" / "wiki_checkpoint.sh"
 NOTE = "wiki/tasks/ACME-1 Note.md"
@@ -134,3 +136,32 @@ def test_mark_records_no_checkpoint_after_a_failed_commit(vault, monkeypatch):
     (vault / ARCHIVED).write_text("---\ntask: u1\nstatus: done\n---\n\n# ACME-1 Note\n\nmore\n")
     assert checkpoint("commit", vault, "--", ARCHIVED, message="checkpoint\n").returncode == 0
     assert checkpoint("mark").returncode == 0
+
+
+@needs_task
+def test_the_archive_move_is_committed_as_it_happens(vault, config, tasks, world):
+    hooks = world / "taskdata" / "hooks"
+    hooks.mkdir()
+    os.symlink(TOPIC / "hooks" / "on-modify-wk", hooks / "on-modify.wk")
+    task = tasks.add("archive me", {"issue": "ACME-4", "project": "work"})
+    notes.ensure(config, tasks, task)
+    git(vault, "add", "wiki/tasks/ACME-4 archive me.md")
+    git(vault, "commit", "-q", "-m", "checkpoint")
+
+    tasks.done(task)
+    assert git(vault, "log", "-1", "--format=%s").strip() == "auto: archive ACME-4 archive me"
+    status, *paths = git(vault, "log", "-1", "--format=", "--name-status").strip().split("\t")
+    assert status.startswith("R")
+    assert paths == ["wiki/tasks/ACME-4 archive me.md", "wiki/tasks/archive/ACME-4 archive me.md"]
+    assert git(vault, "status", "--porcelain") == ""
+
+    tasks.revive(tasks.get(task["uuid"]))
+    assert git(vault, "log", "-1", "--format=%s").strip() == "auto: reopen ACME-4 archive me"
+    assert git(vault, "status", "--porcelain") == ""
+
+
+def test_moved_commits_a_note_that_was_never_committed_by_its_new_name(vault):
+    (vault / "wiki/tasks/archive/New.md").write_text("---\nstatus: done\n---\n")
+    result = checkpoint("moved", "acme", "wiki/tasks/New.md", "wiki/tasks/archive/New.md")
+    assert result.returncode == 0, result.stderr
+    assert last_commit(vault) == "auto: archive New\n\nA\twiki/tasks/archive/New.md"

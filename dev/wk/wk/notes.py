@@ -11,6 +11,8 @@ The vault follows from the task's project; no vault name is baked in.
 import datetime
 import os
 import re
+import shutil
+import subprocess
 
 from .errors import WkError
 
@@ -236,4 +238,41 @@ def move_for_status(config, task, closed):
         set_frontmatter(destination, {"status": "done", "closed": today})
     else:
         set_frontmatter(destination, {"status": "active"})
+    if path != destination:
+        commit_move(vault_path, path, destination)
     return os.path.splitext(os.path.relpath(destination, vault_path))[0]
+
+
+# How long a move waits for a checkpoint holding the vault's commit lock. It
+# runs inside taskwarrior's hook, so `task done` waits too; a commit holds the
+# lock for a fraction of a second, and the sweep takes what this gives up on.
+COMMIT_LOCK_WAIT = 5
+GIT_LOCATION = ("GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE", "GIT_COMMON_DIR", "GIT_OBJECT_DIRECTORY")
+
+
+def commit_move(vault_path, old, new):
+    """Commit a move made here, as a rename, at once: left in the working
+    tree, a session checkpointing meanwhile would commit the old path's
+    deletion. Goes through `wiki_checkpoint moved` (dotfiles topic ai/os),
+    which takes the vault's commit lock and pushes to its backup like every
+    checkpoint. Where that is missing, or the vault has no repository (a
+    synced copy), nothing is committed; the sweep takes it later. Never
+    raises: this runs inside taskwarrior's hook. Returns whether it
+    committed."""
+    script = shutil.which("wiki_checkpoint")
+    if not script or not os.path.isdir(os.path.join(vault_path, ".git")):
+        return False
+    # `task done` run from inside a git hook would hand git another repository.
+    env = {key: value for key, value in os.environ.items() if key not in GIT_LOCATION}
+    env["WIKI_CHECKPOINT_LOCK_WAIT"] = str(COMMIT_LOCK_WAIT)
+    try:
+        result = subprocess.run(
+            [script, "moved", vault_path, old, new],
+            capture_output=True,
+            stdin=subprocess.DEVNULL,
+            env=env,
+            timeout=COMMIT_LOCK_WAIT + 15,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return False
+    return result.returncode == 0
