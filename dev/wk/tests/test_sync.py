@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from conftest import needs_task
 
@@ -422,3 +424,78 @@ def test_a_notice_reaches_the_session_with_its_next_prompt(world_with_sync, caps
     assert output == {"hookEventName": "UserPromptSubmit", "additionalContext": "wk sync completed task u"}
     hooks.claude_event("user-prompt-submit", {"session_id": "s1"})
     assert capsys.readouterr().out == ""
+
+
+@pytest.fixture
+def note_vault(world_with_sync, monkeypatch):
+    """The acme vault as one with a repository; commits are recorded, not
+    made (wiki_checkpoint's side is tested on its own)."""
+    from wk import notes
+
+    (world_with_sync / "vaults/acme/.git").mkdir()
+    committed = []
+    monkeypatch.setattr(notes, "commit_move", lambda vault, old, new: committed.append((old, new)))
+    return committed
+
+
+def test_sync_archives_the_note_of_a_task_closed_without_the_hook(note_vault, config, tasks, world):
+    from wk import notes
+
+    task = tasks.add("closed behind its note's back", {"issue": "ACME-7", "project": "work"})
+    notes.ensure(config, tasks, task)
+    tasks.done(tasks.get(task["uuid"]))  # no hook in this world: the note stays put
+
+    assert sync(tasks).lines == ["archive the note of closed behind its note's back"]
+    task = tasks.get(task["uuid"])
+    assert task["note"] == "wiki/tasks/archive/ACME-7 closed behind its note's back"
+    note = world / "vaults/acme" / (task["note"] + ".md")
+    assert "status: done\n" in note.read_text()
+    assert len(note_vault) == 1
+    assert sync(tasks).lines == []
+
+
+def test_sync_restores_the_note_of_an_open_task_from_the_archive(note_vault, config, tasks, world):
+    from wk import notes
+
+    task = tasks.add("reopened", {"issue": "ACME-8", "project": "work"})
+    tasks.done(task)
+    notes.ensure(config, tasks, tasks.get(task["uuid"]))
+    tasks.revive(tasks.get(task["uuid"]))
+
+    assert sync(tasks).lines == ["restore the note of reopened"]
+    assert tasks.get(task["uuid"])["note"] == "wiki/tasks/ACME-8 reopened"
+    assert "closed:" not in (world / "vaults/acme/wiki/tasks/ACME-8 reopened.md").read_text()
+
+
+def test_sync_repairs_a_cached_path_the_note_has_left(note_vault, config, tasks, world):
+    from wk import notes
+
+    task = tasks.add("undone", {"issue": "ACME-11", "project": "work"})
+    path = notes.ensure(config, tasks, task)
+    tasks.done(tasks.get(task["uuid"]))
+    os.makedirs(world / "vaults/acme/wiki/tasks/archive")
+    os.rename(path, world / "vaults/acme/wiki/tasks/archive/ACME-11 undone.md")
+
+    assert sync(tasks).lines == ["repair the note path of undone"]
+    assert tasks.get(task["uuid"])["note"] == "wiki/tasks/archive/ACME-11 undone"
+    assert note_vault == []
+
+
+def test_sync_leaves_notes_alone_in_a_vault_without_a_repository(world_with_sync, config, tasks, world):
+    from wk import notes
+
+    task = tasks.add("synced copy", {"issue": "ACME-9", "project": "work"})
+    notes.ensure(config, tasks, task)
+    tasks.done(tasks.get(task["uuid"]))
+    assert sync(tasks).lines == []
+    assert (world / "vaults/acme/wiki/tasks/ACME-9 synced copy.md").exists()
+
+
+def test_a_dry_run_only_says_which_note_it_would_move(note_vault, config, tasks, world):
+    from wk import notes
+
+    task = tasks.add("not yet", {"issue": "ACME-10", "project": "work"})
+    notes.ensure(config, tasks, task)
+    tasks.done(tasks.get(task["uuid"]))
+    assert sync(tasks, dry_run=True).lines == ["would archive the note of not yet"]
+    assert (world / "vaults/acme/wiki/tasks/ACME-10 not yet.md").exists()

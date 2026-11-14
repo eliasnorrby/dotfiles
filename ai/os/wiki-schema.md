@@ -94,7 +94,9 @@ no `task:` key) are created directly in the task folder's `archive/` with
 
 Closing is handled outside the wiki: when the taskwarrior task is completed or
 deleted, a hook moves the note to `archive/` and sets `status` and `closed`;
-reopening moves it back. Don't move notes in or out of `archive/` yourself.
+reopening moves it back and drops `closed`. A note made for a task that is
+already closed starts in `archive/`, and `wk sync` files any note the hook
+missed. Don't move notes in or out of `archive/` yourself.
 Wikilinks survive the move; do move the note's line in `wiki/Tasks index.md`
 next time you touch it.
 

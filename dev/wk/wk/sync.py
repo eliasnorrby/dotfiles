@@ -18,6 +18,9 @@ PR stays where it is:
 A parent answers for its sub-tasks' PRs as well as its own: it lists them in
 `subprs` and its action, decision and health cover them. They still belong to
 the sub-task; this is only so the list can show the stack by its parent.
+
+One local step rides along: task notes are filed where their task's status
+says they belong (see notes_sync).
 """
 
 import datetime
@@ -454,6 +457,54 @@ class Sync:
                     self.tasks.revive(task)
         tracker["last_ok"] = started.isoformat()
 
+    # -- notes ------------------------------------------------------------
+
+    def notes_sync(self):
+        """A task's note lives in the archive while the task is closed and
+        out of it while the task is open. The hook moves it at every status
+        change, but not a note made after its task closed, nor one it missed
+        (`task undo`, a note it could not find then): this catches up.
+
+        Local and cheap enough for every minute: the cached `note` path says
+        where each note is, so a task whose note is where it belongs costs no
+        I/O at all. Only a vault with a repository is touched (one without is
+        a synced copy), and only a note found at its cached path."""
+        from . import notes
+
+        if not self.config.registers_work:
+            return
+        for task in self.tasks.all():
+            cached = task.get("note")
+            if not cached or not (is_open(task) or notes.is_closed(task)):
+                continue
+            closed = notes.is_closed(task)
+            if notes.is_archived(self.config, cached) == closed:
+                continue
+            vault = os.path.join(self.config.vaults_dir, self.config.vault_for_project(task.get("project")))
+            path = os.path.join(vault, cached + ".md")
+            target = os.path.join(notes.home_of(self.config, vault, closed), os.path.basename(path))
+            if not os.path.isdir(os.path.join(vault, ".git")):
+                continue
+            if not os.path.isfile(path):
+                if os.path.isfile(target):
+                    # Moved already (`task undo` reverts the cached path,
+                    # not the file): only the cached path is stale.
+                    self.report.did(f"repair the note path of {task['description']}")
+                    self._modify(task, {"note": os.path.splitext(os.path.relpath(target, vault))[0]})
+                continue
+            if os.path.exists(target):
+                continue  # another note in the way, which is not ours to settle
+            self.report.did(f"{'archive' if closed else 'restore'} the note of {task['description']}")
+            if self.report.dry_run:
+                continue
+            try:
+                moved = notes.move_for_status(self.config, task, closed, path=path)
+            except OSError as err:
+                self.report.stale.append(f"notes: {err}")
+                continue
+            if moved:
+                self._modify(task, {"note": moved})
+
     # -- run --------------------------------------------------------------
 
     def run(self, force_tracker=False):
@@ -462,6 +513,7 @@ class Sync:
         steps = [("github", self.github_sync)]
         if self.tracker_due(force_tracker):
             steps.append(("tracker", self.tracker_sync))
+        steps.append(("notes", self.notes_sync))
         for name, step in steps:
             try:
                 step()

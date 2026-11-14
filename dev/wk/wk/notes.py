@@ -255,11 +255,11 @@ def _is_key(line, key):
     return line == f"{key}:" or line.startswith(f"{key}: ")
 
 
-def move_for_status(config, task, closed):
+def move_for_status(config, task, closed, path=None):
     """File a closed task's note into the archive, or bring it back. Returns
     the note's new vault-relative path (no extension), or None when there is
-    no note."""
-    path = find_anywhere(config, task)
+    no note. The note is looked for unless its PATH is given."""
+    path = path or find_anywhere(config, task)
     if not path:
         return None
     vault_path = vault_of(config, path)
