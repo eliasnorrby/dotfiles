@@ -1,9 +1,11 @@
 import datetime
 import os
 
+import pytest
 from conftest import needs_task
 
 from wk import notes
+from wk.errors import WkError
 
 pytestmark = needs_task
 
@@ -57,13 +59,50 @@ def test_a_second_call_finds_the_same_note(config, tasks):
     assert notes.ensure(config, tasks, tasks.get(task["uuid"])) == first
 
 
-def test_name_collisions_get_a_suffix(config, tasks):
-    one = notes.ensure(config, tasks, tasks.add("twin", {"issue": "ACME-2", "project": "work"}))
-    tasks._task([tasks.by_issue("ACME-2")["uuid"], "done"])
-    tasks.invalidate()
-    two = notes.ensure(config, tasks, tasks.add("twin", {"issue": "ACME-2", "project": "work"}))
-    assert one != two
-    assert two.endswith("ACME-2 twin (2).md")
+def test_a_note_of_another_task_for_the_issue_is_named_not_duplicated(config, tasks, world):
+    first = tasks.add("twin", {"issue": "ACME-2", "project": "work"})
+    notes.ensure(config, tasks, first)
+    tasks.done(tasks.get(first["uuid"]))
+    second = tasks.add("twin, again", {"issue": "ACME-2", "project": "work"})
+
+    with pytest.raises(WkError, match=rf"wiki/tasks/ACME-2 twin.md already stands for ACME-2.*{first['uuid']}"):
+        notes.ensure(config, tasks, second)
+    assert os.listdir(world / "vaults/acme/wiki/tasks") == ["ACME-2 twin.md"]
+
+
+BACKFILLED = "---\ntype: task\nissue: ACME-20\nstatus: active\n---\n\n# ACME-20 Backfilled\n\nall of it\n"
+
+
+def test_a_backfilled_note_for_the_issue_is_adopted(config, tasks, world):
+    note = world / "vaults/acme/wiki/tasks/ACME-20 Backfilled.md"
+    note.write_text(BACKFILLED)
+    task = tasks.add("A different title", {"issue": "ACME-20", "project": "work"})
+
+    assert notes.ensure(config, tasks, task) == str(note)
+    assert note.read_text().startswith(f"---\ntype: task\nissue: ACME-20\nstatus: active\ntask: {task['uuid']}\n---")
+    assert "all of it" in note.read_text()
+    assert os.listdir(note.parent) == [note.name]
+    assert tasks.get(task["uuid"])["note"] == "wiki/tasks/ACME-20 Backfilled"
+
+
+def test_a_note_of_the_same_name_without_a_task_is_adopted(config, tasks, world):
+    note = world / f"vaults/personal/tasks/{TODAY} Tinker.md"
+    note.write_text("---\nstatus: active\n---\n\nbody\n")
+    task = tasks.add("Tinker")
+    assert notes.ensure(config, tasks, task) == str(note)
+    assert f"task: {task['uuid']}" in note.read_text()
+
+
+def test_an_archived_backfilled_note_is_brought_back_for_an_open_task(config, tasks, world):
+    archive = world / "vaults/acme/wiki/tasks/archive"
+    archive.mkdir()
+    (archive / "ACME-21 Old.md").write_text("---\nissue: ACME-21\nstatus: done\nclosed: 2026-09-01\n---\n")
+    task = tasks.add("Old", {"issue": "ACME-21", "project": "work"})
+
+    path = notes.ensure(config, tasks, task)
+
+    assert path == str(world / "vaults/acme/wiki/tasks/ACME-21 Old.md")
+    assert open(path).read() == f"---\nissue: ACME-21\nstatus: active\ntask: {task['uuid']}\n---\n"
 
 
 def test_a_note_renamed_in_obsidian_is_recovered_by_uuid(config, tasks):

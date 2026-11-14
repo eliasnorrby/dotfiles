@@ -90,7 +90,9 @@ closed: 2026-09-30           # set when the task closes
 
 Backfilled notes for work that was already closed (no taskwarrior task, so
 no `task:` key) are created directly in the task folder's `archive/` with
-`status: done`.
+`status: done`. When a task for that issue turns up later, wk adopts the note
+(writes its `task:`) instead of starting a second one; it refuses, naming the
+note, when that note already belongs to another task.
 
 Closing is handled outside the wiki: when the taskwarrior task is completed or
 deleted, a hook moves the note to `archive/` and sets `status` and `closed`;

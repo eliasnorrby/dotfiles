@@ -54,21 +54,32 @@ def slugify(text):
     return slug[:60].rstrip()
 
 
-def _links_task(path, uuid):
+FRONTMATTER_LINE = re.compile(r"([A-Za-z_][\w-]*):[ \t]*(.*)")
+
+
+def frontmatter_of(path):
+    """A note's top-level `key: value` frontmatter lines, as a dict; empty
+    for a note without (complete) frontmatter."""
     try:
         with open(path, "rb") as handle:
             head = handle.read(FRONTMATTER_BYTES).decode("utf-8", "replace")
     except OSError:
-        return False
+        return {}
     lines = head.splitlines()
     if not lines or lines[0] != "---":
-        return False
+        return {}
+    found = {}
     for line in lines[1:]:
         if line == "---":
-            return False
-        if line == f"task: {uuid}":
-            return True
-    return False
+            return found
+        match = FRONTMATTER_LINE.fullmatch(line)
+        if match:
+            found.setdefault(match.group(1), match.group(2).strip().strip("\"'"))
+    return {}
+
+
+def _links_task(path, uuid):
+    return frontmatter_of(path).get("task") == uuid
 
 
 def _scan(directory, uuid):
@@ -164,13 +175,23 @@ def create(config, vault_path, task):
     else:
         title = f"{today} {slugify(description)}".strip()
 
+    # A note may already stand for this work: one backfilled before the task
+    # existed, say. A second one, with a "(2)" in its name, would split the
+    # work's history in two, so it is adopted instead, or this refuses.
+    claimants = _claimants(config, vault_path, issue, f"{title}.md")
+    for path, owner in claimants:
+        if not owner:
+            return _adopt(config, path, task)
+    if claimants:
+        path, owner = claimants[0]
+        raise WkError(
+            f"{os.path.relpath(path, vault_path)} already stands for {issue or title}, for another task "
+            f"({owner}); a second note would split its history. If this task carries that work on, put "
+            f"`task: {task['uuid']}` in that note's frontmatter (or reopen that task instead) and run this again."
+        )
+
     os.makedirs(directory, exist_ok=True)
     path = os.path.join(directory, f"{title}.md")
-    suffix = 2
-    while os.path.exists(path):
-        path = os.path.join(directory, f"{title} ({suffix}).md")
-        suffix += 1
-
     frontmatter = [f"task: {task['uuid']}"]
     if issue:
         frontmatter.append(f"issue: {issue}")
@@ -182,6 +203,35 @@ def create(config, vault_path, task):
     with open(path, "x", encoding="utf-8") as handle:
         # The heading is the file name, so heading and link target agree.
         handle.write(TEMPLATE.format(frontmatter="\n".join(frontmatter), title=title, space=" "))
+    return path
+
+
+def _claimants(config, vault_path, issue, filename):
+    """Notes that already stand for the work a new note named FILENAME would
+    be about: those with its issue in their frontmatter, and any of that
+    name. As (path, the task uuid it names or None), best first: the very
+    name, then one outside the archive."""
+    found = []
+    for root, _dirs, files in os.walk(os.path.join(vault_path, subdir_for_vault(config, vault_path))):
+        for name in files:
+            if not name.endswith(".md"):
+                continue
+            path = os.path.join(root, name)
+            meta = frontmatter_of(path)
+            if name == filename or (issue and meta.get("issue", "").upper() == issue.upper()):
+                found.append((path, meta.get("task") or None))
+    return sorted(found, key=lambda f: (os.path.basename(f[0]) != filename, is_archived(config, f[0]), f[0]))
+
+
+def _adopt(config, path, task):
+    """Tie a note that names no task to this one, and file it where the
+    task's status says it belongs, as the hook would have."""
+    set_frontmatter(path, {"task": task["uuid"]})
+    closed = is_closed(task)
+    if is_archived(config, path) != closed:
+        moved = move_for_status(config, task, closed, path=path)
+        if moved:
+            path = os.path.join(vault_of(config, path), moved + ".md")
     return path
 
 
