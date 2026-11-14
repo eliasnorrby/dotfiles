@@ -559,19 +559,40 @@ def cmd_start(args, out):
 
     from . import git, state, workspace
     from .resolve import resolve
+    from .tasks import is_open
 
     config, tasks = context(args)
     cwd = os.path.realpath(args.directory or os.getcwd())
-    plain_dir = args.directory_in
-    if args.new and not plain_dir:
+    plain_dir = os.path.realpath(os.path.expanduser(args.directory_in)) if args.directory_in else None
+    if args.new:
+        # New work is a new task, whatever else is around: never the window's
+        # or the directory's.
+        if args.locator or args.source:
+            raise WkError("--new starts a task of its own; it takes no locator")
+        if plain_dir:
+            if not os.path.isdir(plain_dir):
+                raise WkError(f"--in {args.directory_in}: no such directory")
+            cwd = plain_dir
         repo = git.slug(cwd) if git.is_repo(cwd) else None
         task = tasks.add(args.new, {"repo": repo, "project": config.project_for_directory(cwd, repo)})
-        plain_dir = git.main_worktree(cwd) if repo else cwd
+        plain_dir = plain_dir or (git.main_worktree(cwd) if repo else cwd)
+        asked = locators.Locator("task", task["uuid"])
     else:
-        resolution = resolve(tasks, locator_from(args), cwd)
+        asked = locator_from(args)
+        resolution = resolve(tasks, asked, cwd)
         task = resolution.task or _import_missing(config, tasks, resolution, args.offline, cwd)
         if not task:
             raise NotFound(f"no task for {resolution.issue or args.locator or cwd}")
+        # Starting a closed task reopens it, note and all: only ever for one
+        # asked for by name, never for whatever "here" happens to lead to.
+        named = asked is not None and asked.kind in ("task", "issue", "pr", "branch")
+        if not is_open(task) and not named:
+            how = f"{resolution.how}: {resolution.why}" if resolution.why else resolution.how
+            raise WkError(
+                f"{args.locator or 'here'} leads to task {_label(task)} ({how}), which is {task['status']}:"
+                " name it to reopen it, or start new work with --new"
+            )
+    _check_asked(asked, task)
     if args.partof:
         parent = resolve(tasks, locators.parse(args.partof), cwd).task
         if not parent:
@@ -632,6 +653,22 @@ def cmd_start(args, out):
         lines.append("the task already had a window; Claude was not started in it")
     out.result(payload, lines)
     return 0
+
+
+def _check_asked(asked, task):
+    """Refuse to go on with a task other than the one asked for: a stand-in
+    reported with `ok: true` is worse than an error, since nobody looks."""
+    if asked is None:
+        return
+    value = asked.value
+    if asked.kind == "task":
+        wrong = task["uuid"] != value.lower() if locators.is_uuid(value) else str(task.get("id")) != value
+    elif asked.kind == "issue":
+        wrong = (task.get("issue") or "").upper() != value.upper()
+    else:
+        wrong = False
+    if wrong:
+        raise WkError(f"asked for {value}, but resolved task {_label(task)}: {task['description']}")
 
 
 def _start_background(args, out, config, tasks, task, note, cwd):

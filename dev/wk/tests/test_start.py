@@ -143,3 +143,57 @@ def test_start_begins_afresh_when_the_session_is_gone(wk, tasks, app, tmux_serve
     payload = json.loads(capsys.readouterr().out)
     assert payload["claude"] and not payload["resumed"]
     assert tasks.get(task["uuid"])["session"] not in ("lost", None)
+
+
+def test_new_in_a_directory_is_new_work_there(wk, tasks, app, tmux_server, world, monkeypatch, capsys):  # noqa: F811
+    """--in used to drop --new and start whatever "here" led to: the
+    window's long-closed task, reopened."""
+    old = tasks.add("Orchestrate the build", {"project": "work", "worktree": str(app)})
+    tasks.done(old)
+    monkeypatch.setattr("wk.tmux.current_task", lambda: old["uuid"])
+    elsewhere = world / "elsewhere"
+    elsewhere.mkdir()
+
+    assert (
+        wk(
+            "start",
+            "--new",
+            "Daily notes miss agent work",
+            "--in",
+            str(elsewhere),
+            "--no-claude",
+            "--no-switch",
+            "--json",
+        )
+        == 0
+    )
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["task"]["uuid"] != old["uuid"]
+    assert payload["task"]["description"] == "Daily notes miss agent work"
+    assert payload["directory"] == str(elsewhere)
+    assert tasks.get(payload["task"]["uuid"])["worktree"] == str(elsewhere)
+    assert tasks.get(old["uuid"])["status"] == "completed", "the closed task stays closed"
+
+    assert wk("start", "--new", "In the repository", "--in", str(app), "--no-claude", "--no-switch", "--json") == 0
+    task = tasks.get(json.loads(capsys.readouterr().out)["task"]["uuid"])
+    assert (task["repo"], task["project"], task["worktree"]) == ("acme/app", "work", str(app))
+
+
+def test_new_takes_no_locator(wk, tasks, app, tmux_server):  # noqa: F811
+    assert wk("start", "--new", "Something", "ACME-12", "--no-claude", "--no-switch") == 1
+    assert tasks.all() == []
+
+
+def test_start_never_reopens_a_closed_task_it_was_not_asked_for(wk, tasks, app, tmux_server, monkeypatch, capsys):  # noqa: F811
+    old = tasks.add("Orchestrate the build", {"project": "work"})
+    tasks.done(old)
+    monkeypatch.setattr("wk.tmux.current_task", lambda: old["uuid"])
+    assert wk("start", "--no-claude", "--no-switch", "--json") == 1
+    error = json.loads(capsys.readouterr().out)["error"]["message"]
+    assert old["uuid"] in error and "completed" in error
+    assert tasks.get(old["uuid"])["status"] == "completed"
+    assert not any(w["task"] == old["uuid"] for w in workspace.tmux.windows())
+
+    # Named, it is reopened: that is what was asked for.
+    assert wk("start", "--no-claude", "--no-switch", old["uuid"]) == 0
+    assert tasks.get(old["uuid"])["status"] == "pending"
