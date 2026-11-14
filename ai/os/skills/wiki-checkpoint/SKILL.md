@@ -112,11 +112,15 @@ the task note and the daily normally go in the same commit. When the commit
 records no work done today (a status flip, a typo), add a trailer line before
 `Co-Authored-By` instead: `No-Daily: <why>`.
 
-Then:
+Then, once the commit has gone through:
 
 ```
 wiki_checkpoint mark
 ```
+
+`mark` refuses while this session's last commit failed: a refused commit means
+nothing was checkpointed. Fix what the commit said (a note that moved: edit the
+path it names) and commit again first.
 
 If nothing worth keeping happened since the last checkpoint, skip steps 3 and 4
 and just run `wiki_checkpoint mark`.

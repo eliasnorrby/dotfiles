@@ -117,3 +117,20 @@ def test_a_deliberate_deletion_still_commits(vault):
     result = checkpoint("commit", vault, "--", "wiki/page.md", message="drop\n")
     assert result.returncode == 0, result.stderr
     assert last_commit(vault) == "drop\n\nD\twiki/page.md"
+
+
+def test_mark_records_no_checkpoint_after_a_failed_commit(vault, monkeypatch):
+    monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "s1")
+    os.rename(vault / NOTE, vault / ARCHIVED)
+    assert checkpoint("commit", vault, "--", NOTE, message="checkpoint\n").returncode != 0
+
+    refused = checkpoint("mark")
+    assert refused.returncode != 0
+    assert "last `wiki_checkpoint commit` failed" in refused.stderr
+
+    # The move is committed (as wk's hook does), then the note at its new path.
+    git(vault, "add", "-A")
+    git(vault, "commit", "-q", "-m", "auto: archive")
+    (vault / ARCHIVED).write_text("---\ntask: u1\nstatus: done\n---\n\n# ACME-1 Note\n\nmore\n")
+    assert checkpoint("commit", vault, "--", ARCHIVED, message="checkpoint\n").returncode == 0
+    assert checkpoint("mark").returncode == 0

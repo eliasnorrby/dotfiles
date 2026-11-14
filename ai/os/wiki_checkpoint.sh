@@ -38,6 +38,7 @@
 #                                      environment, not the wiki. VAULT as
 #                                      for commit.
 #   wiki_checkpoint mark               Record that this session checkpointed.
+#                                      Refuses while its last commit failed.
 #   wiki_checkpoint usage [--since DATE] [--vault NAME] [--write]
 #                                      How sessions use the wiki: which pages
 #                                      they read, how many never looked, and
@@ -644,9 +645,25 @@ state_set() {
   printf '%s' "$3" >"$state_dir/$1.$2"
 }
 
+# A commit that failed is remembered for the session, so that `mark` does not
+# record a checkpoint that never reached git (a failed commit followed by
+# mark used to print "Checkpoint recorded"). The next commit that goes
+# through, "Nothing to commit" included, clears it. Args: EXIT_STATUS
+commit_outcome() {
+  local sid="${CLAUDE_CODE_SESSION_ID:-}"
+  [ -n "$sid" ] || return 0
+  if [ "$1" -eq 0 ]; then
+    rm -f "$state_dir/$sid.commit-failed"
+  else
+    state_set "$sid" commit-failed "$(date +%s)"
+  fi
+}
+
 cmd_mark() {
   local sid="${CLAUDE_CODE_SESSION_ID:-}"
   [ -n "$sid" ] || die "CLAUDE_CODE_SESSION_ID is not set; run this from Claude's Bash tool"
+  [ ! -f "$state_dir/$sid.commit-failed" ] \
+    || die "not recorded: this session's last \`wiki_checkpoint commit\` failed, so nothing was checkpointed. Fix what it said and commit again (\"Nothing to commit\" counts), then mark."
   state_set "$sid" last "$(date +%s)"
   state_set "$sid" prompts 0
   echo "Checkpoint recorded"
@@ -815,7 +832,7 @@ cmd_hook() {
         printf '%s\t%s\t%s\t%s\t%s\n' "$(date -Is)" "$sid" "$(session_issue "$cwd")" "$cwd" \
           "$(jq -r '.transcript_path // empty' <<<"$input" 2>/dev/null)" >>"$state_dir/uncaptured.tsv"
       fi
-      rm -f "$state_dir/$sid".{first,last,prompts,reminded,issue}
+      rm -f "$state_dir/$sid".{first,last,prompts,reminded,issue,commit-failed}
       ;;
   esac
   exit 0
@@ -1046,7 +1063,12 @@ sub="$1"
 shift
 case "$sub" in
   resolve) cmd_resolve "$@" ;;
-  commit) cmd_commit "$@" ;;
+  commit)
+    rc=0
+    (cmd_commit "$@") || rc=$?
+    commit_outcome "$rc"
+    exit "$rc"
+    ;;
   sweep) cmd_sweep "$@" ;;
   drain) cmd_drain "$@" ;;
   friction) cmd_friction "$@" ;;
