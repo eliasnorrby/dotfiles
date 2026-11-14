@@ -182,6 +182,7 @@ def cmd_resolve(args, out):
         "task": describe(task),
         "issue": task.get("issue") or resolution.issue,
         "how": resolution.how,
+        "why": resolution.why,
         "note": note,
         "vault": vault,
     }
@@ -448,10 +449,11 @@ def cmd_adopt(args, out):
             raise WkError("give a description, or --task to take an existing task")
         # A directory that is a task's checkout is that task's; the window
         # alone is not, since a session may move on to new work in it.
-        existing = resolve(tasks, locators.Locator("dir", cwd), cwd).task
-        if existing:
+        found = resolve(tasks, locators.Locator("dir", cwd), cwd)
+        if found.task:
+            existing = found.task
             raise WkError(
-                f"this is already task {existing.get('id') or existing['uuid'][:8]}: {existing['description']}"
+                f"this is already task {_label(existing)}: {existing['description']}; {found.why}"
                 " (take it, or another, with --task)"
             )
         repo = git.slug(cwd) if git.is_repo(cwd) else None
@@ -481,8 +483,15 @@ def cmd_adopt(args, out):
             subprocess.run(["claude_session_title", "set", title], capture_output=True)
     for uuid in filter(None, {task["uuid"], previous}):
         state.refresh(tasks, config, only=uuid)
-    out.result({"task": describe(tasks.get(task["uuid"]))}, [f"Task {task.get('id')}: {task['description']}"])
+    # The id shifts as tasks close; the uuid is what to hold on to.
+    out.result({"task": describe(tasks.get(task["uuid"]))}, [f"Task {_label(task)}: {task['description']}"])
     return 0
+
+
+def _label(task):
+    """A task as a person refers to it: its id while it has one, and always
+    its uuid, which does not shift as other tasks close."""
+    return f"{task['id']} ({task['uuid']})" if task.get("id") else task["uuid"]
 
 
 def cmd_state(args, out):

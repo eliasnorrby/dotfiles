@@ -9,13 +9,18 @@ of?", answered in layers, first hit wins:
 2. the Claude session: the open task whose `session` is
    $CLAUDE_CODE_SESSION_ID, as `wk adopt` and the SessionStart hook record
    it. Holds outside tmux and in a shared root, where nothing else can tell.
-3. the worktree recorded on a task, matched against the directory.
-4. the branch: a task that records it, else the issue key it carries.
+3. the worktree recorded on an open task, matched against the directory.
+4. the branch: an open task of the same repository that records it, else the
+   issue key it carries.
 
 Layers 3 and 4 only hold for a checkout of the task's own. A shared root (a
 project's `dir`, the default directory, home) is where many tasks open, and
 its branch is whatever the main checkout is on: being there says nothing
-about which task this is.
+about which task this is. A closed task claims no directory: the work in it
+is over.
+
+Every answer says how it was found (`how`) and why (`why`), so that a wrong
+one can be traced to the layer that gave it.
 """
 
 import os
@@ -23,6 +28,7 @@ from dataclasses import dataclass
 
 from . import git, tmux
 from .locator import Locator, issue_key_in
+from .tasks import is_open
 
 
 @dataclass
@@ -32,6 +38,8 @@ class Resolution:
     # What could be imported when there is no task yet: an issue or a PR.
     reference: Locator | None = None
     branch: str | None = None
+    # How the task was matched, in words: "its worktree /x contains /y".
+    why: str | None = None
 
     @property
     def issue(self):
@@ -42,17 +50,42 @@ class Resolution:
         return None
 
 
-def _from_branch(tasks, branch):
+def _same_repository(task, directory):
+    """Whether the task's work is in the repository DIRECTORY belongs to. A
+    branch name means nothing across repositories: every one has a `main`.
+    A task that records neither repository nor checkout can't be told apart
+    and is given the benefit of the doubt."""
+    if not (task.get("repo") or task.get("worktree")):
+        return True
+    slug = git.slug(directory)
+    if task.get("repo") and slug:
+        return task["repo"].lower() == slug.lower()
+    main = git.main_worktree(directory)
+    return bool(main and task.get("worktree") and git.main_worktree(task["worktree"]) == main)
+
+
+def _from_branch(tasks, branch, directory=None):
+    """By branch name. Seen from a DIRECTORY, only an open task of that
+    directory's repository counts."""
     if not branch:
         return Resolution()
-    task = tasks.by_branch(branch)
+    if directory:
+        candidates = [
+            t for t in tasks.all() if t.get("branch") == branch and is_open(t) and _same_repository(t, directory)
+        ]
+        task = min(candidates, key=lambda t: t.get("entry", ""), default=None)
+    else:
+        task = tasks.by_branch(branch)
     if task:
-        return Resolution(task, "branch", branch=branch)
+        where = f" is checked out in {directory}" if directory else ""
+        return Resolution(task, "branch", branch=branch, why=f"its branch {branch}{where}")
     key = issue_key_in(branch)
     if not key:
         return Resolution(branch=branch)
     reference = Locator("issue", key)
-    return Resolution(tasks.by_issue(key), "issue", reference, branch)
+    task = tasks.by_issue(key)
+    why = f"the branch {branch} carries its issue {key}" if task else None
+    return Resolution(task, "issue", reference, branch, why)
 
 
 def shared_roots():
@@ -78,11 +111,14 @@ def _from_directory(tasks, directory):
     trees, exact = shared_roots()
     task = tasks.by_worktree(directory, ignore=trees | exact)
     if task:
-        return Resolution(task, "worktree", branch=git.branch(directory))
+        worktree = os.path.realpath(task["worktree"])
+        real = os.path.realpath(directory)
+        why = f"its worktree is {worktree}" if real == worktree else f"its worktree {worktree} contains {real}"
+        return Resolution(task, "worktree", branch=git.branch(directory), why=why)
     directory = os.path.realpath(directory)
     if directory in exact or any(directory == t or directory.startswith(t + os.sep) for t in trees):
         return Resolution(branch=git.branch(directory))
-    return _from_branch(tasks, git.branch(directory))
+    return _from_branch(tasks, git.branch(directory), directory)
 
 
 def session_task(tasks, session):
@@ -104,10 +140,11 @@ def resolve(tasks, locator=None, cwd=None, session=None):
         uuid = tmux.current_task()
         task = tasks.get(uuid) if uuid else None
         if task:
-            return Resolution(task, "window", branch=git.branch(cwd))
-        task = session_task(tasks, session or os.environ.get("CLAUDE_CODE_SESSION_ID"))
+            return Resolution(task, "window", branch=git.branch(cwd), why="the tmux window's @task names it")
+        session = session or os.environ.get("CLAUDE_CODE_SESSION_ID")
+        task = session_task(tasks, session)
         if task:
-            return Resolution(task, "session", branch=git.branch(cwd))
+            return Resolution(task, "session", branch=git.branch(cwd), why=f"it records this Claude session {session}")
         return _from_directory(tasks, cwd)
 
     if locator.kind == "task":
@@ -124,7 +161,7 @@ def resolve(tasks, locator=None, cwd=None, session=None):
         uuid = tmux.window_option(locator.value, "@task")
         task = tasks.get(uuid) if uuid else None
         if task:
-            return Resolution(task, "window")
+            return Resolution(task, "window", why=f"the tmux window {locator.value}'s @task names it")
         path = tmux.pane_path(locator.value)
         return _from_directory(tasks, path) if path else Resolution()
     raise ValueError(f"unknown locator kind: {locator.kind}")

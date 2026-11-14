@@ -127,3 +127,30 @@ def test_a_session_on_several_tasks_picks_the_one_it_moved_to(world, monkeypatch
     assert tasks.by_session("s1")["uuid"] == "b", "the most recently modified open one"
     state.write_agent("s1", {"uuid": "a"})
     assert resolve(tasks, cwd=str(world), session="s1").task["uuid"] == "a", "the one the session tied itself to"
+
+
+def test_a_closed_task_claims_no_directory(tasks, repo):
+    finished = tasks.add("finished here", {"worktree": str(repo), "branch": "someone/acme-12-fix-the-thing"})
+    tasks.done(finished)
+    resolution = resolve(tasks, cwd=str(repo))
+    assert resolution.task is None
+    assert resolution.reference == Locator("issue", "ACME-12")
+
+
+def test_a_branch_name_only_counts_within_its_repository(tasks, repo):
+    """Every repository has a main: a task on another's says nothing here."""
+    subprocess.run(["git", "checkout", "-q", "main"], cwd=repo, check=True)
+    subprocess.run(["git", "remote", "add", "origin", "git@github.com:acme/app.git"], cwd=repo, check=True)
+    tasks.add("household export", {"branch": "main", "repo": "me/economy", "worktree": "/elsewhere"})
+    assert resolve(tasks, cwd=str(repo)).task is None
+    ours = tasks.add("ours", {"branch": "main", "repo": "acme/app"})
+    resolution = resolve(tasks, cwd=str(repo))
+    assert resolution.task["uuid"] == ours["uuid"]
+    assert resolution.why == f"its branch main is checked out in {repo}"
+
+
+def test_why_says_how_a_worktree_matched(tasks, repo):
+    tasks.add("untracked work", {"worktree": str(repo)})
+    nested = repo / "src"
+    nested.mkdir()
+    assert resolve(tasks, cwd=str(nested)).why == f"its worktree {repo} contains {nested}"

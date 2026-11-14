@@ -77,13 +77,15 @@ class Tasks:
         return self.by_field("branch", branch)
 
     def by_worktree(self, path, ignore=()):
-        """The task whose worktree is `path` or contains it; deepest wins.
-        Worktrees in `ignore` (shared directories) name no task."""
+        """The open task whose worktree is `path` or contains it; deepest
+        wins. Worktrees in `ignore` (shared directories) name no task, and
+        neither does a closed task: one finished in a directory must not
+        claim it for good."""
         path = os.path.realpath(path)
         matches = []
         for task in self.all():
             worktree = task.get("worktree")
-            if not worktree:
+            if not worktree or not is_open(task):
                 continue
             worktree = os.path.realpath(worktree)
             if worktree in ignore:

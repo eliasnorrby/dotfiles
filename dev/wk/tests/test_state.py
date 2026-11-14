@@ -217,3 +217,25 @@ def test_a_machine_that_does_not_register_work_keeps_its_tasks_out(tasks, statef
     assert cli.main(["resolve", "-C", str(repo)]) == 0, "looking is still fine"
     tasks.invalidate()
     assert len(tasks.all()) == 1
+
+
+def test_adopt_names_the_uuid_and_why_it_refuses(tasks, stateful, repo, monkeypatch, capsys):
+    """Ids shift as tasks close; and a refusal must say what it matched on,
+    so a drifted directory is plain to see."""
+    monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "s9")
+    assert cli.main(["adopt", "Tidy the prompt", "-C", str(repo)]) == 0
+    tasks.invalidate()
+    task = tasks.by_worktree(str(repo))
+    assert f"Task {task['id']} ({task['uuid']}): Tidy the prompt" in capsys.readouterr().out
+    nested = repo / "src"
+    nested.mkdir()
+    assert cli.main(["adopt", "again", "-C", str(nested)]) == 1
+    told = capsys.readouterr().err
+    assert task["uuid"] in told and f"its worktree {repo} contains {nested}" in told
+
+
+def test_adopt_is_not_refused_by_a_closed_task(tasks, stateful, repo, monkeypatch):
+    finished = tasks.add("Backfill the wiki", {"worktree": str(repo)})
+    tasks.done(finished)
+    monkeypatch.setenv("CLAUDE_CODE_SESSION_ID", "s9")
+    assert cli.main(["adopt", "New work", "-C", str(repo)]) == 0
