@@ -59,13 +59,17 @@ def claude_post_tool_use(payload, head_of=None):
     names often carry no issue key, and this session knows what the PR is
     for: that beats any guess sync could make later.
 
-    Which task: the one the PR's head branch belongs to, else the session's.
     A PR belongs to a branch, and a session may open PRs for several: a
     parent's background agents each open one for their own sub-issue, from
-    inside the parent's window."""
+    inside the parent's window, and a session may split a side fix out of
+    its work. So the head branch decides (see _pr_owner), and a PR whose
+    head is no branch of the session's is attached to nothing: a merged PR
+    can finish the task it is attached to. Sync folds it later by its
+    branch, and the session is told either way."""
     if payload.get("tool_name") != "Bash":
         return
-    if not PR_CREATE_RE.search((payload.get("tool_input") or {}).get("command", "")):
+    command = (payload.get("tool_input") or {}).get("command", "")
+    if not PR_CREATE_RE.search(command):
         return
     if not _registers_work():
         return
@@ -74,21 +78,83 @@ def claude_post_tool_use(payload, head_of=None):
         return
     repo, number = f"{url.group(1)}/{url.group(2)}", url.group(3)
 
-    from .locator import Locator
     from .resolve import resolve
     from .sync import format_prs, listed_prs
     from .tasks import Tasks, is_open
 
     tasks = Tasks()
-    head = (head_of or _pr_head)(url.group(0))
-    task = resolve(tasks, Locator("branch", head)).task if head else None
-    if not task or not is_open(task):
-        task = resolve(tasks, cwd=payload.get("cwd")).task
-    if not task or not is_open(task) or (task.get("repo") and task["repo"].lower() != repo.lower()):
-        return
     if tasks.by_pr(number, repo):
         return
+    head = (head_of or _pr_head)(url.group(0)) or _head_in_command(command)
+    session = resolve(tasks, cwd=payload.get("cwd")).task
+    task, why = _pr_owner(tasks, repo, head, session if session and is_open(session) else None)
+    if not task:
+        _emit_context(
+            "PostToolUse",
+            f"wk attached #{number} to no task: {why}. Sync will file it by its branch; if it belongs to a task"
+            f" of yours, `wk attach-pr https://{url.group(0)} <task>`.",
+        )
+        return
     tasks.modify(task, {"prs": format_prs(listed_prs(task) + [number]), "repo": repo})
+    label = " ".join(filter(None, [task.get("issue"), task["description"]]))
+    _emit_context("PostToolUse", f"wk attached #{number} to task {task['uuid'][:8]} ({label}): {why}.")
+
+
+def _pr_owner(tasks, repo, head, session):
+    """The task a new PR from branch `head` belongs to, and why; (None, why
+    not) when none. First hit wins:
+
+    1. a sub-task of the session's task: by its branch, then by the issue
+       key in the head branch,
+    2. the task of the head branch itself (its branch, else its issue),
+    3. the session's task, when the head is its own branch: the one it
+       records, or the one its checkout is on.
+
+    Each is checked against the PR's repository by its own `repo`, so a
+    parent in one repository still finds its sub-task's PR in another."""
+    from .locator import Locator, issue_key_in
+    from .resolve import resolve
+    from .tasks import is_open
+
+    def fits(task):
+        return bool(task) and is_open(task) and (not task.get("repo") or task["repo"].lower() == repo.lower())
+
+    if not head:
+        return None, "GitHub did not say which branch it is from"
+    if session:
+        children = [task for task in tasks.all() if task.get("partof") == session["uuid"] and fits(task)]
+        for task in children:
+            if task.get("branch") == head:
+                return task, "a sub-task of this session's, by its branch"
+        key = issue_key_in(head)
+        for task in children if key else ():
+            if task.get("issue") == key:
+                return task, f"a sub-task of this session's, by {key} in the branch"
+    task = resolve(tasks, Locator("branch", head)).task
+    if fits(task):
+        return task, f"the task of branch {head}"
+    if session and fits(session) and head in _own_branches(session):
+        return session, f"this session's, whose checkout is on {head}"
+    return None, f"its branch {head} belongs neither to this session's task nor to a sub-task of it"
+
+
+def _own_branches(task):
+    from . import git
+
+    branches = {task.get("branch")}
+    if task.get("worktree") and os.path.isdir(task["worktree"]):
+        branches.add(git.branch(task["worktree"]))
+    return branches - {None, ""}
+
+
+HEAD_FLAG_RE = re.compile(r"(?:^|\s)(?:--head|-H)[=\s]+['\"]?([^\s'\"]+)")
+
+
+def _head_in_command(command):
+    """The branch `gh pr create --head X` names, `owner:` dropped; None when
+    the command leaves it to the checkout, which this hook cannot see."""
+    match = HEAD_FLAG_RE.search(command)
+    return match.group(1).split(":", 1)[-1] if match else None
 
 
 def _pr_head(url):
