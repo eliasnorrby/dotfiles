@@ -406,9 +406,12 @@ Subjects: `checkpoint: <ISSUE-KEY> <what moved>` for checkpoints;
 `common: <file> <what changed>` for an edit to a file in `common/`, which
 gets no `log.md` entry; for everything else mirror the log entry (`ingest:
 …`, `lint: …`, `schema: …`, `restructure: …`). One commit per operation. Never rewrite history. Elias's
-own files (new jots in `inbox/`, `raw/`, his notes, attachments) and the
-moves made by hooks are committed by a timer (`wiki_checkpoint sweep`, as
-`auto: sweep <vault>`) once they have sat untouched for five minutes; leave
-them alone. The one exception is a jot you ingest: its move to `raw/jots/`
+own files (new jots in `inbox/`, `raw/`, his notes, attachments) are
+committed by a timer (`wiki_checkpoint sweep`, as `auto: sweep <vault>`) once
+they have sat untouched for five minutes; leave them alone. A task note wk
+moves into or out of `archive/` is committed as it moves (`auto: archive
+<note>`, `auto: reopen <note>`); if you find the note you were writing gone,
+re-run `wiki_checkpoint resolve` and write to the path it prints. The one
+exception is a jot you ingest: its move to `raw/jots/`
 goes in the ingest commit. Every commit is pushed to the vault's `backup`
 remote by the same tooling.

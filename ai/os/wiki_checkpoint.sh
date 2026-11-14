@@ -19,6 +19,13 @@
 #                                      Serialized across sessions. Refuses a
 #                                      task note that today's daily does not
 #                                      link (see daily_gaps).
+#   wiki_checkpoint moved VAULT FROM TO
+#                                      Commit a note wk moved into or out of
+#                                      archive/ (its task closed or reopened)
+#                                      as one rename, at once. Waits for the
+#                                      lock no longer than
+#                                      WIKI_CHECKPOINT_LOCK_WAIT; what this
+#                                      could not commit, the sweep takes.
 #   wiki_checkpoint sweep [--min-age SECONDS] [--vault DIR]
 #                                      Commit what has settled in every vault
 #                                      (the owner's jots and moves, hook-made
@@ -460,6 +467,30 @@ vault_commit() {
   ) 9>"$vault/.git/wiki-checkpoint.lock"
 }
 
+# wk moves a task's note into archive/ when the task closes and back when it
+# reopens, from taskwarrior's hook, and calls this right after: the move goes
+# into git at once, as a rename, under the same lock as every checkpoint.
+# Left for the sweep, it sat in the working tree for minutes, and a session
+# checkpointing meanwhile committed the old path's deletion. A note that was
+# never committed has no old name in git; its new one is committed alone.
+cmd_moved() {
+  local vault from to verb
+  [ $# -eq 3 ] || die "usage: wiki_checkpoint moved VAULT FROM TO"
+  vault=$(vault_arg "$1")
+  [ -d "$vault/.git" ] || die "not a vault with a git repository: $vault"
+  from=$(vault_paths "$vault" "$2") || exit 1
+  to=$(vault_paths "$vault" "$3") || exit 1
+  [ -f "$vault/$to" ] || die "not there: $to"
+  [ ! -e "$vault/$from" ] || die "still there: $from"
+  local -a paths=("$to")
+  git -C "$vault" ls-files --error-unmatch -- "$from" >/dev/null 2>&1 && paths+=("$from")
+  case "/$to" in
+    */archive/*) verb=archive ;;
+    *) verb=reopen ;;
+  esac
+  vault_commit "$vault" "${paths[@]}" <<<"auto: $verb $(basename "$to" .md)"
+}
+
 cmd_friction() {
   local usage="usage: wiki_checkpoint friction [--scope wiki|env] VAULT SLUG < body"
   local scope=wiki
@@ -507,7 +538,9 @@ cmd_friction() {
 
 
 # Commit whatever has settled in a vault: the owner's jots and moves, task
-# notes archived by wk's hooks, Obsidian configuration. Nobody should have to
+# notes archived by wk's hooks where `moved` could not commit them (the lock
+# was busy, the hook ran without this script on PATH), Obsidian
+# configuration. Nobody should have to
 # think about committing. A file is settled when it has not been written to
 # for MIN_AGE seconds, which keeps a jot still being typed out of the sweep.
 #
@@ -1057,7 +1090,7 @@ cmd_drain() {
   ) 8>"$state_dir/drain.lock"
 }
 
-[ $# -ge 1 ] || die "usage: wiki_checkpoint resolve|commit|sweep|drain|friction|mark|usage|hook ..."
+[ $# -ge 1 ] || die "usage: wiki_checkpoint resolve|commit|moved|sweep|drain|friction|mark|usage|hook ..."
 
 sub="$1"
 shift
@@ -1071,6 +1104,7 @@ case "$sub" in
     ;;
   sweep) cmd_sweep "$@" ;;
   drain) cmd_drain "$@" ;;
+  moved) cmd_moved "$@" ;;
   friction) cmd_friction "$@" ;;
   mark) cmd_mark "$@" ;;
   usage) cmd_usage "$@" ;;
