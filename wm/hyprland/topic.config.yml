@@ -43,6 +43,11 @@ hyprland_config:
     - src: hyprvoice_panel.sh
       dest: "{{ xdg_bin_home }}/"
       rename: hyprvoice_panel
+    # Gives hyprvoice a pw-record that emits raw samples; see the shim
+    - src: hyprvoice/hyprvoice.service.d
+      dest: "{{ xdg_config_home }}/systemd/user/"
+      rename: hyprvoice.service.d
+      condition: "{{ is_arch }}"
     - src: toggle_espanso.sh
       dest: "{{ xdg_bin_home }}/"
       rename: toggle_espanso

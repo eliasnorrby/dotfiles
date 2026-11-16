@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# hyprvoice reads pw-record's stdout as headerless little-endian s16, but
+# since PipeWire 1.6.11 pw-record wraps stdout in a Sun AU container with
+# big-endian samples. Whisper then hears byte-swapped noise and transcribes
+# it as "[static]". hyprvoice is archived upstream, so ask for raw samples
+# here. Only hyprvoice's service has this directory on its PATH.
+exec /usr/bin/pw-record --raw "$@"
