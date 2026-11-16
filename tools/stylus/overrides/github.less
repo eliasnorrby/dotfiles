@@ -6,11 +6,13 @@
   @media (prefers-color-scheme: dark) {
     [data-color-mode][data-color-mode="auto"][data-dark-theme="dark"] {
       .diff();
+      .states();
     }
   }
   [data-color-mode="light"][data-light-theme="dark"],
   [data-color-mode="dark"][data-dark-theme="dark"] {
     .diff();
+    .states();
   }
 
   .diff() {
@@ -22,5 +24,23 @@
     --diffBlob-deletionWord-bgColor: {{diff_removed_word}};
     --color-prettylights-syntax-markup-inserted-bg: {{diff_added_word}};
     --color-prettylights-syntax-markup-deleted-bg: {{diff_removed_word}};
+  }
+
+  /* Pull request states. Upstream paints merged with mauve and draft
+     with subtext0, both silver under carborange, so the palette names
+     the two: merged lit, draft dim. */
+  .states() {
+    --fgColor-done: {{pr_merged}};
+    --bgColor-done-muted: fade({{pr_merged}}, 15%);
+    --bgColor-done-emphasis: {{pr_merged}};
+    --borderColor-done-emphasis: {{pr_merged}};
+    --bgColor-neutral-emphasis: {{pr_draft}};
+
+    /* A draft's icon in lists and the stack popup takes the muted text
+       colour, which is too common to dim; dim the icon itself, except
+       inside the Draft badge, where it sits on the badge's fill. */
+    .octicon-git-pull-request-draft:not(.State *, [class*="StateLabel"] *) {
+      color: {{pr_draft}};
+    }
   }
 }

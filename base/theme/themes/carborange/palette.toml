@@ -84,6 +84,9 @@ diff_removed_dim = "#2a2124"
 message_bg = "surface0"
 message_bg_hover = "surface1"
 plan = "subtext1"
+# GitHub pull request states: merged lit, draft dim (both silver otherwise)
+pr_merged = "white"
+pr_draft = "overlay2"
 # waybar modules, swaync, yazi icons
 module_language = "subtext1"
 module_audio = "subtext1"
