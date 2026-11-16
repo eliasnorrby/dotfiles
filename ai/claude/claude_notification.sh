@@ -14,33 +14,43 @@
 # Deduplication: when Claude stops it fires `done`, then ~60s later the
 # idle timer fires a "waiting for your input" Notification (input_required)
 # for the same session. To avoid that duplicate, `done` records a per-session
-# marker; an `input_required` arriving while the marker is fresh is suppressed.
-# `reset` (on UserPromptSubmit) clears the marker the moment you respond, so a
-# genuine mid-turn permission prompt later still notifies.
+# marker; an idle Notification arriving while the marker is fresh is
+# suppressed. A permission prompt or a question always notifies. `reset` (on
+# UserPromptSubmit) clears the marker the moment you respond.
 #
-# Background agents: every report from a background sub-agent starts a new
-# turn of the main agent, and each of those turns ends in a Stop. A turn that
-# was started by such a report stays quiet while other background agents are
-# still out, so a fan-out of N agents notifies once, when the last one is in.
+# Turns you started notify when they end. So does the turn that takes in the
+# report of the last background sub-agent still out: a fan-out of N agents
+# notifies once, when all are in. Any other turn (an earlier sub-agent's
+# report, a Monitor event, a background shell finishing, a scheduled wakeup)
+# is the agent talking to itself; when it needs you, it asks, which fires a
+# Notification, or sends a push notification.
 
-# Prints "<origin of the current turn> <background agents still running>",
-# read from the session transcript on stdin.
+# Prints "<what started the current turn> <background sub-agents still out>
+# <whether a sub-agent's report started it>", read from the session
+# transcript on stdin.
 background_state() {
   jq -rn '
     def finished_id:
       (.origin.senderTaskId // .origin.from)
       // (tostring | capture("<task-id>(?<id>[^<]+)</task-id>").id);
+    # A sub-agent signals completion twice (its hand-back message, then a
+    # task notification); only the first counts. A message it sends while
+    # still working is not a completion.
     reduce (inputs | select(.type == "user" or .attachment.type == "queued_command")) as $e (
-      {out: {}, origin: "human"};
+      {out: {}, origin: "human", by_agent: false};
       ($e.toolUseResult | if type == "object" then . else {} end) as $r
       | if $r.isAsync == true and $r.agentId then .out[$r.agentId] = true
         elif $r.resumedAgentId then .out[$r.resumedAgentId] = true
         elif $e.attachment then del(.out[$e.attachment | finished_id // ""])
         elif $e.origin.kind then
           .origin = $e.origin.kind
-          | if $e.origin.kind == "human" then . else del(.out[$e | finished_id // ""]) end
+          | if $e.origin.kind == "human" then .by_agent = false
+            elif $e.origin.kind == "peer" and ($e.origin.handback | not) then .by_agent = false
+            else ($e | finished_id // "") as $id
+              | .by_agent = (.out[$id] == true)
+              | del(.out[$id]) end
         else . end)
-    | "\(.origin) \(.out | length)"'
+    | "\(.origin) \(.out | length) \(.by_agent)"'
 }
 
 bell() {
@@ -107,15 +117,15 @@ case "$notification_type" in
     date +%s >"$marker"
     transcript="$(printf '%s' "$hook_json" | jq -r '.transcript_path // empty' 2>/dev/null)"
     if [ -f "$transcript" ]; then
-      read -r origin running < <(background_state <"$transcript" 2>/dev/null)
-      if [ "$origin" != "human" ] && [ "${running:-0}" -gt 0 ]; then
-        # A sub-agent reported back while others are still working.
+      read -r origin running by_agent < <(background_state <"$transcript" 2>/dev/null)
+      if [ "${origin:-human}" != human ] && { [ "$by_agent" != true ] || [ "${running:-0}" -gt 0 ]; }; then
         exit 0
       fi
     fi
     ;;
   input_required)
-    if [ -f "$marker" ]; then
+    kind="$(printf '%s' "$hook_json" | jq -r '.notification_type // empty' 2>/dev/null)"
+    if [ "${kind:-idle_prompt}" = idle_prompt ] && [ -f "$marker" ]; then
       marker_ts="$(cat "$marker" 2>/dev/null)"
       now="$(date +%s)"
       if [ -n "$marker_ts" ] && [ "$((now - marker_ts))" -lt "$debounce" ]; then
