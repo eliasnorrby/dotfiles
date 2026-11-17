@@ -20,8 +20,12 @@ message links:
 2. **Mentions**: keyword `<@{{user}}>`.
 
 Skip bots and GitHub notifications. Read a thread only when the hit itself
-doesn't settle it. You never reply to anyone and you post nowhere except his
-own DM.
+doesn't settle it. People don't always thread, so an ask posted at the top
+level of a channel or DM may be answered by what follows it. Before you call
+it unanswered, read on with `slack_read_channel`, `oldest` = its ts. A ✅ in
+a message's `Reactions:` line may be Elias marking it handled.
+`slack_get_reactions` tells you whether the ✅ is his. You never reply to
+anyone and you post nowhere except his own DM.
 
 ## Judge
 
@@ -31,7 +35,8 @@ blocked on him; an invitation to talk now (a huddle, a call, "har du tid",
 earlier; production trouble in his area; a decision that expires before
 tomorrow. Not now: FYI, chat he is already part of, thanks and
 praise, merged PRs, review requests, anything someone else has since
-answered.
+answered, anything he has answered (in the thread or after it in the
+channel or DM), anything he reacted ✅ on.
 
 Tune toward letting things through: a missed urgent message costs him far
 more than an unnecessary line.

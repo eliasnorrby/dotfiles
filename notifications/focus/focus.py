@@ -70,7 +70,7 @@ SLACK_TOOLS = [
     for server in ("claude_ai_Slack", "plugin_slack_slack")
     for tool in (
         "search_public_and_private", "search_public", "read_channel", "read_thread",
-        "search_channels", "search_users", "read_user_profile", "send_message",
+        "search_channels", "search_users", "read_user_profile", "get_reactions", "send_message",
     )
 ]
 VERDICT_SCHEMA = {
