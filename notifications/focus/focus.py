@@ -57,6 +57,7 @@ CHIME = {"break": f"{SOUNDS}/complete.oga", "idle": f"{SOUNDS}/bell.oga"}
 TIMER_UNIT = "focus-tick"
 BRIEF_UNIT = "focus-brief"
 WAYBAR_SIGNAL = 9  # custom/focus listens on RTMIN+9
+DEBOUNCE_SECONDS = 3  # a toggle this soon after a focus starts is a repeat
 ICONS = {"focus": "\U000f051b", "break": "\U000f0176", "idle": "\U000f051b"}  # timer, coffee
 # What a state carries across phases: the position in the cycle, and where
 # the last brief left off.
@@ -317,7 +318,11 @@ def skip(state):
 
 
 def toggle(state):
+    """A focus only seconds old is not ended: one hyper+S has been seen to
+    run toggle twice, and the second went straight on to a break."""
     if state["phase"] == "focus":
+        if time.time() - state["started"] < DEBOUNCE_SECONDS:
+            return state, "already focusing"
         return end_focus(state, cut_short=True)
     return start(state)
 
