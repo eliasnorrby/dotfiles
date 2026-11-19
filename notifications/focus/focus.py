@@ -370,6 +370,10 @@ def ask_claude(prompt, settings):
         "--tools", "", "--allowedTools", ",".join(SLACK_TOOLS), "--permission-mode", "dontAsk",
         "--json-schema", json.dumps(VERDICT_SCHEMA),
         "--max-budget-usd", str(settings["max_budget_usd"]), "--no-session-persistence",
+        # No hooks: the user's would treat the brief as an interactive session,
+        # notifying "Claude is done" (twice, as --json-schema stops twice)
+        # and handing it wk's session-start context.
+        "--settings", json.dumps({"disableAllHooks": True}),
     ]
     # Slack comes from the plugin alone. With the claude.ai connectors on,
     # Claude Code's dedup can drop the plugin as the connector's duplicate
