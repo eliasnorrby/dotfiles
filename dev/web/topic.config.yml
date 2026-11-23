@@ -13,3 +13,4 @@ web_config:
     - oxfmt
     - serve
     - "@playwright/cli"
+    - vercel
