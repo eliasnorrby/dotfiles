@@ -74,7 +74,7 @@ Only what changed since your last checkpoint in this session:
   The links are what let a later session find this note from the topic's side.
 - **Say what the wiki did for you** under `## Wiki use` in the task note, one
   dated line per page that mattered since your last checkpoint:
-  `- 2026-09-24 helped: [[Heroma KIM licence files]] — explained the 403 at once`,
+  `- 2026-09-24 helped: [[Globex API licence files]] — explained the 403 at once`,
   `- … wrong: [[X]] — says Y, the code does Z (fixed)` or
   `- … missing: no page on Z; had to read the code`. Fix what was wrong on the
   page itself, or add it to [[Open questions]] when you can't settle it. Skip

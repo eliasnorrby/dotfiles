@@ -164,15 +164,15 @@ the investigation hub holds the whole.
 
 **Person** — `wiki/people/<Name>.md`, so that tasks, topics and meetings can
 link to them. Full name when known, otherwise first name plus affiliation:
-`Niklas (CGI)`. Keep it to role, organisation, what they are the right person
+`Dana (Globex)`. Keep it to role, organisation, what they are the right person
 to ask about, and where they appear. Say so when an affiliation is a guess.
 Never create pages for people who are merely subjects of the data, and keep
 private details out.
 
 ```yaml
 type: person
-org: CGI
-role: Heroma domain expert
+org: Globex
+role: payroll API domain expert
 created: 2026-09-21
 ```
 

@@ -51,8 +51,8 @@ notification. If something does, post one message to his own DM
 :claude: :speech_balloon:
 
 *Needs you before the next focus*
-• Olof, in #c_kommun: asks whether X should be Y before the deploy — <link|open>
-• Edvin (DM): blocked on the token for the test env — <link|open>
+• Alice, in #team-web: asks whether X should be Y before the deploy — <link|open>
+• Bob (DM): blocked on the token for the test env — <link|open>
 ```
 
 One bullet per item: who, where, what in one line, and the message link so
@@ -63,7 +63,7 @@ he lands on the message inside Slack.
 End your reply with the verdict as JSON, nothing after it:
 
 ```json
-{"verdict": "attention", "headline": "Olof asks about X; Edvin blocked on the token", "items": 2, "link": "https://…"}
+{"verdict": "attention", "headline": "Alice asks about X; Bob blocked on the token", "items": 2, "link": "https://…"}
 ```
 
 `verdict` is `clear` or `attention`; `headline` is one line of at most 80
