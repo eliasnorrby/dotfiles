@@ -65,6 +65,9 @@ sync = true              # include in `wk sync` (required: nothing syncs unscope
 [owners.acme]
 project = "work"
 
+[slack]
+user = "U0123456789"     # my member id; the focus break brief reads for it
+
 [github]
 team_review_requests = false # also make review items of requests to my teams
 

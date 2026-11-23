@@ -31,7 +31,8 @@ Files, under $XDG_STATE_HOME/focus: state.json; log.jsonl with one line per
 finished phase (planned and actual length, whether it was cut short) and one
 per brief (verdict, cost, duration), for tuning the lengths and reviewing the
 briefs' calls; briefs/ with each brief's full text. Config in
-~/.config/focus/config.toml.
+~/.config/focus/config.toml; the Slack member id the brief reads for comes
+from wk's machine-local config (slack.user).
 """
 
 import fcntl
@@ -109,6 +110,16 @@ def config():
     except (OSError, tomllib.TOMLDecodeError):
         loaded = {}
     return {**DEFAULTS, **loaded, "brief": {**DEFAULTS["brief"], **loaded.get("brief", {})}}
+
+
+def wk_config(key):
+    """A value from wk's machine-local config, where what is specific to a
+    company or a machine lives; empty when wk or the key is missing."""
+    try:
+        result = subprocess.run(["wk", "config", "get", key], check=False, capture_output=True, text=True, timeout=10)
+    except (OSError, subprocess.TimeoutExpired):
+        return ""
+    return result.stdout.strip() if result.returncode == 0 else ""
 
 
 def read_state():
@@ -427,12 +438,13 @@ def brief(state, hours=None):
     session fails, the notification says so, Elias looks himself, and the
     window stays open for the next brief."""
     settings = config()["brief"]
+    settings["slack_user"] = settings["slack_user"] or wk_config("slack.user")
     started = time.time()
     if hours:
         since = started - hours * 3600
     else:
         since = state.get("last_brief") or state.get("started") or started - 3600
-    verdict, raw = ask_claude_twice(brief_prompt(since, settings), settings) if settings["slack_user"] else (None, "no slack_user in config")
+    verdict, raw = ask_claude_twice(brief_prompt(since, settings), settings) if settings["slack_user"] else (None, "no slack.user in wk's config")
     if verdict is None:
         title = "Brief failed, have a look at Slack yourself"
     elif verdict["verdict"] == "clear":
