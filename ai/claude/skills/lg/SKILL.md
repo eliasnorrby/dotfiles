@@ -1,6 +1,6 @@
 ---
 name: lg
-description: Let's go — start work on a Linear issue, resolved from the current branch or a supplied ticket arg (e.g. BEMLO-1234). Use when the user wants to begin work on a ticket.
+description: Let's go — start work on a Linear issue, resolved from the current branch or a supplied ticket arg (e.g. ACME-1234). Use when the user wants to begin work on a ticket.
 disable-model-invocation: true
 ---
 
@@ -9,7 +9,7 @@ Get to work on a Linear issue.
 ## Steps
 
 1. **Determine the Linear ticket ID** by trying these in order:
-   - Argument passed to the command (e.g. `/lg BEMLO-1234`)
+   - Argument passed to the command (e.g. `/lg ACME-1234`)
    - `wk resolve --json`, which knows the task this session belongs to (from
      the tmux window, the worktree or the branch); its `issue` field is the
      ticket, also when it exits 2 because no task exists yet
@@ -22,7 +22,7 @@ Get to work on a Linear issue.
    Then name the session after the issue so it is easy to find when resuming:
 
    ```
-   claude_session_title set "BEMLO-1234 <issue title>"
+   claude_session_title set "ACME-1234 <issue title>"
    ```
 
 3. **Familiarize yourself with the issue.** Understand what's being asked, the

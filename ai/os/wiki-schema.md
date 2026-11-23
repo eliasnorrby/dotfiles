@@ -123,7 +123,7 @@ is written it gets a line on its hub's `## Pages`, or, with no hub, on
 
 ```yaml
 type: page
-up: "[[BST (Bemlo Standard Time)]]"   # its hub, when it has one
+up: "[[Time zones]]"   # its hub, when it has one
 created: 2026-09-21
 updated: 2026-09-21
 ```
@@ -391,7 +391,7 @@ MSG
 ```
 
 which serialises commits across sessions and refuses to commit the whole tree.
-`<vault>` is the vault's path or its name (`wiki_checkpoint commit bemlo --
+`<vault>` is the vault's path or its name (`wiki_checkpoint commit acme --
 …`). Where a heredoc won't do, put the message in a file and pass `-F <file>`
 before the `--`.
 Where the dailies are yours, it also refuses a task note that today's daily

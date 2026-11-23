@@ -31,7 +31,7 @@ wiki already has them. Note who wrote each thing and when.
 Pick the vault (`wk config get vaults`; each vault's `CLAUDE.md` says what
 belongs in it) and read that `CLAUDE.md` once. Then navigate as the
 `recall` skill does: `index.md` in full, the hubs whose summaries touch the
-subject, their pages. Grep only for identifiers (`BEMLO-1234`, `#9629`, a
+subject, their pages. Grep only for identifiers (`ACME-1234`, `#9629`, a
 script's name). Most sources continue a thread the wiki already holds, so
 the usual result is a section or a few bullets on existing pages, each hub
 pointing at it; a new page only when the schema's split rule says so, with

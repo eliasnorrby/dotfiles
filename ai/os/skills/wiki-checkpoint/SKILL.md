@@ -102,7 +102,7 @@ MSG
 ```
 
 `<vault>` is the `vault=` path `resolve` printed, or the vault's name
-(`bemlo`, `personal`, as the session-start list names them). Where a heredoc
+(`acme`, `personal`, as the session-start list names them). Where a heredoc
 is refused (a worktree-isolated agent's sandbox), write the message to a file
 in your scratchpad and pass it with `-F <file>` before the `--` instead.
 

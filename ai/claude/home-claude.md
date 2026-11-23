@@ -141,7 +141,7 @@ I handed you a ticket id, or you fetched an issue that is clearly the subject
 of the work — name the session after it as soon as you know the issue's title:
 
 ```
-claude_session_title set "BEMLO-1234 Fix invoice rounding"
+claude_session_title set "ACME-1234 Fix invoice rounding"
 ```
 
 Format: issue identifier, a space, the issue title verbatim. The title is

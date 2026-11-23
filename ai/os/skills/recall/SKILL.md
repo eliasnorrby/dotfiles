@@ -27,7 +27,7 @@ look in both.
    links. Check `wiki/pages/Open questions.md` and the task notes in the
    Tasks index when the subject is recent work.
 
-Grep is for what navigation cannot reach: identifiers (`BEMLO-1234`, `#8215`,
+Grep is for what navigation cannot reach: identifiers (`ACME-1234`, `#8215`,
 a table or function name) and the subject's own nouns, never the phrasing of
 the request ("receipt", "kvitto" miss a page that says "status" and "after
 the fact"). Read the titles a grep turns up before going anywhere else.
