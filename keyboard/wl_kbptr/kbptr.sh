@@ -8,6 +8,7 @@
 #                        bisect it; g/h/b click left/right/middle
 #   kbptr loop [MODE]    MODE (window by default) again after every click,
 #                        until Escape; for a series of clicks
+#   kbptr toggle [MODE]  start the loop, or end whatever is open
 #   kbptr kill           end whatever is open, a loop included
 #
 # Only one runs at a time: a second overlay, started while the first holds
@@ -75,14 +76,28 @@ loop() {
   done
 }
 
-kill_running() {
-  exec 9>>"$lock"
-  if flock -n 9; then
-    exit 0
-  fi
-  # The loop first, so it can't start another overlay, then the overlay
+# Ends what holds the lock: the loop first, so it can't start another
+# overlay, then the overlay
+stop() {
   kill "$(<"$lock")" 2>/dev/null || true
   pkill -x wl-kbptr || true
+}
+
+kill_running() {
+  exec 9>>"$lock"
+  if ! flock -n 9; then
+    stop
+  fi
+}
+
+toggle() {
+  exec 9>>"$lock"
+  if flock -n 9; then
+    echo $$ >"$lock"
+    loop "${1:-window}"
+  else
+    stop
+  fi
 }
 
 main() {
@@ -97,6 +112,7 @@ main() {
       take_lock
       loop "${2:-window}"
       ;;
+    toggle) toggle "${2:-window}" ;;
     kill) kill_running ;;
     *) usage ;;
   esac
