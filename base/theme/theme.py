@@ -49,6 +49,8 @@ EXPORTS = {
     "btop.theme": ["~/.config/btop/themes/system.theme"],
     "k9s.yaml": ["~/.config/k9s/skins/system.yaml"],
     "yazi.toml": ["~/.config/yazi/theme.toml", "~/.config/yazi-picker/theme.toml"],
+    # Its only config file: colours, while `kbptr` passes the modes with -o
+    "wl-kbptr.ini": ["~/.config/wl-kbptr/config"],
 }
 
 DEBUG = os.environ.get("THEME_DEBUG")
