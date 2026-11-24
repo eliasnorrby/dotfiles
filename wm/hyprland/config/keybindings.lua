@@ -104,6 +104,14 @@ for i = 5, 8 do
   hl.bind('XF86Launch' .. i, dsp.no_op())
 end
 
+-- Point and click from the keyboard: kbptr (keyboard/wl_kbptr) says what
+-- each mode does. Hyper+Space labels the click targets detected in the
+-- focused window; Hyper+Return keeps detecting and clicking until Escape.
+-- Hyper+Escape ends a stuck overlay.
+hl.bind(vars.hyper .. ' + SPACE', exec('kbptr'))
+hl.bind(vars.hyper .. ' + Return', exec('kbptr loop'))
+hl.bind(vars.hyper .. ' + Escape', exec('kbptr kill'))
+
 -- Lock screen
 hl.bind(mainMod .. ' + CTRL + Q', exec('loginctl lock-session'))
 

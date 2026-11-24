@@ -129,6 +129,9 @@ topics:
     - name: espanso
       state: present
       config: "{{ espanso_config }}"
+    - name: wl_kbptr
+      state: present
+      config: "{{ wl_kbptr_config }}"
   panel:
     - name: polybar
       state: absent

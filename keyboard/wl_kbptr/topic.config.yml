@@ -1,0 +1,13 @@
+---
+wl_kbptr_config:
+  path: keyboard/wl_kbptr
+  # ~/.config/wl-kbptr: base/theme's `theme set` links the config it
+  # renders there (wl-kbptr.ini: the colours)
+  dirname: wl-kbptr
+  links:
+    - src: kbptr.sh
+      dest: "{{ xdg_bin_home }}/"
+      rename: kbptr
+  # Packaged by wl-kbptr's own author; built with OpenCV, for target detection
+  aur_packages:
+    - wl-kbptr
