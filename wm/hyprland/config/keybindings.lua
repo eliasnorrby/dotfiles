@@ -105,16 +105,17 @@ for i = 5, 8 do
 end
 
 -- Point and click from the keyboard: kbptr (keyboard/wl_kbptr) says what
--- each mode does. A Left Ctrl tap (F18 from keyd, see keyboard/keyd) labels
--- the click targets detected in the focused window, for one click.
--- Hyper+Space toggles the loop: press it, click away, press it again (or
--- Escape). Mod+G picks a tile of a grid and only moves the pointer there,
--- to scroll it with Left Ctrl held + j/k (keyd). Hyper+Escape ends a stuck
--- overlay.
+-- each mode does. Left Ctrl is keyd's mouse layer (keyboard/keyd), whose
+-- keys arrive here as keys nothing else uses:
+--   Left Ctrl tap    F18          one click, on a target in the focused window
+--   + Space          F19          the click loop: on, click away, off (or Escape)
+--   + F              XF86LaunchA  move the pointer to a grid tile, to scroll there
+--   + Escape         XF86LaunchB  end a stuck overlay
+-- (+ j/k scroll, in keyd itself.)
 hl.bind('XF86Launch9', exec('kbptr'))
-hl.bind(vars.hyper .. ' + SPACE', exec('kbptr toggle'))
-hl.bind(mainMod .. ' + G', exec('kbptr point'))
-hl.bind(vars.hyper .. ' + Escape', exec('kbptr kill'))
+hl.bind('F19', exec('kbptr toggle'))
+hl.bind('XF86LaunchA', exec('kbptr point'))
+hl.bind('XF86LaunchB', exec('kbptr kill'))
 
 -- Lock screen
 hl.bind(mainMod .. ' + CTRL + Q', exec('loginctl lock-session'))
