@@ -113,6 +113,7 @@ end
 --   + V            XF86Tools       select: drag from one target to another
 --   + D            XF86Calculator  double click a target (a word)
 --   + T            XF86Explorer    triple click a target (a line)
+--   + S            XF86Mail        screenshot between two corners (tile, split)
 --   + Escape       XF86LaunchB     end a stuck overlay
 -- (+ j/k scroll, in keyd itself.)
 hl.bind('XF86Launch9', exec('kbptr'))
@@ -121,6 +122,7 @@ hl.bind('XF86LaunchA', exec('kbptr point'))
 hl.bind('XF86Tools', exec('kbptr select'))
 hl.bind('XF86Calculator', exec('kbptr double'))
 hl.bind('XF86Explorer', exec('kbptr triple'))
+hl.bind('XF86Mail', exec('kbptr shot'))
 hl.bind('XF86LaunchB', exec('kbptr kill'))
 
 -- Lock screen

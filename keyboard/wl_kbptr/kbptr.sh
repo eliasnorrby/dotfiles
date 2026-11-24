@@ -10,6 +10,10 @@
 #                        bisect it; g/h/b click left/right/middle
 #   kbptr point          a grid over the whole screen; picking a tile only
 #                        moves the pointer there, e.g. over a pane to scroll
+#   kbptr shot           a screenshot between two corners in the focused
+#                        window (either order), saved and copied; each is a
+#                        grid tile, split down with the arrows and taken
+#                        with Enter or Space
 #   kbptr select         two detected targets in the focused window: drag
 #                        from the left edge of the first to the right edge
 #                        of the second, e.g. to select text (wl-kbptr's
@@ -28,6 +32,10 @@
 #
 # wl-kbptr only clicks once, so double and triple move the pointer with
 # it and click with ydotool (which keyd grabs and passes on).
+#
+# Screenshots go to KBPTR_SHOT_DIR (~/Pictures/Screenshots) and the
+# clipboard, KBPTR_SHOT_DELAY seconds (0.2) after the last pick, so that
+# the overlay is gone from the screen.
 
 set -euo pipefail
 
@@ -72,6 +80,11 @@ kbptr_args() {
     window) in_window floating,click ;;
     # Only moves the pointer: multi_click does the clicking
     double | triple) in_window floating ;;
+    # Only prints the pick (with -p): shot takes the screenshot
+    shot)
+      in_window tile,split
+      args=(--only-print "${args[@]}")
+      ;;
     grid) args=(-o "modes=tile,bisect") ;;
     # Without the click mode, the pick only moves the pointer
     point) args=(-o "modes=tile") ;;
@@ -96,6 +109,49 @@ multi_click() {
     "$cancelled") exit 0 ;;
     *) exit "$status" ;;
   esac
+}
+
+# Picks an area (a tile split down, taken with Enter or Space) and sets
+# x y w h to it on the desktop. Returns 1 when cancelled.
+pick_area() {
+  local out status=0 re
+  kbptr_args shot
+  out=$(wl-kbptr "${args[@]}") || status=$?
+  case $status in
+    0) ;;
+    "$cancelled") return 1 ;;
+    *) exit "$status" ;;
+  esac
+  # wxh+x+y within the output, then the output's own +x+y
+  re='^([0-9]+)x([0-9]+)\+(-?[0-9]+)\+(-?[0-9]+) \+(-?[0-9]+)\+(-?[0-9]+)'
+  if [[ ! $out =~ $re ]]; then
+    echo "kbptr: can't read wl-kbptr's pick: $out" >&2
+    exit 1
+  fi
+  w=${BASH_REMATCH[1]} h=${BASH_REMATCH[2]}
+  x=$((BASH_REMATCH[3] + BASH_REMATCH[5]))
+  y=$((BASH_REMATCH[4] + BASH_REMATCH[6]))
+}
+
+# A screenshot of the area spanning two picked areas
+shot() {
+  local x y w h x1 y1 x2 y2 dir file
+  pick_area || exit 0
+  x1=$x y1=$y x2=$((x + w)) y2=$((y + h))
+  pick_area || exit 0
+  ((x < x1)) && x1=$x
+  ((y < y1)) && y1=$y
+  ((x + w > x2)) && x2=$((x + w))
+  ((y + h > y2)) && y2=$((y + h))
+
+  # No overlay is open any more. Release the lock before wl-copy, which
+  # stays in the background serving the clipboard, can inherit it.
+  exec 9>&-
+  sleep "${KBPTR_SHOT_DELAY:-0.2}"
+  dir=${KBPTR_SHOT_DIR:-$HOME/Pictures/Screenshots}
+  mkdir -p "$dir"
+  file="$dir/screenshot-$(date +%Y%m%d-%H%M%S).png"
+  grim -g "$x1,$y1 $((x2 - x1))x$((y2 - y1))" - | tee "$file" | wl-copy
 }
 
 loop() {
@@ -155,6 +211,10 @@ main() {
     triple)
       take_lock
       multi_click triple 3
+      ;;
+    shot)
+      take_lock
+      shot
       ;;
     toggle) toggle "${2:-window}" ;;
     kill) kill_running ;;
