@@ -4,6 +4,8 @@
 #   kbptr [window]       label the click targets detected in the focused
 #                        window; typing one clicks it
 #   kbptr screen         the same, on the whole screen
+#   kbptr double         the same, with a double click (a word)
+#   kbptr triple         the same, with a triple click (a line)
 #   kbptr grid           a grid, for what detection misses: pick a tile, then
 #                        bisect it; g/h/b click left/right/middle
 #   kbptr point          a grid over the whole screen; picking a tile only
@@ -23,6 +25,9 @@
 #
 # KBPTR_LOOP_DELAY: seconds between a click and the next overlay, for the
 # clicked app to redraw before the targets are detected again (0.4).
+#
+# wl-kbptr only clicks once, so double and triple move the pointer with
+# it and click with ydotool (which keyd grabs and passes on).
 
 set -euo pipefail
 
@@ -65,6 +70,8 @@ kbptr_args() {
   case "$1" in
     screen) args=(-o "modes=floating,click" -o mode_floating.source=detect) ;;
     window) in_window floating,click ;;
+    # Only moves the pointer: multi_click does the clicking
+    double | triple) in_window floating ;;
     grid) args=(-o "modes=tile,bisect") ;;
     # Without the click mode, the pick only moves the pointer
     point) args=(-o "modes=tile") ;;
@@ -76,6 +83,19 @@ kbptr_args() {
     *) usage ;;
   esac
   args+=(-o "cancellation_status_code=$cancelled")
+}
+
+# Moves the pointer onto a target, then clicks there N times in quick
+# succession (a click is 0xC0: left button down and up)
+multi_click() {
+  local status=0
+  kbptr_args "$1"
+  wl-kbptr "${args[@]}" || status=$?
+  case $status in
+    0) ydotool click --repeat "$2" --next-delay 20 0xC0 >/dev/null ;;
+    "$cancelled") exit 0 ;;
+    *) exit "$status" ;;
+  esac
 }
 
 loop() {
@@ -127,6 +147,14 @@ main() {
     loop)
       take_lock
       loop "${2:-window}"
+      ;;
+    double)
+      take_lock
+      multi_click double 2
+      ;;
+    triple)
+      take_lock
+      multi_click triple 3
       ;;
     toggle) toggle "${2:-window}" ;;
     kill) kill_running ;;

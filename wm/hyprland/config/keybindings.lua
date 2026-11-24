@@ -107,16 +107,20 @@ end
 -- Point and click from the keyboard: kbptr (keyboard/wl_kbptr) says what
 -- each mode does. Left Ctrl is keyd's mouse layer (keyboard/keyd), whose
 -- keys arrive here as keys nothing else uses:
---   Left Ctrl tap    F18          one click, on a target in the focused window
---   + Space          F19          the click loop: on, click away, off (or Escape)
---   + F              XF86LaunchA  move the pointer to a grid tile, to scroll there
---   + V              XF86Tools    select: drag from one target to another
---   + Escape         XF86LaunchB  end a stuck overlay
+--   Left Ctrl tap  F18             one click, on a target in the focused window
+--   + Space        F19             the click loop: on, click away, off (Escape)
+--   + F            XF86LaunchA     pointer to a grid tile, to scroll there
+--   + V            XF86Tools       select: drag from one target to another
+--   + D            XF86Calculator  double click a target (a word)
+--   + T            XF86Explorer    triple click a target (a line)
+--   + Escape       XF86LaunchB     end a stuck overlay
 -- (+ j/k scroll, in keyd itself.)
 hl.bind('XF86Launch9', exec('kbptr'))
 hl.bind('F19', exec('kbptr toggle'))
 hl.bind('XF86LaunchA', exec('kbptr point'))
 hl.bind('XF86Tools', exec('kbptr select'))
+hl.bind('XF86Calculator', exec('kbptr double'))
+hl.bind('XF86Explorer', exec('kbptr triple'))
 hl.bind('XF86LaunchB', exec('kbptr kill'))
 
 -- Lock screen
