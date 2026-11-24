@@ -146,19 +146,22 @@ hl.bind('SUPER + SHIFT + R', exec('hyprvoice_toggle cancel'))
 -- when SUPER_L went down, so a SUPER_L released mid-chord fires too (keyd's
 -- hyper layer presses Super first, then lets it go before sending an
 -- arrow). So run only if nothing else was pressed between SUPER_L down and
--- up: the key just released is also the last one pressed.
-local lastPressed, lastReleased
-hl.on('input.keyboard.key', function(keycode, _, state)
+-- up: the key just released is also the last one pressed. And only if it
+-- was quick: a SUPER held a while and let go (a change of mind) is no tap,
+-- as keyd's overload_tap_timeout has it for its own tap keys.
+local tapMs = 200
+local lastPressed, lastReleased, pressedAt, releasedAt
+hl.on('input.keyboard.key', function(keycode, timeMs, state)
   if state == 1 then
-    lastPressed = keycode
+    lastPressed, pressedAt = keycode, timeMs
   elseif state == 0 then
-    lastReleased = keycode
+    lastReleased, releasedAt = keycode, timeMs
   end
 end)
 
 local function onTap(cmd)
   return function()
-    if lastPressed == lastReleased then
+    if lastPressed == lastReleased and releasedAt - pressedAt < tapMs then
       hl.exec_cmd(cmd)
     end
   end
