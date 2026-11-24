@@ -13,7 +13,7 @@
 #   kbptr shot           a screenshot between two corners in the focused
 #                        window (either order), saved and copied; each is a
 #                        grid tile, split down with the arrows and taken
-#                        with Enter or Space
+#                        with Enter or Space: the crosshair (the centre)
 #   kbptr select         two detected targets in the focused window: drag
 #                        from the left edge of the first to the right edge
 #                        of the second, e.g. to select text (wl-kbptr's
@@ -133,16 +133,24 @@ pick_area() {
   y=$((BASH_REMATCH[4] + BASH_REMATCH[6]))
 }
 
-# A screenshot of the area spanning two picked areas
+# A screenshot between two picked points: the centre of each picked area,
+# where split mode draws its crosshair
 shot() {
   local x y w h x1 y1 x2 y2 dir file
   pick_area || exit 0
-  x1=$x y1=$y x2=$((x + w)) y2=$((y + h))
+  x1=$((x + w / 2)) y1=$((y + h / 2))
   pick_area || exit 0
-  ((x < x1)) && x1=$x
-  ((y < y1)) && y1=$y
-  ((x + w > x2)) && x2=$((x + w))
-  ((y + h > y2)) && y2=$((y + h))
+  x2=$((x + w / 2)) y2=$((y + h / 2))
+  if ((x2 < x1)); then
+    x=$x1 x1=$x2 x2=$x
+  fi
+  if ((y2 < y1)); then
+    y=$y1 y1=$y2 y2=$y
+  fi
+  if ((x2 == x1 || y2 == y1)); then
+    echo "kbptr: the two corners make no area" >&2
+    exit 1
+  fi
 
   # No overlay is open any more. Release the lock before wl-copy, which
   # stays in the background serving the clipboard, can inherit it.
