@@ -6,6 +6,8 @@
 #   kbptr screen         the same, on the whole screen
 #   kbptr grid           a grid, for what detection misses: pick a tile, then
 #                        bisect it; g/h/b click left/right/middle
+#   kbptr point          a grid over the whole screen; picking a tile only
+#                        moves the pointer there, e.g. over a pane to scroll
 #   kbptr loop [MODE]    MODE (window by default) again after every click,
 #                        until Escape; for a series of clicks
 #   kbptr toggle [MODE]  start the loop, or end whatever is open
@@ -57,6 +59,8 @@ kbptr_args() {
       fi
       ;;
     grid) args=(-o "modes=tile,bisect") ;;
+    # Without the click mode, the pick only moves the pointer
+    point) args=(-o "modes=tile") ;;
     *) usage ;;
   esac
   args+=(-o "cancellation_status_code=$cancelled")
@@ -103,7 +107,7 @@ toggle() {
 main() {
   local cmd=${1:-window}
   case "$cmd" in
-    screen | window | grid)
+    screen | window | grid | point)
       take_lock
       kbptr_args "$cmd"
       exec wl-kbptr "${args[@]}"
