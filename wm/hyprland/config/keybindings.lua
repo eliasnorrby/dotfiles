@@ -110,11 +110,13 @@ end
 --   Left Ctrl tap    F18          one click, on a target in the focused window
 --   + Space          F19          the click loop: on, click away, off (or Escape)
 --   + F              XF86LaunchA  move the pointer to a grid tile, to scroll there
+--   + V              XF86Tools    select: drag from one target to another
 --   + Escape         XF86LaunchB  end a stuck overlay
 -- (+ j/k scroll, in keyd itself.)
 hl.bind('XF86Launch9', exec('kbptr'))
 hl.bind('F19', exec('kbptr toggle'))
 hl.bind('XF86LaunchA', exec('kbptr point'))
+hl.bind('XF86Tools', exec('kbptr select'))
 hl.bind('XF86LaunchB', exec('kbptr kill'))
 
 -- Lock screen

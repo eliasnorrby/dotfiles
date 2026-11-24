@@ -8,6 +8,10 @@
 #                        bisect it; g/h/b click left/right/middle
 #   kbptr point          a grid over the whole screen; picking a tile only
 #                        moves the pointer there, e.g. over a pane to scroll
+#   kbptr select         two detected targets in the focused window: drag
+#                        from the left edge of the first to the right edge
+#                        of the second, e.g. to select text (wl-kbptr's
+#                        --drag, unreleased in 0.4.1)
 #   kbptr loop [MODE]    MODE (window by default) again after every click,
 #                        until Escape; for a series of clicks
 #   kbptr toggle [MODE]  start the loop, or end whatever is open
@@ -46,21 +50,29 @@ focused_window() {
   hyprctl activewindow -j 2>/dev/null | jq -r "$filter" 2>/dev/null || true
 }
 
+# Detected targets in the focused window (the whole screen when there is
+# none), then the given modes
+in_window() {
+  local area
+  args=(-o "modes=$1" -o mode_floating.source=detect)
+  area=$(focused_window)
+  if [[ -n $area ]]; then
+    args+=(--restrict "$area")
+  fi
+}
+
 kbptr_args() {
-  local detect=(-o "modes=floating,click" -o mode_floating.source=detect)
   case "$1" in
-    screen) args=("${detect[@]}") ;;
-    window)
-      args=("${detect[@]}")
-      local area
-      area=$(focused_window)
-      if [[ -n $area ]]; then
-        args+=(--restrict "$area")
-      fi
-      ;;
+    screen) args=(-o "modes=floating,click" -o mode_floating.source=detect) ;;
+    window) in_window floating,click ;;
     grid) args=(-o "modes=tile,bisect") ;;
     # Without the click mode, the pick only moves the pointer
     point) args=(-o "modes=tile") ;;
+    # --drag presses and releases the button itself: no click mode
+    select)
+      in_window floating
+      args=(--drag "${args[@]}")
+      ;;
     *) usage ;;
   esac
   args+=(-o "cancellation_status_code=$cancelled")
@@ -107,7 +119,7 @@ toggle() {
 main() {
   local cmd=${1:-window}
   case "$cmd" in
-    screen | window | grid | point)
+    screen | window | grid | point | select)
       take_lock
       kbptr_args "$cmd"
       exec wl-kbptr "${args[@]}"
