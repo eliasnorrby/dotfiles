@@ -9,25 +9,28 @@
   --vimium-foreground-color: {{mantle}};
 }
 
-/* link hints: the accent, so they stand out on any page; the letters
-   already typed fade into it */
+/* link hints: wl-kbptr's floating labels (wl-kbptr.ini), so the two
+   pointers read alike. A grey box with light text, the letters already
+   typed in the accent; the box mostly hides what is under it, so the
+   label reads on a light page as on a dark one. */
 
 #vimium-hint-marker-container div.internal-vimium-hint-marker,
 #vimium-hint-marker-container div.vimiumHintMarker {
-  padding: 3px 4px;
-  background: {{accent}};
-  border: 1px solid {{crust}};
+  padding: 1px 4px;
+  background: rgba({{surface2.rgb}}, 0.85);
+  border: none;
   border-radius: {{chrome.radius_small}}px;
   box-shadow: none;
 }
 
 #vimium-hint-marker-container div span {
-  color: {{accent_fg}};
+  /* Vimium's own font: bold 11px Helvetica, Arial (Liberation Sans here) */
+  color: {{text}};
   text-shadow: none;
 }
 
 #vimium-hint-marker-container div span.matchingCharacter {
-  color: rgba({{accent_fg.rgb}}, 0.4);
+  color: {{accent}};
 }
 
 /* vomnibar */
