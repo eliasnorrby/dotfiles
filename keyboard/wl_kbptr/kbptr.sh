@@ -169,7 +169,7 @@ loop() {
     status=0
     wl-kbptr "${args[@]}" || status=$?
     case $status in
-      0) sleep "${KBPTR_LOOP_DELAY:-0.4}" ;;
+      0) sleep "${KBPTR_LOOP_DELAY:-0.6}" ;;
       "$cancelled") exit 0 ;;
       *) exit "$status" ;; # failed, or killed by `kbptr kill`
     esac
