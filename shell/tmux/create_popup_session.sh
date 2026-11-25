@@ -69,4 +69,16 @@ if ! tmux has -t "$session" 2>/dev/null; then
   session="$session_id"
 fi
 
+# The client attached here sees the popup as its terminal. Since tmux 3.7 a
+# client with a terminal query outstanding holds a lone Escape for 500 ms
+# whatever escape-time says, so Escape then a key arrives as Meta+key, and a
+# popup never answers some of the queries (OSC 10/11, CSI 14t). As tmux-popup
+# the client is sent no queries at all; see tmux-popup.terminfo.
+if ! infocmp tmux-popup >/dev/null 2>&1; then
+  tic -x "${DOTFILES:-$HOME/.dotfiles}/shell/tmux/tmux-popup.terminfo" 2>/dev/null
+fi
+if infocmp tmux-popup >/dev/null 2>&1; then
+  export TERM=tmux-popup
+fi
+
 exec tmux attach -t "$session" >/dev/null

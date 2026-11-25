@@ -1,0 +1,8 @@
+# The TERM of the tmux client that create_popup_session attaches inside a
+# popup. tmux treats a terminal as VT100-like when clear starts with CSI and
+# then sends it queries (DA, OSC 10/11, CSI 14t) that a popup never fully
+# answers; while one is open, tmux holds a lone Escape for 500 ms whatever
+# escape-time says. The cursor save/restore in front of the usual clear makes
+# tmux skip the queries; tmux.conf names the features they would have found.
+tmux-popup|tmux client inside a tmux popup,
+	clear=\E7\E8\E[H\E[J, use=tmux-256color,
