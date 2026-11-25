@@ -24,6 +24,14 @@ Then look, without changing anything:
 - `git status --short` in the working directory, unless it is a vault or
   `~/os`. Uncommitted work is reported to the user, never committed or
   stashed on your own: a worktree that gets removed later takes it along.
+- The live state of every PR the work produced: the task's
+  `task _get <uuid>.prs`, the branch's (`gh pr list --head <branch>
+  --state all`) and any opened in the conversation. Run
+  `gh pr view <n> --json state,isDraft,mergedAt` for each. The user marks
+  PRs ready and merges them outside the session, so what the conversation
+  last saw is stale; never report a PR's state from memory. A merged PR
+  means the task is done (step 3), and a PR missing from the task's `prs`
+  gets added with `task <uuid> modify prs:<list>`.
 - Anything the conversation left hanging: a PR waiting for review, a
   question the user never answered, a check that was going to happen later.
   These become follow-ups in step 2 or a line in the report.
@@ -65,7 +73,8 @@ taskwarrior hook; never set or move them yourself.
 Work that goes out as a PR closes itself: `wk sync` completes the task when
 its PR merges. So when `task _get <uuid>.prs` names a PR that is still
 open, don't mark the task done; checkpoint, `task <uuid> stop`, and say
-that wk closes it on merge. The rest, tasks without PRs (OS and personal
+that wk closes it on merge. When every PR is already merged (checked in
+step 1), `task <uuid> done` now rather than waiting for `wk sync`. The rest, tasks without PRs (OS and personal
 work, investigations, spikes), is what this step is for:
 
 - No argument: `task <uuid> done`.
