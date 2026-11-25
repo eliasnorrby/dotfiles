@@ -1,0 +1,210 @@
+/* {{meta.title}}, rendered by `theme build`. Do not edit; edit the palette.
+   Vimium keeps its CSS in the browser's synced settings and cannot read a
+   file, so a switch needs a paste: copy current/vimium.css into Vimium's
+   options, "CSS for Vimium UI" (under advanced options), and save. */
+
+:root {
+  --vimium-foreground-text-color: {{text}};
+  --vimium-background-text-color: {{text}};
+  --vimium-foreground-color: {{mantle}};
+}
+
+/* link hints: the accent, so they stand out on any page; the letters
+   already typed fade into it */
+
+#vimium-hint-marker-container div.internal-vimium-hint-marker,
+#vimium-hint-marker-container div.vimiumHintMarker {
+  padding: 3px 4px;
+  background: {{accent}};
+  border: 1px solid {{crust}};
+  border-radius: {{chrome.radius_small}}px;
+  box-shadow: none;
+}
+
+#vimium-hint-marker-container div span {
+  color: {{accent_fg}};
+  text-shadow: none;
+}
+
+#vimium-hint-marker-container div span.matchingCharacter {
+  color: rgba({{accent_fg.rgb}}, 0.4);
+}
+
+/* vomnibar */
+
+#vomnibar {
+  background: {{base}};
+  border: 2px solid {{border_active}};
+  border-radius: {{chrome.radius}}px;
+  animation: show 200ms cubic-bezier(0, 0, 0.2, 1) forwards;
+  max-height: calc(100vh - 70px);
+  overflow: hidden;
+}
+
+@keyframes show {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+#vomnibar input {
+  color: {{text}};
+  caret-color: {{cursor}};
+  background: {{base}};
+  border: none;
+  box-shadow: none;
+  height: unset;
+  padding: 16px 30px;
+}
+
+#vomnibar #vomnibar-search-area {
+  border: none;
+  padding: unset;
+  background: {{base}};
+}
+
+#vomnibar ul {
+  padding: 0;
+  margin: 0;
+  background: {{base}};
+  border-top: 1px solid {{surface0}};
+}
+
+#vomnibar li {
+  padding: 10px;
+  border-bottom: 1px solid {{surface0}};
+  border-left: 3px solid transparent;
+}
+
+#vomnibar li .top-half,
+#vomnibar li .bottom-half {
+  padding: 3px 0;
+}
+
+#vomnibar li .source {
+  color: {{muted}};
+}
+
+#vomnibar li em,
+#vomnibar li .title {
+  color: {{text}};
+  font-weight: bold;
+}
+
+#vomnibar li .url {
+  color: {{subtext0}};
+}
+
+#vomnibar li .match,
+#vomnibar li .title .match {
+  color: {{accent}};
+  font-weight: bold;
+}
+
+#vomnibar li.selected {
+  background-color: {{surface1}};
+  border-left-color: {{accent}};
+}
+
+/* search/find hud */
+
+div#hud-container {
+  background: {{base}};
+  border: 1px solid {{border_inactive}};
+  border-radius: {{chrome.radius_small}}px;
+  box-shadow: none;
+}
+
+div#hud-container span#hud-find-input,
+div#hud-container div#hud {
+  color: {{text}};
+}
+
+div#hud-container .hud-find,
+div#hud-container #search-area {
+  background-color: {{base}};
+}
+
+::selection {
+  background-color: {{selection_bg}} !important;
+  color: {{selection_fg}} !important;
+}
+
+/* vimium settings */
+
+body.vimium-body header,
+body.vimium-body label,
+body.vimium-body {
+  color: {{text}};
+  background-color: {{base}};
+}
+
+body.vimium-body button,
+body.vimium-body footer,
+body.vimium-body textarea,
+body.vimium-body input {
+  color: {{text}};
+  scrollbar-color: {{surface2}} {{surface0}};
+  background-color: {{mantle}};
+}
+
+body.vimium-body #wrapper .example {
+  color: {{subtext1}};
+}
+
+body.vimium-body a {
+  color: {{accent}};
+}
+
+body.vimium-body input,
+body.vimium-body textarea,
+body.vimium-body button {
+  border-color: {{surface1}};
+}
+
+body.vimium-body input:focus,
+body.vimium-body textarea:focus,
+body.vimium-body button:focus {
+  border-color: {{accent}};
+  outline: none;
+}
+
+/* help dialog */
+
+#dialog {
+  color: {{text}};
+  background: {{mantle}};
+  border-radius: {{chrome.radius}}px;
+}
+
+#dialog .divider {
+  background: {{surface1}};
+}
+
+#dialog a,
+#dialog span.vim {
+  color: {{accent}};
+}
+
+#dialog div.help-description,
+#dialog h2,
+#dialog h1,
+#dialog a#close {
+  color: {{text}};
+}
+
+#dialog a#close:hover {
+  color: {{accent}};
+}
+
+#dialog .key,
+body.vimium-body .key {
+  color: {{text}};
+  background: {{surface0}};
+  border-color: {{surface2}};
+}
