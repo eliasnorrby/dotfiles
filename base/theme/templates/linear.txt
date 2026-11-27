@@ -1,0 +1,9 @@
+# {{meta.title}}, rendered by `theme build`. Do not edit; edit the palette.
+# Linear keeps its theme in its own settings and reads no file, so a switch
+# needs these typed in: Settings > Preferences > Interface theme > Custom.
+# Linear derives every grey (sidebar, panels, borders, text) from the
+# background, so it is the main window grey, not a darker one.
+
+Accent      {{selected}}
+Background  {{base}}
+Contrast    30
