@@ -1,0 +1,16 @@
+# {{meta.title}}, rendered by `theme build`. Do not edit; edit the palette.
+# Slack keeps its theme on its own side, one per workspace, and reads no
+# file, so a switch needs these entered by hand: Preferences > Themes >
+# Custom. Window gradient off.
+
+System navigation    {{slack_nav}}
+Selected items       {{selected}}
+Presence indication  {{good}}
+Notifications        {{maroon}}
+
+# Or paste this into the editor's Import, which takes the older ten-value
+# format and fills the four slots from it: column background, menu
+# background on hover, active item, active item text, hover item, text,
+# active presence, mention badge, top navigation background and text.
+
+{{slack_nav}},{{text}},{{selected}},{{base}},{{crust}},{{text}},{{good}},{{maroon}},{{slack_nav}},{{text}}

@@ -81,6 +81,8 @@ plan = "blue"
 # GitHub pull request states (upstream: merged mauve, draft subtext0)
 pr_merged = "mauve"
 pr_draft = "subtext0"
+# Slack's sidebar: a hand-picked navy between surface0 and surface1
+slack_nav = "#38364d"
 # waybar modules, swaync, yazi icons
 module_language = "green"
 module_audio = "flamingo"

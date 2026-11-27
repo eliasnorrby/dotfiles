@@ -87,6 +87,8 @@ plan = "subtext1"
 # GitHub pull request states: merged lit, draft dim (both silver otherwise)
 pr_merged = "white"
 pr_draft = "overlay2"
+# Slack's sidebar: the window's own grey
+slack_nav = "base"
 # waybar modules, swaync, yazi icons
 module_language = "subtext1"
 module_audio = "subtext1"
